@@ -1587,9 +1587,10 @@ var gender = 'male';
 
         function stripTashkeel(t) { try { return String(t).replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u0640]/g, ''); } catch (e) { return t; } }
         function speakAsma(text, onDone) {
-            function finish() { if (onDone && asmaAuto) onDone(); }
             var cleanText = stripTashkeel(text);
-            function doSpeak() {
+            function finish() { if (onDone && asmaAuto) onDone(); }
+            function synthFallback() {
+                if (!('speechSynthesis' in window)) { finish(); return; }
                 try {
                     var utter = new SpeechSynthesisUtterance(cleanText);
                     utter.lang = 'ar-SA';
@@ -1603,26 +1604,15 @@ var gender = 'male';
                     utter.onend = finish;
                     utter.onerror = finish;
                     window.speechSynthesis.speak(utter);
-                    return true;
-                } catch (e) { return false; }
-            }
-            if ('speechSynthesis' in window) {
-                var wasSpeaking = false;
-                try { wasSpeaking = window.speechSynthesis.speaking; if (wasSpeaking) window.speechSynthesis.cancel(); } catch (e) {}
-                if (doSpeak()) return;
-                /* Voix pas encore chargées (Chrome charge en async) : réessayer 300ms plus tard */
-                setTimeout(function () { if (!doSpeak()) googleFallback(); }, wasSpeaking ? 150 : 300);
-                return;
-            }
-            googleFallback();
-            function googleFallback() {
-                try {
-                    var a = new Audio('https://translate.google.com/translate_tts?client=tw-ob&q=' + encodeURIComponent(cleanText) + '&tl=ar');
-                    if (gender === 'male') a.playbackRate = 0.82;
-                    a.onended = finish; a.onerror = finish;
-                    a.play().catch(finish);
                 } catch (e) { finish(); }
             }
+            try {
+                var a = new Audio('https://translate.google.com/translate_tts?client=tw-ob&q=' + encodeURIComponent(cleanText) + '&tl=ar');
+                if (gender === 'male') a.playbackRate = 0.82;
+                a.onended = finish;
+                a.onerror = synthFallback;
+                a.play().catch(synthFallback);
+            } catch (e) { synthFallback(); }
         }
 
         function playAsmaAudio(text) { asmaAutoStop(true); speakAsma(text, null); }
