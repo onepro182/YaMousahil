@@ -134,6 +134,33 @@
         .adhkar-cat-item.live-empty{opacity:.55;}
         .adhkar-cat-item .live-empty-tag{margin-right:auto;background:rgba(255,255,255,0.12);border:1px solid var(--glass-border);border-radius:20px;padding:1px 8px;font-size:.7rem;color:var(--text-dim);}
         @media (max-width: 900px){ .live-split-view{flex-direction:column;} .adhkar-sidebar{width:100%;} }
+        /* ===== Mobile (portrait) : mise en page empilée ===== */
+        @media (max-width: 900px){
+            .tv-inner{padding:10px 12px;gap:10px;}
+            .top-bar{flex-wrap:wrap;gap:8px;}
+            .top-logo,.top-right-icons{width:auto;}
+            .top-center-time{order:3;width:100%;}
+            .clock-large{font-size:1.6rem;}
+            .main-layout{flex-direction:column;gap:12px;overflow-y:auto;}
+            .apps-column{min-height:auto;}
+            .prayer-row{flex-wrap:wrap;}
+            .time-box{flex:1 1 30%;min-width:100px;padding:8px 6px;}
+            .apps-scroll-area{overflow:visible;}
+            .fav-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+            .app-card{padding:12px 6px;}
+            .mihrab-column{width:100%;flex-shrink:1;}
+            .mihrab-arch{min-height:320px;flex:none;}
+            .mihrab-name{font-size:2.6rem;}
+            .quran-split-view{flex-direction:column;height:auto;}
+            .adhkar-split-view{flex-direction:column;height:auto;}
+            .quran-sidebar,.adhkar-sidebar{width:100%;}
+            .mosques-layout{flex-direction:column;}
+            .tasbih-embedded .layout{grid-template-columns:1fr;}
+            .tasbih-embedded .left-col,.tasbih-embedded .counter-area,.tasbih-embedded .side-panel{grid-column:auto;grid-row:auto;width:100%;}
+            .tasbih-embedded .side-panel{flex-direction:row;flex-wrap:wrap;}
+            #mosque-map{min-height:300px;}
+        }
+        @media (max-width: 560px){ .fav-grid{grid-template-columns:repeat(2,1fr);} }
         .header-prayers{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
         .back-btn { border-radius:20px; padding:6px 16px; cursor:pointer; font-family:var(--font); color: white; }
         .title-prayers{text-align:center;flex:1;}
