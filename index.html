@@ -136,7 +136,9 @@
         @media (max-width: 900px){ .live-split-view{flex-direction:column;} .adhkar-sidebar{width:100%;} }
         /* ===== Mobile (portrait) : mise en page empilée ===== */
         @media (max-width: 900px){
-            .tv-inner{padding:10px 12px;gap:10px;}
+            body{height:auto;overflow-y:auto;}
+            .tv-screen{width:100%;max-width:100%;height:auto;max-height:none;min-height:100dvh;overflow:visible;}
+            .tv-inner{height:auto;min-height:100dvh;padding:10px 12px;gap:10px;}
             .top-bar{flex-wrap:wrap;gap:8px;}
             .top-logo,.top-right-icons{width:auto;}
             .top-center-time{order:3;width:100%;}
