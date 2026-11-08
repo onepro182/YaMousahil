@@ -1585,32 +1585,43 @@ var gender = 'male';
         // ================= LECTURE AUTO (99 noms un à un) =================
         var asmaAuto = false, asmaAutoTimer = null, asmaAutoAudio = null;
 
+        function stripTashkeel(t) { try { return String(t).replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u0640]/g, ''); } catch (e) { return t; } }
         function speakAsma(text, onDone) {
             function finish() { if (onDone && asmaAuto) onDone(); }
-            if ('speechSynthesis' in window) {
+            var cleanText = stripTashkeel(text);
+            function doSpeak() {
                 try {
-                    window.speechSynthesis.cancel();
-                    var utter = new SpeechSynthesisUtterance(text);
+                    var utter = new SpeechSynthesisUtterance(cleanText);
                     utter.lang = 'ar-SA';
-                    utter.rate = 0.82;
-                    if (gender === 'male') { utter.pitch = 0.65; }
-                    else { utter.pitch = 1.1; }
+                    utter.rate = 0.85;
+                    utter.pitch = (gender === 'male') ? 0.65 : 1.1;
                     var voices = window.speechSynthesis.getVoices();
-                    var ar = voices.find(v => /^ar([-_]|$)/i.test(v.lang) && (gender === 'male' ? /male|mohammad|abdullah|saad/i.test(v.name) : /female|female|amina|salma/i.test(v.name))) || voices.find(v => /^ar([-_]|$)/i.test(v.lang));
+                    if (!voices || !voices.length) return false;
+                    var ar = voices.find(v => /^ar([-_]|$)/i.test(v.lang)) || voices[0];
                     if (ar) utter.voice = ar;
                     utter.onend = finish;
                     utter.onerror = finish;
                     window.speechSynthesis.speak(utter);
-                    return;
-                } catch (e) { /* repli ci-dessous */ }
+                    return true;
+                } catch (e) { return false; }
             }
-            /* Repli réseau : Google TTS (sans alerte) */
-            try {
-                var a = new Audio('https://translate.google.com/translate_tts?client=tw-ob&q=' + encodeURIComponent(text) + '&tl=ar');
-                if (gender === 'male') a.playbackRate = 0.82;
-                a.onended = finish; a.onerror = finish;
-                a.play().catch(finish);
-            } catch (e) { finish(); }
+            if ('speechSynthesis' in window) {
+                var wasSpeaking = false;
+                try { wasSpeaking = window.speechSynthesis.speaking; if (wasSpeaking) window.speechSynthesis.cancel(); } catch (e) {}
+                if (doSpeak()) return;
+                /* Voix pas encore chargées (Chrome charge en async) : réessayer 300ms plus tard */
+                setTimeout(function () { if (!doSpeak()) googleFallback(); }, wasSpeaking ? 150 : 300);
+                return;
+            }
+            googleFallback();
+            function googleFallback() {
+                try {
+                    var a = new Audio('https://translate.google.com/translate_tts?client=tw-ob&q=' + encodeURIComponent(cleanText) + '&tl=ar');
+                    if (gender === 'male') a.playbackRate = 0.82;
+                    a.onended = finish; a.onerror = finish;
+                    a.play().catch(finish);
+                } catch (e) { finish(); }
+            }
         }
 
         function playAsmaAudio(text) { asmaAutoStop(true); speakAsma(text, null); }
