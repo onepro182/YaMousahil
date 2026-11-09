@@ -133,7 +133,7 @@
         .live-countdown .live-cd-num{font-size:1.6rem;font-weight:800;letter-spacing:1px;text-shadow:0 0 12px rgba(212,175,55,0.4);}
         .adhkar-cat-item.live-empty{opacity:.55;}
         .adhkar-cat-item .live-empty-tag{margin-right:auto;background:rgba(255,255,255,0.12);border:1px solid var(--glass-border);border-radius:20px;padding:1px 8px;font-size:.7rem;color:var(--text-dim);}
-        @media (max-width: 900px){ .live-split-view{flex-direction:column;} .adhkar-sidebar{width:100%;} }
+        @media (max-width: 900px){ .live-split-view{flex-direction:column;} .live-player-area{order:-1;} .adhkar-sidebar{width:100%;} .adhkar-cat-list{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;} .adhkar-cat-item{flex-shrink:0;} }
         /* ===== Mobile (portrait) : mise en page empilée ===== */
         @media (max-width: 900px){
             body{height:auto;overflow-y:auto;}
@@ -166,6 +166,7 @@
             .settings-sidebar{flex-direction:row;flex-wrap:wrap;gap:6px;width:100%;}
             .settings-content{min-width:0;}
             #mosque-map{min-height:300px;}
+            #asma-grid{overflow-x:auto;grid-template-columns:repeat(7,minmax(105px,1fr));}
         }
         @media (max-width: 560px){ .fav-grid{grid-template-columns:repeat(2,1fr);} }
         .header-prayers{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
