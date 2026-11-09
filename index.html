@@ -99,7 +99,7 @@
         body.is-mobile .home-action-row .app-name{font-size:.68rem;}
         
         .app-card { border-radius:10px; padding:18px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; }
-        #card-surah-kahf{border-color:var(--gold) !important;background:linear-gradient(160deg,rgba(212,175,55,0.25),rgba(255,255,255,0.04)) !important;box-shadow:0 0 16px rgba(212,175,55,0.28);}
+        #card-surah-kahf{}
         .app-icon{width:2.6rem;height:2.6rem;object-fit:contain;display:block;}
         #card-mosques .app-icon{filter: brightness(0) saturate(100%) invert(76%) sepia(52%) saturate(548%) hue-rotate(2deg) brightness(95%) contrast(89%);}
         .app-name{font-size:.85rem;text-align:center;font-weight:600;}
@@ -815,9 +815,9 @@
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="المساجد">
                                     <span class="app-name">المساجد القريبة منك</span>
                                 </div>
-                                <div class="app-card glass-btn" tabindex="0" id="card-surah-kahf">
-                                    <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3415/3415279.png" alt="الكهف">
-                                    <span class="app-name">سورة الكهف يوم الجمعة</span>
+                                                                <div class="app-card glass-btn" tabindex="0" id="card-surah-kahf">
+                                    <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3389/3389383.png" alt="تصفح القرآن">
+                                    <span class="app-name">تصفح القرآن</span>
                                 </div>
                                 <div class="home-action-row">
                                 <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
@@ -842,7 +842,7 @@
                                     <span class="app-name">🌦 Météo</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-mushaf">
-                                    <img class="app-icon" src="https://www.mp3quran.net/img/logo2.png" alt="تصفح القرآن" style="border-radius:8px;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3004/3004416.png'">
+                                    <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3389/3389383.png" alt="تصفح القرآن" style="border-radius:8px;">
                                     <span class="app-name">تصفح القرآن</span>
                                 </div>
                                 </div>
@@ -2912,15 +2912,12 @@ var gender = 'male';
         // ==================================================
         // SURAH AL-KAHF
         // ==================================================
-        document.getElementById('card-surah-kahf').onclick = () => {
-            window._quranReturnTo = null;
+                document.getElementById('card-surah-kahf').onclick = () => {
             if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
             if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
-            showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran');
-            document.getElementById('tab-surah').click();
-            document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
-            const surahItem = document.getElementById('surah-item-18');
-            if (surahItem) { surahItem.classList.add('active'); surahItem.click(); if (surahItem.scrollIntoView) surahItem.scrollIntoView({ block: 'center' }); }
+            var fr=document.getElementById('mushaf-qf-frame'); if(fr && fr.dataset && fr.dataset.src && (!fr.src||fr.src==='about:blank'||fr.getAttribute('src')==='about:blank')) fr.src=fr.dataset.src;
+            var ms = (typeof mushafScreen!=='undefined' && mushafScreen) ? mushafScreen : document.getElementById('mushaf-screen');
+            if (ms && typeof showScreen==='function') showScreen(ms);
         };
 
         // RADIO
