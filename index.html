@@ -209,6 +209,11 @@
         body.is-mobile .main-layout{flex-direction:column;gap:14px;}
         body.is-mobile .prayer-row{display:flex;flex-wrap:wrap-reverse;flex-direction:row-reverse;direction:ltr;gap:8px;}
         body.is-mobile .time-box{flex:1 1 30%;min-width:0;padding:10px 4px;direction:rtl;}
+        .fav-header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+        .fav-next-prayer{display:none;align-items:center;gap:6px;font-family:var(--font);font-size:.82rem;color:var(--text-dim);white-space:nowrap;}
+        .fav-next-prayer .fav-next-name{color:var(--gold);font-weight:700;}
+        .fav-next-prayer .fav-next-time{color:var(--gold-light);font-weight:700;font-variant-numeric:tabular-nums;direction:ltr;display:inline-block;}
+        body.is-mobile .fav-next-prayer{display:inline-flex;}
         body.is-mobile .fav-grid{grid-template-columns:repeat(2,1fr);}
         body.is-mobile .mihrab-column{width:100%;}
         body.is-mobile .mihrab-arch{min-height:300px;border-radius:120px 120px 0 0;}
@@ -655,7 +660,10 @@
                     <div class="apps-column">
                         <div class="prayer-row" id="home-prayer-times"></div>
                         <div class="apps-scroll-area">
-                            <div class="section-title">المفضلة</div>
+                            <div class="fav-header-row">
+                                <div class="section-title" style="margin-bottom:0;">المفضلة</div>
+                                <div class="fav-next-prayer" id="fav-next-prayer"><span class="fav-next-label">الصلاة القادمة</span> <span class="fav-next-name" id="fav-next-prayer-name">--</span> <span class="fav-next-time" id="fav-next-countdown">--:--:--</span></div>
+                            </div>
                             <div class="apps-grid fav-grid">
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran">
                                     <img class="app-icon" src="https://s.cafebazaar.ir/images/icons/com.alquransharifmp3-38c31d1d-cc94-4b82-af78-1941aa9abed3_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize" alt="القرآن الكريم">
@@ -1352,6 +1360,7 @@
                 homePrayerContainer.appendChild(box);
             });
             document.getElementById('home-next-prayer-name').textContent = PRAYER_NAMES[nextPrayerKey];
+            const _fnp = document.getElementById('fav-next-prayer-name'); if (_fnp) _fnp.textContent = PRAYER_NAMES[nextPrayerKey];
             const now = new Date(); const city = CITIES_DB[settings.cityId];
             const hijri = now.toLocaleDateString('ar-SA-u-nu-latn-ca-islamic-umalqura', { timeZone:locationTimeZone(), day:'numeric', month:'long', year:'numeric' });
             document.getElementById('prayers-date').textContent = `${hijri} · ${city.nameAr}`; document.getElementById('hijri-date').textContent = `${hijri} · ${city.nameAr}`;
@@ -1405,7 +1414,8 @@
                 const m = Math.floor((totalSec % 3600) / 60); 
                 const s = totalSec % 60;
                 
-                document.getElementById('home-countdown').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`; 
+                document.getElementById('home-countdown').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+                const _fnc = document.getElementById('fav-next-countdown'); if (_fnc) _fnc.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`; 
                 if (typeof liveScreen !== 'undefined' && liveScreen && liveScreen.style.display !== 'none') {
                     document.getElementById('live-countdown').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
                     document.getElementById('live-next-name').textContent = PRAYER_NAMES[tempNextKey] || '—';
