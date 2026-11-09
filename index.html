@@ -2597,17 +2597,22 @@ var gender = 'male';
         function showAdhanOverlay(prayerKey) { const overlay = document.getElementById('adhan-overlay'); document.getElementById('adhan-prayer-name').textContent = `صلاة ${PRAYER_NAMES[prayerKey]}`; overlay.classList.add('active'); }
         document.getElementById('btn-close-alert').onclick = () => { document.getElementById('alert-overlay').classList.remove('active'); if ('speechSynthesis' in window) window.speechSynthesis.cancel(); };
         document.getElementById('btn-hear-alert').onclick = () => { var k = window._lastAlertPrayerKey; if (k && PRAYER_NAMES[k]) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES[k]); else if (typeof speakArabic === 'function') speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES[k]); } };
-        document.getElementById('btn-stop-adhan').onclick = () => { adhanAudio.pause(); adhanAudio.currentTime = 0; document.getElementById('adhan-overlay').classList.remove('active'); };
+        document.getElementById('btn-stop-adhan').onclick = () => { adhanAudio.pause(); adhanAudio.currentTime = 0; document.getElementById('adhan-overlay').classList.remove('active'); const tb = document.getElementById('btn-test-adhan'); if (tb) tb.textContent = '▶ اختبار صوت الأذان'; };
 
         async function playAdhan(prayerKey, isTest=false) {
             const voice = document.getElementById('set-adhan-voice').value || settings.adhanVoice || 'azan1';
             adhanAudio.pause(); adhanAudio.currentTime = 0; adhanAudio.src = ADHAN_FILES[voice] || ADHAN_FILES.azan1; adhanAudio.load();
             const status = document.getElementById('adhan-status');
-            try { await adhanAudio.play(); adhanUnlocked = true; if(!isTest) showAdhanOverlay(prayerKey); status.textContent = isTest ? 'يتم تشغيل الأذان التجريبي.' : 'يتم تشغيل الأذان الآن.'; }
-            catch (err) { status.textContent = 'تعذر التشغيل: تحقق من الإنترنت واضغط اختبار الصوت للسماح بالتشغيل.'; console.warn('Adhan playback blocked:', err); }
+            try { await adhanAudio.play(); adhanUnlocked = true; if(!isTest) showAdhanOverlay(prayerKey); status.textContent = isTest ? 'يتم تشغيل الأذان التجريبي.' : 'يتم تشغيل الأذان الآن.'; const tb = document.getElementById('btn-test-adhan'); if (tb && isTest) tb.textContent = '⏹ إيقاف الاختبار'; }
+            catch (err) { status.textContent = 'تعذر التشغيل: تحقق من الإنترنت واضغط اختبار الصوت للسماح بالتشغيل.'; console.warn('Adhan playback blocked:', err); const tb = document.getElementById('btn-test-adhan'); if (tb) tb.textContent = '▶ اختبار صوت الأذان'; }
         }
+        adhanAudio.addEventListener('ended', () => { const tb = document.getElementById('btn-test-adhan'); if (tb) tb.textContent = '▶ اختبار صوت الأذان'; });
+        adhanAudio.addEventListener('pause', () => { if (adhanAudio.currentTime === 0 || adhanAudio.ended) { const tb = document.getElementById('btn-test-adhan'); if (tb) tb.textContent = '▶ اختبار صوت الأذان'; } });
 
-        document.getElementById('btn-test-adhan').addEventListener('click', () => playAdhan(null, true));
+        document.getElementById('btn-test-adhan').addEventListener('click', () => {
+            if (!adhanAudio.paused && !adhanAudio.ended) { adhanAudio.pause(); adhanAudio.currentTime = 0; document.getElementById('adhan-status').textContent = 'تم إيقاف الأذان التجريبي.'; document.getElementById('btn-test-adhan').textContent = '▶ اختبار صوت الأذان'; return; }
+            playAdhan(null, true);
+        });
         document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('fajr'); notifyPrayer('fajr', true); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES['fajr']); else speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES['fajr']); } });
 
         function speakArabic(message) {
