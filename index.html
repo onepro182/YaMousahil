@@ -1603,7 +1603,6 @@ var gender = 'male';
             var arVoice = ('speechSynthesis' in window) ? pickArabicVoice() : null;
             if (arVoice) {
                 try {
-                    window.speechSynthesis.cancel();
                     var utter = new SpeechSynthesisUtterance(cleanText);
                     utter.lang = arVoice.lang;
                     utter.voice = arVoice;
