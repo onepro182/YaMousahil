@@ -218,12 +218,18 @@
         /* Mobile Quran: liste des sourates d'abord, texte après sélection */
         body.is-mobile .quran-split-view:not(.show-text) .quran-text-area{display:none;}
         body.is-mobile .quran-split-view.show-text .quran-sidebar{display:none;}
-        body.is-mobile .quran-text-header{position:relative;}
-        #isl-back-to-surahs{display:none;position:absolute;top:10px;inset-inline-start:10px;z-index:2;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
-        body.is-mobile .quran-split-view.show-text #isl-back-to-surahs{display:inline-block;}
+        #isl-back-to-surahs{display:none;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
+        body.is-mobile .quran-split-view.show-text #isl-back-to-surahs{display:inline-block;margin:6px auto 0;}
         /* Bouton الرئيسية toujours visible sur mobile dans إسلاميات */
         body.is-mobile #btn-back-from-islamiyat{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
         body.is-mobile .isl-header-spacer{width:0;}
+        /* Mobile: lisibilité du texte coranique */
+        body.is-mobile .quran-text-header{padding:8px 10px 4px;}
+        body.is-mobile .quran-text-header h1{font-size:1.7rem;}
+        body.is-mobile .quran-text-body{padding:12px 14px 30px;font-size:1.45rem;line-height:2.5;overflow-y:visible;}
+        body.is-mobile .ayah-num-circle{width:26px;height:26px;font-size:.8rem;margin:0 5px;}
+        body.is-mobile .quran-audio-controls{padding:6px 10px;}
+        body.is-mobile .quran-audio-controls select{max-width:46vw;font-size:.9rem;padding:7px 10px;}
         body.is-mobile .tasbih-embedded .layout{grid-template-columns:1fr;}
         body.is-mobile .tasbih-embedded .left-col,body.is-mobile .tasbih-embedded .counter-area,body.is-mobile .tasbih-embedded .side-panel{grid-column:auto;grid-row:auto;width:100%;}
         body.is-mobile .settings-container{width:96%;max-height:92dvh;max-height:92vh;overflow-y:auto;}
@@ -2295,7 +2301,7 @@ var gender = 'male';
         function stopIslamiyatAudio() { islQuranAudio.pause(); islQuranAudio.src = ''; islQuranPlaying = false; islQuranQueue = []; islQuranIndex = 0; const btn = document.getElementById('isl-play-btn'); if (btn) btn.textContent = '▶ استماع'; document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); }
         function highlightAyah(num) { document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); const el = document.getElementById('isl-ayah-' + num); if (el) { el.classList.add('ayah-reading'); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
         
-        function showQuranTextOnMobile() { if (!document.body.classList.contains('is-mobile')) return; const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.add('show-text'); const b = document.getElementById('isl-quran-body'); if (b) b.scrollTop = 0; }
+        function showQuranTextOnMobile() { if (!document.body.classList.contains('is-mobile')) return; const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.add('show-text'); const b = document.getElementById('isl-quran-body'); if (b) b.scrollTop = 0; window.scrollTo(0, 0); }
         function generateSurahGrid() {
             const container = document.getElementById('isl-surah-list-container'); if (!container) return; container.innerHTML = '';
             SURAH_NAMES.forEach((name, index) => {
