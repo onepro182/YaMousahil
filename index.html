@@ -1878,10 +1878,13 @@ var gender = 'male';
                 var ar = voices.filter(function(v){ return /^ar/i.test(v.lang); });
                 if (!ar.length) return null;
                 if (preferMale) {
-                    var male = ar.find(function(v){ return /naayf|hamed|maged|male|homme|tarik|omar|zayd|ali|male/i.test(v.name + ' ' + (v.voiceURI||'')); });
+                    var male = ar.find(function(v){ return /naayf|hamed|maged|tarik|omar|zayd|ali|khalid|majed|male|\bhomme\b/i.test(v.name + ' ' + (v.voiceURI||'')); });
                     if (male) return male;
+                    // éviter les voix explicitement féminines si possible
+                    var notFemale = ar.find(function(v){ return !/female|femme|zira|sana|heba|laila|salma|aya|hoda|maryam/i.test(v.name); });
+                    if (notFemale) return notFemale;
                 }
-                return ar.find(function(v){ return /google/i.test(v.name); }) || ar.find(function(v){ return /microsoft/i.test(v.name); }) || ar.find(function(v){ return /saqr/i.test(v.name); }) || ar.find(function(v){ return /^ar[-_]sa/i.test(v.lang); }) || ar[0] || null;
+                return ar.find(function(v){ return /google/i.test(v.name); }) || ar.find(function(v){ return /microsoft/i.test(v.name); }) || ar[0] || null;
             } catch (e) { return null; }
         }
         function speakAsma(text, onDone) {
@@ -2602,17 +2605,22 @@ var gender = 'male';
             if (!('speechSynthesis' in window)) return false;
             try {
                 window.speechSynthesis.cancel();
-                var msg = String(message || '');
+                var msg = String(message || '').replace(/\s+/g, ' ').trim();
+                if (!msg) return false;
                 function doSpeak() {
+                    try { if (window.speechSynthesis.paused) window.speechSynthesis.resume(); } catch(e){}
                     var utterance = new SpeechSynthesisUtterance(msg);
                     utterance.lang = 'ar-SA';
-                    utterance.rate = 0.88;
-                    utterance.pitch = 0.82; // voix plus grave (homme)
+                    utterance.rate = 0.9;
+                    utterance.pitch = 0.72; // voix plus grave (homme)
+                    utterance.volume = 1;
                     var voice = (typeof pickArabicVoice === 'function') ? pickArabicVoice(true) : null;
                     if (!voice) {
-                        var voices = window.speechSynthesis.getVoices();
+                        var voices = window.speechSynthesis.getVoices() || [];
                         var ar = voices.filter(function(v){ return /^ar/i.test(v.lang); });
-                        voice = ar.find(function(v){ return /naayf|hamed|maged|male|homme|tarik|omar/i.test(v.name); }) || ar[0] || null;
+                        voice = ar.find(function(v){ return /naayf|hamed|maged|male|homme|tarik|omar/i.test(v.name); })
+                             || ar.find(function(v){ return !/female|femme|zira|sana|heba|laila/i.test(v.name); })
+                             || ar[0] || null;
                     }
                     if (voice) { utterance.voice = voice; utterance.lang = voice.lang || 'ar-SA'; }
                     window.speechSynthesis.speak(utterance);
@@ -2627,7 +2635,9 @@ var gender = 'male';
                         doSpeak();
                     };
                     try { window.speechSynthesis.addEventListener('voiceschanged', handler); } catch(e) { window.speechSynthesis.onvoiceschanged = handler; }
-                    setTimeout(function(){ if (!spoke) { spoke = true; doSpeak(); } }, 700);
+                    setTimeout(function(){ if (!spoke) { spoke = true; doSpeak(); } }, 900);
+                    // tentative immédiate aussi (certains navigateurs)
+                    setTimeout(function(){ if (!spoke && window.speechSynthesis.getVoices().length) { spoke = true; doSpeak(); } }, 150);
                 }
                 return true;
             } catch (e) { return false; }
