@@ -373,6 +373,8 @@
         .tasbih-embedded input,.tasbih-embedded textarea,.tasbih-embedded select{background:rgba(255,255,255,0.06);color:#f4ecd8;border-color:rgba(212,175,55,0.35);}
         .tasbih-modal{position:absolute;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(2,13,8,0.9);backdrop-filter:blur(8px);color:#f4ecd8;font-family:var(--font-quran);user-select:text;-webkit-user-select:text;}
         .tasbih-modal[hidden]{display:none !important;}
+        body.is-mobile .tasbih-modal{position:fixed;inset:0;z-index:999;padding:10px;}
+        body.is-mobile .tasbih-modal .modal-card{max-height:92dvh;max-height:92vh;width:100%;}
         .tasbih-modal *,.tasbih-modal *::before,.tasbih-modal *::after{box-sizing:border-box;}
         .tasbih-modal button,.tasbih-modal input,.tasbih-modal textarea,.tasbih-modal select{font:inherit;font-family:var(--font-quran);}
         .tasbih-modal button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
