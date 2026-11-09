@@ -117,7 +117,27 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#islamiyat-screen,#mosques-screen,#live-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#islamiyat-screen,#mosques-screen,#live-screen,#weather-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
+        .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
+        .weather-emoji{font-size:4rem;line-height:1;}
+        .weather-temp{font-size:3.4rem;font-weight:800;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums;}
+        .weather-temp small{display:block;font-size:.9rem;color:var(--text-dim);margin-top:4px;font-weight:400;}
+        .weather-cond{font-family:var(--font-quran);font-size:1.4rem;color:var(--cream);}
+        .weather-meta{display:flex;gap:14px;flex-wrap:wrap;width:100%;color:var(--text-dim);font-size:.9rem;}
+        .weather-meta b{color:var(--gold-light);}
+        .weather-h{color:var(--gold);font-family:var(--font-quran);margin:4px 0 2px;}
+        .weather-hourly{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;}
+        .weather-hour{flex-shrink:0;min-width:78px;text-align:center;padding:10px 6px;border:1px solid var(--glass-border);border-radius:12px;background:var(--glass-bg);}
+        .weather-hour .h-time{font-size:.8rem;color:var(--text-dim);}
+        .weather-hour .h-ico{font-size:1.4rem;margin:4px 0;}
+        .weather-hour .h-temp{font-weight:700;color:var(--gold-light);}
+        .weather-daily{display:flex;flex-direction:column;gap:6px;overflow-y:auto;}
+        .weather-day{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--glass-border);border-radius:12px;background:var(--glass-bg);}
+        .weather-day .d-name{flex:1;font-weight:700;}
+        .weather-day .d-min{color:var(--text-dim);}
+        .weather-day .d-max{color:var(--gold);font-weight:800;}
+        .weather-day .d-ico{font-size:1.3rem;}
         .live-split-view{display:flex;gap:15px;flex:1;min-height:0;}
         .live-player-area{flex:1;display:flex;flex-direction:column;min-width:0;}
         .live-player-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid rgba(212,175,55,0.25);}
@@ -586,6 +606,10 @@
                                     <img class="app-icon" src="assets/img/pha.png" alt="Pharmacie" style="max-height:48px; object-fit:contain;" onerror="this.src='assets/img/Logo.png'">
                                     <span class="app-name">🏥 صيدلية الحراسة</span>
                                 </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-weather">
+                                    <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
+                                    <span class="app-name">🌦 Météo</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -853,6 +877,38 @@
                         <div class="live-player-meta">📺 <span id="live-meta">الحرم المكي </span></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- WEATHER SCREEN -->
+            <div id="weather-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-weather">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">🌦 Météo</h1>
+                        <p id="weather-place">—</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="weather-controls">
+                    <select id="weather-city-select" class="mosques-city-select"><option value="">✏️ اختيار المدينة</option></select>
+                    <button type="button" class="radius-chip" id="btn-weather-locate">📍 موقعي الحالي</button>
+                    <button type="button" class="radius-chip" id="btn-weather-refresh">🔄 تحديث</button>
+                </div>
+                <div class="weather-hero glass-btn" id="weather-hero">
+                    <div class="weather-emoji" id="weather-emoji">🌦</div>
+                    <div class="weather-temp"><span id="weather-temp">--°</span><small>محسوسة <span id="weather-feels">--°</span></small></div>
+                    <div class="weather-cond" id="weather-cond">—</div>
+                    <div class="weather-meta">
+                        <span>💧 الرطوبة <b id="weather-humidity">--%</b></span>
+                        <span>💨 الرياح <b id="weather-wind">-- كم/س</b></span>
+                        <span>🌡 الضغط <b id="weather-pressure">--</b></span>
+                        <span>🌅 الشروق <b id="weather-sunrise">--:--</b> · الغروب <b id="weather-sunset">--:--</b></span>
+                    </div>
+                </div>
+                <h3 class="weather-h">🕐 الساعات القادمة (24 س)</h3>
+                <div class="weather-hourly" id="weather-hourly"></div>
+                <h3 class="weather-h">📅 الأيام القادمة</h3>
+                <div class="weather-daily" id="weather-daily"></div>
             </div>
 
             <!-- ASMA ALLAH SCREEN -->
@@ -2102,8 +2158,8 @@ var gender = 'male';
             document.getElementById('isl-play-btn').onclick = toggleIslamiyatPlay; fetchRecitersIslamiyat();
         }
 
-        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
         // SETTINGS HANDLERS
         populateCountrySelect();
@@ -2407,6 +2463,88 @@ var gender = 'male';
                 if (d && d.event === 'onStateChange' && d.info === 1) { var err2 = document.getElementById('live-error'); if (err2) err2.style.display = 'none'; }
             } catch (_) {}
         });
+        // ===== METEO (Open-Meteo, localisation sélectionnée) =====
+        var weatherPos = null;
+        var WMO = { 0: ['☀️', 'صافٍ'], 1: ['⛅', 'غائم جزئياً'], 2: ['⛅', 'غائم جزئياً'], 3: ['☁️', 'غائم'], 45: ['🌫', 'ضباب'], 48: ['🌫', 'ضباب'], 51: ['🌦', 'رذاذ خفيف'], 53: ['🌦', 'رذاذ'], 55: ['🌦', 'رذاذ كثيف'], 56: ['🌦', 'رذاذ'], 57: ['🌦', 'رذاذ'], 61: ['🌧', 'مطر خفيف'], 63: ['🌧', 'مطر'], 65: ['🌧', 'مطر غزير'], 66: ['🌧', 'مطر'], 67: ['🌧', 'مطر'], 71: ['🌨', 'ثلج خفيف'], 73: ['🌨', 'ثلج'], 75: ['🌨', 'ثلج كثيف'], 77: ['🌨', 'حبوب ثلج'], 80: ['🌦', 'زخات مطر'], 81: ['🌦', 'زخات مطر'], 82: ['🌧', 'زخات عنيفة'], 85: ['🌨', 'زخات ثلج'], 86: ['🌨', 'زخات ثلج'], 95: ['⛈', 'عاصفة'], 96: ['⛈', 'عاصفة'], 99: ['⛈', 'عاصفة'] };
+        function wmoInfo(c, isDay) { var m = WMO[c] || ['🌡', '—']; if (isDay === 0 && c <= 2) return ['🌙', m[1]]; return m; }
+        function weatherTimeStr(iso) { try { var d = new Date(iso); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); } catch (e) { return iso; } }
+        async function fetchWeather(lat, lon, label) {
+            var hero = document.getElementById('weather-hero');
+            document.getElementById('weather-place').textContent = label || '—';
+            try {
+                var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon
+                    + '&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,pressure_msl,wind_speed_10m,wind_direction_10m,wind_gusts_10m'
+                    + '&hourly=temperature_2m,precipitation_probability,weather_code'
+                    + '&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset'
+                    + '&timezone=auto&forecast_days=7';
+                var res = await fetch(url);
+                var data = await res.json();
+                var cur = data.current || {};
+                var info = wmoInfo(cur.weather_code, cur.is_day);
+                document.getElementById('weather-emoji').textContent = info[0];
+                document.getElementById('weather-temp').textContent = Math.round(cur.temperature_2m) + '°';
+                document.getElementById('weather-feels').textContent = Math.round(cur.apparent_temperature) + '°';
+                document.getElementById('weather-cond').textContent = info[1];
+                document.getElementById('weather-humidity').textContent = cur.relative_humidity_2m + '%';
+                document.getElementById('weather-wind').textContent = Math.round(cur.wind_speed_10m) + ' كم/س';
+                document.getElementById('weather-pressure').textContent = Math.round(cur.pressure_msl) + ' hPa';
+                var daily = data.daily || {};
+                var sunrise = daily.sunrise ? weatherTimeStr(daily.sunrise[0]) : '--:--';
+                var sunset = daily.sunset ? weatherTimeStr(daily.sunset[0]) : '--:--';
+                document.getElementById('weather-sunrise').textContent = sunrise;
+                document.getElementById('weather-sunset').textContent = sunset;
+                var hBox = document.getElementById('weather-hourly');
+                var htimes = data.hourly ? data.hourly.time : []; var htemps = data.hourly ? data.hourly.temperature_2m : []; var hcodes = data.hourly ? data.hourly.weather_code : [];
+                var now = new Date();
+                var startIdx = 0;
+                for (var i = 0; i < htimes.length; i++) { if (new Date(htimes[i]) >= now) { startIdx = i; break; } }
+                var hHtml = '';
+                for (var j = startIdx; j < Math.min(startIdx + 24, htimes.length); j++) {
+                    var hi = wmoInfo(hcodes[j], new Date(htimes[j]).getHours() >= 6 && new Date(htimes[j]).getHours() < 18 ? 1 : 0);
+                    hHtml += '<div class="weather-hour"><div class="h-time">' + weatherTimeStr(htimes[j]) + '</div><div class="h-ico">' + hi[0] + '</div><div class="h-temp">' + Math.round(htemps[j]) + '°</div></div>';
+                }
+                hBox.innerHTML = hHtml || '<p style="color:var(--text-dim);">—</p>';
+                var dBox = document.getElementById('weather-daily');
+                var dHtml = '';
+                var days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                for (var k = 0; k < (daily.time ? Math.min(7, daily.time.length) : 0); k++) {
+                    var di = wmoInfo(daily.weather_code[k], 1);
+                    var dName = days[new Date(daily.time[k]).getDay()];
+                    dHtml += '<div class="weather-day"><span class="d-ico">' + di[0] + '</span><span class="d-name">' + dName + '</span><span style="color:var(--text-dim);font-size:.85rem;">' + di[1] + '</span><span class="d-min">' + Math.round(daily.temperature_2m_min[k]) + '°</span> / <span class="d-max">' + Math.round(daily.temperature_2m_max[k]) + '°</span></div>';
+                }
+                dBox.innerHTML = dHtml || '<p style="color:var(--text-dim);">—</p>';
+            } catch (e) {
+                document.getElementById('weather-place').textContent = (label || '—') + ' — ⚠️ تعذّرت البيانات (تحقق من الإنترنت)';
+            }
+        }
+        function weatherSelectedCity() {
+            var sel = document.getElementById('weather-city-select');
+            var opt = sel && sel.options[sel.selectedIndex];
+            if (opt && opt.value) return { lat: parseFloat(opt.dataset.lat), lon: parseFloat(opt.dataset.lng), name: opt.dataset.name };
+            var city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) || CITIES_DB.tangier;
+            return { lat: city.lat, lon: city.lng, name: city.nameAr };
+        }
+        (function initWeatherUI() {
+            var sel = document.getElementById('weather-city-select');
+            if (!sel || sel.dataset.ready) return;
+            sel.dataset.ready = '1';
+            var db = (typeof CITIES_DB !== 'undefined') ? CITIES_DB : null;
+            if (!db) return;
+            Object.entries(db).forEach(([id, city]) => {
+                var o = document.createElement('option');
+                o.value = id; o.textContent = '📍 ' + city.nameAr;
+                o.dataset.lat = city.lat; o.dataset.lng = city.lng; o.dataset.name = city.nameAr;
+                sel.appendChild(o);
+            });
+            sel.onchange = () => { var c = weatherSelectedCity(); weatherPos = { lat: c.lat, lon: c.lon }; fetchWeather(c.lat, c.lon, c.name); };
+            document.getElementById('btn-weather-locate').onclick = () => {
+                if (!navigator.geolocation) { var c0 = weatherSelectedCity(); fetchWeather(c0.lat, c0.lon, c0.name); return; }
+                navigator.geolocation.getCurrentPosition((p) => { weatherPos = { lat: p.coords.latitude, lon: p.coords.longitude }; fetchWeather(weatherPos.lat, weatherPos.lon, '📍 موقعك الحالي'); }, () => { var c = weatherSelectedCity(); fetchWeather(c.lat, c.lon, c.name); });
+            };
+            document.getElementById('btn-weather-refresh').onclick = () => { var c = weatherPos ? { lat: weatherPos.lat, lon: weatherPos.lon } : weatherSelectedCity(); fetchWeather(c.lat, c.lon, document.getElementById('weather-place').textContent); };
+        })();
+        document.getElementById('card-weather').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(weatherScreen); var c = weatherSelectedCity(); fetchWeather(c.lat, c.lon, c.name); };
+        document.getElementById('btn-back-from-weather').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('card-live').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderLiveMenu(); showScreen(liveScreen); var first = document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"assadissa\"]') || document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"haram\"]') || document.querySelector('#live-cat-list .adhkar-cat-item'); var fr = document.getElementById('live-iframe'); if (fr) fr.src = ''; selectLiveChannel(first); };
         document.getElementById('btn-live-add').onclick = () => {
             var name = document.getElementById('live-new-name').value.trim();
@@ -2432,7 +2570,7 @@ var gender = 'male';
         document.getElementById('btn-back-from-islamiyat').onclick = () => { stopIslamiyatAudio(); showScreen(homeScreen); navHome.classList.add('active'); };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
