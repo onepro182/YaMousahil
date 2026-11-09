@@ -732,10 +732,6 @@
             <div id="quranradio-screen">
                 <header class="header-prayers">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-quranradio">‹ الرئيسية</button>
-                    <div class="title-prayers">
-                        <h1>📻 إذاعات القرآن الكريم</h1>
-                        <p>اختر محطة للاستماع</p>
-                    </div>
                     <div style="width:80px;"></div>
                 </header>
                 <div class="radio-maroc-grid" id="quran-stations-grid"></div>
@@ -2155,30 +2151,30 @@ var gender = 'male';
         ];
         // أهم إذاعات القرآن الكريم في العالم — source: surahquran.com (بث مباشر على مدار الساعة)
         const QURAN_WORLD_STATIONS = [
-            { name: 'إذاعة القاهرة — مصر', initial: '🇪🇬', urls: ['https://stream.radiojar.com/8s5u5tpdtwzuv'] },
-            { name: 'السعودية — مكة المكرمة', initial: '🇸🇦', urls: ['https://stream.radiojar.com/4wqre23fytzuv'] },
-            { name: 'الجزائر', initial: '🇩🇿', urls: ['https://radiocoran.ice.infomaniak.ch/coran.mp3'] },
-            { name: 'المغرب — الرباط', initial: '🇲🇦', urls: ['https://asmaki.ma:8000/radio.mp3'] },
-            { name: 'الرقية الشرعية', initial: '🤲', urls: ['https://qurango.net/radio/roqiah'] },
-            { name: 'Quran Radio — English', initial: '🌐', urls: ['https://qurango.net/radio/tarateel'] },
-            { name: 'السنة النبوية — المدينة', initial: '☀️', urls: ['https://n0e.radiojar.com/x0vs2vzy6k0uv'] },
-            { name: 'تلاوات خاشعة', initial: '💧', urls: ['https://backup.qurango.net/radio/salma'] },
-            { name: 'تلاوات متنوعة', initial: '🎙️', urls: ['https://backup.qurango.net/radio/mix'] },
-            { name: 'السديس — إمام الحرم المكي', initial: '🕋', urls: ['https://backup.qurango.net/radio/abdulrahman_alsudaes'] },
-            { name: 'ياسر الدوسري', initial: '🕋', urls: ['https://backup.qurango.net/radio/yasser_aldosari'] },
-            { name: 'مشاري العفاسي', initial: '🎤', urls: ['https://backup.qurango.net/radio/mishary_alafasi'] },
-            { name: 'عبدالباسط عبدالصمد — مجوَّد', initial: '🎙️', urls: ['https://backup.qurango.net/radio/abdulbasit_abdulsamad_mojawwad'] },
-            { name: 'سورة البقرة', initial: '📖', urls: ['https://backup.qurango.net/radio/albaqarah'] },
-            { name: 'تفسير القرآن الكريم', initial: '📚', urls: ['https://backup.qurango.net/radio/tafseer'] },
-            { name: 'قطر 103.4', initial: '🇶🇦', urls: ['https://live.kwikmotion.com/qmcquranradiolive/quranradio/playlist.m3u8'] },
-            { name: 'قطر 106', initial: '🇶🇦', urls: ['https://live.kwikmotion.com/qmcquranradio2live/quranradio2/playlist.m3u8'] },
-            { name: 'البحرين', initial: '🇧🇭', urls: ['https://5c7b683162943.streamlock.net:443/live/ngrp:radio-106-1_all/playlist.m3u8'] },
-            { name: 'الأردن', initial: '🇯🇴', urls: ['https://jrtv-live.ercdn.net/jrradio/quranradio.m3u8'] },
-            { name: 'الكويت 98.9', initial: '🇰🇼', urls: ['https://kwtkrdota.cdn.mangomolo.com/qrrdo/qrrdo.stream_aac/chunklist.m3u8'] },
-            { name: 'عُمان — مسقط', initial: '🇴🇲', urls: ['https://partwota.cdn.mgmlcdn.com/quranrdoorg/quranrdo.stream_aac/chunklist.m3u8'] },
-            { name: 'باكستان', initial: '🇵🇰', urls: ['https://whmsonic.radio.gov.pk:7002/stream?type=http'] },
-            { name: 'فلسطين — نابلس', initial: '🇵🇸', urls: ['https://quran-radio.org:8899/;'] },
-            { name: 'الشارقة', initial: '🇦🇪', urls: ['https://svs.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio'] }
+            { name: 'إذاعة القاهرة — مصر', initial: '🇪🇬', logo: imgProxy('https://i.pinimg.com/564x/5e/92/4d/5e924dbe9f53f8611cb9d15828205ff9.jpg'), urls: ['https://stream.radiojar.com/8s5u5tpdtwzuv'] },
+            { name: 'السعودية — مكة المكرمة', initial: '🇸🇦', logo: imgProxy('https://i.pinimg.com/564x/3a/a1/a1/3aa1a107c9434ca52b42b2dd0ffc896f.jpg'), urls: ['https://stream.radiojar.com/4wqre23fytzuv'] },
+            { name: 'الجزائر', initial: '🇩🇿', logo: imgProxy('https://i.pinimg.com/564x/20/0f/57/200f57f922167f83c7bd7d59e0575216.jpg'), urls: ['https://radiocoran.ice.infomaniak.ch/coran.mp3'] },
+            { name: 'إذاعة محمد السادس للقرآن الكريم', initial: '🇲🇦', logo: imgProxy('https://cdn.radoxo.com/images/morocco/idaa-mohammed-assadiss.webp?v=1792966689'), urls: ['https://radoxo.com/stream/eb/radio_med_VI.m3u8','http://cdn-hls.globecast.tv/live/ramdisk/assadissa/hls_snrt/index.m3u8'] },
+            { name: 'الرقية الشرعية', initial: '🤲', logo: imgProxy('https://i.pinimg.com/564x/31/39/1d/31391d84908e4c14cafee9b5344e6584.jpg'), urls: ['https://qurango.net/radio/roqiah'] },
+            { name: 'Quran Radio — English', initial: '🌐', logo: imgProxy('https://i.pinimg.com/564x/0b/18/82/0b188201053638cf627df357dc503b4a.jpg'), urls: ['https://qurango.net/radio/tarateel'] },
+            { name: 'السنة النبوية — المدينة', initial: '☀️', logo: imgProxy('https://i.pinimg.com/564x/55/16/ab/5516abd3744c3d0b0a7b28bedd5474c0.jpg'), urls: ['https://n0e.radiojar.com/x0vs2vzy6k0uv'] },
+            { name: 'تلاوات خاشعة', initial: '💧', logo: imgProxy('https://i.pinimg.com/564x/7e/c9/0d/7ec90d7d420283572798fef6a34400ae.jpg'), urls: ['https://backup.qurango.net/radio/salma'] },
+            { name: 'تلاوات متنوعة', initial: '🎙️', logo: imgProxy('https://i.pinimg.com/736x/68/c9/72/68c972488a09496d689f5287e021061c.jpg'), urls: ['https://backup.qurango.net/radio/mix'] },
+            { name: 'السديس — إمام الحرم المكي', initial: '🕋', logo: imgProxy('https://i.pinimg.com/736x/b6/bf/ad/b6bfad7d165c4202404ab150e3a627dc.jpg'), urls: ['https://backup.qurango.net/radio/abdulrahman_alsudaes'] },
+            { name: 'ياسر الدوسري', initial: '🕋', logo: imgProxy('https://s-media-cache-ak0.pinimg.com/564x/32/3e/17/323e173f4833680898f51240bedd4973.jpg'), urls: ['https://backup.qurango.net/radio/yasser_aldosari'] },
+            { name: 'مشاري العفاسي', initial: '🎤', logo: imgProxy('https://i.pinimg.com/564x/0a/40/9e/0a409ef09a55700877c20d7195fe9126.jpg'), urls: ['https://backup.qurango.net/radio/mishary_alafasi'] },
+            { name: 'عبدالباسط عبدالصمد — مجوَّد', initial: '🎙️', logo: imgProxy('https://i.pinimg.com/564x/52/95/ae/5295ae7c08e4ebdc7eda3ddb5c6c0a19.jpg'), urls: ['https://backup.qurango.net/radio/abdulbasit_abdulsamad_mojawwad'] },
+            { name: 'سورة البقرة', initial: '📖', logo: imgProxy('https://i.pinimg.com/736x/72/da/03/72da032ca1d3e7cf2528d6c34d74cdaf.jpg'), urls: ['https://backup.qurango.net/radio/albaqarah'] },
+            { name: 'تفسير القرآن الكريم', initial: '📚', logo: imgProxy('https://i.pinimg.com/736x/a0/ce/6c/a0ce6c46ea9369732733dbfd43f77065.jpg'), urls: ['https://backup.qurango.net/radio/tafseer'] },
+            { name: 'قطر 103.4', initial: '🇶🇦', logo: imgProxy('https://i.pinimg.com/736x/a5/90/41/a590412840ade4af217dd008f04b3f9d.jpg'), urls: ['https://live.kwikmotion.com/qmcquranradiolive/quranradio/playlist.m3u8'] },
+            { name: 'قطر 106', initial: '🇶🇦', logo: imgProxy('https://i.pinimg.com/736x/41/01/b7/4101b726ba4f669750765c24ad5d2bc2.jpg'), urls: ['https://live.kwikmotion.com/qmcquranradio2live/quranradio2/playlist.m3u8'] },
+            { name: 'البحرين', initial: '🇧🇭', logo: imgProxy('https://i.pinimg.com/736x/d7/32/37/d732373ff39a3e4420b0f7f2fbc5c961.jpg'), urls: ['https://5c7b683162943.streamlock.net:443/live/ngrp:radio-106-1_all/playlist.m3u8'] },
+            { name: 'الأردن', initial: '🇯🇴', logo: imgProxy('https://i.pinimg.com/736x/d4/63/ff/d463ff7d881a295ffc27981e99d96418.jpg'), urls: ['https://jrtv-live.ercdn.net/jrradio/quranradio.m3u8'] },
+            { name: 'الكويت 98.9', initial: '🇰🇼', logo: imgProxy('https://i.pinimg.com/736x/a0/a0/3d/a0a03de09a9e88d1d766be4896c3f06b.jpg'), urls: ['https://kwtkrdota.cdn.mangomolo.com/qrrdo/qrrdo.stream_aac/chunklist.m3u8'] },
+            { name: 'عُمان — مسقط', initial: '🇴🇲', logo: imgProxy('https://i.pinimg.com/736x/d8/1d/2b/d81d2bbe6694357e17ecced1b16b5cac.jpg'), urls: ['https://partwota.cdn.mgmlcdn.com/quranrdoorg/quranrdo.stream_aac/chunklist.m3u8'] },
+            { name: 'باكستان', initial: '🇵🇰', logo: imgProxy('https://i.pinimg.com/736x/14/b4/e2/14b4e2301d300743eb2a8d581691bf73.jpg'), urls: ['https://whmsonic.radio.gov.pk:7002/stream?type=http'] },
+            { name: 'فلسطين — نابلس', initial: '🇵🇸', logo: imgProxy('https://i.pinimg.com/736x/a7/40/72/a74072819ab08b9ac6120a3bbf44f009.jpg'), urls: ['https://quran-radio.org:8899/;'] },
+            { name: 'الشارقة', initial: '🇦🇪', logo: imgProxy('https://i.pinimg.com/736x/73/67/da/7367da35b51fd393d565c478529f72c4.jpg'), urls: ['https://svs.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio'] }
         ];
         let quranPlayer = new Audio(); let quranHls = null; let quranPlaying = false; let currentQuranStation = null; let quranUrlIndex = 0;
         function initQuranStationsPage() {
@@ -2191,7 +2187,7 @@ var gender = 'male';
             const wgrid = document.getElementById('quran-world-grid');
             if (wgrid) { wgrid.innerHTML = ''; QURAN_WORLD_STATIONS.forEach(station => {
                 const card = document.createElement('div'); card.className = 'station-card glass-btn'; card.tabIndex = 0;
-                card.innerHTML = `<div class="station-logo-container"><div class="station-logo-fallback">${station.initial}</div></div><span class="name">${station.name}</span>`;
+                card.innerHTML = `<div class="station-logo-container"><div class="station-logo-fallback">${station.initial}</div>${station.logo ? `<img src="${station.logo}" alt="${station.name}" onerror="this.style.display='none';">` : ''}</div><span class="name">${station.name}</span>`;
                 card.onclick = () => playQuranStation(station); wgrid.appendChild(card);
             }); }
             document.getElementById('quran-play-pause-btn').onclick = toggleQuranPlayPause;
