@@ -863,15 +863,6 @@
                             <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ أسماء الله الحسنى</h1>
                             <p style="font-size:1rem;color:#fff;margin-top:4px;">99 اسمًا من أسماء الله تعالى <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
                         </div>
-                        <div style="width:110px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
-                            <button type="button" id="btn-auto-asma" onclick="__toggleAsmaAuto()" style="background:#0d3b2e;color:#f4d03f;border:1px solid #d4af37;border-radius:8px;padding:3px 10px;font-size:.75rem;cursor:pointer;">▶ Lecture auto</button>
-                            <label style="font-size:.85rem;color:#fff;cursor:pointer;">🎤 Audio:
-                              <select id="audio-gender" style="background:#0d3b2e;color:#fff;border:1px solid #d4af37;border-radius:8px;padding:3px 8px;font-size:.75rem;" onchange="__setAsmaGender(this.value)">
-                                <option value="male">Homme</option>
-                                <option value="female">Femme</option>
-                              </select>
-                            </label>
-                        </div>
                     </div>
                     <div style="text-align:center;padding:8px;color:#d4af37;font-family:'Amiri',serif;font-size:1.1rem;background:rgba(212,175,55,0.05);border:2px solid rgba(212,175,55,0.2);border-radius:10px;margin:0 10px 8px;line-height:1.7;">
                       ﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا ۖ وَذَرُوا الَّذِينَ يُلْحِدُونَ فِي أَسْمَائِهِ ۚ سَيُجْزَوْنَ مَا كَانُوا يَعْمَلُونَ﴾ [الأعراف: 180]
@@ -1688,7 +1679,7 @@ var gender = 'male';
                 </div>`).join('');
         }
 
-        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); });
+        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); window.__toggleAsmaAuto(); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
         // PHARMACIE DE GARDE — récupération localisation exacte (Overpass gratuit)
