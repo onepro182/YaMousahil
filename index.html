@@ -596,11 +596,30 @@
         .adhan-stop-btn { background: #a94436; color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.2rem; font-family: var(--font); font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(169, 68, 54, 0.4); transition: transform 0.1s; display: flex; align-items: center; gap: 10px; margin: 0 auto;}
         .adhan-stop-btn:active { transform: scale(0.95); }
         .adhan-stop-btn:hover { background: #c24a3a; }
-        .alert-box { text-align: center; background: var(--glass-bg); backdrop-filter: blur(20px); border: 2px solid var(--gold); border-radius: 20px; padding: 40px; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .alert-box .alert-icon { font-size: 4rem; margin-bottom: 15px; color: var(--gold); }
-        .alert-box .alert-title { font-size: 2rem; color: var(--gold); margin-bottom: 10px; }
-        .alert-box .alert-desc { font-size: 1.2rem; color: var(--cream); margin-bottom: 25px; line-height: 1.6; }
-        .alert-close-btn { background: var(--gold); color: #0b132b; border: none; padding: 10px 30px; border-radius: 20px; font-size: 1.1rem; font-family: var(--font); font-weight: bold; cursor: pointer; }
+        /* تنبيه الأذان - Mihrab */
+        #alert-overlay.prayer-overlay { background: radial-gradient(ellipse at 50% 30%, rgba(10,50,38,0.55), rgba(2,13,8,0.92) 70%), rgba(2,13,8,0.88); backdrop-filter: blur(18px); }
+        .alert-box.alert-mihrab { background: transparent; border: none; box-shadow: none; padding: 0; max-width: min(520px, 94vw); width: 100%; }
+        .alert-mihrab-arch { position: relative; border-radius: 260px 260px 22px 22px; padding: 14px; background: linear-gradient(180deg, rgba(212,175,55,0.55), rgba(212,175,55,0.18) 35%, rgba(212,175,55,0.35)); box-shadow: 0 24px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.12); }
+        .alert-mihrab-arch::before { content: ''; position: absolute; inset: 7px; border: 1px solid rgba(212,175,55,0.45); border-bottom: none; border-radius: 252px 252px 16px 16px; pointer-events: none; }
+        .alert-mihrab-inner { position: relative; text-align: center; border-radius: 248px 248px 14px 14px; padding: 34px 26px 26px; background:
+            radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.16), transparent 55%),
+            radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.04), transparent 40%),
+            radial-gradient(ellipse at 80% 30%, rgba(255,255,255,0.03), transparent 35%),
+            linear-gradient(180deg, #123d2e 0%, #0b2a20 38%, #061a13 100%);
+            border: 1px solid rgba(212,175,55,0.22); box-shadow: inset 0 0 60px rgba(212,175,55,0.06), inset 0 -30px 60px rgba(0,0,0,0.25); overflow: hidden; }
+        .alert-mihrab-inner::after { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(from 0deg at 50% -10%, rgba(212,175,55,0.018) 0deg 10deg, transparent 10deg 20deg); opacity: .9; pointer-events: none; }
+        .alert-mihrab-inner > * { position: relative; z-index: 1; }
+        .alert-box .alert-icon { font-size: 2.6rem; margin-bottom: 6px; color: var(--gold); filter: drop-shadow(0 4px 14px rgba(212,175,55,0.25)); }
+        .alert-badge { display: inline-block; padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(212,175,55,0.45); background: rgba(212,175,55,0.1); color: var(--gold); font-size: .95rem; font-weight: 700; margin-bottom: 10px; letter-spacing: .2px; }
+        .alert-box .alert-title { font-family: var(--font-quran); font-size: clamp(1.35rem, 4.5vw, 2rem); color: #b8f0d2; margin-bottom: 8px; line-height: 1.35; text-shadow: 0 2px 18px rgba(0,0,0,0.35); }
+        .alert-box .alert-desc { font-size: clamp(1rem, 3.2vw, 1.18rem); color: var(--cream); margin-bottom: 16px; line-height: 1.7; font-weight: 600; }
+        .alert-meta { margin: 0 auto 18px; display: inline-flex; flex-direction: column; gap: 6px; align-items: flex-start; text-align: right; background: rgba(0,0,0,0.18); border: 1px solid rgba(212,175,55,0.18); border-radius: 14px; padding: 10px 14px; }
+        .alert-meta-row { display: flex; align-items: center; gap: 8px; color: var(--text-dim); font-size: .98rem; }
+        .alert-meta-ico { font-size: 1rem; }
+        .alert-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .alert-close-btn { background: var(--gold); color: #0b132b; border: none; padding: 10px 26px; border-radius: 999px; font-size: 1.05rem; font-family: var(--font); font-weight: bold; cursor: pointer; box-shadow: 0 6px 18px rgba(212,175,55,0.25); }
+        .alert-hear-btn { background: rgba(212,175,55,0.12); color: var(--gold); border: 1px solid rgba(212,175,55,0.55); box-shadow: none; }
+        @media (max-width: 480px) { .alert-mihrab-arch { border-radius: 180px 180px 18px 18px; padding: 10px; } .alert-mihrab-arch::before { border-radius: 172px 172px 13px 13px; } .alert-mihrab-inner { border-radius: 168px 168px 10px 10px; padding: 26px 16px 18px; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         .radio-card { position:absolute;bottom:80px;left:40px;width:320px; background: rgba(12, 46, 34, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border:1px solid var(--gold);border-radius:16px;padding:20px;display:none;z-index:50;box-shadow:0 10px 30px rgba(0,0,0,0.8); }
         .radio-card.active{display:block;}
@@ -1336,9 +1355,25 @@
 
             <!-- OVERLAYS -->
             <div class="prayer-overlay" id="alert-overlay">
-                <div class="alert-box"><div class="alert-icon">🔔</div><div class="alert-title" id="alert-prayer-name">صلاة الفجر</div><div class="alert-desc" id="alert-text">اقترب موعد الصلاة، تبقى 10 دقائق.</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="alert-close-btn" id="btn-hear-alert" style="background:rgba(212,175,55,0.15);color:var(--gold);border:1px solid var(--gold);">🔊 استمع</button><button class="alert-close-btn" id="btn-close-alert">حسناً</button></div></div>
+                <div class="alert-box alert-mihrab" role="dialog" aria-labelledby="alert-prayer-name">
+                    <div class="alert-mihrab-arch">
+                        <div class="alert-mihrab-inner">
+                            <div class="alert-icon">🕌</div>
+                            <div class="alert-badge">تنبيه الأذان</div>
+                            <div class="alert-title" id="alert-prayer-name">حان الآن موعد الصلاة</div>
+                            <div class="alert-desc" id="alert-text"></div>
+                            <div class="alert-meta">
+                                <div class="alert-meta-row" id="alert-loc-row"><span class="alert-meta-ico">📍</span><span id="alert-loc"></span></div>
+                                <div class="alert-meta-row" id="alert-date-row"><span class="alert-meta-ico">🗓</span><span id="alert-date"></span></div>
+                            </div>
+                            <div class="alert-actions">
+                                <button class="alert-close-btn alert-hear-btn" id="btn-hear-alert">🔊 استمع</button>
+                                <button class="alert-close-btn" id="btn-close-alert">إغلاق</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
             <div class="prayer-overlay" id="adhan-overlay">
                 <div class="adhan-box">
                     <div class="adhan-icon">🕌</div>
@@ -3203,8 +3238,43 @@ var gender = 'male';
         const ADHAN_FILES = { azan1:'https://www.islamcan.com/audio/adhan/azan1.mp3', azan2:'https://www.islamcan.com/audio/adhan/azan2.mp3', azan3:'https://www.islamcan.com/audio/adhan/azan3.mp3', azan4:'https://www.islamcan.com/audio/adhan/azan4.mp3', azan5:'https://www.islamcan.com/audio/adhan/azan5.mp3', azan6:'https://www.islamcan.com/audio/adhan/azan6.mp3', azan7:'https://www.islamcan.com/audio/adhan/azan7.mp3', azan8:'https://www.islamcan.com/audio/adhan/azan8.mp3', azan9:'https://www.islamcan.com/audio/adhan/azan9.mp3', azan10:'https://www.islamcan.com/audio/adhan/azan10.mp3' };
         let adhanUnlocked = false;
 
-        function showAlertOverlay(prayerKey) { window._lastAlertPrayerKey = prayerKey; const overlay = document.getElementById('alert-overlay'); document.getElementById('alert-prayer-name').textContent = `اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`; document.getElementById('alert-text').textContent = `تبقى ${settings.reminderMinutes} دقائق لرفع أذان ${PRAYER_NAMES[prayerKey]}.`; overlay.classList.add('active'); }
-        function notifyPrayer(prayerKey, isTest) {
+                function showAlertOverlay(prayerKey, mode) {
+            window._lastAlertPrayerKey = prayerKey;
+            var overlay = document.getElementById('alert-overlay');
+            var nameEl = document.getElementById('alert-prayer-name');
+            var textEl = document.getElementById('alert-text');
+            var locEl = document.getElementById('alert-loc');
+            var dateEl = document.getElementById('alert-date');
+            var locRow = document.getElementById('alert-loc-row');
+            var dateRow = document.getElementById('alert-date-row');
+            var pname = (typeof PRAYER_NAMES !== 'undefined' && PRAYER_NAMES[prayerKey]) ? PRAYER_NAMES[prayerKey] : (prayerKey || '');
+            var isNow = (mode === 'now' || mode === 'adhan' || mode === 'test');
+            if (nameEl) nameEl.textContent = isNow ? ('حان الآن موعد صلاة ' + pname) : ('تذكير قبل صلاة ' + pname);
+            if (textEl) textEl.textContent = isNow ? ('حان وقت صلاة ' + pname + '، حيّ على الصلاة حيّ على الفلاح.') : ('باقي ' + (typeof settings !== 'undefined' ? settings.reminderMinutes : 10) + ' دقائق قبل صلاة ' + pname + '.');
+            var locTxt = '';
+            try {
+                var cdb = (typeof CITIES_DB !== 'undefined') ? CITIES_DB : null;
+                var ctry = (typeof COUNTRIES_DB !== 'undefined') ? COUNTRIES_DB : null;
+                var sid = (typeof settings !== 'undefined') ? (settings.cityId || settings.city) : null;
+                var city = cdb && sid && cdb[sid] ? cdb[sid] : null;
+                if (!city && cdb && sid) { var ks = Object.keys(cdb); for (var i=0;i<ks.length;i++){ if(ks[i]===sid||cdb[ks[i]].id===sid){city=cdb[ks[i]];break;} } }
+                if (city) { locTxt = (city.nameAr || city.name || ''); var cinfo = ctry && city.countryId && ctry[city.countryId] ? ctry[city.countryId] : null; if (cinfo && (cinfo.nameAr||cinfo.name)) locTxt += (locTxt ? '، ' : '') + (cinfo.nameAr||cinfo.name); }
+            } catch(e){}
+            if (locEl) locEl.textContent = locTxt || 'موقعك الحالي';
+            if (locRow) locRow.style.display = '';
+            var dateTxt = '';
+            try {
+                var tz = (typeof locationTimeZone === 'function') ? locationTimeZone((typeof settings!=='undefined'?settings.cityId:null)) : undefined;
+                var now = new Date();
+                var hijri = now.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
+                var greg = now.toLocaleDateString('ar', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
+                dateTxt = hijri + ' هـ • ' + greg;
+            } catch(e){ try { dateTxt = new Date().toLocaleDateString('ar'); } catch(e2){} }
+            if (dateEl) dateEl.textContent = dateTxt;
+            if (dateRow) dateRow.style.display = dateTxt ? '' : 'none';
+            if (overlay) overlay.classList.add('active');
+        }
+function notifyPrayer(prayerKey, isTest) {
             try {
                 if (!('Notification' in window)) return;
                 if (Notification.permission === 'default' && settings.reminderEnabled) { Notification.requestPermission().then(() => {}).catch(() => {}); }
@@ -3233,7 +3303,9 @@ var gender = 'male';
             if (!adhanAudio.paused && !adhanAudio.ended) { adhanAudio.pause(); adhanAudio.currentTime = 0; document.getElementById('adhan-status').textContent = 'تم إيقاف الأذان التجريبي.'; document.getElementById('btn-test-adhan').textContent = '▶ اختبار صوت الأذان'; return; }
             playAdhan(null, true);
         });
-        document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('fajr'); notifyPrayer('fajr', true); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES['fajr']); else speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES['fajr']); } });
+        document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('isha', 'now'); notifyPrayer('isha', true); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES.isha); else if (typeof speakArabic === 'function') speakArabic('حان الآن موعد صلاة ' + PRAYER_NAMES.isha); } });
+        // Test après déploiement: ?testAlert=1
+        try{var _ta=new URLSearchParams(location.search); if(_ta.get('testAlert')==='1'||_ta.get('testalert')==='1'||_ta.get('test')==='alert'){setTimeout(function(){if(typeof showAlertOverlay==='function') showAlertOverlay('isha','now');},900);}}catch(e){}
 
         function speakArabic(message) {
             if (!('speechSynthesis' in window)) return false;
