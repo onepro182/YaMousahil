@@ -558,6 +558,14 @@
             border: 1px solid var(--gold) !important;
         }
         #quran-player-modal.modal-overlay { background: rgba(3,20,12,0.82); }
+        /* Grille des récitateurs avec photos (source: surahquran.com) */
+        .qp-reciters{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;max-height:240px;overflow-y:auto;padding:8px;border:1px solid rgba(212,175,55,0.2);border-radius:12px;background:rgba(255,255,255,0.02);}
+        .qp-rc{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:8px 4px;border-radius:12px;border:1.5px solid rgba(212,175,55,0.25);background:rgba(255,255,255,0.03);transition:all .15s;}
+        .qp-rc:hover{border-color:var(--gold);transform:translateY(-2px);}
+        .qp-rc.active{border-color:var(--gold);background:rgba(212,175,55,0.18);}
+        .qp-rc img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid rgba(212,175,55,0.4);}
+        .qp-rc .fallback{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:rgba(212,175,55,0.15);color:var(--gold);font-weight:700;font-size:1.3rem;}
+        .qp-rc span{font-size:.72rem;text-align:center;color:#fff;line-height:1.3;}
         .asma-playing{background:rgba(212,175,55,0.25) !important; border:2px solid var(--gold) !important; box-shadow:0 0 14px rgba(212,175,55,0.45);}
         .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
     </style>
@@ -1102,7 +1110,16 @@
                 <div class="settings-container" style="max-width: 600px; height: auto; padding: 30px;">
                     <div class="settings-header" style="margin-bottom: 20px;"><h2 style="margin:0;">استماع إلى القرآن الكريم</h2></div>
                     <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <div class="setting-row"><div class="setting-title">القارئ</div><select id="qp-reciter" class="setting-select" style="min-width: 200px;"><option value="">-- اختر القارئ --</option></select></div>
+                        <div class="setting-row"><div class="setting-title">القارئ</div>
+                            <div style="width:100%;">
+                                <div style="text-align:center;margin-bottom:8px;">
+                                    <h3 style="margin:0;color:var(--gold);font-size:1.1rem;">استماع القرآن بصوت أشهر القراء</h3>
+                                    <p style="margin:4px 0 0;color:var(--text-dim);font-size:.8rem;">اختر القارئ للاستماع القرآن الكريم بجودة عالية.</p>
+                                </div>
+                                <div class="qp-reciters" id="qp-reciters-grid"></div>
+                                <select id="qp-reciter" class="setting-select" style="display:none;"><option value="">-- اختر القارئ --</option></select>
+                            </div>
+                        </div>
                         <div class="setting-row"><div class="setting-title">السورة</div><select id="qp-surah" class="setting-select" style="min-width: 200px;"><option value="">-- اختر السورة --</option></select></div>
                         <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;"><button type="button" class="btn-save" id="qp-play-btn" style="padding: 10px 30px;">▶ تشغيل</button><button type="button" class="btn-cancel" id="qp-stop-btn" style="padding: 10px 30px;">⏹ إيقاف</button></div>
                         <audio id="qp-audio" controls style="width: 100%; margin-top: 15px; border-radius: 8px; display: none;"></audio>
@@ -1586,12 +1603,43 @@
         let qpReciters = []; let qpSurahs = [];
         // Reciteurs dont l'audio est réellement disponible (cdn.islamic.network)
         const VALID_AUDIO_EDITIONS = ['ar.abdulbasitmurattal','ar.abdullahbasfar','ar.abdurrahmaansudais','ar.ahmedajamy','ar.alafasy','ar.aymanswoaid','ar.hanirifai','ar.hudhaify','ar.husary','ar.husarymujawwad','ar.ibrahimakhbar','ar.mahermuaiqly','ar.minshawi','ar.minshawimujawwad','ar.muhammadayyoub','ar.muhammadjibreel','ar.saoodshuraym','ar.shaatree'];
+        // Photos des récitateurs — source: surahquran.com (استماع وتحميل القرآن بصوت أشهر القراء)
+        const QP_RECITER_PHOTOS = {
+            'ar.ahmedajamy': 'https://i.pinimg.com/564x/b1/9f/03/b19f03a9f2f09c46afbfd4f03727aee7.jpg',
+            'ar.ibrahimakhbar': 'https://i.pinimg.com/564x/95/e4/90/95e490b6c075566f62197da844dae903.jpg',
+            'ar.saoodshuraym': 'https://i.pinimg.com/564x/ad/79/67/ad79679d76062df7166c6e2f52d397d6.jpg',
+            'ar.shaatree': 'https://i.pinimg.com/564x/d6/c6/33/d6c633aadb82ce2d974d1147ed071090.jpg',
+            'ar.abdulbasitmurattal': 'https://i.pinimg.com/564x/52/95/ae/5295ae7c08e4ebdc7eda3ddb5c6c0a19.jpg',
+            'ar.abdullahbasfar': 'https://i.pinimg.com/236x/f5/7b/a1/f57ba14ba4844cee88cdf7cfb2b06510.jpg',
+            'ar.hudhaify': 'https://s-media-cache-ak0.pinimg.com/564x/96/3d/1e/963d1e668b2d18aeb0e46ae657b5affa.jpg',
+            'ar.mahermuaiqly': 'https://s-media-cache-ak0.pinimg.com/564x/ab/cc/99/abcc9949d0419ef1f0963a54aef06397.jpg',
+            'ar.muhammadayyoub': 'https://i.pinimg.com/564x/ec/f7/aa/ecf7aa757a458dd7762e6d8c94d5c6e3.jpg',
+            'ar.muhammadjibreel': 'https://i.pinimg.com/564x/fe/69/9e/fe699e3970550240fb078ee720773db4.jpg',
+            'ar.minshawi': 'https://i.pinimg.com/564x/21/76/8d/21768d297bd3460f7339b7b755f53d03.jpg',
+            'ar.minshawimujawwad': 'https://i.pinimg.com/564x/21/76/8d/21768d297bd3460f7339b7b755f53d03.jpg',
+            'ar.husary': 'https://i.pinimg.com/564x/3f/da/7e/3fda7ed5056347e700cac64d07e164c3.jpg',
+            'ar.husarymujawwad': 'https://i.pinimg.com/564x/3f/da/7e/3fda7ed5056347e700cac64d07e164c3.jpg',
+            'ar.alafasy': 'https://i.pinimg.com/564x/0a/40/9e/0a409ef09a55700877c20d7195fe9126.jpg',
+            'ar.abdurrahmaansudais': 'https://i.pinimg.com/736x/b6/bf/ad/b6bfad7d165c4202404ab150e3a627dc.jpg'
+        };
+        function buildQpReciterGrid() {
+            const g = document.getElementById('qp-reciters-grid'); if (!g) return;
+            const sel = document.getElementById('qp-reciter'); g.innerHTML = '';
+            qpReciters.forEach(r => {
+                const photo = QP_RECITER_PHOTOS[r.identifier];
+                const card = document.createElement('div'); card.className = 'qp-rc' + (sel.value === r.identifier ? ' active' : ''); card.tabIndex = 0;
+                card.innerHTML = (photo ? `<img src="${imgProxy(photo)}" alt="${r.name}" loading="lazy">` : `<div class="fallback">${(r.name || '?').replace(/^(القرآن الكريم بصوت |الشيخ )/,'').charAt(0)}</div>`) + `<span>${r.name}</span>`;
+                card.onclick = () => { sel.value = r.identifier; g.querySelectorAll('.qp-rc').forEach(c => c.classList.remove('active')); card.classList.add('active'); };
+                g.appendChild(card);
+            });
+        }
 
         async function fetchQuranPlayerData() {
             try {
                 const recRes = await fetch('https://api.alquran.cloud/v1/edition?format=audio&language=ar'); const recData = await recRes.json(); qpReciters = recData.data.filter(r => VALID_AUDIO_EDITIONS.includes(r.identifier));
                 const recSelect = document.getElementById('qp-reciter'); recSelect.innerHTML = '<option value="">-- اختر القارئ --</option>';
                 qpReciters.forEach(r => { const o = document.createElement('option'); o.value = r.identifier; o.textContent = r.name; recSelect.appendChild(o); });
+                buildQpReciterGrid();
                 const surRes = await fetch('https://api.alquran.cloud/v1/surah'); const surData = await surRes.json(); qpSurahs = surData.data;
                 const surSelect = document.getElementById('qp-surah'); surSelect.innerHTML = '<option value="">-- اختر السورة --</option>';
                 qpSurahs.forEach(s => { const o = document.createElement('option'); o.value = s.number; o.textContent = `${s.number}. ${s.name}`; surSelect.appendChild(o); });
@@ -2146,7 +2194,6 @@ var gender = 'male';
             { name: 'إذاعة محمد السادس للقرآن الكريم', initial: '🇲🇦', logo: imgProxy('https://cdn.radoxo.com/images/morocco/idaa-mohammed-assadiss.webp?v=1792966689'), urls: ['https://radoxo.com/stream/eb/radio_med_VI.m3u8','http://cdn-hls.globecast.tv/live/ramdisk/assadissa/hls_snrt/index.m3u8'] },
             { name: 'إذاعة القاهرة — مصر', initial: '🇪🇬', logo: imgProxy('https://i.pinimg.com/564x/5e/92/4d/5e924dbe9f53f8611cb9d15828205ff9.jpg'), urls: ['https://stream.radiojar.com/8s5u5tpdtwzuv'] },
             { name: 'السعودية — مكة المكرمة', initial: '🇸🇦', logo: imgProxy('https://i.pinimg.com/564x/3a/a1/a1/3aa1a107c9434ca52b42b2dd0ffc896f.jpg'), urls: ['https://stream.radiojar.com/4wqre23fytzuv'] },
-            { name: 'الجزائر', initial: '🇩🇿', logo: imgProxy('https://i.pinimg.com/564x/20/0f/57/200f57f922167f83c7bd7d59e0575216.jpg'), urls: ['https://radiocoran.ice.infomaniak.ch/coran.mp3'] },
             { name: 'الرقية الشرعية', initial: '🤲', logo: imgProxy('https://i.pinimg.com/564x/31/39/1d/31391d84908e4c14cafee9b5344e6584.jpg'), urls: ['https://qurango.net/radio/roqiah'] },
             { name: 'Quran Radio — English', initial: '🌐', logo: imgProxy('https://i.pinimg.com/564x/0b/18/82/0b188201053638cf627df357dc503b4a.jpg'), urls: ['https://qurango.net/radio/tarateel'] },
             { name: 'السنة النبوية — المدينة', initial: '☀️', logo: imgProxy('https://i.pinimg.com/564x/55/16/ab/5516abd3744c3d0b0a7b28bedd5474c0.jpg'), urls: ['https://n0e.radiojar.com/x0vs2vzy6k0uv'] },
