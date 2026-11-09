@@ -1210,35 +1210,20 @@
             </div>
 
             <!-- MUSHAF SCREEN -->
-            <div id="mushaf-screen">
+                        <!-- MUSHAF SCREEN (QuranFlash Warsh1) -->
+<div id="mushaf-screen">
                 <header class="header-prayers">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-mushaf">‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">تصفح القرآن</h1>
-                        <p>المصحف (mp3quran.net)</p>
+                        <p>ياسين الجزائري - رواية ورش</p>
                     </div>
-                    <a class="back-btn glass-btn" href="https://www.mp3quran.net/ar/mushaf" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">فتح خارجي ↗</a>
+                    <a class="back-btn glass-btn" href="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;">فتح خارجي ↗</a>
                 </header>
-                <div class="mushaf-viewer" id="mushaf-viewer">
-                    <div class="fb-controle mushaf-ctrl">
-                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-prev" aria-label="الصفحة السابقة">‹ السابق</button>
-                        <span class="mushaf-page-info"><span id="mushaf-page-num">١</span> / <span id="mushaf-page-total">٦٠٤</span></span>
-                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-next" aria-label="الصفحة التالية">التالي ›</button>
-                    </div>
-                    <div class="mushaf-book-wrap">
-                        <div class="book mushaf-book" id="mushaf-book">
-                            <div id="pages" class="pages mushaf-pages">
-                                <div class="page fipable mushaf-page" id="mushaf-page-slot"><img id="mushaf-img" src="https://www.mp3quran.net/mushaf2/1.jpg" alt="صفحة المصحف 1" loading="eager" referrerpolicy="no-referrer" style="display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fb-controle mushaf-ctrl">
-                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-prev2" aria-label="الصفحة السابقة">‹ السابق</button>
-                        <label class="mushaf-jump" style="display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:.85rem;">صفحة <input type="number" id="mushaf-jump" min="1" max="604" value="1" inputmode="numeric" style="width:74px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--cream);border-radius:8px;padding:6px 8px;font-family:var(--font);text-align:center;"></label>
-                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-next2" aria-label="الصفحة التالية">التالي ›</button>
-                    </div>
+                <div style="flex:1;min-height:0;position:relative;border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#0b132b;">
+                    <iframe id="mushaf-qf-frame" src="about:blank" data-src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" title="تصفح القرآن - مصحف ورش (QuranFlash)" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;" loading="lazy" allow="autoplay; fullscreen"></iframe>
                 </div>
-                <div style="flex-shrink:0;font-size:.78rem;color:var(--text-dim);text-align:center;padding:2px 4px;">المصدر: <a href="https://www.mp3quran.net/ar/mushaf" target="_blank" rel="noopener" style="color:var(--gold);">mp3quran.net</a> (صور المصحف /mushaf2)</div>
+                <div style="flex-shrink:0;font-size:.78rem;color:var(--text-dim);text-align:center;padding:2px 4px;">المصدر: <a href="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" target="_blank" rel="noopener" style="color:var(--gold);">QuranFlash - مصحف ورش</a> — إذا لم يظهر داخل التطبيق، استخدم «فتح خارجي».</div>
             </div>
 
             <!-- WIRD SCREEN -->
@@ -3741,7 +3726,7 @@ function notifyPrayer(prayerKey, isTest) {
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
             var cm = document.getElementById('card-mushaf');
-            if (cm) cm.onclick = function(){ if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('mushaf-iframe'); if(fr && fr.dataset && fr.dataset.src && (!fr.src || fr.src==='about:blank' || fr.getAttribute('src')==='about:blank')) fr.src = fr.dataset.src; var ms = (typeof mushafScreen!=='undefined' && mushafScreen) ? mushafScreen : document.getElementById('mushaf-screen'); if(ms && typeof showScreen==='function') showScreen(ms); if(typeof mushafInit==='function') mushafInit(); };
+            if (cm) cm.onclick = function(){ if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('mushaf-qf-frame')||document.getElementById('mushaf-iframe'); if(fr && fr.dataset && fr.dataset.src && (!fr.src || fr.src==='about:blank' || fr.getAttribute('src')==='about:blank')) fr.src = fr.dataset.src; var ms = (typeof mushafScreen!=='undefined' && mushafScreen) ? mushafScreen : document.getElementById('mushaf-screen'); if(ms && typeof showScreen==='function') showScreen(ms); if(typeof mushafInit==='function') mushafInit(); };
             var bm = document.getElementById('btn-back-from-mushaf');
             if (bm) bm.onclick = function(){ var hs = (typeof homeScreen!=='undefined'&&homeScreen)?homeScreen:document.getElementById('home-screen'); if(hs && typeof showScreen==='function') showScreen(hs); var nh = (typeof navHome!=='undefined'&&navHome)?navHome:document.getElementById('nav-btn-home'); if(nh) nh.classList.add('active'); };
         })();
