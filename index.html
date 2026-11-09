@@ -260,6 +260,11 @@
         body.is-mobile .adhkar-split-view.show-text .adhkar-sidebar{display:none;}
         #adhkar-back-to-cats{display:none;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
         body.is-mobile .adhkar-split-view.show-text #adhkar-back-to-cats{display:inline-block;margin:6px auto 0;}
+        #wird-back-to-list{display:none;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
+        body.is-mobile .wird-split-view:not(.show-text) .adhkar-text-area{display:none;}
+        body.is-mobile .wird-split-view.show-text .adhkar-sidebar{display:none;}
+        body.is-mobile .wird-split-view.show-text #wird-back-to-list{display:inline-block;margin:6px auto 0;}
+        body.is-mobile #wird-show-info{display:inline-block !important;}
         /* Mobile: lisibilité du contenu des adhkar */
         body.is-mobile .adhkar-text-header{padding:8px 10px;}
         body.is-mobile .adhkar-text-header h1{font-size:1.6rem;}
@@ -1082,18 +1087,30 @@
             <!-- WIRD SCREEN -->
             <div id="wird-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:15px;">
                 <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);gap:8px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);gap:8px;flex-wrap:wrap;">
                         <button type="button" class="back-btn glass-btn" id="btn-back-from-wird">‹ الرئيسية</button>
-                        <div style="text-align:center;flex:1;">
+                        <div style="text-align:center;flex:1;min-width:180px;">
                             <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">ورد القرآن اليومي</h1>
                         </div>
-                        <div style="width:80px;"></div>
+                        <button type="button" id="wird-show-info" class="back-btn glass-btn" style="display:none;font-size:.85rem;padding:6px 10px;">📖 عن الورد</button>
                     </div>
-                    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;">
-                        <div class="glass-btn" style="max-width:700px;width:100%;padding:28px 22px;border-radius:18px;text-align:center;border:1px solid rgba(212,175,55,0.35);background:rgba(12,46,34,0.55);">
-                            <div style="font-size:2.2rem;margin-bottom:12px;">📖</div>
-                            <h2 style="font-family:var(--font-quran);color:var(--gold);font-size:1.9rem;margin:0 0 14px;">ورد القرآن اليومي</h2>
-                            <p style="font-family:var(--font-quran);color:var(--cream);font-size:1.35rem;line-height:2.2;margin:0;">الورد القرآني يلملم شتات الروح ويمسح على القلب ليعيش بسلام ورضا واطمئنان،</p>
+                    <div class="adhkar-split-view wird-split-view" id="wird-split" style="flex:1;min-height:0;">
+                        <div class="adhkar-sidebar">
+                            <div class="adhkar-cat-list" id="wird-cat-list"></div>
+                        </div>
+                        <div class="adhkar-text-area glass-btn">
+                            <div class="adhkar-text-header">
+                                <button type="button" id="wird-back-to-list">☰ القائمة</button>
+                                <h1 id="wird-text-title">ورد القرآن اليومي</h1>
+                                <div class="meta" id="wird-text-meta">اختر سورة من القائمة للقراءة</div>
+                            </div>
+                            <div class="adhkar-text-body" id="wird-text-body" style="font-family:var(--font-quran);">
+                                <div class="glass-btn" style="max-width:700px;width:100%;margin:10px auto;padding:28px 22px;border-radius:18px;text-align:center;border:1px solid rgba(212,175,55,0.35);background:rgba(12,46,34,0.55);">
+                                    <div style="font-size:2.2rem;margin-bottom:12px;">📖</div>
+                                    <h2 style="font-family:var(--font-quran);color:var(--gold);font-size:1.9rem;margin:0 0 14px;">ورد القرآن اليومي</h2>
+                                    <p style="font-family:var(--font-quran);color:var(--cream);font-size:1.35rem;line-height:2.2;margin:0;">الورد القرآني يلملم شتات الروح ويمسح على القلب ليعيش بسلام ورضا واطمئنان،</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2015,8 +2032,39 @@ var gender = 'male';
                 </div>`).join('');
         }
 
-        document.getElementById('card-wird').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(wirdScreen); window.scrollTo(0,0); };
+        function openSurahInQuran(n) {
+            if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
+            if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
+            showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran');
+            document.getElementById('tab-surah').click();
+            document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
+            var surahItem = document.getElementById('surah-item-' + n);
+            if (surahItem) { surahItem.classList.add('active'); surahItem.click(); if (surahItem.scrollIntoView) surahItem.scrollIntoView({ block: 'center' }); }
+        }
+        function renderWirdMenu() {
+            var list = document.getElementById('wird-cat-list'); if (!list) return;
+            var items = [
+                { n: 18, icon: '📖', label: 'قراءة سورة الكهف', sub: 'سورة الكهف' },
+                { n: 67, icon: '👑', label: 'قراءة سورة الملك', sub: 'سورة الملك' },
+                { n: 36, icon: '💛', label: 'قراءة سورة يس', sub: 'سورة يس' },
+                { n: 55, icon: '🌸', label: 'قراءة سورة الرحمن', sub: 'سورة الرحمن' },
+                { n: 56, icon: '🌿', label: 'قراءة سورة الواقعة', sub: 'سورة الواقعة' }
+            ];
+            list.innerHTML = items.map(function(it){
+                return '<div class="adhkar-cat-item wird-cat-item" data-surah="' + it.n + '" tabindex="0"><span class="cat-icon">' + it.icon + '</span><span style="flex:1;text-align:right;">' + it.label + '</span></div>';
+            }).join('');
+            list.querySelectorAll('.wird-cat-item').forEach(function(el){
+                el.onclick = function(){
+                    list.querySelectorAll('.wird-cat-item').forEach(function(x){ x.classList.remove('active'); });
+                    el.classList.add('active');
+                    openSurahInQuran(parseInt(el.getAttribute('data-surah'), 10));
+                };
+            });
+        }
+        document.getElementById('card-wird').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderWirdMenu(); showScreen(wirdScreen); var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); window.scrollTo(0,0); };
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
+        var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
+        var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
         document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); window.__toggleAsmaAuto(); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
