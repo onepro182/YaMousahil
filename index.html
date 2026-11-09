@@ -744,7 +744,7 @@
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
                                     <span class="app-name">📻 إذاعات القرآن</span>
                                 </div>
-                                <div class="app-card glass-btn" tabindex="0" data-url="https://www.youtube.com"><img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/a/af/Youtube.png" alt="YouTube"><span class="app-name">يوتيوب</span></div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-wird"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3163/3163508.png" alt="ورد القرآن اليومي"><span class="app-name">ورد القرآن اليومي</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-pharmacy">
                                     <img class="app-icon" src="assets/img/pha.png" alt="Pharmacie" style="max-height:48px; object-fit:contain;" onerror="this.src='assets/img/Logo.png'">
                                     <span class="app-name">🏥 صيدلية الحراسة</span>
@@ -1076,6 +1076,26 @@
                 <div class="weather-hourly" id="weather-hourly"></div>
                 <h3 class="weather-h">📅 الأيام القادمة</h3>
                 <div class="weather-daily" id="weather-daily"></div>
+            </div>
+
+            <!-- WIRD SCREEN -->
+            <div id="wird-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:15px;">
+                <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);gap:8px;">
+                        <button type="button" class="back-btn glass-btn" id="btn-back-from-wird">‹ الرئيسية</button>
+                        <div style="text-align:center;flex:1;">
+                            <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">ورد القرآن اليومي</h1>
+                        </div>
+                        <div style="width:80px;"></div>
+                    </div>
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;">
+                        <div class="glass-btn" style="max-width:700px;width:100%;padding:28px 22px;border-radius:18px;text-align:center;border:1px solid rgba(212,175,55,0.35);background:rgba(12,46,34,0.55);">
+                            <div style="font-size:2.2rem;margin-bottom:12px;">📖</div>
+                            <h2 style="font-family:var(--font-quran);color:var(--gold);font-size:1.9rem;margin:0 0 14px;">ورد القرآن اليومي</h2>
+                            <p style="font-family:var(--font-quran);color:var(--cream);font-size:1.35rem;line-height:2.2;margin:0;">الورد القرآني يلملم شتات الروح ويمسح على القلب ليعيش بسلام ورضا واطمئنان،</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- ASMA ALLAH SCREEN -->
@@ -1994,6 +2014,8 @@ var gender = 'male';
                 </div>`).join('');
         }
 
+        document.getElementById('card-wird').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(wirdScreen); window.scrollTo(0,0); };
+        document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); window.__toggleAsmaAuto(); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
@@ -2509,8 +2531,8 @@ var gender = 'male';
             document.getElementById('adhkar-back-to-cats').onclick = () => { const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.remove('show-text'); window.scrollTo(0, 0); };
         }
 
-        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
         // SETTINGS HANDLERS
         populateCountrySelect();
