@@ -221,6 +221,9 @@
         body.is-mobile .quran-text-header{position:relative;}
         #isl-back-to-surahs{display:none;position:absolute;top:10px;inset-inline-start:10px;z-index:2;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
         body.is-mobile .quran-split-view.show-text #isl-back-to-surahs{display:inline-block;}
+        /* Bouton الرئيسية toujours visible sur mobile dans إسلاميات */
+        body.is-mobile #btn-back-from-islamiyat{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
+        body.is-mobile .isl-header-spacer{width:0;}
         body.is-mobile .tasbih-embedded .layout{grid-template-columns:1fr;}
         body.is-mobile .tasbih-embedded .left-col,body.is-mobile .tasbih-embedded .counter-area,body.is-mobile .tasbih-embedded .side-panel{grid-column:auto;grid-row:auto;width:100%;}
         body.is-mobile .settings-container{width:96%;max-height:92dvh;max-height:92vh;overflow-y:auto;}
@@ -770,7 +773,7 @@
                         <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
                         <p style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
                     </div>
-                    <div style="width:80px;"></div>
+                    <div class="isl-header-spacer" style="width:80px;"></div>
                 </header>
 
                 <!-- liens vers les 3 contenus (masqués) -->
@@ -2513,7 +2516,7 @@ var gender = 'male';
         document.getElementById('nav-btn-reminder').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-reminder-toggle').focus(), 100); };
         document.getElementById('nav-btn-adhan').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-adhan-toggle').focus(), 100); };
 
-        document.getElementById('card-quran').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran'); };
+        document.getElementById('card-quran').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran'); const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); const sl = document.getElementById('isl-surah-list-container'); if (sl) sl.scrollTop = 0; window.scrollTo(0, 0); };
         document.getElementById('card-Adhkar').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('adhkar'); };
         document.getElementById('card-tasbih').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('tasbih'); };
         var LIVE_POSTERS = { haram: 'https://makkahlive.org/posters/makkah.webp', nabawi: 'https://makkahlive.org/posters/madinah.webp', aqsa: 'https://makkahlive.org/posters/aqsa.webp', hajj: 'https://makkahlive.org/logo.webp', assadissa: 'https://www.snrt.ma/sites/default/files/2023-04/assadissa.png' };
