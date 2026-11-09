@@ -399,6 +399,15 @@
         .sidebar-tab:hover{border-color:var(--gold);}
         .sidebar-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,0.15);}
         .surah-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-left:5px;}
+        /* الأجزاء (Juz) - grid style */
+        #isl-juz-list-container.juz-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;padding:6px 2px 10px;overflow-y:auto;align-content:start;}
+        .juz-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 10px;border-radius:14px;border:1px solid var(--glass-border);background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(212,175,55,0.03)),var(--glass-bg);color:var(--text-main);cursor:pointer;text-align:center;transition:all .22s;min-height:108px;}
+        .juz-card:hover{border-color:rgba(212,175,55,0.55);background:linear-gradient(180deg,rgba(212,175,55,0.1),rgba(212,175,55,0.04)),var(--glass-bg);transform:translateY(-1px);}
+        .juz-card.active{border-color:var(--gold);background:linear-gradient(180deg,rgba(212,175,55,0.18),rgba(212,175,55,0.06)),var(--glass-bg);box-shadow:0 0 0 1px rgba(212,175,55,0.12) inset;}
+        .juz-num{font-family:var(--font-quran);font-size:2rem;line-height:1;color:var(--gold);font-weight:700;text-shadow:0 2px 14px rgba(212,175,55,0.18);}
+        .juz-label{font-family:var(--font-quran);font-size:1rem;color:var(--cream);font-weight:700;line-height:1.3;}
+        .juz-start{font-size:.78rem;color:var(--text-dim);line-height:1.35;margin-top:2px;}
+        @media (max-width:560px){ #isl-juz-list-container.juz-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;} .juz-card{min-height:96px;padding:12px 8px;} .juz-num{font-size:1.75rem;} }
         
         .surah-item {border-radius:8px;padding:8px 12px;cursor:pointer;transition:all 0.2s;height:60px;display:flex;align-items:center;}
         .surah-item:hover{border-color:var(--gold);background:rgba(212,175,55,0.15);}
@@ -971,7 +980,7 @@
                                     <div class="sidebar-tab glass-btn" id="tab-juz">الأجزاء</div>
                                 </div>
                                 <div class="surah-list" id="isl-surah-list-container"></div>
-                                <div class="surah-list" id="isl-juz-list-container" style="display:none;"></div>
+                                <div class="surah-list juz-grid" id="isl-juz-list-container" style="display:none;"></div>
                             </div>
                         </div>
                     </div>
@@ -3063,13 +3072,33 @@ var gender = 'male';
             });
             selectSurah(1, SURAH_NAMES[0], SURAH_META[0]); document.getElementById('surah-item-1').classList.add('active');
         }
-        function generateJuzGrid() {
-            const container = document.getElementById('isl-juz-list-container'); if (!container) return; container.innerHTML = '';
+                function generateJuzGrid() {
+            const container = document.getElementById('isl-juz-list-container'); if (!container) return;
+            container.innerHTML = '';
+            container.classList.add('juz-grid');
+            var arNums = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+            function toAr(n){ return String(n).split('').map(function(d){ return arNums[+d]||d; }).join(''); }
+            var juzNames = ['','الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر','الحادي عشر','الثاني عشر','الثالث عشر','الرابع عشر','الخامس عشر','السادس عشر','السابع عشر','الثامن عشر','التاسع عشر','العشرون','الحادي والعشرون','الثاني والعشرون','الثالث والعشرون','الرابع والعشرون','الخامس والعشرون','السادس والعشرون','السابع والعشرون','الثامن والعشرون','التاسع والعشرون','الثلاثون'];
             for (let i = 0; i < 30; i++) {
                 const juzNum = i + 1; const start = JUZ_STARTS[i]; const surahIndex = start[0] - 1; const ayahNum = start[1];
-                const item = document.createElement('div'); item.className = 'surah-item glass-btn';
-                item.innerHTML = `<div class="surah-num-circle">${juzNum}</div><div class="surah-info"><div class="surah-name-ar">الجزء ${juzNum}</div><div class="surah-name-en">يبدأ من سورة ${SURAH_NAMES[surahIndex]}</div></div>`;
-                item.onclick = () => { document.querySelectorAll('#isl-juz-list-container .surah-item').forEach(el => el.classList.remove('active')); item.classList.add('active'); document.getElementById('tab-surah').click(); islTargetAyah = ayahNum; selectSurah(start[0], SURAH_NAMES[surahIndex], SURAH_META[surahIndex]); document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active')); const surahItem = document.getElementById(`surah-item-${start[0]}`); if (surahItem) surahItem.classList.add('active'); showQuranTextOnMobile(); };
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'juz-card glass-btn';
+                var sName = (typeof SURAH_NAMES !== 'undefined' && SURAH_NAMES[surahIndex]) ? SURAH_NAMES[surahIndex] : '';
+                item.innerHTML = '<span class="juz-num">' + toAr(juzNum) + '</span>'
+                    + '<span class="juz-label">الجزء ' + (juzNames[juzNum]||toAr(juzNum)) + '</span>'
+                    + '<span class="juz-start">سورة ' + sName + ' • الآية ' + toAr(ayahNum) + '</span>';
+                item.onclick = () => {
+                    container.querySelectorAll('.juz-card').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    document.getElementById('tab-surah').click();
+                    islTargetAyah = ayahNum;
+                    selectSurah(start[0], SURAH_NAMES[surahIndex], SURAH_META[surahIndex]);
+                    document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
+                    const surahItem = document.getElementById('surah-item-' + start[0]);
+                    if (surahItem) surahItem.classList.add('active');
+                    showQuranTextOnMobile();
+                };
                 container.appendChild(item);
             }
         }
@@ -3186,7 +3215,7 @@ var gender = 'male';
             renderAdhkarCategories();
             renderAdhkarContent();
             document.getElementById('tab-surah').onclick = () => { document.getElementById('tab-surah').classList.add('active'); document.getElementById('tab-juz').classList.remove('active'); document.getElementById('isl-surah-list-container').style.display = 'flex'; document.getElementById('isl-juz-list-container').style.display = 'none'; };
-            document.getElementById('tab-juz').onclick = () => { document.getElementById('tab-juz').classList.add('active'); document.getElementById('tab-surah').classList.remove('active'); document.getElementById('isl-juz-list-container').style.display = 'flex'; document.getElementById('isl-surah-list-container').style.display = 'none'; };
+            document.getElementById('tab-juz').onclick = () => { document.getElementById('tab-juz').classList.add('active'); document.getElementById('tab-surah').classList.remove('active'); document.getElementById('isl-juz-list-container').style.display = 'grid'; document.getElementById('isl-surah-list-container').style.display = 'none'; };
             document.getElementById('isl-back-to-surahs').onclick = () => { const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); };
             document.getElementById('isl-play-btn').onclick = toggleIslamiyatPlay; fetchRecitersIslamiyat();
             document.getElementById('isl-quran-body').addEventListener('click', function (e) { const sp = e.target.closest('.ayah-span'); if (!sp) return; const m = sp.id && sp.id.match(/^isl-ayah-(\d+)$/); if (!m) return; const ayah = parseInt(m[1]); try { localStorage.setItem('islQuranBookmark', JSON.stringify({ s: islSelectedSurah, a: ayah })); } catch (err) {} document.querySelectorAll('#isl-quran-body .ayah-bookmark').forEach(x => x.classList.remove('ayah-bookmark')); sp.classList.add('ayah-bookmark'); islShowToast('📌 تم حفظ موضع القراءة — سورة ' + (SURAH_NAMES[islSelectedSurah - 1] || '') + ' آية ' + ayah); updateIslResumeBar(); });
