@@ -854,7 +854,6 @@
                 </header>
                 <h2 class="world-radio-title">أهم إذاعات القرآن الكريم في العالم</h2>
                 <p class="world-radio-sub">اختر الإذاعة المفضلة لديك واستمع للقرآن الكريم بث مباشر على مدار الساعة.</p>
-                <div class="radio-maroc-grid" id="quran-world-grid"></div>
                 <div class="radio-player-bar glass-btn" id="quran-player-bar" style="display:none;">
                     <div class="info">
                         <div class="name" id="quran-now-playing-name">-</div>
@@ -864,6 +863,7 @@
                         <button type="button" id="quran-play-pause-btn">▶ تشغيل</button>
                     </div>
                 </div>
+                <div class="radio-maroc-grid" id="quran-world-grid"></div>
             </div>
 
             <!-- ISLAMIYAT -->
@@ -1288,12 +1288,6 @@
                     </div>
                     <h2 class="world-radio-title" style="margin:4px 0 0;">استماع القرآن بصوت أشهر القراء</h2>
                     <p class="world-radio-sub" style="margin:0 0 4px;">اختر القارئ للاستماع القرآن الكريم بجودة عالية.</p>
-                    <div class="qp-controls-row">
-                        <label for="qp-surah">السورة</label>
-                        <select id="qp-surah" class="qp-surah-select"><option value="">-- اختر السورة --</option></select>
-                        <select id="qp-reciter" style="display:none;"><option value="">-- اختر القارئ --</option></select>
-                    </div>
-                    <div class="qp-reciters" id="qp-reciters-grid"></div>
                     <div class="qp-player-bar glass-btn">
                         <div style="display:flex;gap:10px;flex-wrap:wrap;">
                             <button type="button" class="qp-pbtn" id="qp-play-btn">▶ تشغيل</button>
@@ -1302,6 +1296,12 @@
                         <span style="color:var(--text-dim);font-size:.85rem;">اختر القارئ ثم السورة للاستماع</span>
                     </div>
                     <audio id="qp-audio" controls></audio>
+                    <div class="qp-controls-row">
+                        <label for="qp-surah">السورة</label>
+                        <select id="qp-surah" class="qp-surah-select"><option value="">-- اختر السورة --</option></select>
+                        <select id="qp-reciter" style="display:none;"><option value="">-- اختر القارئ --</option></select>
+                    </div>
+                    <div class="qp-reciters" id="qp-reciters-grid"></div>
                 </div>
             </div>
 
