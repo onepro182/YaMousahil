@@ -1893,7 +1893,7 @@
             } catch (e) { console.error('Error fetching Quran player data', e); }
         }
 
-        document.getElementById('card-quran-player').onclick = () => { fetchQuranPlayerData(); document.getElementById('quran-player-modal').classList.add('active'); };
+        document.getElementById('card-quran-player').onclick = () => { qpSelected = null; var _qprs = document.getElementById('qp-reciter'); if (_qprs) _qprs.value = ''; fetchQuranPlayerData(); document.getElementById('quran-player-modal').classList.add('active'); };
         document.getElementById('btn-close-qp').onclick = () => { qpAudio.pause(); document.getElementById('quran-player-modal').classList.remove('active'); };
 
         // ASMA ALLAH AL-HUSNA (99 noms)
