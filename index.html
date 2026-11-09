@@ -807,7 +807,7 @@
             <!-- ISLAMIYAT -->
             <div id="islamiyat-screen">
                 <header class="header-prayers" style="padding-bottom:10px;margin-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);">
-                    <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat">‹ الرئيسية</button>
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat">‹ العودة</button>
                     <div style="text-align:center;flex:1;">
                         <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
                         <p style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
@@ -2850,7 +2850,23 @@ var gender = 'male';
             const el=document.getElementById('isl-pane-'+name);
             if(el) el.classList.add('active');
         }
-        document.getElementById('btn-back-from-islamiyat').onclick = () => { stopIslamiyatAudio(); showScreen(homeScreen); navHome.classList.add('active'); };
+        document.getElementById('btn-back-from-islamiyat').onclick = () => {
+            const qPane = document.getElementById('isl-pane-quran');
+            const sv = document.querySelector('.quran-split-view');
+            if (qPane && qPane.classList.contains('active') && sv && sv.classList.contains('show-text')) {
+                sv.classList.remove('show-text');
+                const sl = document.getElementById('isl-surah-list-container');
+                if (sl) sl.scrollTop = 0;
+                window.scrollTo(0, 0);
+                return;
+            }
+            if (qPane && qPane.classList.contains('active')) {
+                const sl = document.getElementById('isl-surah-list-container');
+                if (sl) sl.scrollTop = 0;
+                sv && sv.classList.remove('show-text');
+            }
+            stopIslamiyatAudio(); showScreen(homeScreen); navHome.classList.add('active');
+        };
 
         document.querySelectorAll('.app-card').forEach(card => {
             if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather') return;
