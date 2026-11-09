@@ -2599,7 +2599,7 @@ var gender = 'male';
         }
 
         document.getElementById('btn-test-adhan').addEventListener('click', () => playAdhan(null, true));
-        document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('fajr'); notifyPrayer('fajr', true); if (settings.reminderVoice) speakArabic('اقترب موعد صلاة الفجر'); });
+        document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('fajr'); notifyPrayer('fajr', true); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES['fajr']); else speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES['fajr']); } });
 
         function speakArabic(message) {
             if (!('speechSynthesis' in window)) return false;
@@ -2649,6 +2649,12 @@ var gender = 'male';
             if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
             return ok;
         };
+        window.announcePrayerApproaching = function(name) {
+            var msg = 'اقترب موعد صلاة ' + String(name || '').trim();
+            var ok = (typeof window.speakArabic === 'function') ? window.speakArabic(msg) : false;
+            if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
+            return ok;
+        };
         function prayerAlertKey(date, prayerKey, type) { return `YaMousahil_${type}_${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}_${prayerKey}`; }
         function alertAlreadySent(key) { try { return localStorage.getItem(key) === '1'; } catch(e) { return false; } }
         function markAlertSent(key) { try { localStorage.setItem(key, '1'); } catch(e) {} }
@@ -2660,7 +2666,7 @@ var gender = 'male';
                 if (settings.reminderEnabled) {
                     const reminderAt = target.getTime() - (Number(settings.reminderMinutes) || 10) * 60000;
                     const reminderKey = prayerAlertKey(target, key, 'reminder');
-                    if (now.getTime() >= reminderAt && now.getTime() < reminderAt + 60000 && !alertAlreadySent(reminderKey)) { markAlertSent(reminderKey); showAlertOverlay(key); notifyPrayer(key, false); if (settings.reminderVoice) speakArabic(`اقترب موعد صلاة ${PRAYER_NAMES[key]}`); }
+                    if (now.getTime() >= reminderAt && now.getTime() < reminderAt + 60000 && !alertAlreadySent(reminderKey)) { markAlertSent(reminderKey); showAlertOverlay(key); notifyPrayer(key, false); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES[key]); else speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES[key]); } }
                 }
                 if (settings.adhanEnabled) {
                     const adhanKey = prayerAlertKey(target, key, 'adhan');
