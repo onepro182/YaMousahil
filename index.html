@@ -2660,7 +2660,9 @@ var gender = 'male';
             return ok;
         };
         window.announcePrayerApproaching = function(name) {
-            var msg = 'اقترب موعد صلاة ' + String(name || '').trim();
+            var n = String(name || '').trim();
+            if (!n && window._lastAlertPrayerKey && typeof PRAYER_NAMES !== 'undefined' && PRAYER_NAMES[window._lastAlertPrayerKey]) n = PRAYER_NAMES[window._lastAlertPrayerKey];
+            var msg = 'اقترب موعد صلاة ' + (n || 'الصلاة');
             var ok = (typeof window.speakArabic === 'function') ? window.speakArabic(msg) : false;
             if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
             return ok;
