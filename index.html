@@ -2190,11 +2190,12 @@ var gender = 'male';
         function renderWirdMenu() {
             var list = document.getElementById('wird-cat-list'); if (!list) return;
             var items = [
-                { n: 18, icon: '📖', label: 'قراءة سورة الكهف', sub: 'سورة الكهف' },
-                { n: 67, icon: '👑', label: 'قراءة سورة الملك', sub: 'سورة الملك' },
-                { n: 36, icon: '💛', label: 'قراءة سورة يس', sub: 'سورة يس' },
-                { n: 55, icon: '🌸', label: 'قراءة سورة الرحمن', sub: 'سورة الرحمن' },
-                { n: 56, icon: '🌿', label: 'قراءة سورة الواقعة', sub: 'سورة الواقعة' }
+                { n: 50, icon: '📖', label: 'قراءة سورة ق' },
+                { n: 18, icon: '📖', label: 'قراءة سورة الكهف' },
+                { n: 67, icon: '📖', label: 'قراءة سورة الملك' },
+                { n: 36, icon: '📖', label: 'قراءة سورة يس' },
+                { n: 55, icon: '📖', label: 'قراءة سورة الرحمن' },
+                { n: 56, icon: '📖', label: 'قراءة سورة الواقعة' }
             ];
             list.innerHTML = items.map(function(it){
                 return '<div class="adhkar-cat-item wird-cat-item" data-surah="' + it.n + '" tabindex="0"><span class="cat-icon">' + it.icon + '</span><span style="flex:1;text-align:right;">' + it.label + '</span></div>';
