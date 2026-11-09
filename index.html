@@ -1890,6 +1890,7 @@
                 const surRes = await fetch('https://api.alquran.cloud/v1/surah'); const surData = await surRes.json(); qpSurahs = surData.data;
                 const surSelect = document.getElementById('qp-surah'); surSelect.innerHTML = '<option value="">-- اختر السورة --</option>';
                 qpSurahs.forEach(s => { const o = document.createElement('option'); o.value = s.number; o.textContent = `${s.number}. ${s.name}`; surSelect.appendChild(o); });
+                surSelect.value = '1';
             } catch (e) { console.error('Error fetching Quran player data', e); }
         }
 
