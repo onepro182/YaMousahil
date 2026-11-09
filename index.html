@@ -734,7 +734,6 @@
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-quranradio">‹ الرئيسية</button>
                     <div style="width:80px;"></div>
                 </header>
-                <div class="radio-maroc-grid" id="quran-stations-grid"></div>
                 <h2 class="world-radio-title">أهم إذاعات القرآن الكريم في العالم</h2>
                 <p class="world-radio-sub">اختر الإذاعة المفضلة لديك واستمع للقرآن الكريم بث مباشر على مدار الساعة.</p>
                 <div class="radio-maroc-grid" id="quran-world-grid"></div>
@@ -2142,19 +2141,12 @@ var gender = 'male';
         function toggleMarocPlayPause() { if (!currentMarocStation) return; if (marocPlaying) stopMarocPlayer(); else { currentUrlIndex = 0; tryNextUrl(currentMarocStation); } }
         function stopMarocPlayer() { if (marocHls) { marocHls.destroy(); marocHls = null; } marocPlayer.pause(); marocPlaying = false; document.getElementById('maroc-now-playing-status').textContent = 'متوقف'; document.getElementById('maroc-play-pause-btn').textContent = '▶ تشغيل'; }
 
-        // إذاعات القرآن الكريم (même lecteur que Radio Maroc)
-        const QURAN_STATIONS = [
-            { name: 'إذاعة محمد السادس للقرآن الكريم', initial: 'م', logo: imgProxy('https://cdn.radoxo.com/images/morocco/idaa-mohammed-assadiss.webp?v=1792966689'), urls: ['https://radoxo.com/stream/eb/radio_med_VI.m3u8','http://cdn-hls.globecast.tv/live/ramdisk/assadissa/hls_snrt/index.m3u8'] },
-            { name: 'إذاعة القرآن - القاهرة', initial: 'ق', logo: '', urls: ['https://stream.radiojar.com/8s5u5tpdtwzuv'] },
-            { name: 'إذاعة القرآن السعودية', initial: 'س', logo: '', urls: ['https://fm.ice.locahicy.com/4/evtn6lde0cqi.av?'] },
-            { name: 'إذاعة القرآن الشارقة', initial: 'ش', logo: '', urls: ['https://radio.sharjah.ae/audio/playlist.m3u8'] }
-        ];
         // أهم إذاعات القرآن الكريم في العالم — source: surahquran.com (بث مباشر على مدار الساعة)
         const QURAN_WORLD_STATIONS = [
+            { name: 'إذاعة محمد السادس للقرآن الكريم', initial: '🇲🇦', logo: imgProxy('https://cdn.radoxo.com/images/morocco/idaa-mohammed-assadiss.webp?v=1792966689'), urls: ['https://radoxo.com/stream/eb/radio_med_VI.m3u8','http://cdn-hls.globecast.tv/live/ramdisk/assadissa/hls_snrt/index.m3u8'] },
             { name: 'إذاعة القاهرة — مصر', initial: '🇪🇬', logo: imgProxy('https://i.pinimg.com/564x/5e/92/4d/5e924dbe9f53f8611cb9d15828205ff9.jpg'), urls: ['https://stream.radiojar.com/8s5u5tpdtwzuv'] },
             { name: 'السعودية — مكة المكرمة', initial: '🇸🇦', logo: imgProxy('https://i.pinimg.com/564x/3a/a1/a1/3aa1a107c9434ca52b42b2dd0ffc896f.jpg'), urls: ['https://stream.radiojar.com/4wqre23fytzuv'] },
             { name: 'الجزائر', initial: '🇩🇿', logo: imgProxy('https://i.pinimg.com/564x/20/0f/57/200f57f922167f83c7bd7d59e0575216.jpg'), urls: ['https://radiocoran.ice.infomaniak.ch/coran.mp3'] },
-            { name: 'إذاعة محمد السادس للقرآن الكريم', initial: '🇲🇦', logo: imgProxy('https://cdn.radoxo.com/images/morocco/idaa-mohammed-assadiss.webp?v=1792966689'), urls: ['https://radoxo.com/stream/eb/radio_med_VI.m3u8','http://cdn-hls.globecast.tv/live/ramdisk/assadissa/hls_snrt/index.m3u8'] },
             { name: 'الرقية الشرعية', initial: '🤲', logo: imgProxy('https://i.pinimg.com/564x/31/39/1d/31391d84908e4c14cafee9b5344e6584.jpg'), urls: ['https://qurango.net/radio/roqiah'] },
             { name: 'Quran Radio — English', initial: '🌐', logo: imgProxy('https://i.pinimg.com/564x/0b/18/82/0b188201053638cf627df357dc503b4a.jpg'), urls: ['https://qurango.net/radio/tarateel'] },
             { name: 'السنة النبوية — المدينة', initial: '☀️', logo: imgProxy('https://i.pinimg.com/564x/55/16/ab/5516abd3744c3d0b0a7b28bedd5474c0.jpg'), urls: ['https://n0e.radiojar.com/x0vs2vzy6k0uv'] },
@@ -2178,12 +2170,6 @@ var gender = 'male';
         ];
         let quranPlayer = new Audio(); let quranHls = null; let quranPlaying = false; let currentQuranStation = null; let quranUrlIndex = 0;
         function initQuranStationsPage() {
-            const grid = document.getElementById('quran-stations-grid'); grid.innerHTML = '';
-            QURAN_STATIONS.forEach(station => {
-                const card = document.createElement('div'); card.className = 'station-card glass-btn'; card.tabIndex = 0;
-                card.innerHTML = `<div class="station-logo-container"><div class="station-logo-fallback">${station.initial}</div><img src="${station.logo}" alt="${station.name}" onerror="this.style.display='none';"></div><span class="name">${station.name}</span>`;
-                card.onclick = () => playQuranStation(station); grid.appendChild(card);
-            });
             const wgrid = document.getElementById('quran-world-grid');
             if (wgrid) { wgrid.innerHTML = ''; QURAN_WORLD_STATIONS.forEach(station => {
                 const card = document.createElement('div'); card.className = 'station-card glass-btn'; card.tabIndex = 0;
