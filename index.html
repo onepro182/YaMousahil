@@ -87,12 +87,13 @@
         .apps-grid{display:grid;gap:12px;}
         .fav-grid{grid-template-columns:repeat(4,1fr);}
         /* Rangée 3 : boutons d'action, tous exactement la même taille que Météo */
-        .home-action-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;grid-auto-rows:72px;}
+        .home-action-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;grid-auto-rows:72px;}
         .home-action-row .app-card{height:100%;min-height:72px;padding:8px 6px;gap:4px;justify-content:center;align-items:center;border-radius:12px;}
         .home-action-row .app-icon{width:28px;height:28px;object-fit:contain;}
         .home-action-row .app-name{font-size:.72rem;line-height:1.25;text-align:center;word-break:break-word;}
-        @media (max-width:900px){ .home-action-row{grid-template-columns:repeat(3,minmax(0,1fr));} }
-        @media (max-width:560px){ .home-action-row{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:68px;} }
+        @media (max-width:1100px){ .home-action-row{grid-template-columns:repeat(4,minmax(0,1fr));} }
+@media (max-width:700px){ .home-action-row{grid-template-columns:repeat(3,minmax(0,1fr));} }
+        @media (max-width:480px){ .home-action-row{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:68px;} }
         body.is-mobile .home-action-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;grid-auto-rows:68px;}
         body.is-mobile .home-action-row .app-icon{width:24px;height:24px;}
         body.is-mobile .home-action-row .app-name{font-size:.68rem;}
@@ -135,7 +136,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -820,6 +821,10 @@
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
                                     <span class="app-name">🌦 Météo</span>
                                 </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-mushaf">
+                                    <img class="app-icon" src="https://www.mp3quran.net/img/logo2.png" alt="تصفح القرآن" style="border-radius:8px;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3004/3004416.png'">
+                                    <span class="app-name">تصفح القرآن</span>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -1184,6 +1189,21 @@
                 <div class="weather-daily" id="weather-daily"></div>
             </div>
 
+            <!-- MUSHAF SCREEN -->
+            <div id="mushaf-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-mushaf">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">تصفح القرآن</h1>
+                        <p>المصحف (mp3quran.net)</p>
+                    </div>
+                    <a class="back-btn glass-btn" href="https://www.mp3quran.net/ar/mushaf" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">فتح خارجي ↗</a>
+                </header>
+                <div style="flex:1;min-height:0;position:relative;border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.15);">
+                    <iframe id="mushaf-iframe" src="about:blank" data-src="https://www.mp3quran.net/ar/mushaf" title="تصفح القرآن - المصحف" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#0b132b;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allow="autoplay; fullscreen"></iframe>
+                </div>
+                <div style="flex-shrink:0;font-size:.78rem;color:var(--text-dim);text-align:center;padding:2px 4px;">المصدر: <a href="https://www.mp3quran.net/ar/mushaf" target="_blank" rel="noopener" style="color:var(--gold);">mp3quran.net/ar/mushaf</a> — إذا لم يظهر المصحف داخل التطبيق، استخدم «فتح خارجي».</div>
+            </div>
             <!-- WIRD SCREEN -->
             <div id="wird-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:15px;">
                 <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
@@ -3661,6 +3681,13 @@ function notifyPrayer(prayerKey, isTest) {
         })();
         document.getElementById('card-weather').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(weatherScreen); var c = weatherSelectedCity(); fetchWeather(c.lat, c.lon, c.name); };
         document.getElementById('btn-back-from-weather').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
+        // تصفح القرآن (المصحف - mp3quran.net)
+        (function(){
+            var cm = document.getElementById('card-mushaf');
+            if (cm) cm.onclick = function(){ if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('mushaf-iframe'); if(fr && fr.dataset && fr.dataset.src && (!fr.src || fr.src==='about:blank')) fr.src = fr.dataset.src; showScreen(mushafScreen); };
+            var bm = document.getElementById('btn-back-from-mushaf');
+            if (bm) bm.onclick = function(){ showScreen(homeScreen); navHome.classList.add('active'); };
+        })();
         document.getElementById('card-live').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderLiveMenu(); showScreen(liveScreen); var first = document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"assadissa\"]') || document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"haram\"]') || document.querySelector('#live-cat-list .adhkar-cat-item'); var fr = document.getElementById('live-iframe'); if (fr) fr.src = ''; selectLiveChannel(first); };
         document.getElementById('btn-live-add').onclick = () => {
             var name = document.getElementById('live-new-name').value.trim();
@@ -3720,7 +3747,7 @@ function notifyPrayer(prayerKey, isTest) {
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
