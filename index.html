@@ -100,6 +100,7 @@
         .app-card { border-radius:10px; padding:18px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; }
         #card-surah-kahf{border-color:var(--gold) !important;background:linear-gradient(160deg,rgba(212,175,55,0.25),rgba(255,255,255,0.04)) !important;box-shadow:0 0 16px rgba(212,175,55,0.28);}
         .app-icon{width:2.6rem;height:2.6rem;object-fit:contain;display:block;}
+        #card-mosques .app-icon{filter: brightness(0) saturate(100%) invert(76%) sepia(52%) saturate(548%) hue-rotate(2deg) brightness(95%) contrast(89%);}
         .app-name{font-size:.85rem;text-align:center;font-weight:600;}
         .app-card.half-width{width:50%;justify-self:center;}
         .app-card.wide-card{grid-column:span 2;}
@@ -288,8 +289,10 @@
         body.is-mobile #btn-back-from-islamiyat{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
         body.is-mobile .isl-header-spacer{width:0 !important;}
         body.is-mobile #btn-back-from-mosques{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
-        body.is-mobile .mosques-header-spacer{width:0 !important;}
+        body.is-mobile #btn-back-from-pharmacy{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
+        body.is-mobile .mosques-header-spacer, body.is-mobile .pharmacy-header-spacer{width:0 !important;}
         body.is-mobile #mosques-screen{height:auto;min-height:100dvh;gap:10px;}
+        body.is-mobile #pharmacy-screen{height:auto;min-height:100dvh;gap:10px;}
         body.is-mobile .mosques-controls{flex-wrap:wrap;gap:8px;justify-content:center;padding:0 4px;}
         body.is-mobile .mosques-controls .radius-chip{padding:6px 12px;font-size:.85rem;}
         body.is-mobile .mosques-city-select{width:100%;max-width:320px;}
@@ -297,6 +300,7 @@
         body.is-mobile .mosques-sidebar{width:100%;max-height:260px;overflow-y:auto;}
         body.is-mobile .mosques-map-wrap{flex:none !important;width:100%;height:300px;min-height:300px;}
         body.is-mobile #mosque-map{width:100%;height:100%;min-height:300px;}
+        body.is-mobile #pharmacy-map{width:100%;height:100%;min-height:300px;}
         body.is-mobile .tasbih-embedded .layout{grid-template-columns:1fr;}
         body.is-mobile .tasbih-embedded .left-col,body.is-mobile .tasbih-embedded .counter-area,body.is-mobile .tasbih-embedded .side-panel{grid-column:auto;grid-row:auto;width:100%;}
         body.is-mobile .settings-container{width:96%;max-height:94dvh;max-height:94vh;overflow:hidden;display:flex;flex-direction:column;}
@@ -518,6 +522,7 @@
         .tasbih-modal .custom-text{margin:0;direction:rtl;text-align:right;color:#f4ecd8;font-family:var(--font-quran);font-size:20px;line-height:1.6;overflow-wrap:anywhere;}
 
         #mosque-map { width: 100%; height: 100%; min-height: 400px; border-radius: 12px; }
+        #pharmacy-map { width: 100%; height: 100%; min-height: 400px; border-radius: 12px; }
         .mosques-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;}
         .radius-chip{padding:7px 16px;border-radius:20px;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--cream);font-family:var(--font);font-size:.9rem;cursor:pointer;transition:all .2s;}
         .radius-chip:hover{border-color:var(--gold);}
@@ -1034,6 +1039,37 @@
                 </div>
                 <p style="display:none;text-align:center; font-size:0.7rem; color:var(--text-dim); padding:5px;">
                     بيانات المساجد بواسطة <a href="https://geoapify.com" target="_blank" style="color:var(--gold);">Geoapify</a> / OpenStreetMap
+                </p>
+            </div>
+
+            <!-- PHARMACY SCREEN -->
+            <div id="pharmacy-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-pharmacy">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">🏥 صيدلية الحراسة</h1>
+                        <p>اعثر على الصيدليات القريبة منك</p>
+                    </div>
+                    <div class="pharmacy-header-spacer" style="width:80px;"></div>
+                </header>
+                <div class="mosques-controls">
+                    <span style="color:var(--text-dim);font-size:.85rem;">نطاق البحث :</span>
+                    <button type="button" class="radius-chip pharm-radius" data-r="2">2 كم</button>
+                    <button type="button" class="radius-chip pharm-radius active" data-r="3">3 كم</button>
+                    <button type="button" class="radius-chip pharm-radius" data-r="5">5 كم</button>
+                    <button type="button" class="radius-chip" id="btn-pharmacy-locate" style="margin-right:14px;">📍 تحديث الموقع</button>
+                    <select id="pharmacy-city-select" class="mosques-city-select"><option value="">✏️ اختيار يدوي للمدينة</option></select>
+                </div>
+                <div class="mosques-layout">
+                    <div class="mosques-sidebar" id="pharmacy-list">
+                        <div style="text-align:center; padding:20px; color:var(--text-dim);" id="pharmacy-loading">جاري تحديد موقعك...</div>
+                    </div>
+                    <div class="mosques-map-wrap" style="flex:1; position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--glass-border);">
+                        <div id="pharmacy-map"></div>
+                    </div>
+                </div>
+                <p style="text-align:center; font-size:0.78rem; color:var(--text-dim); padding:6px 8px; line-height:1.7;">
+                    بيانات الصيدليات عبر OpenStreetMap. لمعرفة <strong style="color:var(--gold);">صيدلية الحراسة</strong> (المناوبة) الرسمية، يُنصح بالتحقق من المصادر المحلية/الرسمية لمدينتك.
                 </p>
             </div>
 
@@ -2398,24 +2434,112 @@ var gender = 'male';
         document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); window.__toggleAsmaAuto(); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
-        // PHARMACIE DE GARDE — récupération localisation exacte (Overpass gratuit)
-        document.getElementById('card-pharmacy').addEventListener('click', async function() {
-            let lat = 48.8566, lon = 2.3522;
-            const isFile = window.location.protocol === 'file:';
-            if (isFile && typeof cityCoordOverride !== 'undefined' && cityCoordOverride) { lat = cityCoordOverride.lat; lon = cityCoordOverride.lon; }
-            try {
-                const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json];(node[amenity=pharmacy](around:3000,${lat},${lon}););out body;`;
-                const res = await fetch(overpassUrl);
-                const data = await res.json();
-                const pharms = data.elements || [];
-                if (pharms.length === 0) { alert('🏥 لا توجد صيدليات مفتوحة قريبة'); return; }
-                const nearest = pharms[0];
-                const name = (nearest.tags && nearest.tags.name) ? nearest.tags.name : 'صيدلية';
-                alert('🏥 صيدلية الحراسة الأقرب:\n' + name + '\n📍 تقريباً عند: ' + lat.toFixed(4) + ', ' + lon.toFixed(4));
-            } catch (e) {
-                alert('🏥 صيدلية الحراسة — خطأ في البيانات\nالموقع: ' + lat + ', ' + lon);
+        // ==================================================
+        // PHARMACIE DE GARDE — page complète (carte, liste, localisation)
+        // ==================================================
+        let pharmacyMap = null, pharmacyMarkers = [], pharmacyRadiusKm = 3, pharmacyLastPos = null, pharmacyCircle = null;
+        function initPharmacyMap() {
+            if (pharmacyMap) return;
+            const el = document.getElementById('pharmacy-map'); if (!el || typeof L === 'undefined') return;
+            pharmacyMap = L.map('pharmacy-map').setView([34.0209, -6.8416], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(pharmacyMap);
+        }
+        function havKm(lat1,lon1,lat2,lon2){ const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180; const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2; return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); }
+        async function fetchOverpassPharmacies(lat, lon) {
+            const radiusM = pharmacyRadiusKm * 1000;
+            const q = `[out:json][timeout:12];(node["amenity"="pharmacy"](around:${radiusM},${lat},${lon});way["amenity"="pharmacy"](around:${radiusM},${lat},${lon}););out center tags;`;
+            const eps = ['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
+            for (let i=0;i<eps.length;i++){
+                try {
+                    const c = new AbortController(); const t = setTimeout(()=>c.abort(), 10000);
+                    const r = await fetch(eps[i]+'?data='+encodeURIComponent(q), { signal: c.signal });
+                    clearTimeout(t); if(!r.ok) continue;
+                    const d = await r.json(); if(d && d.elements) return d.elements;
+                } catch(e){}
             }
+            return [];
+        }
+        async function searchPharmacies(lat, lon) {
+            initPharmacyMap(); if (!pharmacyMap) return;
+            const list = document.getElementById('pharmacy-list');
+            list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim);">جارٍ البحث عن الصيدليات...</div>';
+            const zoom = pharmacyRadiusKm <= 2 ? 15 : (pharmacyRadiusKm <= 3 ? 14 : 13);
+            pharmacyMap.setView([lat, lon], zoom);
+            if (pharmacyCircle) pharmacyMap.removeLayer(pharmacyCircle);
+            pharmacyCircle = L.circle([lat, lon], { radius: pharmacyRadiusKm*1000, color:'#d4af37', weight:1.5, fillColor:'#d4af37', fillOpacity:0.05 }).addTo(pharmacyMap);
+            pharmacyMarkers.forEach(m => pharmacyMap.removeLayer(m)); pharmacyMarkers = [];
+            const elements = await fetchOverpassPharmacies(lat, lon);
+            const pharms = elements.map(el => {
+                const plat = el.lat || (el.center && el.center.lat); const plon = el.lon || (el.center && el.center.lon);
+                if (plat==null || plon==null) return null;
+                const tags = el.tags || {};
+                const d = havKm(lat, lon, plat, plon);
+                return { lat: plat, lon: plon, name: tags.name || tags['name:ar'] || 'صيدلية', addr: tags['addr:street']||tags['addr:full']||tags['addr:city']||'', phone: tags.phone||tags['contact:phone']||'', dist: d };
+            }).filter(x => x && x.dist <= pharmacyRadiusKm).sort((a,b)=>a.dist-b.dist);
+            if (!pharms.length) {
+                list.innerHTML = `<div style="text-align:center;padding:18px;color:var(--text-dim);line-height:1.9;">لم يتم العثور على صيدليات ضمن ${pharmacyRadiusKm} كم.<br><span style="font-size:.85rem;">جرّب زيادة النطاق أو اختيار مدينة أخرى.</span></div>`;
+                return;
+            }
+            list.innerHTML = `<div style="padding:8px 4px;color:var(--text-dim);font-size:.85rem;text-align:center;">تم العثور على ${pharms.length} صيدلية</div>`;
+            pharms.forEach(p => {
+                const km = p.dist < 1 ? (p.dist*1000).toFixed(0)+' م' : p.dist.toFixed(2)+' كم';
+                const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}`;
+                const phoneLink = p.phone ? `<a href="tel:${p.phone.replace(/\s+/g,'')}" style="color:var(--gold);text-decoration:none;">📞 ${p.phone}</a>` : '';
+                const marker = L.marker([p.lat,p.lon]).addTo(pharmacyMap).bindPopup(`<b>${p.name}</b><br>${km}${p.phone?'<br>'+p.phone:''}<br><a href="${gmaps}" target="_blank">الاتجاهات</a>`);
+                pharmacyMarkers.push(marker);
+                const item = document.createElement('div');
+                item.className = 'glass-btn';
+                item.style.cssText = 'padding:10px 12px;margin:8px 0;border-radius:10px;cursor:pointer;border:1px solid rgba(212,175,55,0.18);';
+                item.innerHTML = `<div style="font-weight:700;color:var(--gold);margin-bottom:4px;">${p.name}</div>`
+                    + `<div style="font-size:.85rem;color:var(--text-dim);line-height:1.7;">📍 ${km}${p.addr?' — '+p.addr:''}</div>`
+                    + (phoneLink?`<div style="font-size:.85rem;margin-top:4px;">${phoneLink}</div>`:'')
+                    + `<div style="margin-top:6px;"><a href="${gmaps}" target="_blank" rel="noopener" style="color:var(--gold);font-size:.85rem;text-decoration:underline;">🧭 الاتجاهات</a></div>`;
+                item.onclick = () => { pharmacyMap.setView([p.lat,p.lon], 17); marker.openPopup(); };
+                list.appendChild(item);
+            });
+            setTimeout(() => { try { pharmacyMap.invalidateSize(); } catch(e){} }, 150);
+        }
+        function locatePharmacies() {
+            const list = document.getElementById('pharmacy-list');
+            const useFallback = (msg) => {
+                let lat=34.0209, lon=-6.8416;
+                if (typeof cityCoordOverride!=='undefined' && cityCoordOverride) { lat=cityCoordOverride.lat; lon=cityCoordOverride.lon; }
+                else if (typeof settings!=='undefined' && settings.cityId && typeof CITIES_DB!=='undefined' && CITIES_DB[settings.cityId]) { lat=CITIES_DB[settings.cityId].lat; lon=CITIES_DB[settings.cityId].lng; }
+                if (msg && list) list.innerHTML = `<div style="text-align:center;padding:10px;color:var(--text-dim);font-size:.85rem;">${msg}</div>`;
+                pharmacyLastPos = {lat, lon}; searchPharmacies(lat, lon);
+            };
+            if (!navigator.geolocation) { useFallback('الموقع غير مدعوم — استخدام المدينة الافتراضية.'); return; }
+            if (list) list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim);">جارٍ تحديد موقعك...</div>';
+            navigator.geolocation.getCurrentPosition(
+                pos => { pharmacyLastPos = {lat:pos.coords.latitude, lon:pos.coords.longitude}; searchPharmacies(pharmacyLastPos.lat, pharmacyLastPos.lon); },
+                () => useFallback('تعذّر تحديد الموقع — استخدام المدينة المختارة/الافتراضية.'),
+                { enableHighAccuracy: true, timeout: 9000 }
+            );
+        }
+        document.getElementById('card-pharmacy').onclick = () => {
+            if (typeof radioPlaying!=='undefined'&&radioPlaying) stopRadio();
+            if (typeof marocPlaying!=='undefined'&&marocPlaying) stopMarocPlayer();
+            showScreen(pharmacyScreen);
+            initPharmacyMap();
+            const sel = document.getElementById('pharmacy-city-select');
+            if (sel && sel.options.length <= 1 && typeof CITIES_DB!=='undefined') {
+                Object.entries(CITIES_DB).forEach(([id,c]) => { const o=document.createElement('option'); o.value=id; o.textContent=c.nameAr; sel.appendChild(o); });
+            }
+            setTimeout(() => { try { pharmacyMap && pharmacyMap.invalidateSize(); } catch(e){} locatePharmacies(); }, 120);
+            window.scrollTo(0,0);
+        };
+        document.getElementById('btn-back-from-pharmacy').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
+        document.getElementById('btn-pharmacy-locate').onclick = () => locatePharmacies();
+        document.querySelectorAll('.pharm-radius').forEach(btn => btn.onclick = () => {
+            document.querySelectorAll('.pharm-radius').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active'); pharmacyRadiusKm = parseInt(btn.getAttribute('data-r'),10)||3;
+            if (pharmacyLastPos) searchPharmacies(pharmacyLastPos.lat, pharmacyLastPos.lon);
+            else locatePharmacies();
         });
+        document.getElementById('pharmacy-city-select').onchange = function(){
+            const c = (typeof CITIES_DB!=='undefined') ? CITIES_DB[this.value] : null;
+            if (c) { pharmacyLastPos = {lat:c.lat, lon:c.lng}; searchPharmacies(c.lat, c.lng); }
+        };
         document.getElementById('qp-play-btn').onclick = async () => {
             const surah = document.getElementById('qp-surah').value;
             if (!qpSelected || !surah) { alert('الرجاء اختيار القارئ والسورة'); return; }
@@ -2911,8 +3035,8 @@ var gender = 'male';
             document.getElementById('adhkar-back-to-cats').onclick = () => { const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.remove('show-text'); window.scrollTo(0, 0); };
         }
 
-        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
         // SETTINGS HANDLERS
         populateCountrySelect();
@@ -3420,7 +3544,7 @@ var gender = 'male';
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
