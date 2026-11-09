@@ -1096,6 +1096,7 @@
                         <button type="button" class="back-btn glass-btn" id="btn-back-from-wird">‹ الرئيسية</button>
                         <div style="text-align:center;flex:1;min-width:180px;">
                             <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">ورد القرآن اليومي</h1>
+                            <p style="font-family:var(--font-quran);font-size:1rem;color:#fff;margin-top:4px;line-height:1.7;">الورد القرآني يلملم شتات الروح ويمسح على القلب ليعيش بسلام ورضا واطمئنان،</p>
                         </div>
                         <button type="button" id="wird-show-info" class="back-btn glass-btn" style="display:none;font-size:.85rem;padding:6px 10px;">📖 عن الورد</button>
                     </div>
@@ -1109,11 +1110,10 @@
                                 <h1 id="wird-text-title">ورد القرآن اليومي</h1>
                                 <div class="meta" id="wird-text-meta">اختر سورة من القائمة للقراءة</div>
                             </div>
-                            <div class="adhkar-text-body" id="wird-text-body" style="font-family:var(--font-quran);">
-                                <div class="glass-btn" style="max-width:700px;width:100%;margin:10px auto;padding:28px 22px;border-radius:18px;text-align:center;border:1px solid rgba(212,175,55,0.35);background:rgba(12,46,34,0.55);">
-                                    <div style="font-size:2.2rem;margin-bottom:12px;">📖</div>
-                                    <h2 style="font-family:var(--font-quran);color:var(--gold);font-size:1.9rem;margin:0 0 14px;">ورد القرآن اليومي</h2>
-                                    <p style="font-family:var(--font-quran);color:var(--cream);font-size:1.35rem;line-height:2.2;margin:0;">الورد القرآني يلملم شتات الروح ويمسح على القلب ليعيش بسلام ورضا واطمئنان،</p>
+                            <div class="adhkar-text-body" id="wird-text-body" style="font-family:var(--font-quran);display:flex;align-items:center;justify-content:center;">
+                                <div style="max-width:520px;width:100%;margin:10px auto;padding:18px 16px;text-align:center;color:var(--text-dim);line-height:1.9;">
+                                    <div style="font-size:1.8rem;margin-bottom:8px;">📖</div>
+                                    <p style="margin:0;">اختر سورة من القائمة للبدء في وردك اليومي.</p>
                                 </div>
                             </div>
                         </div>
@@ -2037,7 +2037,8 @@ var gender = 'male';
                 </div>`).join('');
         }
 
-        function openSurahInQuran(n) {
+        function openSurahInQuran(n, fromWird) {
+            window._quranReturnTo = fromWird ? 'wird' : null;
             if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
             if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
             showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran');
@@ -2062,7 +2063,7 @@ var gender = 'male';
                 el.onclick = function(){
                     list.querySelectorAll('.wird-cat-item').forEach(function(x){ x.classList.remove('active'); });
                     el.classList.add('active');
-                    openSurahInQuran(parseInt(el.getAttribute('data-surah'), 10));
+                    openSurahInQuran(parseInt(el.getAttribute('data-surah'), 10), true);
                 };
             });
         }
@@ -2343,6 +2344,7 @@ var gender = 'male';
         // SURAH AL-KAHF
         // ==================================================
         document.getElementById('card-surah-kahf').onclick = () => {
+            window._quranReturnTo = null;
             if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
             if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
             showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran');
@@ -2786,7 +2788,7 @@ var gender = 'male';
         document.getElementById('nav-btn-reminder').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-reminder-toggle').focus(), 100); };
         document.getElementById('nav-btn-adhan').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-adhan-toggle').focus(), 100); };
 
-        document.getElementById('card-quran').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran'); const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); const sl = document.getElementById('isl-surah-list-container'); if (sl) sl.scrollTop = 0; window.scrollTo(0, 0); updateIslResumeBar(); };
+        document.getElementById('card-quran').onclick = () => { window._quranReturnTo = null; if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran'); const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); const sl = document.getElementById('isl-surah-list-container'); if (sl) sl.scrollTop = 0; window.scrollTo(0, 0); updateIslResumeBar(); };
         document.getElementById('card-Adhkar').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('adhkar'); const svA = document.querySelector('.adhkar-split-view'); if (svA) svA.classList.remove('show-text'); window.scrollTo(0, 0); };
         document.getElementById('card-tasbih').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('tasbih'); };
         var LIVE_POSTERS = { haram: 'https://makkahlive.org/posters/makkah.webp', nabawi: 'https://makkahlive.org/posters/madinah.webp', aqsa: 'https://makkahlive.org/posters/aqsa.webp', hajj: 'https://makkahlive.org/logo.webp', assadissa: 'https://www.snrt.ma/sites/default/files/2023-04/assadissa.png' };
@@ -3068,6 +3070,15 @@ var gender = 'male';
         document.getElementById('btn-back-from-islamiyat').onclick = () => {
             const qPane = document.getElementById('isl-pane-quran');
             const sv = document.querySelector('.quran-split-view');
+            if (qPane && qPane.classList.contains('active') && window._quranReturnTo === 'wird') {
+                stopIslamiyatAudio();
+                sv && sv.classList.remove('show-text');
+                window._quranReturnTo = null;
+                if (typeof renderWirdMenu === 'function') renderWirdMenu();
+                showScreen(wirdScreen);
+                window.scrollTo(0, 0);
+                return;
+            }
             if (qPane && qPane.classList.contains('active') && sv && sv.classList.contains('show-text')) {
                 sv.classList.remove('show-text');
                 const sl = document.getElementById('isl-surah-list-container');
@@ -3080,6 +3091,7 @@ var gender = 'male';
                 if (sl) sl.scrollTop = 0;
                 sv && sv.classList.remove('show-text');
             }
+            window._quranReturnTo = null;
             stopIslamiyatAudio(); showScreen(homeScreen); navHome.classList.add('active');
         };
 
