@@ -2567,7 +2567,7 @@ var gender = 'male';
         navPrayers.onclick = () => { showScreen(prayersScreen); navPrayers.classList.add('active'); renderUI(); };
         document.getElementById('btn-radio').onclick = () => { document.getElementById('radio-card').classList.remove('active'); if (radioPlaying) stopRadio(); showScreen(radiomarocScreen); };
         document.getElementById('btn-radio-maroc').onclick = () => { showScreen(radiomarocScreen); };
-        document.getElementById('card-quran-radio').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(quranradioScreen); initQuranStationsPage(); };
+        document.getElementById('card-quran-radio').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(quranradioScreen); initQuranStationsPage(); if (!quranPlaying && typeof QURAN_WORLD_STATIONS !== 'undefined' && QURAN_WORLD_STATIONS[0]) playQuranStation(QURAN_WORLD_STATIONS[0]); };
         document.getElementById('btn-back-from-quranradio').onclick = () => { stopQuranPlayer(); showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('btn-back-home').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('btn-back-from-maroc').onclick = () => { stopMarocPlayer(); showScreen(homeScreen); navHome.classList.add('active'); };
