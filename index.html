@@ -1391,7 +1391,7 @@
             [...PRAYER_ORDER].reverse().forEach(key => {
                 const box = document.createElement('div'); box.className = 'time-box glass-btn';
                 if (key === currentPrayerKey) { box.classList.add('is-now'); box.innerHTML = `<div class="name" style="font-size:.7rem">الآن</div><div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
-                else if (key === nextPrayerKey) { box.classList.add('is-next'); box.style.cursor = 'pointer'; box.title = 'اضغط للاستماع'; box.innerHTML = `<div class="name" style="font-size:.7rem">التالية</div><div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; box.onclick = () => { if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
+                else if (key === nextPrayerKey) { box.classList.add('is-next'); box.style.cursor = 'pointer'; box.title = 'اضغط للاستماع'; box.innerHTML = `<div class="name" style="font-size:.7rem">التالية</div><div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; box.onclick = () => { if (typeof window.announceNextPrayer === 'function') window.announceNextPrayer(PRAYER_NAMES[key]); else if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
                 else { box.innerHTML = `<div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
                 homePrayerContainer.appendChild(box);
             });
@@ -1407,7 +1407,7 @@
                 if (diff < 0) statusText = key === currentPrayerKey ? 'الآن' : 'مضى';
                 else { const m = Math.floor(diff / 60000); statusText = m > 60 ? `بعد ${Math.floor(m/60)}:${pad(m%60)}` : `بعد ${m} د`; }
                 item.innerHTML = `<div class="p-right"><div class="p-bell">🔔</div><div class="p-name">${PRAYER_NAMES[key]}</div></div><div class="p-right" style="gap:20px;"><span style="font-size:.85rem;color:${key === currentPrayerKey ? '#0b132b' : 'var(--text-dim)'}">${statusText}</span><span class="p-name">${formatTime(prayerTimesToday[key])}</span></div>`;
-                if (key === nextPrayerKey) { item.style.cursor = 'pointer'; item.title = 'اضغط للاستماع'; item.onclick = () => { if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
+                if (key === nextPrayerKey) { item.style.cursor = 'pointer'; item.title = 'اضغط للاستماع'; item.onclick = () => { if (typeof window.announceNextPrayer === 'function') window.announceNextPrayer(PRAYER_NAMES[key]); else if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
                 listContainer.appendChild(item);
             });
             document.getElementById('detail-next-prayer-name').textContent = PRAYER_NAMES[nextPrayerKey];
@@ -2643,6 +2643,12 @@ var gender = 'male';
             } catch (e) { return false; }
         }
         window.speakArabic = speakArabic;
+        window.announceNextPrayer = function(name) {
+            var msg = 'باقي على صلاة ' + String(name || '').trim();
+            var ok = (typeof window.speakArabic === 'function') ? window.speakArabic(msg) : false;
+            if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
+            return ok;
+        };
         function prayerAlertKey(date, prayerKey, type) { return `YaMousahil_${type}_${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}_${prayerKey}`; }
         function alertAlreadySent(key) { try { return localStorage.getItem(key) === '1'; } catch(e) { return false; } }
         function markAlertSent(key) { try { localStorage.setItem(key, '1'); } catch(e) {} }
