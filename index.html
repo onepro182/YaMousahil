@@ -448,7 +448,7 @@
         .tasbih-embedded .left-col{display:flex;flex-direction:column;gap:10px;grid-column:1;grid-row:1;direction:rtl;}
         .tasbih-embedded .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;direction:rtl;}
         .tasbih-embedded .controls{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;direction:ltr;}
-        .tasbih-embedded .counter-area{position:relative;grid-column:2;grid-row:1;min-width:0;padding:12px 10px;border:1.5px solid rgba(212,175,55,0.45);border-radius:20px;background:radial-gradient(ellipse at 50% 5%,rgba(212,175,55,0.08),transparent 65%),var(--tsb-surface);box-shadow:0 18px 45px rgba(0,0,0,0.35);text-align:center;}
+        .tasbih-embedded .counter-area{position:relative;grid-column:2;grid-row:1;min-width:0;padding:12px 10px;border:1.5px solid rgba(212,175,55,0.5);border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(212,175,55,0.05)), radial-gradient(ellipse at 50% 5%,rgba(212,175,55,0.18),transparent 65%),var(--tsb-surface);box-shadow:0 18px 45px rgba(0,0,0,0.3);text-align:center;}
         .tasbih-sound-btn{position:absolute;top:10px;left:10px;z-index:5;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--gold);width:34px;height:34px;border-radius:10px;cursor:pointer;display:grid;place-items:center;font-size:1rem;line-height:1;}
         .tasbih-sound-btn:hover{border-color:var(--gold);background:rgba(212,175,55,0.1);}
         .tasbih-sound-btn.off{color:var(--text-dim);opacity:.85;}
@@ -986,8 +986,8 @@
                                         <div class="stat"><span>الوقت</span><strong id="timeDisplay">00:00</strong></div>
                                     </section>
                                     <nav class="controls">
-                                        <button class="control-btn" id="dhikrBtn" type="button"><span class="control-icon" aria-hidden="true">☰</span><span>الذِّكر</span></button>
                                         <button class="control-btn active" id="targetBtn" type="button"><span class="control-icon" aria-hidden="true">◎</span><span id="targetLabel"></span></button>
+                                        <button class="control-btn" id="dhikrBtn" type="button"><span class="control-icon" aria-hidden="true">☰</span><span>الذِّكر</span></button>
                                         <button class="control-btn" id="undoBtn" type="button"><span class="control-icon" aria-hidden="true">↶</span><span>تراجع</span></button>
                                         <button class="control-btn" id="resetBtn" type="button"><span class="control-icon" aria-hidden="true">↻</span><span>إعادة ضبط</span></button>
                                     </nav>
