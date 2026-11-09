@@ -745,7 +745,7 @@
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
                                     <span class="app-name">📻 إذاعات القرآن</span>
                                 </div>
-                                <div class="app-card glass-btn" tabindex="0" id="card-wird"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3163/3163508.png" alt="ورد القرآن اليومي"><span class="app-name">ورد القرآن اليومي</span></div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-wird"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/2913/2913465.png" alt="ورد القرآن اليومي"><span class="app-name">ورد القرآن اليومي</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-pharmacy">
                                     <img class="app-icon" src="assets/img/pha.png" alt="Pharmacie" style="max-height:48px; object-fit:contain;" onerror="this.src='assets/img/Logo.png'">
                                     <span class="app-name">🏥 صيدلية الحراسة</span>
@@ -3031,7 +3031,7 @@ var gender = 'male';
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
