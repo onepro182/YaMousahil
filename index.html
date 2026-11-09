@@ -230,6 +230,13 @@
         body.is-mobile .ayah-num-circle{width:26px;height:26px;font-size:.8rem;margin:0 5px;}
         body.is-mobile .quran-audio-controls{padding:6px 10px;}
         body.is-mobile .quran-audio-controls select{max-width:46vw;font-size:.9rem;padding:7px 10px;}
+        /* Marque-page: sélection d'un verset + reprise de lecture */
+        .ayah-span{cursor:pointer;}
+        .ayah-bookmark{background:rgba(212,175,55,0.22);border-radius:10px;box-shadow:inset 0 0 0 1.5px var(--gold);padding:0 6px;}
+        #isl-resume-bar{display:none;margin:0 0 8px;padding:10px 14px;border:1px solid rgba(212,175,55,0.45);border-radius:12px;background:rgba(212,175,55,0.12);color:var(--gold-light);font-family:var(--font);font-size:.95rem;cursor:pointer;text-align:center;font-weight:700;}
+        body.is-mobile #isl-resume-bar.show{display:block;}
+        #isl-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(12,46,34,0.95);color:var(--gold-light);border:1px solid rgba(212,175,55,0.5);border-radius:12px;padding:10px 18px;font-family:var(--font);font-size:.9rem;z-index:9999;opacity:0;pointer-events:none;transition:all .3s;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+        #isl-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
         body.is-mobile .tasbih-embedded .layout{grid-template-columns:1fr;}
         body.is-mobile .tasbih-embedded .left-col,body.is-mobile .tasbih-embedded .counter-area,body.is-mobile .tasbih-embedded .side-panel{grid-column:auto;grid-row:auto;width:100%;}
         body.is-mobile .settings-container{width:96%;max-height:92dvh;max-height:92vh;overflow-y:auto;}
@@ -806,6 +813,7 @@
                                 <div class="quran-text-body" id="isl-quran-body"></div>
                             </div>
                             <div class="quran-sidebar">
+                                <div id="isl-resume-bar"></div>
                                 <div class="sidebar-tabs">
                                     <div class="sidebar-tab glass-btn active" id="tab-surah">السور</div>
                                     <div class="sidebar-tab glass-btn" id="tab-juz">الأجزاء</div>
@@ -2302,6 +2310,23 @@ var gender = 'male';
         function highlightAyah(num) { document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); const el = document.getElementById('isl-ayah-' + num); if (el) { el.classList.add('ayah-reading'); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
         
         function showQuranTextOnMobile() { if (!document.body.classList.contains('is-mobile')) return; const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.add('show-text'); const b = document.getElementById('isl-quran-body'); if (b) b.scrollTop = 0; window.scrollTo(0, 0); }
+        function islShowToast(msg) { let t = document.getElementById('isl-toast'); if (!t) { t = document.createElement('div'); t.id = 'isl-toast'; document.body.appendChild(t); } t.textContent = msg; t.classList.add('show'); clearTimeout(t._tm); t._tm = setTimeout(() => t.classList.remove('show'), 2500); }
+        function getIslBookmark() { try { return JSON.parse(localStorage.getItem('islQuranBookmark') || 'null'); } catch (e) { return null; } }
+        function updateIslResumeBar() {
+            const bar = document.getElementById('isl-resume-bar'); if (!bar) return;
+            const bm = getIslBookmark();
+            if (!bm || !bm.s || !bm.a) { bar.classList.remove('show'); return; }
+            const nm = SURAH_NAMES[bm.s - 1] || '';
+            bar.innerHTML = '📌 متابعة القراءة: سورة ' + nm + ' — آية ' + bm.a + ' <span id="isl-resume-clear" style="margin-inline-start:8px;opacity:.7;">✕</span>';
+            bar.classList.add('show');
+            bar.onclick = (e) => {
+                if (e.target && e.target.id === 'isl-resume-clear') { try { localStorage.removeItem('islQuranBookmark'); } catch (err) {} bar.classList.remove('show'); document.querySelectorAll('#isl-quran-body .ayah-bookmark').forEach(x => x.classList.remove('ayah-bookmark')); return; }
+                document.getElementById('tab-surah').click();
+                document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
+                const si = document.getElementById('surah-item-' + bm.s); if (si) si.classList.add('active');
+                islTargetAyah = bm.a; selectSurah(bm.s, SURAH_NAMES[bm.s - 1], SURAH_META[bm.s - 1]); showQuranTextOnMobile();
+            };
+        }
         function generateSurahGrid() {
             const container = document.getElementById('isl-surah-list-container'); if (!container) return; container.innerHTML = '';
             SURAH_NAMES.forEach((name, index) => {
@@ -2331,9 +2356,9 @@ var gender = 'male';
             try {
                 const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}/quran-uthmani`); const data = await res.json();
                 if (data.code !== 200) throw new Error('API');
-                const surah = data.data; islQuranAyahs = surah.ayahs; let html = '';
+                const surah = data.data; islQuranAyahs = surah.ayahs; let html = ''; const bm = getIslBookmark();
                 if (parseInt(num) !== 1 && parseInt(num) !== 9) html += '<div style="font-size:2.5rem; color:var(--gold); margin-bottom:20px;">﷽</div>';
-                surah.ayahs.forEach((a) => { let spanClass = "ayah-span"; if (num === 1 && a.numberInSurah === 2) spanClass += " ayah-highlight"; html += `<span class="${spanClass}" id="isl-ayah-${a.numberInSurah}">${a.text} <span class="ayah-num-circle">${a.numberInSurah}</span></span> `; });
+                surah.ayahs.forEach((a) => { let spanClass = "ayah-span"; if (num === 1 && a.numberInSurah === 2) spanClass += " ayah-highlight"; if (bm && bm.s === parseInt(num) && bm.a === a.numberInSurah) spanClass += " ayah-bookmark"; html += `<span class="${spanClass}" id="isl-ayah-${a.numberInSurah}">${a.text} <span class="ayah-num-circle">${a.numberInSurah}</span></span> `; });
                 textContainer.innerHTML = html;
                 if (islTargetAyah) { setTimeout(() => { const el = document.getElementById('isl-ayah-' + islTargetAyah); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('ayah-reading'); setTimeout(() => el.classList.remove('ayah-reading'), 2000); } }, 500); } else textContainer.scrollTop = 0;
             } catch (err) { textContainer.innerHTML = '<div style="color:#f88; text-align:center;">⚠️ خطأ في تحميل السورة</div>'; }
@@ -2380,6 +2405,8 @@ var gender = 'male';
             document.getElementById('tab-juz').onclick = () => { document.getElementById('tab-juz').classList.add('active'); document.getElementById('tab-surah').classList.remove('active'); document.getElementById('isl-juz-list-container').style.display = 'flex'; document.getElementById('isl-surah-list-container').style.display = 'none'; };
             document.getElementById('isl-back-to-surahs').onclick = () => { const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); };
             document.getElementById('isl-play-btn').onclick = toggleIslamiyatPlay; fetchRecitersIslamiyat();
+            document.getElementById('isl-quran-body').addEventListener('click', function (e) { const sp = e.target.closest('.ayah-span'); if (!sp) return; const m = sp.id && sp.id.match(/^isl-ayah-(\d+)$/); if (!m) return; const ayah = parseInt(m[1]); try { localStorage.setItem('islQuranBookmark', JSON.stringify({ s: islSelectedSurah, a: ayah })); } catch (err) {} document.querySelectorAll('#isl-quran-body .ayah-bookmark').forEach(x => x.classList.remove('ayah-bookmark')); sp.classList.add('ayah-bookmark'); islShowToast('📌 تم حفظ موضع القراءة — سورة ' + (SURAH_NAMES[islSelectedSurah - 1] || '') + ' آية ' + ayah); updateIslResumeBar(); });
+            updateIslResumeBar();
         }
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
@@ -2522,7 +2549,7 @@ var gender = 'male';
         document.getElementById('nav-btn-reminder').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-reminder-toggle').focus(), 100); };
         document.getElementById('nav-btn-adhan').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-adhan-toggle').focus(), 100); };
 
-        document.getElementById('card-quran').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran'); const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); const sl = document.getElementById('isl-surah-list-container'); if (sl) sl.scrollTop = 0; window.scrollTo(0, 0); };
+        document.getElementById('card-quran').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran'); const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); const sl = document.getElementById('isl-surah-list-container'); if (sl) sl.scrollTop = 0; window.scrollTo(0, 0); updateIslResumeBar(); };
         document.getElementById('card-Adhkar').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('adhkar'); };
         document.getElementById('card-tasbih').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('tasbih'); };
         var LIVE_POSTERS = { haram: 'https://makkahlive.org/posters/makkah.webp', nabawi: 'https://makkahlive.org/posters/madinah.webp', aqsa: 'https://makkahlive.org/posters/aqsa.webp', hajj: 'https://makkahlive.org/logo.webp', assadissa: 'https://www.snrt.ma/sites/default/files/2023-04/assadissa.png' };
