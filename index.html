@@ -1216,14 +1216,36 @@
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-mushaf">‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">تصفح القرآن</h1>
-                        <p>ياسين الجزائري - رواية ورش</p>
+                        <p id="mushaf-reciter-label">ياسين الجزائري - رواية ورش</p>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
-                <div style="flex:1;min-height:0;position:relative;border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#0b132b;">
-                    <iframe id="mushaf-qf-frame" src="about:blank" data-src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" title="تصفح القرآن - مصحف ورش (QuranFlash)" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;" loading="lazy" allow="autoplay; fullscreen"></iframe>
+                <div class="mushaf-tlaoua-bar" style="flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:8px 10px;border:1px solid var(--glass-border);border-radius:12px;background:var(--glass-bg);direction:rtl;">
+                    <span style="color:var(--text-dim);font-size:.9rem;">القارئ:</span>
+                    <span id="mushaf-selected-reciter" style="color:var(--gold);font-weight:700;">ياسين الجزائري - رواية ورش</span>
+                    <select id="mushaf-surah-audio" class="qp-surah-select" style="max-width:180px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--cream);border-radius:8px;padding:6px 8px;font-family:var(--font);" title="اختر السورة للتلاوة"><option value="1">سورة الفاتحة</option></select>
+                    <a class="listenBtn tab-item disable-user-behavior active" icon="ion-navicon-round" id="mushaf-tlaoua-btn" role="button" tabindex="0" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:8px 14px;border-radius:999px;border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.12);color:var(--gold);text-decoration:none;font-weight:700;"><i class="icon kb-play-circle size26" id="mushaf-tlaoua-icon" aria-hidden="true" style="font-style:normal;font-size:22px;line-height:1;">▶</i> <span class="tab-title">تلاوة</span></a>
+                    <audio id="mushaf-audio" preload="none"></audio>
                 </div>
-
+                <div class="mushaf-viewer" id="mushaf-viewer">
+                    <div class="fb-controle mushaf-ctrl">
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-prev" aria-label="الصفحة السابقة">‹ السابق</button>
+                        <span class="mushaf-page-info"><span id="mushaf-page-num">١</span> / <span id="mushaf-page-total">٦٠٤</span></span>
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-next" aria-label="الصفحة التالية">التالي ›</button>
+                    </div>
+                    <div class="mushaf-book-wrap">
+                        <div class="book mushaf-book" id="mushaf-book">
+                            <div id="pages" class="pages mushaf-pages">
+                                <div class="page fipable mushaf-page" id="mushaf-page-slot"><img id="mushaf-img" src="https://www.mp3quran.net/mushaf2/1.jpg" alt="صفحة المصحف 1" loading="eager" referrerpolicy="no-referrer" style="display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fb-controle mushaf-ctrl">
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-prev2" aria-label="الصفحة السابقة">‹ السابق</button>
+                        <label class="mushaf-jump" style="display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:.85rem;">صفحة <input type="number" id="mushaf-jump" min="1" max="604" value="1" inputmode="numeric" style="width:74px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--cream);border-radius:8px;padding:6px 8px;font-family:var(--font);text-align:center;"></label>
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-next2" aria-label="الصفحة التالية">التالي ›</button>
+                    </div>
+                </div>
             </div>
 
             <!-- WIRD SCREEN -->
