@@ -209,6 +209,7 @@
         body.is-mobile #btn-back-from-asma{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
         body.is-mobile #btn-back-from-wird{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
         body.is-mobile #btn-back-from-inheritance{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
+        @media (max-width:560px){ .inh-grid{grid-template-columns:1fr !important;} }
         body.is-mobile .asma-header-row{flex-wrap:wrap;gap:8px;padding-top:6px;}
         body.is-mobile .asma-header-spacer{display:none;}
         body.is-mobile #asma-screen h1{font-size:1.5rem !important;}
@@ -2117,7 +2118,7 @@ var gender = 'male';
         function renderInheritance(){
             var app=document.getElementById('inheritance-app'); if(!app) return;
             app.innerHTML =
-            '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;align-items:end;">'
+            '<div class="inh-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;">'
             +'<div><div class="setting-title">مقدار التركة (اختياري)</div><input id="inh-estate" type="number" min="0" step="0.01" class="setting-select" style="width:100%;" placeholder="مثال: 100000"></div>'
             +'<div><div class="setting-title">جنس المتوفّى</div><select id="inh-gender" class="setting-select" style="width:100%;"><option value="male">ذكر</option><option value="female">أنثى</option></select></div>'
             +'<div><div class="setting-title">هل سبق للمتوفّى الزواج؟</div><select id="inh-married" class="setting-select" style="width:100%;"><option value="yes">نعم</option><option value="no">لا</option></select></div>'
