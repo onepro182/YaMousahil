@@ -2632,6 +2632,7 @@ var gender = 'male';
                 return true;
             } catch (e) { return false; }
         }
+        window.speakArabic = speakArabic;
         function prayerAlertKey(date, prayerKey, type) { return `YaMousahil_${type}_${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}_${prayerKey}`; }
         function alertAlreadySent(key) { try { return localStorage.getItem(key) === '1'; } catch(e) { return false; } }
         function markAlertSent(key) { try { localStorage.setItem(key, '1'); } catch(e) {} }
