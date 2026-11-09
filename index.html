@@ -215,6 +215,8 @@
         .fav-next-prayer .fav-next-time{color:var(--gold-light);font-weight:700;font-variant-numeric:tabular-nums;direction:ltr;display:inline-block;}
         body.is-mobile .fav-next-prayer{display:inline-flex;}
         body.is-mobile .fav-grid{grid-template-columns:repeat(2,1fr);}
+        /* Mobile: masquer le contenu du mihrab */
+        body.is-mobile .mihrab-content{display:none;}
         body.is-mobile .mihrab-column{width:100%;}
         body.is-mobile .mihrab-arch{min-height:300px;border-radius:120px 120px 0 0;}
         body.is-mobile .mihrab-name{font-size:2.4rem;}
@@ -834,8 +836,8 @@
                 <header class="header-prayers" style="padding-bottom:10px;margin-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat">‹ العودة</button>
                     <div style="text-align:center;flex:1;">
-                        <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
-                        <p style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
+                        <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
+                        <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
                     </div>
                     <div class="isl-header-spacer" style="width:80px;"></div>
                 </header>
@@ -2882,6 +2884,14 @@ var gender = 'male';
             document.querySelectorAll('.islamiyat-pane').forEach(p=>p.classList.remove('active'));
             const el=document.getElementById('isl-pane-'+name);
             if(el) el.classList.add('active');
+            const t = document.getElementById('isl-header-title');
+            const s = document.getElementById('isl-header-sub');
+            if (t && s) {
+                if (name === 'quran') { t.textContent = 'قراءة القرآن الكريم'; s.textContent = 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'; }
+                else if (name === 'adhkar') { t.textContent = 'الأذكار'; s.textContent = 'رحلة يومك مع الذكر'; }
+                else if (name === 'tasbih') { t.textContent = 'المسبحة الإلكترونية'; s.textContent = ''; }
+                else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
+            }
         }
         document.getElementById('btn-back-from-islamiyat').onclick = () => {
             const qPane = document.getElementById('isl-pane-quran');
