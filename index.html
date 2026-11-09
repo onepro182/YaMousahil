@@ -2186,6 +2186,7 @@ var gender = 'male';
             if (radioPlaying) stopRadio(); if (marocPlaying) stopMarocPlayer();
             showScreen(mosquesScreen);
             setTimeout(() => { initMosqueMap(); if (mosqueMap) mosqueMap.invalidateSize(); findNearbyMosques(); }, 100);
+            setTimeout(() => { if (mosqueMap) mosqueMap.invalidateSize(); }, 500);
         };
         document.getElementById('btn-back-from-mosques').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
 
