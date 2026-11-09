@@ -735,6 +735,16 @@
         .asma-playing{background:rgba(212,175,55,0.25) !important; border:2px solid var(--gold) !important; box-shadow:0 0 14px rgba(212,175,55,0.45);}
         .asma-selected{background:rgba(212,175,55,0.22) !important; border:2px solid var(--gold) !important; box-shadow:0 0 0 2px rgba(212,175,55,0.25), 0 0 16px rgba(212,175,55,0.35) !important; transform:translateY(-2px);}
         .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
+            /* تصفح القرآن - flip book (mp3quran mushaf2) */
+        .mushaf-viewer{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;}
+        .mushaf-ctrl{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;flex-shrink:0;}
+        .mushaf-nav-btn{padding:8px 14px;border-radius:999px;font-size:.9rem;cursor:pointer;}
+        .mushaf-page-info{color:var(--gold);font-weight:700;font-family:var(--font-quran);font-size:1rem;min-width:90px;text-align:center;}
+        .mushaf-book-wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto;padding:4px;}
+        .mushaf-book,.mushaf-pages{display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+        .mushaf-page{display:flex;align-items:center;justify-content:center;max-width:100%;max-height:100%;}
+        .mushaf-page img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,0.35);background:#f8f3e6;}
+        @media (max-width:700px){ .mushaf-page-info{min-width:70px;font-size:.92rem;} .mushaf-nav-btn{padding:7px 10px;font-size:.85rem;} }
     </style>
     <!-- ASMA_END_STYLE -->
 </head>
@@ -1208,11 +1218,28 @@
                     </div>
                     <a class="back-btn glass-btn" href="https://www.mp3quran.net/ar/mushaf" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">فتح خارجي ↗</a>
                 </header>
-                <div style="flex:1;min-height:0;position:relative;border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.15);">
-                    <iframe id="mushaf-iframe" src="about:blank" data-src="https://www.mp3quran.net/ar/mushaf" title="تصفح القرآن - المصحف" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#0b132b;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allow="autoplay; fullscreen"></iframe>
+                <div class="mushaf-viewer" id="mushaf-viewer">
+                    <div class="fb-controle mushaf-ctrl">
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-prev" aria-label="السابق">السابق ‹</button>
+                        <span class="mushaf-page-info"><span id="mushaf-page-num">١</span> / <span id="mushaf-page-total">٦٠٤</span></span>
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-next" aria-label="التالي">› التالي</button>
+                    </div>
+                    <div class="mushaf-book-wrap">
+                        <div class="book mushaf-book" id="mushaf-book">
+                            <div id="pages" class="pages mushaf-pages">
+                                <div class="page fipable mushaf-page" id="mushaf-page-slot"><img id="mushaf-img" src="https://www.mp3quran.net/mushaf2/1.jpg" alt="صفحة المصحف 1" loading="eager" referrerpolicy="no-referrer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fb-controle mushaf-ctrl">
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-prev2" aria-label="السابق">السابق ‹</button>
+                        <label class="mushaf-jump" style="display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:.85rem;">صفحة <input type="number" id="mushaf-jump" min="1" max="604" value="1" style="width:74px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--cream);border-radius:8px;padding:6px 8px;font-family:var(--font);text-align:center;"></label>
+                        <button type="button" class="glass-btn radius-chip mushaf-nav-btn" id="mushaf-next2" aria-label="التالي">› التالي</button>
+                    </div>
                 </div>
-                <div style="flex-shrink:0;font-size:.78rem;color:var(--text-dim);text-align:center;padding:2px 4px;">المصدر: <a href="https://www.mp3quran.net/ar/mushaf" target="_blank" rel="noopener" style="color:var(--gold);">mp3quran.net/ar/mushaf</a> — إذا لم يظهر المصحف داخل التطبيق، استخدم «فتح خارجي».</div>
+                <div style="flex-shrink:0;font-size:.78rem;color:var(--text-dim);text-align:center;padding:2px 4px;">المصدر: <a href="https://www.mp3quran.net/ar/mushaf" target="_blank" rel="noopener" style="color:var(--gold);">mp3quran.net</a> (صور المصحف /mushaf2)</div>
             </div>
+
             <!-- WIRD SCREEN -->
             <div id="wird-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:15px;">
                 <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
@@ -3713,10 +3740,33 @@ function notifyPrayer(prayerKey, isTest) {
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
             var cm = document.getElementById('card-mushaf');
-            if (cm) cm.onclick = function(){ if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('mushaf-iframe'); if(fr && fr.dataset && fr.dataset.src && (!fr.src || fr.src==='about:blank' || fr.getAttribute('src')==='about:blank')) fr.src = fr.dataset.src; var ms = (typeof mushafScreen!=='undefined' && mushafScreen) ? mushafScreen : document.getElementById('mushaf-screen'); if(ms && typeof showScreen==='function') showScreen(ms); };
+            if (cm) cm.onclick = function(){ if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('mushaf-iframe'); if(fr && fr.dataset && fr.dataset.src && (!fr.src || fr.src==='about:blank' || fr.getAttribute('src')==='about:blank')) fr.src = fr.dataset.src; var ms = (typeof mushafScreen!=='undefined' && mushafScreen) ? mushafScreen : document.getElementById('mushaf-screen'); if(ms && typeof showScreen==='function') showScreen(ms); if(typeof mushafInit==='function') mushafInit(); };
             var bm = document.getElementById('btn-back-from-mushaf');
             if (bm) bm.onclick = function(){ var hs = (typeof homeScreen!=='undefined'&&homeScreen)?homeScreen:document.getElementById('home-screen'); if(hs && typeof showScreen==='function') showScreen(hs); var nh = (typeof navHome!=='undefined'&&navHome)?navHome:document.getElementById('nav-btn-home'); if(nh) nh.classList.add('active'); };
         })();
+        // Mushaf flip-book viewer (mp3quran.net/mushaf2)
+        var _mushafPage = 1, _mushafTotal = 604, _mushafReady = false;
+        var _mushafAr = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+        function _mushafToAr(n){ return String(n).split('').map(function(d){ return _mushafAr[+d]||d; }).join(''); }
+        function mushafGo(n){
+            n = Math.max(1, Math.min(_mushafTotal, parseInt(n,10)||1)); _mushafPage = n;
+            var img = document.getElementById('mushaf-img'); if (img) { img.alt = 'صفحة المصحف ' + n; img.src = 'https://www.mp3quran.net/mushaf2/' + n + '.jpg'; }
+            var num = document.getElementById('mushaf-page-num'); if (num) num.textContent = _mushafToAr(n);
+            var j = document.getElementById('mushaf-jump'); if (j && document.activeElement !== j) j.value = n;
+            var p1 = n-1, n1 = n+1; [p1,n1].forEach(function(x){ if(x>=1&&x<=_mushafTotal){ var im=new Image(); im.src='https://www.mp3quran.net/mushaf2/'+x+'.jpg'; } });
+        }
+        function mushafPrev(){ mushafGo(_mushafPage - 1); }
+        function mushafNext(){ mushafGo(_mushafPage + 1); }
+        function mushafInit(){
+            if (_mushafReady) return; _mushafReady = true;
+            ['mushaf-prev','mushaf-prev2'].forEach(function(id){ var b=document.getElementById(id); if(b) b.onclick=mushafPrev; });
+            ['mushaf-next','mushaf-next2'].forEach(function(id){ var b=document.getElementById(id); if(b) b.onclick=mushafNext; });
+            var j=document.getElementById('mushaf-jump'); if(j){ j.onchange=function(){ mushafGo(j.value); }; j.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); mushafGo(j.value); } }; }
+            var tot=document.getElementById('mushaf-page-total'); if(tot) tot.textContent=_mushafToAr(_mushafTotal);
+            mushafGo(_mushafPage);
+        }
+        window.mushafGo=mushafGo; window.mushafPrev=mushafPrev; window.mushafNext=mushafNext; window.mushafInit=mushafInit;
+
         document.getElementById('card-live').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderLiveMenu(); showScreen(liveScreen); var first = document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"assadissa\"]') || document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"haram\"]') || document.querySelector('#live-cat-list .adhkar-cat-item'); var fr = document.getElementById('live-iframe'); if (fr) fr.src = ''; selectLiveChannel(first); };
         document.getElementById('btn-live-add').onclick = () => {
             var name = document.getElementById('live-new-name').value.trim();
