@@ -1391,7 +1391,7 @@
             [...PRAYER_ORDER].reverse().forEach(key => {
                 const box = document.createElement('div'); box.className = 'time-box glass-btn';
                 if (key === currentPrayerKey) { box.classList.add('is-now'); box.innerHTML = `<div class="name" style="font-size:.7rem">الآن</div><div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
-                else if (key === nextPrayerKey) { box.classList.add('is-next'); box.innerHTML = `<div class="name" style="font-size:.7rem">التالية</div><div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
+                else if (key === nextPrayerKey) { box.classList.add('is-next'); box.style.cursor = 'pointer'; box.title = 'اضغط للاستماع'; box.innerHTML = `<div class="name" style="font-size:.7rem">التالية</div><div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; box.onclick = () => { if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
                 else { box.innerHTML = `<div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
                 homePrayerContainer.appendChild(box);
             });
@@ -1407,6 +1407,7 @@
                 if (diff < 0) statusText = key === currentPrayerKey ? 'الآن' : 'مضى';
                 else { const m = Math.floor(diff / 60000); statusText = m > 60 ? `بعد ${Math.floor(m/60)}:${pad(m%60)}` : `بعد ${m} د`; }
                 item.innerHTML = `<div class="p-right"><div class="p-bell">🔔</div><div class="p-name">${PRAYER_NAMES[key]}</div></div><div class="p-right" style="gap:20px;"><span style="font-size:.85rem;color:${key === currentPrayerKey ? '#0b132b' : 'var(--text-dim)'}">${statusText}</span><span class="p-name">${formatTime(prayerTimesToday[key])}</span></div>`;
+                if (key === nextPrayerKey) { item.style.cursor = 'pointer'; item.title = 'اضغط للاستماع'; item.onclick = () => { if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
                 listContainer.appendChild(item);
             });
             document.getElementById('detail-next-prayer-name').textContent = PRAYER_NAMES[nextPrayerKey];
