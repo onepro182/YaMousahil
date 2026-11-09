@@ -682,10 +682,20 @@
         body.is-mobile #quran-player-modal .qp-main-title{font-size:1.5rem;}
         body.is-mobile .qp-reciters{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
         body.is-mobile .qp-rc{min-height:110px;padding:10px 6px;}
-        .isl-reciters-row{display:flex !important;grid-template-columns:none !important;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:10px;padding:6px 2px;flex:0 0 auto;min-height:auto;}
-        .isl-reciters-row .qp-rc{flex:0 0 96px;min-height:96px;padding:8px 6px;}
-        .isl-reciters-row .qp-rc img,.isl-reciters-row .qp-rc .fallback{width:46px;height:46px;}
-        .isl-reciters-row .qp-rc span{font-size:.74rem;}
+        .isl-reciter-dd{position:relative;min-width:220px;max-width:340px;flex:1 1 220px;}
+        .isl-reciter-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;text-align:right;padding:8px 10px;}
+        .isl-reciter-trigger-inner{display:flex;align-items:center;gap:8px;min-width:0;flex:1;}
+        .isl-reciter-trigger-inner img,.isl-reciter-trigger-inner .isl-r-fb{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:1px solid rgba(212,175,55,0.4);}
+        .isl-reciter-trigger-inner .isl-r-fb{display:grid;place-items:center;background:rgba(212,175,55,0.15);color:var(--gold);font-weight:700;font-size:.8rem;}
+        .isl-reciter-trigger-inner .isl-r-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--cream);}
+        .isl-reciter-placeholder{color:var(--text-dim);}
+        .isl-reciter-caret{color:var(--gold);flex:0 0 auto;font-size:.8rem;}
+        .isl-reciter-menu{position:absolute;z-index:120;top:calc(100% + 4px);right:0;left:0;max-height:280px;overflow-y:auto;background:rgba(8,38,26,0.98);border:1px solid rgba(212,175,55,0.35);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.45);padding:6px;-webkit-overflow-scrolling:touch;}
+        .isl-reciter-opt{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;color:var(--cream);}
+        .isl-reciter-opt:hover,.isl-reciter-opt.active{background:rgba(212,175,55,0.14);}
+        .isl-reciter-opt img,.isl-reciter-opt .isl-r-fb{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:1px solid rgba(212,175,55,0.4);}
+        .isl-reciter-opt .isl-r-fb{display:grid;place-items:center;background:rgba(212,175,55,0.15);color:var(--gold);font-weight:700;}
+        body.is-mobile .isl-reciter-dd{min-width:170px;max-width:100%;}
         .asma-playing{background:rgba(212,175,55,0.25) !important; border:2px solid var(--gold) !important; box-shadow:0 0 14px rgba(212,175,55,0.45);}
         .asma-selected{background:rgba(212,175,55,0.22) !important; border:2px solid var(--gold) !important; box-shadow:0 0 0 2px rgba(212,175,55,0.25), 0 0 16px rgba(212,175,55,0.35) !important; transform:translateY(-2px);}
         .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
@@ -900,13 +910,17 @@
                 <div class="islamiyat-content">
                     <!-- QURAN PANE -->
                     <div id="isl-pane-quran" class="islamiyat-pane active">
-                        <div class="quran-audio-controls" style="order:-1;margin:0 0 10px;flex-direction:column;align-items:stretch;gap:8px;">
-                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                                <span style="color:var(--text-dim);font-weight:600;white-space:nowrap;">القارئ</span>
-                                <button type="button" class="btn-play" id="isl-play-btn">▶ استماع</button>
+                        <div class="quran-audio-controls" style="order:-1;margin:0 0 10px;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <span style="color:var(--text-dim);font-weight:600;white-space:nowrap;">القارئ</span>
+                            <div class="isl-reciter-dd" id="isl-reciter-dd">
                                 <select id="isl-reciter" style="display:none;"><option value="">-- القارئ --</option></select>
+                                <button type="button" class="isl-reciter-trigger setting-select" id="isl-reciter-trigger" aria-haspopup="listbox" aria-expanded="false">
+                                    <span class="isl-reciter-trigger-inner" id="isl-reciter-trigger-inner"><span class="isl-reciter-placeholder">-- القارئ --</span></span>
+                                    <span class="isl-reciter-caret">▾</span>
+                                </button>
+                                <div class="isl-reciter-menu" id="isl-reciter-menu" role="listbox" style="display:none;"></div>
                             </div>
-                            <div id="isl-reciters-grid" class="qp-reciters isl-reciters-row"></div>
+                            <button type="button" class="btn-play" id="isl-play-btn">▶ استماع</button>
                         </div>
                         <div class="quran-split-view">
                             <div class="quran-text-area glass-btn">
@@ -3002,27 +3016,51 @@ var gender = 'male';
             } catch (err) { textContainer.innerHTML = '<div style="color:#f88; text-align:center;">⚠️ خطأ في تحميل السورة</div>'; }
         }
         let islSelectedReciter = null;
+        function _islReciterFace(r) {
+            if (r.photo) return `<img src="${typeof imgProxy==='function'?imgProxy(r.photo):r.photo}" alt="${r.name}" loading="lazy">`;
+            return `<span class="isl-r-fb">${(r.name||'?').charAt(0)}</span>`;
+        }
+        function updateIslReciterTrigger() {
+            const inner = document.getElementById('isl-reciter-trigger-inner');
+            if (!inner) return;
+            if (islSelectedReciter) inner.innerHTML = _islReciterFace(islSelectedReciter) + `<span class="isl-r-name">${islSelectedReciter.name}</span>`;
+            else inner.innerHTML = '<span class="isl-reciter-placeholder">-- القارئ --</span>';
+        }
+        function closeIslReciterMenu() {
+            const m = document.getElementById('isl-reciter-menu'); const t = document.getElementById('isl-reciter-trigger');
+            if (m) m.style.display = 'none'; if (t) t.setAttribute('aria-expanded','false');
+        }
+        function toggleIslReciterMenu() {
+            const m = document.getElementById('isl-reciter-menu'); const t = document.getElementById('isl-reciter-trigger');
+            if (!m) return; const open = m.style.display !== 'none';
+            if (open) { closeIslReciterMenu(); } else { m.style.display = 'block'; if (t) t.setAttribute('aria-expanded','true'); }
+        }
+        function selectIslReciter(r) {
+            islSelectedReciter = r;
+            const sel = document.getElementById('isl-reciter'); if (sel) sel.value = r && r.ed ? r.ed : '';
+            updateIslReciterTrigger();
+            const menu = document.getElementById('isl-reciter-menu');
+            if (menu) menu.querySelectorAll('.isl-reciter-opt').forEach(o => o.classList.toggle('active', o.getAttribute('data-ed') === (r&&r.ed)));
+            closeIslReciterMenu();
+        }
         function buildIslReciterGrid() {
-            const g = document.getElementById('isl-reciters-grid'); if (!g || typeof QP_RECITERS === 'undefined') return;
+            const menu = document.getElementById('isl-reciter-menu'); if (!menu || typeof QP_RECITERS === 'undefined') return;
             const recs = QP_RECITERS.filter(r => r.ed);
             const sel = document.getElementById('isl-reciter');
             if (!islSelectedReciter && recs.length) {
                 islSelectedReciter = recs.find(r => r.ed === 'ar.alafasy') || recs[0];
                 if (sel) sel.value = islSelectedReciter.ed || '';
             }
-            g.innerHTML = '';
-            recs.forEach((r, idx) => {
-                const active = islSelectedReciter && islSelectedReciter.ed === r.ed;
-                const card = document.createElement('div'); card.className = 'qp-rc' + (active ? ' active' : ''); card.tabIndex = 0;
-                card.innerHTML = (r.photo ? `<img src="${typeof imgProxy==='function'?imgProxy(r.photo):r.photo}" alt="${r.name}" loading="lazy">` : `<div class="fallback">${r.name.charAt(0)}</div>`) + `<span>${r.name}</span>`;
-                card.onclick = () => {
-                    islSelectedReciter = r;
-                    if (sel) sel.value = r.ed || '';
-                    g.querySelectorAll('.qp-rc').forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                };
-                g.appendChild(card);
+            menu.innerHTML = '';
+            recs.forEach(r => {
+                const opt = document.createElement('div');
+                opt.className = 'isl-reciter-opt' + (islSelectedReciter && islSelectedReciter.ed === r.ed ? ' active' : '');
+                opt.setAttribute('role','option'); opt.setAttribute('data-ed', r.ed || ''); opt.tabIndex = 0;
+                opt.innerHTML = _islReciterFace(r) + `<span class="isl-r-name">${r.name}</span>`;
+                opt.onclick = () => selectIslReciter(r);
+                menu.appendChild(opt);
             });
+            updateIslReciterTrigger();
         }
         async function fetchRecitersIslamiyat() {
             try {
@@ -3034,6 +3072,11 @@ var gender = 'male';
                 buildIslReciterGrid();
             } catch (e) { console.error('Reciters:', e); }
         }
+        (function initIslReciterDropdown(){
+            var trig = document.getElementById('isl-reciter-trigger');
+            if (trig) trig.onclick = function(e){ e.stopPropagation(); toggleIslReciterMenu(); };
+            document.addEventListener('click', function(e){ var dd = document.getElementById('isl-reciter-dd'); if (dd && !dd.contains(e.target)) closeIslReciterMenu(); });
+        })();
         async function toggleIslamiyatPlay() {
             const btn = document.getElementById('isl-play-btn');
             if (islQuranPlaying) { stopIslamiyatAudio(); return; }
