@@ -403,7 +403,7 @@
         .tasbih-modal .primary-btn{border:1px solid #f4d03f;background:#f4d03f;color:#0b132b;}
         .tasbih-modal .secondary-btn{border:1px solid rgba(212,175,55,0.4);background:rgba(255,255,255,0.06);color:#f4d03f;}
         .tasbih-modal .delete-btn{border:1px solid rgba(212,175,55,0.4);background:rgba(255,255,255,0.06);color:#f0a080;}
-        .tasbih-modal .save-settings{width:100%;min-height:40px;margin-top:18px;}
+        .tasbih-modal .save-settings{position:sticky;bottom:-18px;width:100%;min-height:48px;margin-top:18px;font-size:16px;font-weight:700;z-index:2;}
         .tasbih-modal .custom-message{min-height:18px;margin-top:8px;font-size:12px;line-height:1.5;color:#f4d03f;}
         .tasbih-modal .success{color:#8affb0;}
         .tasbih-modal .error{color:#ff9a8a;}
@@ -1040,7 +1040,7 @@
                     <div class="delay-box"><label for="delayInput" data-i18n="delay">المدة بين كل عدّة وأخرى</label><div class="delay-control"><input id="delayInput" type="number" min="0.5" max="60" step="0.5" value="2" inputmode="decimal" disabled><span data-i18n="seconds">ثانية</span></div><p class="help" data-i18n="autoHelp"></p><p class="help" data-i18n="autoNote"></p><p class="help error" id="settingsError" role="alert" hidden></p></div>
                     <section class="custom-section" aria-labelledby="customTitle"><h3 id="customTitle"></h3><label for="customInput" data-i18n="customLabel">اكتب الذِّكر الذي تريد إضافته</label><textarea id="customInput" rows="3" maxlength="500" dir="rtl" lang="ar"></textarea><div class="custom-actions"><span class="char-count" id="charCount">0 / 500</span><button class="primary-btn" id="saveCustomBtn" type="button"></button><button class="secondary-btn" id="cancelEditBtn" type="button" data-i18n="cancelEdit" hidden></button></div><p class="custom-message" id="customMessage" role="status" aria-live="polite"></p><p class="help" data-i18n="customHelp"></p></section>
                     <section class="custom-manager"><h4 data-i18n="myDhikrs"></h4><p class="help" id="emptyCustom" data-i18n="emptyCustom"></p><div id="customManager"></div></section>
-                    <button class="primary-btn save-settings" id="saveSettingsBtn" type="button" data-i18n="saveSettings"></button>
+                    <button class="primary-btn save-settings" id="saveSettingsBtn" type="button" data-i18n="saveSettings">حفظ الإعدادات</button>
                 </section>
             </div>
 
