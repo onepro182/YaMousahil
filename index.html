@@ -249,6 +249,17 @@
         body.is-mobile .adhkar-text-body{padding:12px 12px 30px;overflow-y:visible;}
         body.is-mobile .adhkar-card{padding:14px;}
         body.is-mobile .adhkar-card .adhkar-text{font-size:1.25rem;line-height:2;}
+        /* Mobile Mosques: affichage amélioré */
+        body.is-mobile #btn-back-from-mosques{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
+        body.is-mobile .mosques-header-spacer{width:0 !important;}
+        body.is-mobile #mosques-screen{height:auto;min-height:100dvh;gap:10px;}
+        body.is-mobile .mosques-controls{flex-wrap:wrap;gap:8px;justify-content:center;padding:0 4px;}
+        body.is-mobile .mosques-controls .radius-chip{padding:6px 12px;font-size:.85rem;}
+        body.is-mobile .mosques-city-select{width:100%;max-width:320px;}
+        body.is-mobile .mosques-layout{flex-direction:column;gap:12px;flex:none;}
+        body.is-mobile .mosques-sidebar{width:100%;max-height:260px;overflow-y:auto;}
+        body.is-mobile .mosques-map-wrap{flex:none !important;width:100%;height:300px;min-height:300px;}
+        body.is-mobile #mosque-map{width:100%;height:100%;min-height:300px;}
         body.is-mobile .tasbih-embedded .layout{grid-template-columns:1fr;}
         body.is-mobile .tasbih-embedded .left-col,body.is-mobile .tasbih-embedded .counter-area,body.is-mobile .tasbih-embedded .side-panel{grid-column:auto;grid-row:auto;width:100%;}
         body.is-mobile .settings-container{width:96%;max-height:92dvh;max-height:92vh;overflow-y:auto;}
@@ -932,7 +943,7 @@
                         <h1 style="font-family:var(--font-quran);">المساجد القريبة</h1>
                         <p>اكتشف المساجد من حولك</p>
                     </div>
-                    <div style="width:80px;"></div>
+                    <div class="mosques-header-spacer" style="width:80px;"></div>
                 </header>
                 <div class="mosques-controls">
                     <span style="color:var(--text-dim);font-size:.85rem;">نطاق البحث :</span>
@@ -946,7 +957,7 @@
                     <div class="mosques-sidebar" id="mosques-list">
                         <div style="text-align:center; padding:20px; color:var(--text-dim);" id="mosques-loading">جاري تحديد موقعك...</div>
                     </div>
-                    <div style="flex:1; position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--glass-border);">
+                    <div class="mosques-map-wrap" style="flex:1; position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--glass-border);">
                         <div id="mosque-map"></div>
                     </div>
                 </div>
