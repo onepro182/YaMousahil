@@ -1908,7 +1908,14 @@ var gender = 'male';
             } catch (e) {}
         }
 
-        function playAsmaAudio(text) { try { speechSynthesis.cancel(); } catch (e) {} try { if (asmaAutoAudio) { asmaAutoAudio.pause(); } } catch (e) {} markAsmaPlaying(text); }
+        function playAsmaAudio(text) {
+            try { speechSynthesis.cancel(); } catch (e) {} try { if (asmaAutoAudio) { asmaAutoAudio.pause(); } } catch (e) {}
+            var grid = document.getElementById('asma-grid');
+            if (grid) Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('asma-selected'); });
+            var idx = ASMA.findIndex(function(s){ return s.ar === text; });
+            if (idx >= 0 && grid && grid.children[idx]) grid.children[idx].classList.add('asma-selected');
+            markAsmaPlaying(text);
+        }
 
         function asmaAutoStop(resetBtn) {
             asmaAuto = false;
