@@ -501,7 +501,11 @@
             border: 1px solid var(--gold) !important;
         }
         #quran-player-modal.modal-overlay { background: rgba(3,20,12,0.82); }
+        .asma-playing{outline:3px solid var(--gold) !important; background:rgba(212,175,55,0.18) !important; box-shadow:0 0 18px rgba(212,175,55,0.55); animation:asmaPulse 1s ease-in-out infinite;}
+        @keyframes asmaPulse{0%,100%{box-shadow:0 0 10px rgba(212,175,55,0.35);}50%{box-shadow:0 0 22px rgba(212,175,55,0.7);}}
+        .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
     </style>
+    <!-- ASMA_END_STYLE -->
 </head>
 <body>
     <audio id="adhan-audio" preload="none"></audio>
@@ -1586,36 +1590,56 @@ var gender = 'male';
         var asmaAuto = false, asmaAutoTimer = null, asmaAutoAudio = null;
 
         function stripTashkeel(t) { try { return String(t).replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u0640]/g, ''); } catch (e) { return t; } }
+        function pickArabicVoice() {
+            try {
+                var voices = window.speechSynthesis.getVoices() || [];
+                var ar = voices.filter(v => /^ar/i.test(v.lang));
+                return ar.find(v => /google/i.test(v.name)) || ar.find(v => /microsoft/i.test(v.name)) || ar.find(v => /saqr/i.test(v.name)) || ar.find(v => /^ar[-_]sa/i.test(v.lang)) || ar[0] || null;
+            } catch (e) { return null; }
+        }
         function speakAsma(text, onDone) {
             var cleanText = stripTashkeel(text);
-            function finish() { if (onDone && asmaAuto) onDone(); }
-            function synthFallback() {
-                if (!('speechSynthesis' in window)) { finish(); return; }
+            function finish() { clearAsmaPlaying(); if (onDone && asmaAuto) onDone(); }
+            var arVoice = ('speechSynthesis' in window) ? pickArabicVoice() : null;
+            if (arVoice) {
                 try {
+                    window.speechSynthesis.cancel();
                     var utter = new SpeechSynthesisUtterance(cleanText);
-                    utter.lang = 'ar-SA';
+                    utter.lang = arVoice.lang;
+                    utter.voice = arVoice;
                     utter.rate = 0.85;
-                    utter.pitch = (gender === 'male') ? 0.65 : 1.1;
-                    var voices = window.speechSynthesis.getVoices();
-                    if (voices && voices.length) {
-                        var ar = voices.find(v => /^ar([-_]|$)/i.test(v.lang)) || voices[0];
-                        if (ar) utter.voice = ar;
-                    }
+                    utter.pitch = (gender === 'male') ? 0.7 : 1.05;
                     utter.onend = finish;
                     utter.onerror = finish;
                     window.speechSynthesis.speak(utter);
-                } catch (e) { finish(); }
+                    return;
+                } catch (e) { /* repli ci-dessous */ }
             }
+            /* Voix arabe native indisponible : Google TTS (prononciation correcte) */
             try {
                 var a = new Audio('https://translate.google.com/translate_tts?client=tw-ob&q=' + encodeURIComponent(cleanText) + '&tl=ar');
                 if (gender === 'male') a.playbackRate = 0.82;
-                a.onended = finish;
-                a.onerror = synthFallback;
-                a.play().catch(synthFallback);
-            } catch (e) { synthFallback(); }
+                a.onended = finish; a.onerror = finish;
+                a.play().catch(finish);
+            } catch (e) { finish(); }
+        }
+        function clearAsmaPlaying() {
+            try {
+                var grid = document.getElementById('asma-grid');
+                if (grid) Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('asma-playing'); var sp = c.querySelector('.asma-speaker'); if (sp) sp.textContent = ''; });
+            } catch (e) {}
+        }
+        function markAsmaPlaying(text) {
+            try {
+                clearAsmaPlaying();
+                var grid = document.getElementById('asma-grid');
+                if (!grid) return;
+                var idx = ASMA.findIndex(s => s.ar === text);
+                if (idx >= 0 && grid.children[idx]) { grid.children[idx].classList.add('asma-playing'); var sp = grid.children[idx].querySelector('.asma-speaker'); if (sp) sp.textContent = '🔊'; }
+            } catch (e) {}
         }
 
-        function playAsmaAudio(text) { asmaAutoStop(true); speakAsma(text, null); }
+        function playAsmaAudio(text) { asmaAutoStop(true); markAsmaPlaying(text); speakAsma(text, null); }
 
         function asmaAutoStop(resetBtn) {
             asmaAuto = false;
@@ -1659,7 +1683,8 @@ var gender = 'male';
             const grid = document.getElementById('asma-grid');
             if (!grid) return;
             grid.innerHTML = ASMA.map(s => `
-                <div onclick="playAsmaAudio('${s.ar}')" style="cursor:pointer; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:14px; text-align:center; backdrop-filter:blur(8px);">
+                <div class="asma-card" onclick="playAsmaAudio('${s.ar}')" style="cursor:pointer; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:14px; text-align:center; backdrop-filter:blur(8px); transition:border-color .2s, box-shadow .2s, background .2s;">
+                    <div class="asma-speaker" style="font-size:.8rem;color:var(--gold);height:1rem;"></div>
                     <div style="font-family:var(--font-quran); font-size:1rem; color:#f4d03f; margin-bottom:4px;">${s.ar}</div>
                     <div style="font-size:0.7rem; color:#fff; line-height:1.35;">${s.desc}</div>
                     <div style="font-size:0.65rem; color:rgba(255,255,255,0.5); margin-top:4px;">رقم ${s.num}</div>
