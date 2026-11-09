@@ -682,6 +682,10 @@
         body.is-mobile #quran-player-modal .qp-main-title{font-size:1.5rem;}
         body.is-mobile .qp-reciters{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
         body.is-mobile .qp-rc{min-height:110px;padding:10px 6px;}
+        .isl-reciters-row{display:flex !important;grid-template-columns:none !important;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:10px;padding:6px 2px;flex:0 0 auto;min-height:auto;}
+        .isl-reciters-row .qp-rc{flex:0 0 96px;min-height:96px;padding:8px 6px;}
+        .isl-reciters-row .qp-rc img,.isl-reciters-row .qp-rc .fallback{width:46px;height:46px;}
+        .isl-reciters-row .qp-rc span{font-size:.74rem;}
         .asma-playing{background:rgba(212,175,55,0.25) !important; border:2px solid var(--gold) !important; box-shadow:0 0 14px rgba(212,175,55,0.45);}
         .asma-selected{background:rgba(212,175,55,0.22) !important; border:2px solid var(--gold) !important; box-shadow:0 0 0 2px rgba(212,175,55,0.25), 0 0 16px rgba(212,175,55,0.35) !important; transform:translateY(-2px);}
         .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
@@ -896,9 +900,13 @@
                 <div class="islamiyat-content">
                     <!-- QURAN PANE -->
                     <div id="isl-pane-quran" class="islamiyat-pane active">
-                        <div class="quran-audio-controls  " style="order:-1;margin:0 0 10px;justify-content:center;">
-                            <select id="isl-reciter"><option value="">-- القارئ --</option></select>
-                            <button type="button" class="btn-play" id="isl-play-btn">▶ استماع</button>
+                        <div class="quran-audio-controls" style="order:-1;margin:0 0 10px;flex-direction:column;align-items:stretch;gap:8px;">
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                <span style="color:var(--text-dim);font-weight:600;white-space:nowrap;">القارئ</span>
+                                <button type="button" class="btn-play" id="isl-play-btn">▶ استماع</button>
+                                <select id="isl-reciter" style="display:none;"><option value="">-- القارئ --</option></select>
+                            </div>
+                            <div id="isl-reciters-grid" class="qp-reciters isl-reciters-row"></div>
                         </div>
                         <div class="quran-split-view">
                             <div class="quran-text-area glass-btn">
@@ -1860,6 +1868,10 @@
         let qpSelected = null; let qpMpData = null;
         function buildQpReciterGrid() {
             const g = document.getElementById('qp-reciters-grid'); if (!g) return;
+            if (!qpSelected && QP_RECITERS.length > 0) {
+                qpSelected = Object.assign({ idx: 0 }, QP_RECITERS[0]);
+                var rs = document.getElementById('qp-reciter'); if (rs) rs.value = qpSelected.ed || '';
+            }
             g.innerHTML = '';
             QP_RECITERS.forEach((r, idx) => {
                 const card = document.createElement('div'); card.className = 'qp-rc' + (qpSelected && qpSelected.idx === idx ? ' active' : ''); card.tabIndex = 0;
@@ -2988,8 +3000,38 @@ var gender = 'male';
                 if (islTargetAyah) { setTimeout(() => { const el = document.getElementById('isl-ayah-' + islTargetAyah); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('ayah-reading'); setTimeout(() => el.classList.remove('ayah-reading'), 2000); } }, 500); } else textContainer.scrollTop = 0;
             } catch (err) { textContainer.innerHTML = '<div style="color:#f88; text-align:center;">⚠️ خطأ في تحميل السورة</div>'; }
         }
+        let islSelectedReciter = null;
+        function buildIslReciterGrid() {
+            const g = document.getElementById('isl-reciters-grid'); if (!g || typeof QP_RECITERS === 'undefined') return;
+            const recs = QP_RECITERS.filter(r => r.ed);
+            const sel = document.getElementById('isl-reciter');
+            if (!islSelectedReciter && recs.length) {
+                islSelectedReciter = recs.find(r => r.ed === 'ar.alafasy') || recs[0];
+                if (sel) sel.value = islSelectedReciter.ed || '';
+            }
+            g.innerHTML = '';
+            recs.forEach((r, idx) => {
+                const active = islSelectedReciter && islSelectedReciter.ed === r.ed;
+                const card = document.createElement('div'); card.className = 'qp-rc' + (active ? ' active' : ''); card.tabIndex = 0;
+                card.innerHTML = (r.photo ? `<img src="${typeof imgProxy==='function'?imgProxy(r.photo):r.photo}" alt="${r.name}" loading="lazy">` : `<div class="fallback">${r.name.charAt(0)}</div>`) + `<span>${r.name}</span>`;
+                card.onclick = () => {
+                    islSelectedReciter = r;
+                    if (sel) sel.value = r.ed || '';
+                    g.querySelectorAll('.qp-rc').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                };
+                g.appendChild(card);
+            });
+        }
         async function fetchRecitersIslamiyat() {
-            try { const res = await fetch('https://api.alquran.cloud/v1/edition?format=audio&language=ar'); const data = await res.json(); islReciters = data.data.filter(r => typeof VALID_AUDIO_EDITIONS !== 'undefined' && VALID_AUDIO_EDITIONS.includes(r.identifier)).sort((a, b) => a.name.localeCompare(b.name, 'ar')); const sel = document.getElementById('isl-reciter'); sel.innerHTML = '<option value="">-- القارئ --</option>'; islReciters.forEach(r => { const o = document.createElement('option'); o.value = r.identifier; o.textContent = r.name; sel.appendChild(o); }); const fav = islReciters.find(r => r.identifier === 'ar.alafasy') || islReciters.find(r => r.name.includes('العفاسي') || r.name.includes('Mishary')); if (fav) sel.value = fav.identifier; } catch (e) { console.error('Reciters:', e); }
+            try {
+                const sel = document.getElementById('isl-reciter');
+                if (sel) sel.innerHTML = '<option value="">-- القارئ --</option>';
+                if (typeof QP_RECITERS !== 'undefined') {
+                    QP_RECITERS.filter(r => r.ed).forEach(r => { if (!sel) return; const o = document.createElement('option'); o.value = r.ed; o.textContent = r.name; sel.appendChild(o); });
+                }
+                buildIslReciterGrid();
+            } catch (e) { console.error('Reciters:', e); }
         }
         async function toggleIslamiyatPlay() {
             const btn = document.getElementById('isl-play-btn');
