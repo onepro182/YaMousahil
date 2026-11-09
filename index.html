@@ -3748,7 +3748,7 @@ function notifyPrayer(prayerKey, isTest) {
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
             var cm = document.getElementById('card-mushaf');
-            if (cm) cm.onclick = function(){ if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('mushaf-qf-frame')||document.getElementById('mushaf-iframe'); if(fr && fr.dataset && fr.dataset.src && (!fr.src || fr.src==='about:blank' || fr.getAttribute('src')==='about:blank')) fr.src = fr.dataset.src; var ms = (typeof mushafScreen!=='undefined' && mushafScreen) ? mushafScreen : document.getElementById('mushaf-screen'); if(ms && typeof showScreen==='function') showScreen(ms); if(typeof mushafInit==='function') mushafInit(); };
+            if (cm) cm.onclick = function(){ if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('mushaf-qf-frame')||document.getElementById('mushaf-iframe'); if(fr && fr.dataset && fr.dataset.src && (!fr.src || fr.src==='about:blank' || fr.getAttribute('src')==='about:blank')) fr.src = fr.dataset.src; var ms = (typeof mushafScreen!=='undefined' && mushafScreen) ? mushafScreen : document.getElementById('mushaf-screen'); if(ms && typeof showScreen==='function') showScreen(ms); if(typeof mushafTlaouaInit==='function') mushafTlaouaInit(); else if(typeof mushafTlaouaInit==='function') mushafTlaouaInit(); else if(typeof mushafInit==='function') mushafInit(); };
             var bm = document.getElementById('btn-back-from-mushaf');
             if (bm) bm.onclick = function(){ var hs = (typeof homeScreen!=='undefined'&&homeScreen)?homeScreen:document.getElementById('home-screen'); if(hs && typeof showScreen==='function') showScreen(hs); var nh = (typeof navHome!=='undefined'&&navHome)?navHome:document.getElementById('nav-btn-home'); if(nh) nh.classList.add('active'); };
         })();
@@ -3774,6 +3774,37 @@ function notifyPrayer(prayerKey, isTest) {
             mushafGo(_mushafPage);
         }
         window.mushafGo=mushafGo; window.mushafPrev=mushafPrev; window.mushafNext=mushafNext; window.mushafInit=mushafInit;
+        // تصفح القرآن - تلاوة: ياسين الجزائري - رواية ورش (mp3quran server11 reciter 14)
+        var _mushafReciter = { name: 'ياسين الجزائري', riwaya: 'رواية ورش', label: 'ياسين الجزائري - رواية ورش', server: 'https://server11.mp3quran.net/qari' };
+        function mushafSelectReciter(){ var l=document.getElementById('mushaf-selected-reciter'); var p=document.getElementById('mushaf-reciter-label'); if(l) l.textContent=_mushafReciter.label; if(p) p.textContent=_mushafReciter.label; }
+        function _mushafSurahPad(n){ n=parseInt(n,10)||1; return (n<10?'00':n<100?'0':'')+n; }
+        function mushafTlaouaPlay(){
+            mushafSelectReciter();
+            var a=document.getElementById('mushaf-audio'); var sel=document.getElementById('mushaf-surah-audio'); var ic=document.getElementById('mushaf-tlaoua-icon');
+            if(!a) return;
+            var s = sel ? (sel.value||'1') : '1';
+            var src = _mushafReciter.server + '/' + _mushafSurahPad(s) + '.mp3';
+            if (a.src !== src) { a.src = src; }
+            if (a.paused) { a.play().catch(function(){}); if(ic) ic.textContent='❚❚'; }
+            else { a.pause(); if(ic) ic.textContent='▶'; }
+        }
+        function mushafTlaouaInit(){
+            mushafSelectReciter();
+            // populate surahs
+            var sel=document.getElementById('mushaf-surah-audio');
+            if (sel && sel.options.length <= 1) {
+                var names = (typeof SURAH_NAMES !== 'undefined') ? SURAH_NAMES : null;
+                sel.innerHTML = '';
+                for (var i=1;i<=114;i++){ var o=document.createElement('option'); o.value=String(i); o.textContent = (i) + '. ' + (names && names[i-1] ? names[i-1] : ('سورة '+i)); sel.appendChild(o); }
+                sel.value = '1';
+            }
+            var btn=document.getElementById('mushaf-tlaoua-btn');
+            if (btn && !btn._mushafBound){ btn._mushafBound=true; btn.addEventListener('click', function(e){ e.preventDefault(); mushafTlaouaPlay(); }); btn.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); mushafTlaouaPlay(); } }); }
+            var a=document.getElementById('mushaf-audio'); if(a){ a.onended=function(){ var ic=document.getElementById('mushaf-tlaoua-icon'); if(ic) ic.textContent='▶'; }; a.onpause=function(){ var ic=document.getElementById('mushaf-tlaoua-icon'); if(ic) ic.textContent='▶'; }; a.onplay=function(){ var ic=document.getElementById('mushaf-tlaoua-icon'); if(ic) ic.textContent='❚❚'; }; }
+            if (typeof mushafInit === 'function') mushafInit();
+        }
+        window.mushafTlaouaPlay=mushafTlaouaPlay; window.mushafSelectReciter=mushafSelectReciter;
+
 
         document.getElementById('card-live').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderLiveMenu(); showScreen(liveScreen); var first = document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"assadissa\"]') || document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"haram\"]') || document.querySelector('#live-cat-list .adhkar-cat-item'); var fr = document.getElementById('live-iframe'); if (fr) fr.src = ''; selectLiveChannel(first); };
         document.getElementById('btn-live-add').onclick = () => {
