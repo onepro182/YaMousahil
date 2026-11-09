@@ -204,6 +204,7 @@
         body.is-mobile .tv-inner{height:auto;min-height:100dvh;padding:12px 12px 20px;}
         body.is-mobile .top-bar{flex-direction:column;align-items:center;gap:6px;}
         body.is-mobile .top-logo,body.is-mobile .top-right-icons{width:auto;justify-content:center;}
+        body.is-mobile .top-right-icons{align-self:flex-end;justify-content:flex-end;width:100%;}
         body.is-mobile .top-center-time{width:100%;}
         body.is-mobile .main-layout{flex-direction:column;gap:14px;}
         body.is-mobile .prayer-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
@@ -220,8 +221,8 @@
         body.is-mobile .quran-split-view.show-text .quran-sidebar{display:none;}
         #isl-back-to-surahs{display:none;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
         body.is-mobile .quran-split-view.show-text #isl-back-to-surahs{display:inline-block;margin:6px auto 0;}
-        /* Bouton الرئيسية toujours visible sur mobile dans إسلاميات */
-        body.is-mobile #btn-back-from-islamiyat{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
+        /* Mobile accueil: masquer le menu de navigation */
+        body.is-mobile .screen-nav-container{display:none;}
         body.is-mobile .isl-header-spacer{width:0;}
         /* Mobile: lisibilité du texte coranique */
         body.is-mobile .quran-text-header{padding:8px 10px 4px;}
@@ -1053,7 +1054,7 @@
                                 <div class="setting-row"><div class="setting-title">المدينة</div><select id="set-city" class="setting-select"></select></div>
                                 <div class="setting-row"><div class="setting-title">طريقة الحساب</div><select id="set-method" class="setting-select"><option value="Egyptian">الهيئة المصرية</option><option value="Morocco">وزارة الأوقاف المغربية</option><option value="UmmAlQura">أم القرى</option></select></div>
                                 <div class="setting-row"><div class="setting-title">مذهب العصر</div><div class="toggle-group" id="set-asr"><button type="button" class="group-btn active" data-value="Shafi">الشافعي / المالكي</button><button type="button" class="group-btn" data-value="Hanafi">الحنفي</button></div></div>
-                                <div class="setting-row"><div class="setting-title">تعديل التوقيت العام</div><select id="set-global-offset" class="setting-select"><option value="0">بدون تعديل</option><option value="60">+1 ساعة</option><option value="-60">-1 ساعة</option><option value="30">+30 دقيقة</option><option value="-30">-30 دقيقة</option></select></div>
+                                <div class="setting-row"><div class="setting-title">تعديل التوقيت العام</div><select id="set-global-offset" class="setting-select"><option value="0">بدون تعديل</option><option value="60">+1 ساعة</option><option value="-60" selected>-1 ساعة</option><option value="30">+30 دقيقة</option><option value="-30">-30 دقيقة</option></select></div>
                                 <div class="setting-row"><div class="setting-title">مفتاح Geoapify (للمساجد)</div><input type="text" id="set-geoapify-key" class="setting-select" placeholder="أدخل مفتاح API هنا" style="min-width: 200px; direction: ltr; text-align: left;"></div>
                                 <div class="manual-adjustments"><h3>تعديل المواقيت يدوياً (بالدقائق)</h3><div id="adjust-list"></div></div>
                                 <div class="setting-row" style="background:transparent;border:1px dashed rgba(255,255,255,0.1);padding:15px;margin-top:10px;"><div style="display:flex;gap:10px;width:100%;justify-content:center;"><button type="button" class="file-btn" id="btn-export-txt">⬇ تصدير الإعدادات (TXT)</button><label class="file-btn" style="margin:0;">⬆ استيراد الإعدادات (TXT)<input type="file" id="btn-import-txt" accept=".txt" style="display:none;"></label></div></div>
@@ -1185,10 +1186,10 @@
         // PARAMÈTRES
         // ==================================================
         let settings = {
-            countryId:'morocco', cityId:'tangier', method:'Morocco', asr:'Shafi', clockFormat:24,
+            countryId:'morocco', cityId:'oujda', method:'Morocco', asr:'Shafi', clockFormat:24,
             adhanEnabled:true, adhanVoice:'azan1', reminderEnabled:false, reminderMinutes:10,
             reminderText:true, reminderVoice:true, geoapifyKey: '',
-            globalOffset: 0,
+            globalOffset: -60,
             adjustments: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 }
         };
         
@@ -1230,7 +1231,7 @@
         function locationTimeZone(cityId=settings.cityId) { return (CITIES_DB[cityId] && CITIES_DB[cityId].timeZone) || 'Africa/Casablanca'; }
         function locationDate() { const parts = new Intl.DateTimeFormat('en-CA', {timeZone:locationTimeZone(),year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()); const part = type => Number(parts.find(p => p.type === type).value); return new Date(part('year'), part('month')-1, part('day')); }
         
-        if (!CITIES_DB[settings.cityId]) settings.cityId = 'tangier';
+        if (!CITIES_DB[settings.cityId]) settings.cityId = 'oujda';
         settings.countryId = CITIES_DB[settings.cityId].countryId;
 
         let prayerTimesToday = null, prayerTimesTomorrow = null, currentPrayerKey = null, nextPrayerKey = null;
@@ -1288,7 +1289,7 @@
         }
 
         function calculateForLocation(cityId, date, method, asr) {
-            const city = CITIES_DB[cityId] || CITIES_DB.tangier;
+            const city = CITIES_DB[cityId] || CITIES_DB.oujda;
             const coords = new adhan.Coordinates(city.lat, city.lng);
             let params;
             if (method === 'Morocco') { params = adhan.CalculationMethod.Other(); params.fajrAngle = 19; params.ishaAngle = 17; }
@@ -2125,7 +2126,7 @@ var gender = 'male';
                     } else if (fromButton) {
                         listContainer.innerHTML = '<div style="text-align:center; padding:16px; color:var(--gold-light); line-height:1.8;">🔒 موقعك الحقيقي غير متاح (الإذن مرفوض).<br>الحل: اضغط على أيقونة 🔒 في شريط عنوان المتصفح ← <b>الموقع</b> ← <b>سماح</b>، ثم اضغط <b>📍 تحديث الموقع</b> مجدداً.</div>';
                     } else {
-                        const city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) || CITIES_DB.tangier;
+                        const city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) || CITIES_DB.oujda;
                         searchMosques(city.lat, city.lng, city.nameAr, '<div style="text-align:center;padding:12px;color:var(--gold-light);">⚠️ لم نحصل على موقعك الدقيق — جاري عرض مساجد ' + city.nameAr + '. اضغط 📍 تحديث الموقع للحصول على موقعك الحقيقي.</div>');
                     }
                 },
@@ -2788,7 +2789,7 @@ var gender = 'male';
             var sel = document.getElementById('weather-city-select');
             var opt = sel && sel.options[sel.selectedIndex];
             if (opt && opt.value) return { lat: parseFloat(opt.dataset.lat), lon: parseFloat(opt.dataset.lng), name: opt.dataset.name };
-            var city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) || CITIES_DB.tangier;
+            var city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) || CITIES_DB.oujda;
             return { lat: city.lat, lon: city.lng, name: city.nameAr };
         }
         (function initWeatherUI() {
