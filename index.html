@@ -1182,7 +1182,7 @@
 
             <!-- OVERLAYS -->
             <div class="prayer-overlay" id="alert-overlay">
-                <div class="alert-box"><div class="alert-icon">🔔</div><div class="alert-title" id="alert-prayer-name">صلاة الفجر</div><div class="alert-desc" id="alert-text">اقترب موعد الصلاة، تبقى 10 دقائق.</div><button class="alert-close-btn" id="btn-close-alert">حسناً</button></div>
+                <div class="alert-box"><div class="alert-icon">🔔</div><div class="alert-title" id="alert-prayer-name">صلاة الفجر</div><div class="alert-desc" id="alert-text">اقترب موعد الصلاة، تبقى 10 دقائق.</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="alert-close-btn" id="btn-hear-alert" style="background:rgba(212,175,55,0.15);color:var(--gold);border:1px solid var(--gold);">🔊 استمع</button><button class="alert-close-btn" id="btn-close-alert">حسناً</button></div></div>
             </div>
 
             <div class="prayer-overlay" id="adhan-overlay">
@@ -2575,7 +2575,7 @@ var gender = 'male';
         const ADHAN_FILES = { azan1:'https://www.islamcan.com/audio/adhan/azan1.mp3', azan2:'https://www.islamcan.com/audio/adhan/azan2.mp3', azan3:'https://www.islamcan.com/audio/adhan/azan3.mp3', azan4:'https://www.islamcan.com/audio/adhan/azan4.mp3', azan5:'https://www.islamcan.com/audio/adhan/azan5.mp3', azan6:'https://www.islamcan.com/audio/adhan/azan6.mp3', azan7:'https://www.islamcan.com/audio/adhan/azan7.mp3', azan8:'https://www.islamcan.com/audio/adhan/azan8.mp3', azan9:'https://www.islamcan.com/audio/adhan/azan9.mp3', azan10:'https://www.islamcan.com/audio/adhan/azan10.mp3' };
         let adhanUnlocked = false;
 
-        function showAlertOverlay(prayerKey) { const overlay = document.getElementById('alert-overlay'); document.getElementById('alert-prayer-name').textContent = `اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`; document.getElementById('alert-text').textContent = `تبقى ${settings.reminderMinutes} دقائق لرفع أذان ${PRAYER_NAMES[prayerKey]}.`; overlay.classList.add('active'); }
+        function showAlertOverlay(prayerKey) { window._lastAlertPrayerKey = prayerKey; const overlay = document.getElementById('alert-overlay'); document.getElementById('alert-prayer-name').textContent = `اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`; document.getElementById('alert-text').textContent = `تبقى ${settings.reminderMinutes} دقائق لرفع أذان ${PRAYER_NAMES[prayerKey]}.`; overlay.classList.add('active'); }
         function notifyPrayer(prayerKey, isTest) {
             try {
                 if (!('Notification' in window)) return;
@@ -2588,6 +2588,7 @@ var gender = 'male';
         }
         function showAdhanOverlay(prayerKey) { const overlay = document.getElementById('adhan-overlay'); document.getElementById('adhan-prayer-name').textContent = `صلاة ${PRAYER_NAMES[prayerKey]}`; overlay.classList.add('active'); }
         document.getElementById('btn-close-alert').onclick = () => { document.getElementById('alert-overlay').classList.remove('active'); if ('speechSynthesis' in window) window.speechSynthesis.cancel(); };
+        document.getElementById('btn-hear-alert').onclick = () => { var k = window._lastAlertPrayerKey; if (k && PRAYER_NAMES[k]) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES[k]); else if (typeof speakArabic === 'function') speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES[k]); } };
         document.getElementById('btn-stop-adhan').onclick = () => { adhanAudio.pause(); adhanAudio.currentTime = 0; document.getElementById('adhan-overlay').classList.remove('active'); };
 
         async function playAdhan(prayerKey, isTest=false) {
