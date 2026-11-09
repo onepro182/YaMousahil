@@ -1638,13 +1638,13 @@ var gender = 'male';
             } catch (e) {}
         }
 
-        function playAsmaAudio(text) { asmaAutoStop(true); markAsmaPlaying(text); speakAsma(text, null); }
+        function playAsmaAudio(text) { try { speechSynthesis.cancel(); } catch (e) {} try { if (asmaAutoAudio) { asmaAutoAudio.pause(); } } catch (e) {} markAsmaPlaying(text); }
 
         function asmaAutoStop(resetBtn) {
             asmaAuto = false;
             if (asmaAutoTimer) { clearTimeout(asmaAutoTimer); asmaAutoTimer = null; }
-            if (asmaAutoAudio) { asmaAutoAudio.onended = null; asmaAutoAudio.onerror = null; asmaAutoAudio.pause(); asmaAutoAudio = null; }
             try { speechSynthesis.cancel(); } catch(e) {}
+            clearAsmaPlaying();
             if (resetBtn !== false) {
                 var b = document.getElementById('btn-auto-asma');
                 if (b) b.textContent = '▶ Lecture auto';
@@ -1656,16 +1656,15 @@ var gender = 'male';
         function playAsmaAuto(i) {
             if (!asmaAuto) return;
             var grid = document.getElementById('asma-grid');
-            if (i >= ASMA.length) { if (grid && asmaHighlightIdx >= 0) grid.children[asmaHighlightIdx].style.outline = ''; asmaHighlightIdx = -1; asmaAuto = false; var b=document.getElementById('btn-auto-asma'); if(b) b.textContent='▶ Lecture auto'; return; }
+            if (i >= ASMA.length) { clearAsmaPlaying(); asmaHighlightIdx = -1; asmaAuto = false; var b=document.getElementById('btn-auto-asma'); if(b) b.textContent='▶ Lecture auto'; return; }
             if (grid) {
-                if (asmaHighlightIdx >= 0 && grid.children[asmaHighlightIdx]) grid.children[asmaHighlightIdx].style.outline = '';
                 asmaHighlightIdx = i;
-                grid.children[i].style.outline = '2px solid #f4d03f';
+                markAsmaPlaying(ASMA[i].ar);
                 grid.children[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             }
             speakAsma(ASMA[i].ar, function() {
                 if (!asmaAuto) return;
-                asmaAutoTimer = setTimeout(function(){ playAsmaAuto(i + 1); }, 600);
+                asmaAutoTimer = setTimeout(function(){ playAsmaAuto(i + 1); }, 2000);
             });
         }
         window.__toggleAsmaAuto = function() {
