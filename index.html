@@ -1872,17 +1872,22 @@ var gender = 'male';
         var asmaAuto = false, asmaAutoTimer = null, asmaAutoAudio = null;
 
         function stripTashkeel(t) { try { return String(t).replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u0640]/g, ''); } catch (e) { return t; } }
-        function pickArabicVoice() {
+        function pickArabicVoice(preferMale) {
             try {
                 var voices = window.speechSynthesis.getVoices() || [];
-                var ar = voices.filter(v => /^ar/i.test(v.lang));
-                return ar.find(v => /google/i.test(v.name)) || ar.find(v => /microsoft/i.test(v.name)) || ar.find(v => /saqr/i.test(v.name)) || ar.find(v => /^ar[-_]sa/i.test(v.lang)) || ar[0] || null;
+                var ar = voices.filter(function(v){ return /^ar/i.test(v.lang); });
+                if (!ar.length) return null;
+                if (preferMale) {
+                    var male = ar.find(function(v){ return /naayf|hamed|maged|male|homme|tarik|omar|zayd|ali|male/i.test(v.name + ' ' + (v.voiceURI||'')); });
+                    if (male) return male;
+                }
+                return ar.find(function(v){ return /google/i.test(v.name); }) || ar.find(function(v){ return /microsoft/i.test(v.name); }) || ar.find(function(v){ return /saqr/i.test(v.name); }) || ar.find(function(v){ return /^ar[-_]sa/i.test(v.lang); }) || ar[0] || null;
             } catch (e) { return null; }
         }
         function speakAsma(text, onDone) {
             var cleanText = stripTashkeel(text);
             function finish() { clearAsmaPlaying(); if (onDone && asmaAuto) onDone(); }
-            var arVoice = ('speechSynthesis' in window) ? pickArabicVoice() : null;
+            var arVoice = ('speechSynthesis' in window) ? pickArabicVoice(gender === 'male') : null;
             if (arVoice) {
                 try {
                     var utter = new SpeechSynthesisUtterance(cleanText);
@@ -2593,7 +2598,40 @@ var gender = 'male';
         document.getElementById('btn-test-adhan').addEventListener('click', () => playAdhan(null, true));
         document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('fajr'); notifyPrayer('fajr', true); if (settings.reminderVoice) speakArabic('اقترب موعد صلاة الفجر'); });
 
-        function speakArabic(message) { if (!('speechSynthesis' in window)) return false; try { window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(message); utterance.lang = 'ar-SA'; utterance.rate = 0.88; utterance.pitch = 1; const voices = window.speechSynthesis.getVoices(); const arabicVoice = voices.find(v => /^ar([-_]|$)/i.test(v.lang)); if (arabicVoice) utterance.voice = arabicVoice; window.speechSynthesis.speak(utterance); return true; } catch (e) { return false; } }
+        function speakArabic(message) {
+            if (!('speechSynthesis' in window)) return false;
+            try {
+                window.speechSynthesis.cancel();
+                var msg = String(message || '');
+                function doSpeak() {
+                    var utterance = new SpeechSynthesisUtterance(msg);
+                    utterance.lang = 'ar-SA';
+                    utterance.rate = 0.88;
+                    utterance.pitch = 0.82; // voix plus grave (homme)
+                    var voice = (typeof pickArabicVoice === 'function') ? pickArabicVoice(true) : null;
+                    if (!voice) {
+                        var voices = window.speechSynthesis.getVoices();
+                        var ar = voices.filter(function(v){ return /^ar/i.test(v.lang); });
+                        voice = ar.find(function(v){ return /naayf|hamed|maged|male|homme|tarik|omar/i.test(v.name); }) || ar[0] || null;
+                    }
+                    if (voice) { utterance.voice = voice; utterance.lang = voice.lang || 'ar-SA'; }
+                    window.speechSynthesis.speak(utterance);
+                }
+                var voicesNow = window.speechSynthesis.getVoices();
+                if (voicesNow && voicesNow.length) { doSpeak(); }
+                else {
+                    var spoke = false;
+                    var handler = function() {
+                        if (spoke) return; spoke = true;
+                        try { window.speechSynthesis.removeEventListener('voiceschanged', handler); } catch(e) { window.speechSynthesis.onvoiceschanged = null; }
+                        doSpeak();
+                    };
+                    try { window.speechSynthesis.addEventListener('voiceschanged', handler); } catch(e) { window.speechSynthesis.onvoiceschanged = handler; }
+                    setTimeout(function(){ if (!spoke) { spoke = true; doSpeak(); } }, 700);
+                }
+                return true;
+            } catch (e) { return false; }
+        }
         function prayerAlertKey(date, prayerKey, type) { return `YaMousahil_${type}_${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}_${prayerKey}`; }
         function alertAlreadySent(key) { try { return localStorage.getItem(key) === '1'; } catch(e) { return false; } }
         function markAlertSent(key) { try { localStorage.setItem(key, '1'); } catch(e) {} }
