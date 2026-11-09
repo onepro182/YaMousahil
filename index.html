@@ -189,6 +189,29 @@
             #asma-grid{overflow-x:auto;grid-template-columns:repeat(7,minmax(105px,1fr));}
         }
         @media (max-width: 560px){ .fav-grid{grid-template-columns:repeat(2,1fr);} }
+        /* ===== body.is-mobile (détection JS) : layout mobile dédié ===== */
+        body.is-mobile{overflow-y:auto;}
+        body.is-mobile .tv-screen{width:100%;max-width:100%;height:auto;max-height:none;min-height:100dvh;overflow:visible;}
+        body.is-mobile .tv-inner{height:auto;min-height:100dvh;padding:12px 12px 20px;}
+        body.is-mobile .top-bar{flex-direction:column;align-items:center;gap:6px;}
+        body.is-mobile .top-logo,body.is-mobile .top-right-icons{width:auto;justify-content:center;}
+        body.is-mobile .top-center-time{width:100%;}
+        body.is-mobile .main-layout{flex-direction:column;gap:14px;}
+        body.is-mobile .prayer-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+        body.is-mobile .time-box{min-width:0;padding:10px 4px;}
+        body.is-mobile .fav-grid{grid-template-columns:repeat(2,1fr);}
+        body.is-mobile .mihrab-column{width:100%;}
+        body.is-mobile .mihrab-arch{min-height:300px;border-radius:120px 120px 0 0;}
+        body.is-mobile .mihrab-name{font-size:2.4rem;}
+        body.is-mobile .verse-arabic{font-size:1.5rem;}
+        body.is-mobile .quran-split-view,body.is-mobile .adhkar-split-view,body.is-mobile .live-split-view,body.is-mobile .mosques-layout{flex-direction:column;}
+        body.is-mobile .quran-sidebar,body.is-mobile .adhkar-sidebar,body.is-mobile .mosques-sidebar{width:100%;}
+        body.is-mobile .tasbih-embedded .layout{grid-template-columns:1fr;}
+        body.is-mobile .tasbih-embedded .left-col,body.is-mobile .tasbih-embedded .counter-area,body.is-mobile .tasbih-embedded .side-panel{grid-column:auto;grid-row:auto;width:100%;}
+        body.is-mobile .settings-container{width:96%;max-height:92dvh;max-height:92vh;overflow-y:auto;}
+        body.is-mobile .settings-body{flex-direction:column;}
+        body.is-mobile .settings-sidebar{flex-direction:row;flex-wrap:wrap;width:100%;}
+        body.is-mobile .modal-overlay{align-items:flex-start;padding:12px;}
         .header-prayers{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
         .back-btn { border-radius:20px; padding:6px 16px; cursor:pointer; font-family:var(--font); color: white; }
         .title-prayers{text-align:center;flex:1;}
@@ -1053,6 +1076,17 @@
     </div>
 
     <script>
+    /* Détection mobile/ordinateur : applique un layout dédié */
+    function applyMobileClass() {
+        var narrow = window.innerWidth <= 900 || window.matchMedia('(max-width: 900px)').matches;
+        var touch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+        var uaMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+        if (narrow || uaMobile || (touch && window.innerWidth <= 1024)) document.body.classList.add('is-mobile');
+        else document.body.classList.remove('is-mobile');
+    }
+    window.addEventListener('DOMContentLoaded', applyMobileClass);
+    window.addEventListener('resize', applyMobileClass);
+    applyMobileClass();
     document.addEventListener('DOMContentLoaded', function () {
 
         // ==================================================
