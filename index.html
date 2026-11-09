@@ -208,6 +208,7 @@
         body.is-mobile #asma-screen > div{height:auto !important;min-height:100dvh;padding:8px !important;gap:10px !important;}
         body.is-mobile #btn-back-from-asma{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
         body.is-mobile #btn-back-from-wird{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
+        body.is-mobile #btn-back-from-inheritance{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
         body.is-mobile .asma-header-row{flex-wrap:wrap;gap:8px;padding-top:6px;}
         body.is-mobile .asma-header-spacer{display:none;}
         body.is-mobile #asma-screen h1{font-size:1.5rem !important;}
@@ -735,6 +736,7 @@
                                     <span class="app-name">✦ أسماء الله الحسنى</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-wird"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/8664/8664910.png" alt="ورد القرآن اليومي"><span class="app-name">ورد القرآن اليومي</span></div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-inheritance"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" alt="حساب المواريث"><span class="app-name">حساب المواريث</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-mosques">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="المساجد">
                                     <span class="app-name">المساجد القريبة منك</span>
@@ -1117,6 +1119,25 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INHERITANCE SCREEN -->
+            <div id="inheritance-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:12px;">
+                <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:12px;padding:10px;overflow:auto;-webkit-overflow-scrolling:touch;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;padding-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);gap:8px;flex-wrap:wrap;">
+                        <button type="button" class="back-btn glass-btn" id="btn-back-from-inheritance">‹ الرئيسية</button>
+                        <div style="text-align:center;flex:1;min-width:180px;">
+                            <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">حساب المواريث</h1>
+                            <p style="font-family:var(--font);font-size:.95rem;color:#fff;margin-top:4px;line-height:1.7;">حاسبة إلكترونية لحساب الميراث الشرعي لكل وارث ونسبته ومقدار حصته مع توضيح موجز لحالة كل وارث ونصيبه الشرعي ويبين حجب كل من يتم حجبه من الورثة.</p>
+                        </div>
+                        <div style="width:80px;"></div>
+                    </div>
+                    <div id="inheritance-app" class="glass-btn" style="padding:14px;border-radius:14px;border:1px solid rgba(212,175,55,0.25);"></div>
+                    <div class="glass-btn" style="padding:12px 14px;border-radius:12px;border:1px solid rgba(212,175,55,0.2);font-size:.92rem;line-height:1.9;color:var(--text-dim);text-align:center;">
+                        الإجابة من خلال هذا البرنامج تتم آلياً، ولذلك لن تشمل المسائل المعقدة كالمناسخات ومسائل الحمل والمفقود والوصايا ونحوها مما يتطلب إجابة مباشرة ومحررة من قسم الفتوى.
+                        <div style="margin-top:8px;"><a href="https://www.islamweb.net/ar/inheritance/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline;">المصدر المرجعي للحساب: إسلام ويب — حساب المواريث</a></div>
                     </div>
                 </div>
             </div>
@@ -2071,6 +2092,296 @@ var gender = 'male';
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
         var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
+
+        // ==================================================
+        // حساب المواريث (مستوحى من إسلام ويب — حساب آلي، حالات غير معقدة)
+        // ==================================================
+        function _inhNum(n,d){ return {n:n,d:d}; }
+        function _inhGcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=b; b=a%b; a=t; } return a||1; }
+        function _inhSimp(f){ if(f.n===0) return {n:0,d:1}; var g=_inhGcd(f.n,f.d); return {n:f.n/g,d:f.d/g}; }
+        function _inhAdd(a,b){ return _inhSimp({n:a.n*b.d+b.n*a.d,d:a.d*b.d}); }
+        function _inhSub(a,b){ return _inhSimp({n:a.n*b.d-b.n*a.d,d:a.d*b.d}); }
+        function _inhMul(a,b){ return _inhSimp({n:a.n*b.n,d:a.d*b.d}); }
+        function _inhFmt(f){ f=_inhSimp(f); return f.n===0?'0':(f.d===1?String(f.n):f.n+'/'+f.d); }
+        function _inhPct(f){ return (f.n/f.d*100).toFixed(4).replace(/\.?0+$/,'')+'%'; }
+        function _inhAmt(f,estate){ return estate ? (f.n/f.d*estate).toFixed(2).replace(/\.?0+$/,'') : '—'; }
+        function _inhSelect(id,max,sel){ var h='<select id="'+id+'" class="setting-select" style="min-width:72px;">'; for(var i=0;i<=max;i++) h+='<option value="'+i+'"'+(i==(sel||0)?' selected':'')+'>'+i+'</option>'; return h+'</select>'; }
+        function _inhYesNo(id,yes){ return '<select id="'+id+'" class="setting-select" style="min-width:90px;"><option value="no"'+(!yes?' selected':'')+'>لا</option><option value="yes"'+(yes?' selected':'')+'>نعم</option></select>'; }
+        function renderInheritance(){
+            var app=document.getElementById('inheritance-app'); if(!app) return;
+            app.innerHTML =
+            '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;align-items:end;">'
+            +'<div><div class="setting-title">مقدار التركة (اختياري)</div><input id="inh-estate" type="number" min="0" step="0.01" class="setting-select" style="width:100%;" placeholder="مثال: 100000"></div>'
+            +'<div><div class="setting-title">جنس المتوفّى</div><select id="inh-gender" class="setting-select" style="width:100%;"><option value="male">ذكر</option><option value="female">أنثى</option></select></div>'
+            +'<div><div class="setting-title">هل سبق للمتوفّى الزواج؟</div><select id="inh-married" class="setting-select" style="width:100%;"><option value="yes">نعم</option><option value="no">لا</option></select></div>'
+            +'<div><div class="setting-title">عدد الزوجات (حيّات)</div>'+_inhSelect('inh-wives',4,0)+'</div>'
+            +'<div><div class="setting-title">هل الزوج حي؟ (١ إن وُجد)</div>'+_inhSelect('inh-husband',1,0)+'</div>'
+            +'<div><div class="setting-title">هل والد المتوفّى حي؟</div>'+_inhYesNo('inh-father',false)+'</div>'
+            +'<div><div class="setting-title">هل والدة المتوفّى حيّة؟</div>'+_inhYesNo('inh-mother',false)+'</div>'
+            +'<div><div class="setting-title">الجد (أب الأب) حي؟</div>'+_inhYesNo('inh-gf',false)+'</div>'
+            +'<div><div class="setting-title">الجدة لأب حيّة؟</div>'+_inhYesNo('inh-gm-pat',false)+'</div>'
+            +'<div><div class="setting-title">الجدة لأم حيّة؟</div>'+_inhYesNo('inh-gm-mat',false)+'</div>'
+            +'<div><div class="setting-title">عدد الأبناء</div>'+_inhSelect('inh-sons',30,0)+'</div>'
+            +'<div><div class="setting-title">عدد البنات</div>'+_inhSelect('inh-daughters',30,0)+'</div>'
+            +'<div><div class="setting-title">ابن الابن</div>'+_inhSelect('inh-gsons',30,0)+'</div>'
+            +'<div><div class="setting-title">بنت الابن</div>'+_inhSelect('inh-gdaughters',30,0)+'</div>'
+            +'<div><div class="setting-title">الأخ الشقيق</div>'+_inhSelect('inh-fbro',30,0)+'</div>'
+            +'<div><div class="setting-title">الأخت الشقيقة</div>'+_inhSelect('inh-fsis',30,0)+'</div>'
+            +'<div><div class="setting-title">أخ لأب</div>'+_inhSelect('inh-cbro',30,0)+'</div>'
+            +'<div><div class="setting-title">أخت لأب</div>'+_inhSelect('inh-csis',30,0)+'</div>'
+            +'<div><div class="setting-title">الإخوة لأم (ذكور/إناث)</div>'+_inhSelect('inh-uter',30,0)+'</div>'
+            +'<div><div class="setting-title">أبناء الإخوة الأشقاء</div>'+_inhSelect('inh-nfbro',30,0)+'</div>'
+            +'<div><div class="setting-title">أبناء الإخوة لأب</div>'+_inhSelect('inh-ncbro',30,0)+'</div>'
+            +'<div><div class="setting-title">العم الشقيق</div>'+_inhSelect('inh-uncle-f',30,0)+'</div>'
+            +'<div><div class="setting-title">العم لأب</div>'+_inhSelect('inh-uncle-c',30,0)+'</div>'
+            +'<div><div class="setting-title">ابن العم الشقيق</div>'+_inhSelect('inh-cousin-f',30,0)+'</div>'
+            +'<div><div class="setting-title">ابن العم لأب</div>'+_inhSelect('inh-cousin-c',30,0)+'</div>'
+            +'</div>'
+            +'<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">'
+            +'<button type="button" id="inh-calc" class="file-btn" style="background:var(--gold);color:#062015;font-weight:700;">احسب المواريث</button>'
+            +'<button type="button" id="inh-reset" class="file-btn">مسح</button>'
+            +'</div>'
+            +'<div id="inh-result" style="margin-top:14px;"></div>';
+            document.getElementById('inh-calc').onclick=calcInheritance;
+            document.getElementById('inh-reset').onclick=renderInheritance;
+            document.getElementById('inh-gender').onchange=function(){
+                var g=this.value; document.getElementById('inh-wives').value = g==='female'?'0':document.getElementById('inh-wives').value;
+                document.getElementById('inh-husband').value = g==='male'?'0':document.getElementById('inh-husband').value;
+            };
+        }
+        function calcInheritance(){
+            var g=document.getElementById('inh-gender').value;
+            var estate=parseFloat(document.getElementById('inh-estate').value)||0;
+            var married=document.getElementById('inh-married').value==='yes';
+            var wives=g==='male'&&married? (parseInt(document.getElementById('inh-wives').value,10)||0):0;
+            var husband=g==='female'&&married? (parseInt(document.getElementById('inh-husband').value,10)||0):0;
+            var father=document.getElementById('inh-father').value==='yes';
+            var mother=document.getElementById('inh-mother').value==='yes';
+            var gf=document.getElementById('inh-gf').value==='yes' && !father;
+            var gmPat=document.getElementById('inh-gm-pat').value==='yes' && !mother && !father;
+            var gmMat=document.getElementById('inh-gm-mat').value==='yes' && !mother;
+            var sons=parseInt(document.getElementById('inh-sons').value,10)||0;
+            var daughters=parseInt(document.getElementById('inh-daughters').value,10)||0;
+            var gsons=(sons>0)?0:(parseInt(document.getElementById('inh-gsons').value,10)||0);
+            var gdaughters=(sons>0)?0:(parseInt(document.getElementById('inh-gdaughters').value,10)||0);
+            var fbro=parseInt(document.getElementById('inh-fbro').value,10)||0;
+            var fsis=parseInt(document.getElementById('inh-fsis').value,10)||0;
+            var cbro=parseInt(document.getElementById('inh-cbro').value,10)||0;
+            var csis=parseInt(document.getElementById('inh-csis').value,10)||0;
+            var uter=parseInt(document.getElementById('inh-uter').value,10)||0;
+            var nfbro=parseInt(document.getElementById('inh-nfbro').value,10)||0;
+            var ncbro=parseInt(document.getElementById('inh-ncbro').value,10)||0;
+            var uncleF=parseInt(document.getElementById('inh-uncle-f').value,10)||0;
+            var uncleC=parseInt(document.getElementById('inh-uncle-c').value,10)||0;
+            var cousinF=parseInt(document.getElementById('inh-cousin-f').value,10)||0;
+            var cousinC=parseInt(document.getElementById('inh-cousin-c').value,10)||0;
+
+            var hasBranch = (sons+daughters+gsons+gdaughters)>0;
+            var hasMaleBranch = (sons+gsons)>0;
+            var hasFemaleBranch = (daughters+gdaughters)>0;
+            var sibCount = fbro+fsis+cbro+csis+uter;
+            var hasMaleAsc = father || gf;
+
+            // Hajb basics
+            if (father) { gf=false; }
+            if (mother) { gmPat=false; gmMat=false; }
+            if (gmPat && gf) gmPat=false; // paternal GM blocked by father only (handled) / by GF in some views; keep simple: blocked by father
+            var blockSibs = hasMaleBranch || father || gf; // siblings blocked by son, son's son, father; GF blocks in Hanafi - include gf
+            if (blockSibs) { fbro=fsis=cbro=csis=uter=nfbro=ncbro=0; }
+            var blockCBro = false; // paternal siblings blocked by full brother or (full sister as asaba ma'a ghayr?) - handled in asaba
+            if (uter>0 && (hasBranch || hasMaleAsc)) uter=0;
+
+            var heirs=[]; // {name,count,shareFrac,asaba,note,blocked}
+            function add(name,count,frac,asaba,note){ if(count>0) heirs.push({name:name,count:count,share:frac,asaba:asaba,note:note||'',blocked:false,indiv:null}); }
+            function blocked(name,count,note){ if(count>0) heirs.push({name:name,count:count,share:_inhNum(0,1),asaba:false,note:note||'محجوب',blocked:true,indiv:_inhNum(0,1)}); }
+
+            var Z=_inhNum(0,1);
+            // Spouses
+            if (husband>0) add('الزوج',1, hasBranch?_inhNum(1,4):_inhNum(1,2), false,'فرض');
+            if (wives>0) add('الزوجة/الزوجات',wives, hasBranch?_inhNum(1,8):_inhNum(1,4), false,'فرض (يقسمن بالتساوي)');
+
+            // Mother & Umariyyatayn
+            var umariyya = false;
+            if (mother && !hasBranch && (sibCount < 2) && ((husband>0 && father) || (wives>0 && father))) {
+                umariyya = true; // mother gets 1/3 of remainder after spouse
+            }
+            if (mother && !umariyya) {
+                if (hasBranch || sibCount>=2) add('الأم',1,_inhNum(1,6),false,'فرض (وجود الفرع أو جمع من الإخوة)');
+                else add('الأم',1,_inhNum(1,3),false,'فرض (عدم الفرع وعدم جمع الإخوة)');
+            }
+            if (gmMat) add('الجدة لأم',1,_inhNum(1,6),false,'فرض');
+            if (gmPat) add('الجدة لأب',1,_inhNum(1,6),false,'فرض');
+
+            // Father / GF
+            var fatherAsaba = false;
+            if (father) {
+                if (hasMaleBranch) add('الأب',1,_inhNum(1,6),false,'فرض (وجود الفرع الوارث المذكر)');
+                else if (hasFemaleBranch) { add('الأب',1,_inhNum(1,6),true,'فرض + تعصيب بالباقي'); fatherAsaba=true; }
+                else add('الأب',1,Z,true,'عصبة بالنفس (الباقي)');
+            } else if (gf) {
+                if (hasMaleBranch) add('الجد',1,_inhNum(1,6),false,'فرض (وجود الفرع الوارث المذكر)');
+                else if (hasFemaleBranch) { add('الجد',1,_inhNum(1,6),true,'فرض + تعصيب بالباقي'); fatherAsaba=true; }
+                else add('الجد',1,Z,true,'عصبة (مقام الأب عند عدمه)');
+            }
+
+            // Daughters/sons
+            if (sons>0) add('الابن/الأبناء',sons,Z,true,'عصبة بالنفس (للذكر مثل حظ الأنثيين)');
+            if (daughters>0) {
+                if (sons>0) add('البنت/البنات',daughters,Z,true,'عصبة بالغير مع الابن (٢:١)');
+                else if (daughters===1) add('البنت',1,_inhNum(1,2),false,'فرض (النصف)');
+                else add('البنات',daughters,_inhNum(2,3),false,'فرض (الثلثان يقسمن بالتساوي)');
+            }
+            // Grandchildren (if no sons)
+            if (sons===0 && gsons>0) add('ابن الابن',gsons,Z,true,'عصبة بالنفس');
+            if (sons===0 && gdaughters>0) {
+                if (gsons>0) add('بنت الابن',gdaughters,Z,true,'عصبة بالغير مع ابن الابن');
+                else if (daughters===0 && gdaughters===1) add('بنت الابن',1,_inhNum(1,2),false,'فرض (النصف)');
+                else if (daughters===0) add('بنات الابن',gdaughters,_inhNum(2,3),false,'فرض (الثلثان)');
+                else if (daughters===1) add('بنت الابن',gdaughters,_inhNum(1,6),false,'تكملة الثلثين مع البنت');
+                else blocked('بنت الابن',gdaughters,'محجوبة لاستكمال البنات الثلثين (إلا مع معصب)');
+            }
+
+            // Siblings (if not blocked)
+            var hasMaleAsabaDesc = (sons+gsons)>0;
+            var ascBlocksSib = father || gf || hasMaleAsabaDesc;
+            if (!ascBlocksSib) {
+                if (uter>0) { if (uter===1) add('أخ/أخت لأم',1,_inhNum(1,6),false,'فرض'); else add('الإخوة لأم',uter,_inhNum(1,3),false,'فرض (يشتركون بالتساوي)'); }
+                var fsisBecomesAsaba = (fsis>0 && hasFemaleBranch && fbro===0); // asaba ma'a al-ghayr
+                if (fbro>0) { add('الأخ الشقيق',fbro,Z,true,'عصبة بالنفس'); if(fsis>0) add('الأخت الشقيقة',fsis,Z,true,'عصبة بالغير مع الأخ الشقيق'); if(cbro>0) blocked('أخ لأب',cbro,'محجوب بالأخ الشقيق'); if(csis>0) blocked('أخت لأب',csis,'محجوبة بالأخ الشقيق (إلا حالات خاصة)'); cbro=csis=0; }
+                else if (fsis>0) {
+                    if (fsisBecomesAsaba) add('الأخت الشقيقة',fsis,Z,true,'عصبة مع الغير (مع البنت/بنت الابن)');
+                    else if (fsis===1) add('الأخت الشقيقة',1,_inhNum(1,2),false,'فرض (النصف)');
+                    else add('الأخوات الشقيقات',fsis,_inhNum(2,3),false,'فرض (الثلثان)');
+                    // paternal siblings after full sisters
+                    if (!fsisBecomesAsaba) {
+                        if (cbro>0) { add('أخ لأب',cbro,Z,true,'عصبة بالنفس'); if(csis>0) add('أخت لأب',csis,Z,true,'عصبة بالغير'); cbro=csis=0; }
+                        else if (csis>0) { if(fsis===1) add('أخت لأب',csis,_inhNum(1,6),false,'تكملة الثلثين'); else blocked('أخت لأب',csis,'محجوبة باستكمال الشقيقات الثلثين'); csis=0; }
+                    } else { if(cbro>0) blocked('أخ لأب',cbro,'محجوب بالأخت الشقيقة العصبة مع الغير'); if(csis>0) blocked('أخت لأب',csis,'محجوبة'); cbro=csis=0; }
+                } else {
+                    if (cbro>0) { add('أخ لأب',cbro,Z,true,'عصبة بالنفس'); if(csis>0) add('أخت لأب',csis,Z,true,'عصبة بالغير'); }
+                    else if (csis>0) { if(csis===1) add('أخت لأب',1,_inhNum(1,2),false,'فرض (النصف)'); else add('أخوات لأب',csis,_inhNum(2,3),false,'فرض (الثلثان)'); }
+                }
+            } else {
+                if (fbro+fsis>0) blocked('الأخوة الأشقاء',fbro+fsis,'محجوبون بالفرع المذكر/الأب/الجد');
+                if (cbro+csis>0) blocked('الإخوة لأب',cbro+csis,'محجوبون');
+            }
+
+            // Farther asaba (nephews/uncles/cousins) - only if no closer asaba present
+            var hasAsabaNow = hasMaleAsabaDesc || father || gf || (!ascBlocksSib && (fbro>0 || cbro>0 || (fsis>0 && hasFemaleBranch && fbro===0)));
+            if (!hasAsabaNow && nfbro>0) add('أبناء الإخوة الأشقاء',nfbro,Z,true,'عصبة بالنفس');
+            else if (nfbro>0) blocked('أبناء الإخوة الأشقاء',nfbro,'محجوبون بوجود عاصب أقرب');
+            var hasAsaba2 = hasAsabaNow || nfbro>0;
+            if (!hasAsaba2 && ncbro>0) add('أبناء الإخوة لأب',ncbro,Z,true,'عصبة بالنفس');
+            else if (ncbro>0) blocked('أبناء الإخوة لأب',ncbro,'محجوبون');
+            var hasAsaba3 = hasAsaba2 || ncbro>0;
+            if (!hasAsaba3 && uncleF>0) add('العم الشقيق',uncleF,Z,true,'عصبة بالنفس');
+            else if (uncleF>0) blocked('العم الشقيق',uncleF,'محجوب');
+            var hasAsaba4 = hasAsaba3 || uncleF>0;
+            if (!hasAsaba4 && uncleC>0) add('العم لأب',uncleC,Z,true,'عصبة بالنفس');
+            else if (uncleC>0) blocked('العم لأب',uncleC,'محجوب');
+            var hasAsaba5 = hasAsaba4 || uncleC>0;
+            if (!hasAsaba5 && cousinF>0) add('ابن العم الشقيق',cousinF,Z,true,'عصبة بالنفس');
+            else if (cousinF>0) blocked('ابن العم الشقيق',cousinF,'محجوب');
+            var hasAsaba6 = hasAsaba5 || cousinF>0;
+            if (!hasAsaba6 && cousinC>0) add('ابن العم لأب',cousinC,Z,true,'عصبة بالنفس');
+            else if (cousinC>0) blocked('ابن العم لأب',cousinC,'محجوب');
+
+            // Sum fixed shares
+            var fixed=_inhNum(0,1);
+            heirs.forEach(function(h){ if(!h.blocked && !h.asaba) fixed=_inhAdd(fixed,h.share); else if(!h.blocked && h.asaba && h.share && h.share.n>0) fixed=_inhAdd(fixed,h.share); });
+            // Umariyya: mother 1/3 of remainder after spouse
+            if (umariyya) {
+                var spouseShare=_inhNum(0,1);
+                heirs.forEach(function(h){ if((h.name.indexOf('زوج')===0) && !h.blocked) spouseShare=_inhAdd(spouseShare,h.share); });
+                var rem=_inhSub(_inhNum(1,1),spouseShare);
+                var mShare=_inhMul(rem,_inhNum(1,3));
+                add('الأم',1,mShare,false,'ثلث الباقي (الغراوان/العُمريتان)');
+                fixed=_inhAdd(fixed,mShare);
+                if(father) add('الأب',1,Z,true,'عصبة (الباقي بعد الزوج والأم)');
+            }
+
+            var one=_inhNum(1,1);
+            var notes=[];
+            if (fixed.n > fixed.d) { // Awl
+                var awl=fixed.n;
+                notes.push('عَوْل: زادت الفروض عن التركة فتمت العول (أصل المسألة '+fixed.d+' وعالت إلى '+awl+').');
+                heirs.forEach(function(h){ if(!h.blocked && h.share && h.share.n>0) h.share=_inhSimp({n:h.share.n*(fixed.d/h.share.d), d:awl}); });
+                fixed=_inhNum(1,1);
+            }
+            var remainder=_inhSub(one,fixed);
+            if (remainder.n < 0) remainder=_inhNum(0,1);
+
+            // Asaba distribution
+            var asabas=heirs.filter(function(h){ return !h.blocked && h.asaba && !(h.share&&h.share.n>0 && h.note.indexOf('فرض')===0 && h.note.indexOf('تعصيب')===-1 && h.note.indexOf('عصبة')===-1); });
+            // include fard+asaba (father with female branch) separately: already has share, gets remainder too? handled by giving them asaba flag
+            var asabaHeirs=heirs.filter(function(h){ return !h.blocked && h.asaba; });
+            if (asabaHeirs.length>0 && remainder.n>0) {
+                // if only father/gf with fard+asaba, give remainder
+                // for mixed sons+daughters asaba: 2:1
+                var totalUnits=0;
+                asabaHeirs.forEach(function(h){
+                    if (h.name.indexOf('ابن')===0 && h.name.indexOf('بنت')!==0 && h.name.indexOf('أبناء')!==0 && h.count>0) totalUnits+=h.count*2; // son
+                    else if (h.name==='الابن/الأبناء') totalUnits+=h.count*2;
+                    else if (h.name.indexOf('بنت')===0 || h.name.indexOf('ابنة')===0) totalUnits+=h.count;
+                    else if (h.name==='البنت/البنات' || h.name==='بنات الابن' || h.name==='بنت الابن') totalUnits+=h.count;
+                    else if (h.name.indexOf('أخ')===0 && h.name.indexOf('أخت')!==0) totalUnits+=h.count*2;
+                    else if (h.name.indexOf('أخت')===0) totalUnits+=h.count;
+                    else totalUnits+=h.count; // father/gf/uncles/nephews male
+                });
+                // handle sons+daughters 2:1 group specially
+                var sonH=heirs.find(function(h){return h.name==='الابن/الأبناء'&&!h.blocked;});
+                var dauH=heirs.find(function(h){return h.name==='البنت/البنات'&&!h.blocked && h.asaba;});
+                if (sonH && dauH) {
+                    totalUnits = sonH.count*2 + dauH.count;
+                    sonH.share=_inhMul(remainder,_inhSimp({n:sonH.count*2,d:totalUnits}));
+                    dauH.share=_inhMul(remainder,_inhSimp({n:dauH.count,d:totalUnits}));
+                } else if (asabaHeirs.length===1) {
+                    asabaHeirs[0].share=_inhAdd(asabaHeirs[0].share||Z,remainder);
+                } else {
+                    asabaHeirs.forEach(function(h){ h.share=_inhAdd(h.share||Z,_inhMul(remainder,_inhSimp({n:h.count,d:totalUnits||h.count}))); });
+                }
+                remainder=_inhNum(0,1);
+            } else if (remainder.n>0 && asabaHeirs.length===0) {
+                // Radd (except spouses)
+                var raddHeirs=heirs.filter(function(h){ return !h.blocked && h.name.indexOf('زوج')===-1; });
+                var spouseShare=_inhNum(0,1);
+                heirs.forEach(function(h){ if(!h.blocked && h.name.indexOf('زوج')===0) spouseShare=_inhAdd(spouseShare,h.share); });
+                if (raddHeirs.length>0) {
+                    notes.push('رَدّ: فاضل عن الفروض ولا عاصب، فتم الرد على أهل الفروض (عدا الزوجين) بنسبة فروضهم.');
+                    var fsum=_inhNum(0,1); raddHeirs.forEach(function(h){ if(h.share) fsum=_inhAdd(fsum,h.share); });
+                    var rBase=_inhSub(one,spouseShare);
+                    if (fsum.n>0) raddHeirs.forEach(function(h){ h.share=_inhMul(rBase,_inhSimp({n:h.share.n*fsum.d,d:h.share.d*fsum.n})); });
+                } else if (spouseShare.n>0) {
+                    notes.push('لا وارث غير الزوج/الزوجة: يُنظر في الباقي (رد/ذوو أرحام/بيت المال) وفق التفصيل الفقهي.');
+                }
+            }
+
+            // Individual share
+            heirs.forEach(function(h){ if(!h.blocked && h.share && h.count>0) h.indiv=_inhSimp({n:h.share.n,d:h.share.d*h.count}); else h.indiv=_inhNum(0,1); });
+
+            var rows=heirs.map(function(h){
+                var st=h.blocked?'محجوب':(h.asaba && h.share && h.share.n>0 && h.note.indexOf('فرض')>-1?h.note:(h.asaba?'عصبة (الباقي)':'فرض'));
+                return '<tr style="border-bottom:1px solid rgba(255,255,255,0.08);'+(h.blocked?'opacity:.7;':'')+'">'
+                    +'<td style="padding:8px;">'+h.name+(h.count>1?' <span style="color:var(--text-dim);font-size:.85em;">('+h.count+')</span>':'')+'</td>'
+                    +'<td style="padding:8px;">'+(h.note||st)+'</td>'
+                    +'<td style="padding:8px;direction:ltr;text-align:center;">'+(h.blocked?'—':_inhFmt(h.share))+'</td>'
+                    +'<td style="padding:8px;direction:ltr;text-align:center;">'+(h.blocked?'—':_inhPct(h.share))+'</td>'
+                    +'<td style="padding:8px;direction:ltr;text-align:center;">'+(h.blocked?'—':_inhAmt(h.share,estate))+'</td>'
+                    +'<td style="padding:8px;direction:ltr;text-align:center;">'+(h.blocked||h.count<=1?'—':_inhAmt(h.indiv,estate))+'</td>'
+                    +'</tr>';
+            }).join('');
+            var res=document.getElementById('inh-result');
+            if (!rows) { res.innerHTML='<div class="setting-row" style="justify-content:center;">لم يتم إدخال ورثة. أدخل بيانات الورثة ثم اضغط «احسب المواريث».</div>'; return; }
+            res.innerHTML = '<div style="overflow:auto;">'
+                +(notes.length?'<div style="margin-bottom:10px;padding:10px;border-radius:10px;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.25);line-height:1.8;">'+notes.join('<br>')+'</div>':'')
+                +'<table style="width:100%;border-collapse:collapse;font-size:.95rem;">'
+                +'<thead><tr style="color:var(--gold);border-bottom:1px solid rgba(212,175,55,0.35);">'
+                +'<th style="padding:8px;text-align:right;">الوارث</th><th style="padding:8px;text-align:right;">الحالة/النصيب الشرعي</th><th style="padding:8px;">النسبة</th><th style="padding:8px;">%</th><th style="padding:8px;">الحصة'+(estate?'':' (أدخل التركة)')+'</th><th style="padding:8px;">حصة الفرد</th>'
+                +'</tr></thead><tbody>'+rows+'</tbody></table></div>'
+                +'<div style="margin-top:10px;font-size:.85rem;color:var(--text-dim);text-align:center;">حساب آلي للحالات غير المعقدة (مرجع: <a href="https://www.islamweb.net/ar/inheritance/" target="_blank" rel="noopener" style="color:var(--gold);">إسلام ويب</a>). للحالات الخاصة يُرجى مراجعة أهل الاختصاص/الفتوى.</div>';
+        }
+        document.getElementById('card-inheritance').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderInheritance(); showScreen(inheritanceScreen); window.scrollTo(0,0); };
+        document.getElementById('btn-back-from-inheritance').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); window.__toggleAsmaAuto(); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
@@ -2587,8 +2898,8 @@ var gender = 'male';
             document.getElementById('adhkar-back-to-cats').onclick = () => { const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.remove('show-text'); window.scrollTo(0, 0); };
         }
 
-        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
         // SETTINGS HANDLERS
         populateCountrySelect();
@@ -3096,7 +3407,7 @@ var gender = 'male';
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
