@@ -118,7 +118,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#islamiyat-screen,#mosques-screen,#live-screen,#weather-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#live-screen,#weather-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -627,6 +627,10 @@
                                     <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
                                     <span class="app-name">Radio Maroc</span>
                                 </div>
+                                <div class="app-card half-width glass-btn" tabindex="0" id="card-quran-radio">
+                                    <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
+                                    <span class="app-name">📻 إذاعات القرآن</span>
+                                </div>
                                 <div class="app-card half-width glass-btn" tabindex="0" data-url="https://www.youtube.com"><img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/a/af/Youtube.png" alt="YouTube"><span class="app-name">يوتيوب</span></div>
                                 <div class="app-card half-width glass-btn" tabindex="0" id="card-pharmacy">
                                     <img class="app-icon" src="assets/img/pha.png" alt="Pharmacie" style="max-height:48px; object-fit:contain;" onerror="this.src='assets/img/Logo.png'">
@@ -708,6 +712,28 @@
                     </div>
                     <div class="controls">
                         <button type="button" id="maroc-play-pause-btn">▶ تشغيل</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QURAN RADIO SCREEN -->
+            <div id="quranradio-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-quranradio">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1>📻 إذاعات القرآن الكريم</h1>
+                        <p>اختر محطة للاستماع</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="radio-maroc-grid" id="quran-stations-grid"></div>
+                <div class="radio-player-bar glass-btn" id="quran-player-bar" style="display:none;">
+                    <div class="info">
+                        <div class="name" id="quran-now-playing-name">-</div>
+                        <div class="status" id="quran-now-playing-status">متوقف</div>
+                    </div>
+                    <div class="controls">
+                        <button type="button" id="quran-play-pause-btn">▶ تشغيل</button>
                     </div>
                 </div>
             </div>
@@ -2105,6 +2131,44 @@ var gender = 'male';
         function toggleMarocPlayPause() { if (!currentMarocStation) return; if (marocPlaying) stopMarocPlayer(); else { currentUrlIndex = 0; tryNextUrl(currentMarocStation); } }
         function stopMarocPlayer() { if (marocHls) { marocHls.destroy(); marocHls = null; } marocPlayer.pause(); marocPlaying = false; document.getElementById('maroc-now-playing-status').textContent = 'متوقف'; document.getElementById('maroc-play-pause-btn').textContent = '▶ تشغيل'; }
 
+        // إذاعات القرآن الكريم (même lecteur que Radio Maroc)
+        const QURAN_STATIONS = [
+            { name: 'إذاعة محمد السادس للقرآن الكريم', initial: 'م', logo: imgProxy('https://cdn.radoxo.com/images/morocco/idaa-mohammed-assadiss.webp?v=1792966689'), urls: ['https://radoxo.com/stream/eb/radio_med_VI.m3u8','http://cdn-hls.globecast.tv/live/ramdisk/assadissa/hls_snrt/index.m3u8'] },
+            { name: 'إذاعة القرآن - القاهرة', initial: 'ق', logo: '', urls: ['https://stream.radiojar.com/8s5u5tpdtwzuv'] },
+            { name: 'إذاعة القرآن السعودية', initial: 'س', logo: '', urls: ['https://fm.ice.locahicy.com/4/evtn6lde0cqi.av?'] },
+            { name: 'إذاعة القرآن الشارقة', initial: 'ش', logo: '', urls: ['https://radio.sharjah.ae/audio/playlist.m3u8'] }
+        ];
+        let quranPlayer = new Audio(); let quranHls = null; let quranPlaying = false; let currentQuranStation = null; let quranUrlIndex = 0;
+        function initQuranStationsPage() {
+            const grid = document.getElementById('quran-stations-grid'); grid.innerHTML = '';
+            QURAN_STATIONS.forEach(station => {
+                const card = document.createElement('div'); card.className = 'station-card glass-btn'; card.tabIndex = 0;
+                card.innerHTML = `<div class="station-logo-container"><div class="station-logo-fallback">${station.initial}</div><img src="${station.logo}" alt="${station.name}" onerror="this.style.display='none';"></div><span class="name">${station.name}</span>`;
+                card.onclick = () => playQuranStation(station); grid.appendChild(card);
+            });
+            document.getElementById('quran-play-pause-btn').onclick = toggleQuranPlayPause;
+        }
+        function playQuranStation(station) { if (quranPlaying) stopQuranPlayer(); currentQuranStation = station; quranUrlIndex = 0; document.getElementById('quran-player-bar').style.display = 'flex'; document.getElementById('quran-now-playing-name').textContent = station.name; tryNextQuranUrl(station); }
+        function tryNextQuranUrl(station) {
+            if (quranUrlIndex >= station.urls.length) { document.getElementById('quran-now-playing-status').textContent = 'تعذر تشغيل هذه المحطة'; return; }
+            const url = station.urls[quranUrlIndex]; document.getElementById('quran-now-playing-status').textContent = 'جارٍ التحميل...';
+            if (quranHls) { quranHls.destroy(); quranHls = null; }
+            quranPlayer.pause(); quranPlayer.src = "";
+            const onSuccess = () => { quranPlaying = true; document.getElementById('quran-now-playing-status').textContent = 'يعمل'; document.getElementById('quran-play-pause-btn').textContent = '⏸ إيقاف'; };
+            const onFailure = () => { quranUrlIndex++; tryNextQuranUrl(station); };
+            if (url.includes('.m3u8')) {
+                if (Hls.isSupported()) {
+                    quranHls = new Hls({ enableWorker: true }); quranHls.loadSource(url); quranHls.attachMedia(quranPlayer);
+                    quranHls.on(Hls.Events.MANIFEST_PARSED, () => { quranPlayer.play().then(onSuccess).catch(onFailure); });
+                    quranHls.on(Hls.Events.ERROR, (event, data) => { if (data.fatal) { quranHls.destroy(); quranHls = null; onFailure(); } });
+                } else if (quranPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                    quranPlayer.src = url; quranPlayer.addEventListener('loadedmetadata', () => { quranPlayer.play().then(onSuccess).catch(onFailure); }, { once: true });
+                } else { onFailure(); }
+            } else { quranPlayer.src = url; quranPlayer.play().then(onSuccess).catch(onFailure); }
+        }
+        function toggleQuranPlayPause() { if (!currentQuranStation) return; if (quranPlaying) stopQuranPlayer(); else { quranUrlIndex = 0; tryNextQuranUrl(currentQuranStation); } }
+        function stopQuranPlayer() { if (quranHls) { quranHls.destroy(); quranHls = null; } quranPlayer.pause(); quranPlaying = false; document.getElementById('quran-now-playing-status').textContent = 'متوقف'; document.getElementById('quran-play-pause-btn').textContent = '▶ تشغيل'; }
+
         // QURAN TEXT
         const SURAH_NAMES = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
         const SURAH_ENGLISH_NAMES = ["Al-Fatihah","Al-Baqarah","Aal-Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Taha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat","Al-Qari'ah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
@@ -2195,8 +2259,8 @@ var gender = 'male';
             document.getElementById('isl-play-btn').onclick = toggleIslamiyatPlay; fetchRecitersIslamiyat();
         }
 
-        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
         // SETTINGS HANDLERS
         populateCountrySelect();
@@ -2326,6 +2390,8 @@ var gender = 'male';
         navPrayers.onclick = () => { showScreen(prayersScreen); navPrayers.classList.add('active'); renderUI(); };
         document.getElementById('btn-radio').onclick = () => { document.getElementById('radio-card').classList.remove('active'); if (radioPlaying) stopRadio(); showScreen(radiomarocScreen); };
         document.getElementById('btn-radio-maroc').onclick = () => { showScreen(radiomarocScreen); };
+        document.getElementById('card-quran-radio').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(quranradioScreen); initQuranStationsPage(); };
+        document.getElementById('btn-back-from-quranradio').onclick = () => { stopQuranPlayer(); showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('btn-back-home').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('btn-back-from-maroc').onclick = () => { stopMarocPlayer(); showScreen(homeScreen); navHome.classList.add('active'); };
         navHome.onclick = document.getElementById('btn-back-home').onclick;
@@ -2607,7 +2673,7 @@ var gender = 'male';
         document.getElementById('btn-back-from-islamiyat').onclick = () => { stopIslamiyatAudio(); showScreen(homeScreen); navHome.classList.add('active'); };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
