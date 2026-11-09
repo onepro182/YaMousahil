@@ -283,7 +283,7 @@
         body.is-mobile .adhkar-text-header h1{font-size:1.6rem;}
         body.is-mobile .adhkar-text-body{padding:12px 12px 30px;overflow-y:visible;}
         body.is-mobile .adhkar-card{padding:14px;}
-        body.is-mobile .adhkar-card .adhkar-text{font-size:1.25rem;line-height:2;}
+        body.is-mobile .adhkar-card .adhkar-text{font-size:1.45rem;line-height:2.25;}
         /* Mobile Mosques: affichage amélioré */
         /* Mobile: boutons الرئيسية toujours visibles (écrans إسلاميات / Mosquées) */
         body.is-mobile #btn-back-from-islamiyat{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
@@ -416,11 +416,11 @@
         .adhkar-text-header { text-align: center; padding: 20px 10px 10px; border-bottom: 1px solid var(--glass-border); }
         .adhkar-text-header h1 { color: var(--gold); font-family: var(--font-quran); font-size: 2.2rem; font-weight: 700; margin-bottom: 5px; }
         .adhkar-text-header .meta { color: var(--text-dim); font-size: 0.85rem; }
-        .adhkar-text-body { flex: 1; overflow-y: auto; padding: 20px 30px; display: flex; flex-direction: column; gap: 15px; }
+        .adhkar-text-body { flex: 1; overflow-y: auto; padding: 20px 30px; display: flex; flex-direction: column; gap: 15px; background: rgba(0,0,0,0.06); }
         
         .adhkar-card { border-radius: 12px; padding: 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); transition: all 0.3s; position: relative; }
         .adhkar-card:hover { border-color: rgba(212,175,55,0.5); background: rgba(212,175,55,0.05); }
-        .adhkar-card .adhkar-text { font-family: var(--font-quran); font-size: 1.5rem; line-height: 2.2; color: var(--cream); margin-bottom: 12px; }
+        .adhkar-card .adhkar-text { font-family: 'Amiri', var(--font-quran), serif; font-size: 1.75rem; line-height: 2.35; color: var(--cream); margin-bottom: 12px; text-align: justify; text-justify: inter-word; letter-spacing: 0; word-spacing: 0.02em; font-weight: 400; }
         .adhkar-card .adhkar-ref { font-size: 0.8rem; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
         .adhkar-card .adhkar-actions { display: flex; justify-content: flex-end; gap: 8px; }
         .adhkar-card .copy-btn { background: transparent; border: 1px solid var(--glass-border); color: var(--text-dim); border-radius: 6px; padding: 4px 12px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; font-family: var(--font); }
@@ -1858,26 +1858,27 @@
             });
         }
 
-        function renderAdhkarContent() {
+                function renderAdhkarContent() {
             const container = document.getElementById('adhkar-content-body');
             const cat = ADHKAR_CATEGORIES.find(c => c.id === currentAdhkarCategory);
-            document.getElementById('adhkar-title').textContent = cat ? cat.name : 'الأذكار';
-            document.getElementById('adhkar-meta').textContent = cat ? cat.name : '';
             let items = ADHKAR_DATA[currentAdhkarCategory] || [];
             if (currentAdhkarSearch.trim()) {
                 const searchTerm = currentAdhkarSearch.trim();
                 items = items.filter(item => item.text.includes(searchTerm) || item.ref.includes(searchTerm));
             }
+            document.getElementById('adhkar-title').textContent = cat ? cat.name : 'الأذكار';
+            var metaEl = document.getElementById('adhkar-meta');
+            if (metaEl) metaEl.textContent = items.length ? (items.length + ' ذِكر') : '';
             container.innerHTML = '';
             if (items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-dim);">لا توجد نتائج مطابقة.</div>'; return; }
             items.forEach(item => {
                 const card = document.createElement('div'); card.className = 'adhkar-card';
-                card.innerHTML = `<div class="adhkar-ref">${item.ref}</div><div class="adhkar-text">${item.text}</div><div class="adhkar-actions"><button class="copy-btn" onclick="navigator.clipboard.writeText('${item.text.replace(/'/g, "\\'")}').then(()=>{this.textContent='تم النسخ ✓'; setTimeout(()=>this.textContent='نسخ',1500);})">نسخ</button></div>`;
+                const safeText = (item.text||'').replace(/'/g, "\\'");
+                card.innerHTML = '<div class="adhkar-ref">'+(item.ref||'')+'</div><div class="adhkar-text">'+(item.text||'')+'</div><div class="adhkar-actions"><button class="copy-btn" onclick="navigator.clipboard.writeText(\''+safeText+'\').then(()=>{this.textContent=\'✓ تم النسخ\'; setTimeout(()=>this.textContent=\'نسخ\',1500);})">نسخ</button></div>';
                 container.appendChild(card);
             });
         }
-
-        document.getElementById('adhkar-search-btn').onclick = () => { currentAdhkarSearch = document.getElementById('adhkar-search-input').value; renderAdhkarContent(); showAdhkarTextOnMobile(); };
+document.getElementById('adhkar-search-btn').onclick = () => { currentAdhkarSearch = document.getElementById('adhkar-search-input').value; renderAdhkarContent(); showAdhkarTextOnMobile(); };
         document.getElementById('adhkar-search-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { currentAdhkarSearch = document.getElementById('adhkar-search-input').value; renderAdhkarContent(); showAdhkarTextOnMobile(); } });
 
         // ==================================================
