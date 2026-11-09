@@ -1235,7 +1235,7 @@
                     <div class="mushaf-book-wrap">
                         <div class="book mushaf-book" id="mushaf-book">
                             <div id="pages" class="pages mushaf-pages">
-                                <div class="page fipable mushaf-page" id="mushaf-page-slot"><img id="mushaf-img" src="https://www.mp3quran.net/mushaf2/1.jpg" alt="صفحة المصحف 1" loading="eager" referrerpolicy="no-referrer" style="display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;"></div>
+                                <div class="page fipable mushaf-page" id="mushaf-page-slot"><img id="mushaf-img" src="https://android.quran.com/data/warsh/width_1260/page001.png" alt="صفحة المصحف 1" loading="eager" referrerpolicy="no-referrer" style="display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;"></div>
                             </div>
                         </div>
                     </div>
@@ -3757,10 +3757,10 @@ function notifyPrayer(prayerKey, isTest) {
         function _mushafToAr(n){ return String(n).split('').map(function(d){ return _mushafAr[+d]||d; }).join(''); }
         function mushafGo(n){
             n = Math.max(1, Math.min(_mushafTotal, parseInt(n,10)||1)); _mushafPage = n;
-            var img = document.getElementById('mushaf-img'); if (img) { img.alt = 'صفحة المصحف ' + n; img.src = 'https://www.mp3quran.net/mushaf2/' + n + '.jpg'; }
+            var img = document.getElementById('mushaf-img'); if (img) { img.alt = 'صفحة المصحف ' + n; img.src = 'https://android.quran.com/data/warsh/width_1260/page' + (n<10?'00':n<100?'0':'') + n + '.png'; }
             var num = document.getElementById('mushaf-page-num'); if (num) num.textContent = _mushafToAr(n);
             var j = document.getElementById('mushaf-jump'); if (j && document.activeElement !== j) j.value = n;
-            var p1 = n-1, n1 = n+1; [p1,n1].forEach(function(x){ if(x>=1&&x<=_mushafTotal){ var im=new Image(); im.src='https://www.mp3quran.net/mushaf2/'+x+'.jpg'; } });
+            var p1 = n-1, n1 = n+1; [p1,n1].forEach(function(x){ if(x>=1&&x<=_mushafTotal){ var im=new Image(); im.src='https://android.quran.com/data/warsh/width_1260/page' + (x<10?'00':x<100?'0':'') + x + '.png'; } });
         }
         function mushafPrev(){ mushafGo(_mushafPage - 1); }
         function mushafNext(){ mushafGo(_mushafPage + 1); }
