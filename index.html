@@ -1603,33 +1603,49 @@
         let qpReciters = []; let qpSurahs = [];
         // Reciteurs dont l'audio est réellement disponible (cdn.islamic.network)
         const VALID_AUDIO_EDITIONS = ['ar.abdulbasitmurattal','ar.abdullahbasfar','ar.abdurrahmaansudais','ar.ahmedajamy','ar.alafasy','ar.aymanswoaid','ar.hanirifai','ar.hudhaify','ar.husary','ar.husarymujawwad','ar.ibrahimakhbar','ar.mahermuaiqly','ar.minshawi','ar.minshawimujawwad','ar.muhammadayyoub','ar.muhammadjibreel','ar.saoodshuraym','ar.shaatree'];
-        // Photos des récitateurs — source: surahquran.com (استماع وتحميل القرآن بصوت أشهر القراء)
-        const QP_RECITER_PHOTOS = {
-            'ar.ahmedajamy': 'https://i.pinimg.com/564x/b1/9f/03/b19f03a9f2f09c46afbfd4f03727aee7.jpg',
-            'ar.ibrahimakhbar': 'https://i.pinimg.com/564x/95/e4/90/95e490b6c075566f62197da844dae903.jpg',
-            'ar.saoodshuraym': 'https://i.pinimg.com/564x/ad/79/67/ad79679d76062df7166c6e2f52d397d6.jpg',
-            'ar.shaatree': 'https://i.pinimg.com/564x/d6/c6/33/d6c633aadb82ce2d974d1147ed071090.jpg',
-            'ar.abdulbasitmurattal': 'https://i.pinimg.com/564x/52/95/ae/5295ae7c08e4ebdc7eda3ddb5c6c0a19.jpg',
-            'ar.abdullahbasfar': 'https://i.pinimg.com/236x/f5/7b/a1/f57ba14ba4844cee88cdf7cfb2b06510.jpg',
-            'ar.hudhaify': 'https://s-media-cache-ak0.pinimg.com/564x/96/3d/1e/963d1e668b2d18aeb0e46ae657b5affa.jpg',
-            'ar.mahermuaiqly': 'https://s-media-cache-ak0.pinimg.com/564x/ab/cc/99/abcc9949d0419ef1f0963a54aef06397.jpg',
-            'ar.muhammadayyoub': 'https://i.pinimg.com/564x/ec/f7/aa/ecf7aa757a458dd7762e6d8c94d5c6e3.jpg',
-            'ar.muhammadjibreel': 'https://i.pinimg.com/564x/fe/69/9e/fe699e3970550240fb078ee720773db4.jpg',
-            'ar.minshawi': 'https://i.pinimg.com/564x/21/76/8d/21768d297bd3460f7339b7b755f53d03.jpg',
-            'ar.minshawimujawwad': 'https://i.pinimg.com/564x/21/76/8d/21768d297bd3460f7339b7b755f53d03.jpg',
-            'ar.husary': 'https://i.pinimg.com/564x/3f/da/7e/3fda7ed5056347e700cac64d07e164c3.jpg',
-            'ar.husarymujawwad': 'https://i.pinimg.com/564x/3f/da/7e/3fda7ed5056347e700cac64d07e164c3.jpg',
-            'ar.alafasy': 'https://i.pinimg.com/564x/0a/40/9e/0a409ef09a55700877c20d7195fe9126.jpg',
-            'ar.abdurrahmaansudais': 'https://i.pinimg.com/736x/b6/bf/ad/b6bfad7d165c4202404ab150e3a627dc.jpg'
-        };
+        // Tous les récitateurs — photos: surahquran.com · audio: mp3quran.net (sourate complète) + alquran.cloud
+        const QP_RECITERS = [
+            { name:'أحمد العجمي', photo:'https://i.pinimg.com/564x/b1/9f/03/b19f03a9f2f09c46afbfd4f03727aee7.jpg', mq:5 },
+            { name:'إبراهيم الأخضر', photo:'https://i.pinimg.com/564x/95/e4/90/95e490b6c075566f62197da844dae903.jpg', mq:1 },
+            { name:'بندر بليلة', photo:'https://i.pinimg.com/564x/3e/27/fa/3e27fa5bbbd4d19ee2f4b4975224913e.jpg', mq:217 },
+            { name:'خالد الجليل', photo:'https://i.pinimg.com/564x/9b/26/36/9b2636f5bbf7ef72abdb817018e96a4d.jpg', mq:20 },
+            { name:'حاتم فريد الواعر', photo:'https://i.pinimg.com/564x/0f/bb/7c/0fbb7c82582d4b6dbd9f1defa261b6d1.jpg', mq:163 },
+            { name:'خليفة الطنيجي', photo:'https://i.pinimg.com/564x/56/1b/17/561b17211f66cfb725f12b5fca5312d3.jpg', mq:24 },
+            { name:'سعد الغامدي', photo:'https://i.pinimg.com/564x/85/27/cf/8527cf694f379425e43b9a4fe54b6cfb.jpg', mq:30 },
+            { name:'سعود الشريم', photo:'https://i.pinimg.com/564x/ad/79/67/ad79679d76062df7166c6e2f52d397d6.jpg', mq:31 },
+            { name:'أبو بكر الشاطري', photo:'https://i.pinimg.com/564x/d6/c6/33/d6c633aadb82ce2d974d1147ed071090.jpg', mq:4 },
+            { name:'صلاح بوخاطر', photo:'https://s-media-cache-ak0.pinimg.com/564x/24/60/63/246063b8cd37a179fd261f0c40c57ef0.jpg', mq:46 },
+            { name:'عبد الباسط عبد الصمد', photo:'https://i.pinimg.com/564x/52/95/ae/5295ae7c08e4ebdc7eda3ddb5c6c0a19.jpg', mq:51 },
+            { name:'عبد الرحمن العوسي', photo:'https://i.pinimg.com/564x/8f/95/8e/8f958ed8cbafc0c0dcf5c58e3c001221.jpg', mq:225 },
+            { name:'عبد الرشيد صوفي', photo:'https://i.pinimg.com/564x/80/56/ee/8056ee030160e5c7216811b7b209343c.jpg', mq:64 },
+            { name:'عبدالعزيز الزهراني', photo:'https://i.pinimg.com/564x/9d/c5/05/9dc505f34c6e9de25e3ee21895712283.jpg', mq:56 },
+            { name:'عبدالله بصفر', photo:'https://i.pinimg.com/236x/f5/7b/a1/f57ba14ba4844cee88cdf7cfb2b06510.jpg', mq:60 },
+            { name:'عبدالله الجهني', photo:'https://i.pinimg.com/564x/aa/4d/0b/aa4d0b16c5fbc41efcd692947a4d75ad.jpg', mq:62 },
+            { name:'علي الحذيفي', photo:'https://s-media-cache-ak0.pinimg.com/564x/96/3d/1e/963d1e668b2d18aeb0e46ae657b5affa.jpg', mq:74 },
+            { name:'علي جابر', photo:'https://i.pinimg.com/564x/61/a3/15/61a31568e91191aaff40e0a24492850c.jpg', mq:76 },
+            { name:'فارس عباد', photo:'https://s-media-cache-ak0.pinimg.com/564x/2b/28/ae/2b28aef3f9678b7cd89315d5ffceba2f.jpg', mq:81 },
+            { name:'ماهر المعيقلي', photo:'https://s-media-cache-ak0.pinimg.com/564x/ab/cc/99/abcc9949d0419ef1f0963a54aef06397.jpg', mq:102 },
+            { name:'محمد أيوب', photo:'https://i.pinimg.com/564x/ec/f7/aa/ecf7aa757a458dd7762e6d8c94d5c6e3.jpg', mq:109 },
+            { name:'محمد المحيسني', photo:'https://i.pinimg.com/564x/27/45/cc/2745ccba8fd20ccc545fda3618986a0c.jpg', mq:108 },
+            { name:'محمد جبريل', photo:'https://i.pinimg.com/564x/fe/69/9e/fe699e3970550240fb078ee720773db4.jpg', mq:111 },
+            { name:'محمد صديق المنشاوي', photo:'https://i.pinimg.com/564x/21/76/8d/21768d297bd3460f7339b7b755f53d03.jpg', mq:112 },
+            { name:'محمود خليل الحصري', photo:'https://i.pinimg.com/564x/3f/da/7e/3fda7ed5056347e700cac64d07e164c3.jpg', mq:118 },
+            { name:'مشاري العفاسي', photo:'https://i.pinimg.com/564x/0a/40/9e/0a409ef09a55700877c20d7195fe9126.jpg', ed:'ar.alafasy' },
+            { name:'ناصر القطامي', photo:'https://i.pinimg.com/564x/52/de/a5/52dea5b5ce9ea312315229b0bde677cd.jpg', mq:86 },
+            { name:'وديع اليمني', photo:'https://i.pinimg.com/564x/e9/9e/90/e99e9020d1d7cd27beaaed7010086d4a.jpg', mq:219 },
+            { name:'ياسر الدوسري', photo:'https://s-media-cache-ak0.pinimg.com/564x/32/3e/17/323e173f4833680898f51240bedd4973.jpg', mq:92 },
+            { name:'عبدالرحمن السديس', photo:'https://i.pinimg.com/736x/b6/bf/ad/b6bfad7d165c4202404ab150e3a627dc.jpg', ed:'ar.abdurrahmaansudais' },
+            { name:'أيمن سويد', ed:'ar.aymanswoaid' },
+            { name:'هاني الرفاعي', ed:'ar.hanirifai' }
+        ];
+        let qpSelected = null; let qpMpData = null;
         function buildQpReciterGrid() {
             const g = document.getElementById('qp-reciters-grid'); if (!g) return;
-            const sel = document.getElementById('qp-reciter'); g.innerHTML = '';
-            qpReciters.forEach(r => {
-                const photo = QP_RECITER_PHOTOS[r.identifier];
-                const card = document.createElement('div'); card.className = 'qp-rc' + (sel.value === r.identifier ? ' active' : ''); card.tabIndex = 0;
-                card.innerHTML = (photo ? `<img src="${imgProxy(photo)}" alt="${r.name}" loading="lazy">` : `<div class="fallback">${(r.name || '?').replace(/^(القرآن الكريم بصوت |الشيخ )/,'').charAt(0)}</div>`) + `<span>${r.name}</span>`;
-                card.onclick = () => { sel.value = r.identifier; g.querySelectorAll('.qp-rc').forEach(c => c.classList.remove('active')); card.classList.add('active'); };
+            g.innerHTML = '';
+            QP_RECITERS.forEach((r, idx) => {
+                const card = document.createElement('div'); card.className = 'qp-rc' + (qpSelected && qpSelected.idx === idx ? ' active' : ''); card.tabIndex = 0;
+                card.innerHTML = (r.photo ? `<img src="${imgProxy(r.photo)}" alt="${r.name}" loading="lazy">` : `<div class="fallback">${r.name.charAt(0)}</div>`) + `<span>${r.name}</span>`;
+                card.onclick = () => { qpSelected = Object.assign({ idx: idx }, r); document.getElementById('qp-reciter').value = r.ed || ''; g.querySelectorAll('.qp-rc').forEach(c => c.classList.remove('active')); card.classList.add('active'); };
                 g.appendChild(card);
             });
         }
@@ -1879,18 +1895,30 @@ var gender = 'male';
             }
         });
         document.getElementById('qp-play-btn').onclick = async () => {
-            const reciter = document.getElementById('qp-reciter').value; const surah = document.getElementById('qp-surah').value;
-            if (!reciter || !surah) { alert('الرجاء اختيار القارئ والسورة'); return; }
+            const surah = document.getElementById('qp-surah').value;
+            if (!qpSelected || !surah) { alert('الرجاء اختيار القارئ والسورة'); return; }
             qpAudio.style.display = 'block';
             try {
-                const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah}/${reciter}`); const data = await res.json(); const ayahs = data.data.ayahs;
-                const playlist = (ayahs || []).filter(a => a.audio).map(a => a.audio);
-                if (playlist.length === 0) { alert('لا يوجد صوت متاح لهذه السورة.'); return; }
-                let qi = 0;
-                qpAudio.onended = () => { qi++; if (qi < playlist.length) { qpAudio.src = playlist[qi]; qpAudio.play(); } };
-                qpAudio.onerror = () => { qi++; if (qi < playlist.length) { qpAudio.src = playlist[qi]; qpAudio.play(); } };
-                qpAudio.src = playlist[0];
-                qpAudio.play();
+                if (qpSelected.mq) {
+                    // Sourate complète (fichier unique) via mp3quran.net
+                    if (!qpMpData) qpMpData = await (await fetch('https://mp3quran.net/api/v3/reciters?language=ar')).json();
+                    const r = qpMpData.reciters.find(x => x.id === qpSelected.mq);
+                    if (!r) throw new Error('reciter introuvable');
+                    const num = parseInt(surah, 10);
+                    const moshaf = r.moshaf.find(m => (',' + m.surah_list + ',').includes(',' + num + ',')) || r.moshaf[0];
+                    qpAudio.onended = null; qpAudio.onerror = null;
+                    qpAudio.src = moshaf.server + String(num).padStart(3, '0') + '.mp3';
+                    qpAudio.play();
+                } else {
+                    const res = await fetch(`https://api.alquran.cloud/v1/surah/${surah}/${qpSelected.ed}`); const data = await res.json(); const ayahs = data.data.ayahs;
+                    const playlist = (ayahs || []).filter(a => a.audio).map(a => a.audio);
+                    if (playlist.length === 0) { alert('لا يوجد صوت متاح لهذه السورة.'); return; }
+                    let qi = 0;
+                    qpAudio.onended = () => { qi++; if (qi < playlist.length) { qpAudio.src = playlist[qi]; qpAudio.play(); } };
+                    qpAudio.onerror = () => { qi++; if (qi < playlist.length) { qpAudio.src = playlist[qi]; qpAudio.play(); } };
+                    qpAudio.src = playlist[0];
+                    qpAudio.play();
+                }
             } catch (e) { alert('خطأ في جلب الصوت'); }
         };
         document.getElementById('qp-stop-btn').onclick = () => { qpAudio.pause(); qpAudio.currentTime = 0; qpAudio.onended = null; qpAudio.onerror = null; };
