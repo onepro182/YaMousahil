@@ -102,6 +102,9 @@
         .app-card { border-radius:10px; padding:18px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; }
         #card-surah-kahf{}
         .app-icon{width:2.6rem;height:2.6rem;object-fit:contain;display:block;}
+        /* icones 3D (SVG) : meme taille exacte que celle de Meteo */
+        .app-icon-3d{width:28px;height:28px;}
+        body.is-mobile .app-icon-3d{width:24px;height:24px;}
         #card-mosques .app-icon{filter: brightness(0) saturate(100%) invert(76%) sepia(52%) saturate(548%) hue-rotate(2deg) brightness(95%) contrast(89%);}
         .app-name{font-size:.85rem;text-align:center;font-weight:600;}
         .app-card.half-width{width:50%;justify-self:center;}
@@ -912,7 +915,7 @@
                                     <img class="app-icon" src="https://s.cafebazaar.ir/images/icons/com.alquransharifmp3-38c31d1d-cc94-4b82-af78-1941aa9abed3_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize" alt="المصحف المصور">
                                     <span class="app-name">المصحف المصور</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran-read">
-                                    <svg class="app-icon" viewBox="0 0 64 64" role="img" aria-label="قراءة القرآن الكريم">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="قراءة القرآن الكريم">
                                         <defs>
                                             <linearGradient id="q3dReadBg" x1="0" y1="0" x2="0.35" y2="1">
                                                 <stop offset="0" stop-color="#2f9c7a"/><stop offset="0.5" stop-color="#0f5c44"/><stop offset="1" stop-color="#052a20"/>
@@ -961,7 +964,7 @@
                                     </svg>
                                     <span class="app-name">قراءة القرآن الكريم</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran-player">
-                                    <svg class="app-icon" viewBox="0 0 64 64" role="img" aria-label="استماع إلى القرآن الكريم">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="استماع إلى القرآن الكريم">
                                         <defs>
                                             <linearGradient id="qr3dBg" x1="0" y1="0" x2="0.35" y2="1">
                                                 <stop offset="0" stop-color="#2a8a68"/><stop offset="0.5" stop-color="#0e5540"/><stop offset="1" stop-color="#052a1f"/>
@@ -999,7 +1002,7 @@
                                     <img class="app-icon" src="assets/img/logo-main.png" alt="أسماء الله">
                                     <span class="app-name">✦ أسماء الله الحسنى</span>
                                 </div>
-                                <div class="app-card glass-btn" tabindex="0" id="card-wird"><svg class="app-icon" viewBox="0 0 64 64" role="img" aria-label="ورد القرآن اليومي">
+                                <div class="app-card glass-btn" tabindex="0" id="card-wird"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="ورد القرآن اليومي">
                                     <defs>
                                         <linearGradient id="q3dWirdBg" x1="0" y1="0" x2="0.3" y2="1">
                                             <stop offset="0" stop-color="#218a5f"/><stop offset="0.5" stop-color="#0b4a33"/><stop offset="1" stop-color="#04231a"/>
@@ -1088,7 +1091,7 @@
                                     <span class="app-name">🌦 Météo</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
-                                    <svg class="app-icon" viewBox="0 0 64 64" role="img" aria-label="مواقيت الصلاة">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="مواقيت الصلاة">
                                         <defs>
                                             <linearGradient id="q3dPrayBg" x1="0" y1="0" x2="0.32" y2="1">
                                                 <stop offset="0" stop-color="#2a8fb8"/><stop offset="0.5" stop-color="#0f4f6b"/><stop offset="1" stop-color="#052232"/>
