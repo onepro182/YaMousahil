@@ -606,18 +606,13 @@
         .adhan-stop-btn { background: #a94436; color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.2rem; font-family: var(--font); font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(169, 68, 54, 0.4); transition: transform 0.1s; display: flex; align-items: center; gap: 10px; margin: 0 auto;}
         .adhan-stop-btn:active { transform: scale(0.95); }
         .adhan-stop-btn:hover { background: #c24a3a; }
-        /* تنبيه الأذان - Mihrab */
-        #alert-overlay.prayer-overlay { background: radial-gradient(ellipse at 50% 30%, rgba(10,50,38,0.55), rgba(2,13,8,0.92) 70%), rgba(2,13,8,0.88); backdrop-filter: blur(18px); }
+        /* تنبيه الأذان - Fond Kaaba */
+        #alert-overlay.prayer-overlay { background: linear-gradient(rgba(2,13,8,0.75), rgba(2,13,8,0.75)), url('assets/img/kaaba-alert.jpg') center/cover no-repeat; backdrop-filter: blur(8px); }
         .alert-box.alert-mihrab { background: transparent; border: none; box-shadow: none; padding: 0; max-width: min(520px, 94vw); width: 100%; }
-        .alert-mihrab-arch { position: relative; border-radius: 260px 260px 22px 22px; padding: 14px; background: linear-gradient(180deg, rgba(212,175,55,0.55), rgba(212,175,55,0.18) 35%, rgba(212,175,55,0.35)); box-shadow: 0 24px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.12); }
-        .alert-mihrab-arch::before { content: ''; position: absolute; inset: 7px; border: 1px solid rgba(212,175,55,0.45); border-bottom: none; border-radius: 252px 252px 16px 16px; pointer-events: none; }
-        .alert-mihrab-inner { position: relative; text-align: center; border-radius: 248px 248px 14px 14px; padding: 34px 26px 26px; background:
-            radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.16), transparent 55%),
-            radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.04), transparent 40%),
-            radial-gradient(ellipse at 80% 30%, rgba(255,255,255,0.03), transparent 35%),
-            linear-gradient(180deg, #123d2e 0%, #0b2a20 38%, #061a13 100%);
-            border: 1px solid rgba(212,175,55,0.22); box-shadow: inset 0 0 60px rgba(212,175,55,0.06), inset 0 -30px 60px rgba(0,0,0,0.25); overflow: hidden; }
-        .alert-mihrab-inner::after { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(from 0deg at 50% -10%, rgba(212,175,55,0.018) 0deg 10deg, transparent 10deg 20deg); opacity: .9; pointer-events: none; }
+        .alert-mihrab-arch { position: relative; border-radius: 260px 260px 22px 22px; padding: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(212,175,55,0.35); box-shadow: 0 24px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.12); }
+        .alert-mihrab-arch::before { content: ''; position: absolute; inset: 7px; border: 1px solid rgba(212,175,55,0.25); border-bottom: none; border-radius: 252px 252px 16px 16px; pointer-events: none; }
+        .alert-mihrab-inner { position: relative; text-align: center; border-radius: 248px 248px 14px 14px; padding: 34px 26px 26px; background: rgba(11,42,32,0.78); border: 1px solid rgba(212,175,55,0.18); box-shadow: inset 0 0 60px rgba(212,175,55,0.06); overflow: hidden; }
+        .alert-mihrab-inner::after { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(from 0deg at 50% -10%, rgba(212,175,55,0.006) 0deg 10deg, transparent 10deg 20deg); opacity: .4; pointer-events: none; }
         .alert-mihrab-inner > * { position: relative; z-index: 1; }
         .alert-box .alert-icon { font-size: 2.6rem; margin-bottom: 6px; color: var(--gold); filter: drop-shadow(0 4px 14px rgba(212,175,55,0.25)); }
         .alert-badge { display: inline-block; padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(212,175,55,0.45); background: rgba(212,175,55,0.1); color: var(--gold); font-size: .95rem; font-weight: 700; margin-bottom: 10px; letter-spacing: .2px; }
