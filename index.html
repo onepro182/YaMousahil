@@ -492,6 +492,31 @@
         .tasbih-embedded .control-icon{font-size:15px;}
         .tasbih-embedded .notice{min-height:16px;text-align:center;color:#d4af37;font-size:1.15rem;margin:10px 0 0;}
 .tasbih-embedded svg text{font-size:22px;}
+/* ===== FM6OA professional ===== */
+.fm6oa-hero{position:relative;overflow:hidden;border-radius:18px;padding:18px 20px 16px;text-align:center;background:linear-gradient(160deg,rgba(212,175,55,0.20),rgba(12,46,34,0.55) 60%);}
+.fm6oa-hero-head{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.fm6oa-hero-label{font-size:.78rem;color:var(--text-dim);}
+.fm6oa-hero-city{font-size:.78rem;font-weight:700;color:var(--gold);}
+.fm6oa-hero-body{margin:10px 0 8px;}
+.fm6oa-hero-name{font-family:var(--font-quran);font-weight:800;font-size:1.65rem;color:#fff;}
+.fm6oa-hero-time{font-family:var(--font-quran);font-weight:800;font-size:2.6rem;color:var(--gold);line-height:1.15;margin-top:2px;font-variant-numeric:tabular-nums;direction:ltr;}
+.fm6oa-hero-cd{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--glass-border);border-radius:999px;padding:6px 16px;background:rgba(0,0,0,.25);}
+.fm6oa-cd-label{font-size:.8rem;color:var(--text-dim);}
+.fm6oa-cd-value{font-weight:800;font-size:1.05rem;color:var(--gold);font-variant-numeric:tabular-nums;direction:ltr;}
+.fm6oa-progress{margin-top:14px;height:6px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;}
+.fm6oa-progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#8a7135,var(--gold));transition:width 1s linear;}
+.fm6oa-dates{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:14px;padding:12px 16px;}
+.fm6oa-date{flex:1;display:flex;flex-direction:column;gap:2px;text-align:center;}
+.fm6oa-date-label{font-size:.7rem;color:var(--text-dim);}
+.fm6oa-date-value{font-weight:700;color:var(--text-main);font-size:.92rem;}
+.fm6oa-date-sep{width:1px;align-self:stretch;background:var(--glass-border);}
+.fm6oa-cities{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.fm6oa-chip{border:1px solid var(--glass-border);border-radius:999px;padding:6px 13px;background:rgba(255,255,255,.05);color:var(--text-main);font-family:var(--font);font-size:.78rem;cursor:pointer;transition:all .15s;}
+.fm6oa-chip:hover{border-color:var(--gold);}
+.fm6oa-chip.active{background:rgba(212,175,55,.22);border-color:var(--gold);color:var(--gold);font-weight:700;}
+.fm6oa-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.fm6oa-footer .glass-btn{border-radius:999px;padding:8px 18px;color:var(--gold);font-family:var(--font);font-weight:700;font-size:.85rem;}
+#fm6oa-list .p-item.past{opacity:.5;}
         .tasbih-embedded input,.tasbih-embedded textarea,.tasbih-embedded select{background:rgba(255,255,255,0.06);color:#f4ecd8;border-color:rgba(212,175,55,0.35);}
         .tasbih-modal{position:absolute;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(2,13,8,0.9);backdrop-filter:blur(8px);color:#f4ecd8;font-family:var(--font-quran);user-select:text;-webkit-user-select:text;}
         .tasbih-modal[hidden]{display:none !important;}
@@ -1224,27 +1249,51 @@
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-fm6oa">‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">مواقيت الصلاة</h1>
-                        <p style="font-size:.8rem;color:var(--text-dim);margin:2px 0 0;">حسب التوقيت الرسمي للمملكة المغربية (GMT)</p>
+                        <p style="font-size:.8rem;color:var(--text-dim);margin:2px 0 0;">المصدر: fm6oa.org — التوقيت الرسمي للمملكة المغربية</p>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
-                <div style="flex:1;overflow-y:auto;padding:10px;">
+                <div style="flex:1;overflow-y:auto;padding:12px 10px 20px;">
                     <div id="fm6oa-status" style="text-align:center;padding:40px 12px;color:var(--text-dim);">جارٍ تحميل المواقيت...</div>
-                    <div id="fm6oa-wrap" style="display:none;flex-direction:column;gap:12px;max-width:640px;margin:0 auto;">
-                        <div class="glass-btn" style="border-radius:14px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                            <div style="text-align:right;">
-                                <div id="fm6oa-city" style="font-weight:700;color:var(--gold);">📍</div>
-                                <div id="fm6oa-greg" style="font-size:.85rem;color:var(--text-dim);"></div>
+                    <div id="fm6oa-wrap" style="display:none;flex-direction:column;gap:14px;max-width:680px;margin:0 auto;">
+                        <!-- HERO : prochaine prière + compte à rebours -->
+                        <div class="fm6oa-hero glass-btn">
+                            <div class="fm6oa-hero-head">
+                                <span class="fm6oa-hero-label">الصلاة القادمة</span>
+                                <span id="fm6oa-city" class="fm6oa-hero-city">📍 وجدة</span>
                             </div>
-                            <div id="fm6oa-hijri" style="font-family:var(--font-quran);color:var(--gold);"></div>
+                            <div class="fm6oa-hero-body">
+                                <div id="fm6oa-next-name" class="fm6oa-hero-name">—</div>
+                                <div id="fm6oa-next-time" class="fm6oa-hero-time">--:--</div>
+                            </div>
+                            <div class="fm6oa-hero-cd">
+                                <span class="fm6oa-cd-label">متبقي</span>
+                                <span id="fm6oa-countdown" class="fm6oa-cd-value">--:--:--</span>
+                            </div>
+                            <div class="fm6oa-progress"><div id="fm6oa-progress-fill" class="fm6oa-progress-fill"></div></div>
                         </div>
-                        <div id="fm6oa-next" style="display:none;border-radius:14px;padding:12px 18px;background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.45);text-align:center;">
-                            <div style="font-size:.8rem;color:var(--text-dim);">الصلاة القادمة</div>
-                            <div id="fm6oa-next-name" style="font-weight:800;font-size:1.2rem;color:var(--gold);"></div>
+                        <!-- DATES -->
+                        <div class="fm6oa-dates glass-btn">
+                            <div class="fm6oa-date">
+                                <span class="fm6oa-date-label">الميلادي</span>
+                                <span id="fm6oa-greg" class="fm6oa-date-value">—</span>
+                            </div>
+                            <div class="fm6oa-date-sep"></div>
+                            <div class="fm6oa-date">
+                                <span class="fm6oa-date-label">الهجري</span>
+                                <span id="fm6oa-hijri" class="fm6oa-date-value" style="font-family:var(--font-quran);">—</span>
+                            </div>
                         </div>
+                        <!-- VILLES -->
+                        <div id="fm6oa-cities" class="fm6oa-cities"></div>
+                        <!-- LISTE DES PRIÈRES -->
                         <div id="fm6oa-list" class="prayer-list" style="gap:8px;"></div>
+                        <!-- PIED -->
+                        <div class="fm6oa-footer">
+                            <span id="fm6oa-updated" style="font-size:.72rem;color:var(--text-dim);"></span>
+                            <button type="button" class="glass-btn" id="fm6oa-refresh">↻ تحديث</button>
+                        </div>
                         <div id="fm6oa-note" style="display:none;font-size:.75rem;color:var(--text-dim);text-align:center;"></div>
-                        <button type="button" class="glass-btn" id="fm6oa-refresh" style="border-radius:999px;padding:10px 22px;color:var(--gold);font-family:var(--font);font-weight:700;margin:4px auto 0;">↻ تحديث</button>
                     </div>
                 </div>
             </div>
@@ -3757,10 +3806,15 @@ function notifyPrayer(prayerKey, isTest) {
             var now = new Date(); var cur = now.getHours()*60 + now.getMinutes();
             for (var i = 0; i < times.length; i++) {
                 var parts = String(times[i]).split(':'); var t = (+parts[0])*60 + (+parts[1]);
-                if (t > cur) return { nextName: FM6OA_PRAYERS[i].name, nextTime: times[i] };
+                if (t > cur) return { idx: i, nextName: FM6OA_PRAYERS[i].name, nextTime: times[i] };
             }
-            return { nextName: FM6OA_PRAYERS[0].name, nextTime: times[0] };
+            return { idx: 0, nextName: FM6OA_PRAYERS[0].name, nextTime: times[0] };
         }
+        function fm6oaSelectedCity() {
+            try { var c = localStorage.getItem('fm6oa-city'); if (c) return c; } catch (e) {}
+            return settings.cityId;
+        }
+        function fm6oaSaveCity(cityId) { try { localStorage.setItem('fm6oa-city', cityId); } catch (e) {} }
         function fm6oaNormalizeFromJSON(json, cityId) {
             var c = (json && json.cities && json.cities[cityId]) || null;
             if (!c || !c.times) return null;
@@ -3768,7 +3822,7 @@ function notifyPrayer(prayerKey, isTest) {
             var valid = times.filter(function(v){ return /^\d{1,2}:\d{2}$/.test(v); }).length;
             if (valid < 5) return null;
             var next = fm6oaComputeNext(times);
-            return { times: times, greg: c.greg || '', nextName: next.nextName, nextTime: next.nextTime, day: json.day || fm6oaIsoToday() };
+            return { cityId: cityId, times: times, greg: c.greg || '', nextName: next.nextName, nextTime: next.nextTime, day: json.day || fm6oaIsoToday(), updated: json.updated || '' };
         }
         function parseFm6oa(html) {
             var doc = new DOMParser().parseFromString(html, 'text/html');
@@ -3789,48 +3843,111 @@ function notifyPrayer(prayerKey, isTest) {
             if (npEl) { try { var tr = npEl.closest('tr'); var raw = (tr.cells[0].textContent||'').replace(/\s+/g,' ').trim(); var m = raw.match(/^(.*?)\s*الساعة\s*(\d{1,2}:\d{2})$/); if (m) { nextName = m[1].trim(); nextTime = m[2]; } } catch (e) {} }
             return { times: times.slice(0,5), greg: greg, nextName: nextName, nextTime: nextTime, day: fm6oaTodayKey() };
         }
-        function renderFm6oa(data, fromCache) {
-            var city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) ? CITIES_DB[settings.cityId].nameAr : '';
+        var _fm6oaCountdownTimer = null, _fm6oaLastIdx = -1;
+        function fm6oaStopCountdown() { if (_fm6oaCountdownTimer) { clearInterval(_fm6oaCountdownTimer); _fm6oaCountdownTimer = null; } }
+        function fm6oaHighlightList(nextIdx) {
+            var items = document.querySelectorAll('#fm6oa-list .p-item');
+            items.forEach(function(it, i) {
+                it.classList.toggle('selected', i === nextIdx);
+                it.classList.toggle('past', i < nextIdx);
+                var t = it.querySelector('.p-right span');
+                if (t) t.style.color = i === nextIdx ? 'var(--gold)' : 'var(--text-main)';
+            });
+        }
+        function fm6oaStartCountdown(data) {
+            fm6oaStopCountdown();
+            var cdEl = document.getElementById('fm6oa-countdown');
+            var fillEl = document.getElementById('fm6oa-progress-fill');
+            function pad(n) { return (n < 10 ? '0' : '') + n; }
+            function tick() {
+                var now = new Date(); var cur = now.getHours()*60 + now.getMinutes();
+                var next = fm6oaComputeNext(data.times);
+                var parts = next.nextTime.split(':'); var t = (+parts[0])*60 + (+parts[1]);
+                var totalSec = ((t - cur + 1440) % 1440) * 60 + (59 - now.getSeconds());
+                var h = Math.floor(totalSec/3600), m = Math.floor((totalSec%3600)/60), s = totalSec%60;
+                if (cdEl) cdEl.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+                if (_fm6oaLastIdx !== next.idx) {
+                    _fm6oaLastIdx = next.idx;
+                    var nameEl = document.getElementById('fm6oa-next-name');
+                    var timeEl = document.getElementById('fm6oa-next-time');
+                    if (nameEl) nameEl.textContent = next.nextName;
+                    if (timeEl) timeEl.textContent = next.nextTime;
+                    fm6oaHighlightList(next.idx);
+                }
+                var prevIdx = (next.idx + 4) % 5;
+                var pp = data.times[prevIdx].split(':'); var pt = (+pp[0])*60 + (+pp[1]);
+                var duration = (t - pt + 1440) % 1440; if (duration <= 0) duration = 1440;
+                var elapsed = (cur - pt + 1440) % 1440;
+                var frac = Math.min(1, Math.max(0, elapsed / duration));
+                if (fillEl) fillEl.style.width = (frac * 100).toFixed(1) + '%';
+            }
+            tick();
+            _fm6oaCountdownTimer = setInterval(tick, 1000);
+        }
+        function renderCityChips(selected) {
+            var box = document.getElementById('fm6oa-cities'); if (!box) return;
+            box.innerHTML = '';
+            Object.keys(FM6OA_CITY_CODES).forEach(function(id) {
+                var name = (typeof CITIES_DB !== 'undefined' && CITIES_DB[id]) ? CITIES_DB[id].nameAr : id;
+                var chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'fm6oa-chip' + (id === selected ? ' active' : '');
+                chip.textContent = name;
+                chip.onclick = function() { if (id === fm6oaSelectedCity()) return; fm6oaSaveCity(id); fetchFm6oaTimes(); };
+                box.appendChild(chip);
+            });
+        }
+        function renderFm6oa(data, note) {
+            var cityId = data.cityId || fm6oaSelectedCity();
+            var city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[cityId]) ? CITIES_DB[cityId].nameAr : '';
             document.getElementById("fm6oa-city").textContent = '📍 ' + (city || 'المملكة المغربية');
             document.getElementById("fm6oa-greg").textContent = data.greg || '';
             try { document.getElementById("fm6oa-hijri").textContent = new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { day:'numeric', month:'long', year:'numeric' }); } catch (e) { document.getElementById("fm6oa-hijri").textContent = ''; }
             var next = fm6oaComputeNext(data.times);
+            _fm6oaLastIdx = -1;
+            document.getElementById("fm6oa-next-name").textContent = next.nextName;
+            document.getElementById("fm6oa-next-time").textContent = next.nextTime;
             var list = document.getElementById("fm6oa-list"); list.innerHTML = '';
             FM6OA_PRAYERS.forEach(function(p, i) {
                 var item = document.createElement('div');
-                var isNext = next.nextName === p.name;
-                item.className = 'p-item glass-btn' + (isNext ? ' selected' : '');
+                var isNext = i === next.idx;
+                item.className = 'p-item glass-btn' + (isNext ? ' selected' : '') + (i < next.idx ? ' past' : '');
                 item.style.cssText = 'border-radius:12px;';
                 item.innerHTML = '<span class="p-name">' + p.ico + ' ' + p.name + '</span><span class="p-right"><span style="font-weight:800;font-size:1.15rem;color:' + (isNext ? 'var(--gold)' : 'var(--text-main)') + ';">' + data.times[i] + '</span></span>';
                 list.appendChild(item);
             });
-            if (next.nextName && next.nextTime) { document.getElementById("fm6oa-next").style.display = 'block'; document.getElementById("fm6oa-next-name").textContent = next.nextName + ' — الساعة ' + next.nextTime; } else { document.getElementById("fm6oa-next").style.display = 'none'; }
-            var note = document.getElementById("fm6oa-note");
-            if (fromCache === 'stale-json') { note.textContent = '⚠️ المواقيت بتاريخ ' + data.day + ' — يتم التحديث تلقائياً في الصباح'; note.style.display = 'block'; }
-            else if (fromCache === 'cache') { note.textContent = '⚠️ بيانات محفوظة محلياً (تعذر الاتصال بخادم الوزارة)'; note.style.display = 'block'; }
-            else { note.style.display = 'none'; }
+            renderCityChips(cityId);
+            var upd = document.getElementById("fm6oa-updated");
+            if (upd) { upd.textContent = data.updated ? ('آخر تحديث: ' + String(data.updated).replace('T',' ').replace('Z',' UTC')) : 'مصدر مباشر: fm6oa.org'; }
+            var noteEl = document.getElementById("fm6oa-note");
+            if (note === 'stale-json') { noteEl.textContent = '⚠️ المواقيت بتاريخ ' + data.day + ' — يتم التحديث تلقائياً في الصباح'; noteEl.style.display = 'block'; }
+            else if (note === 'cache') { noteEl.textContent = '⚠️ بيانات محفوظة محلياً (تعذر الاتصال بخادم الوزارة)'; noteEl.style.display = 'block'; }
+            else { noteEl.style.display = 'none'; }
             document.getElementById("fm6oa-status").style.display = 'none';
             document.getElementById("fm6oa-wrap").style.display = 'flex';
+            fm6oaStartCountdown(data);
         }
         async function fetchFm6oaTimes() {
-            var cityId = settings.cityId;
+            var cityId = fm6oaSelectedCity();
             var statusEl = document.getElementById("fm6oa-status");
             var wrapEl = document.getElementById("fm6oa-wrap");
-            // 1) afficher tout de suite le cache local s'il y en a un
+            fm6oaStopCountdown();
+            // 1) cache local immediat (pour la ville choisie)
             var cached = null;
             try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v1') || 'null'); } catch (e) {}
-            if (cached && cached.times && cached.times.length === 5) {
+            if (cached && cached.times && cached.times.length === 5 && (!cached.cityId || cached.cityId === cityId)) {
                 renderFm6oa(cached, fm6oaDayMatch(cached.day) ? null : 'cache');
             } else {
                 statusEl.style.display = 'block'; statusEl.textContent = 'جارٍ تحميل المواقيت...'; wrapEl.style.display = 'none';
             }
             var done = false;
             function finish() { done = true; }
-            // 2) source primaire : miroir JSON du depot via jsDelivr (CORS *, CDN rapide)
+            // 2) miroir JSON du depot (genere depuis fm6oa.org) via jsDelivr - rapide et fiable
             var jsonUrls = [
                 'https://cdn.jsdelivr.net/gh/onepro182/YaMousahil@main/assets/data/fm6oa-times.json?t=' + fm6oaJsonStamp(),
                 'https://raw.githubusercontent.com/onepro182/YaMousahil/main/assets/data/fm6oa-times.json?t=' + fm6oaJsonStamp()
             ];
+            var staleData = null;
             for (var ji = 0; ji < jsonUrls.length && !done; ji++) {
                 try {
                     var raw = await fetchWithTimeout(jsonUrls[ji], 10000);
@@ -3839,11 +3956,13 @@ function notifyPrayer(prayerKey, isTest) {
                     if (data) {
                         _fm6oaCache = data;
                         try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {}
-                        renderFm6oa(data, fm6oaDayMatch(data.day) ? null : 'stale-json'); finish(); return;
+                        if (fm6oaDayMatch(data.day)) { renderFm6oa(data, null); finish(); return; }
+                        staleData = data;
+                        break;
                     }
                 } catch (e) {}
             }
-            // 3) secours : page FM6OA en direct via proxies CORS
+            // 3) source directe fm6oa.org en live via proxies CORS (si le miroir n'est pas du jour)
             var code = (typeof FM6OA_CITY_CODES !== 'undefined' && FM6OA_CITY_CODES[cityId]) ? FM6OA_CITY_CODES[cityId] : 78;
             var target = 'https://fm6oa.org/prieres/code/index.php?ville=' + code;
             var proxies = [ 'https://api.allorigins.win/raw?url=' + encodeURIComponent(target), 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(target), 'https://cors.eu.org/' + target ];
@@ -3852,13 +3971,16 @@ function notifyPrayer(prayerKey, isTest) {
                     var html = await fetchWithTimeout(proxies[pi], 9000);
                     var data = parseFm6oa(html);
                     if (data) {
+                        data.cityId = cityId; data.updated = '';
                         _fm6oaCache = data;
                         try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {}
-                        renderFm6oa(data, false); finish(); return;
+                        renderFm6oa(data, null); finish(); return;
                     }
                 } catch (e) {}
             }
-            // 4) rien n'a abouti
+            // 4) repli : JSON du jour precedent
+            if (staleData) { renderFm6oa(staleData, 'stale-json'); finish(); return; }
+            // 5) rien n'a abouti
             if (!done) {
                 statusEl.style.display = 'block';
                 statusEl.textContent = '⚠️ تعذر تحميل المواقيت — تحقق من الاتصال ثم اضغط ↻ تحديث';
@@ -3866,7 +3988,7 @@ function notifyPrayer(prayerKey, isTest) {
         }
         document.getElementById('card-prayer-fm6oa').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fs = document.getElementById('fm6oa-screen'); if (fs && typeof showScreen==='function') showScreen(fs); fetchFm6oaTimes(); };
         document.getElementById('fm6oa-refresh').onclick = () => fetchFm6oaTimes();
-        document.getElementById('btn-back-from-fm6oa').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
+        document.getElementById('btn-back-from-fm6oa').onclick = () => { fm6oaStopCountdown(); showScreen(homeScreen); navHome.classList.add('active'); };
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
             var cm = document.getElementById('card-mushaf');
