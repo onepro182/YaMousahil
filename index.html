@@ -54,7 +54,7 @@
         .top-logo{width:200px;display:flex;justify-content:flex-start;align-items:center;}
         .top-logo img{height:70px;width:70px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 15px rgba(212,175,55,0.4));}
         .top-center-time{text-align:center;flex:1;}
-        .clock-large{font-size:2.2rem;font-weight:300;line-height:1;margin-bottom:5px;letter-spacing:2px;direction:ltr;color:var(--text-main);text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
+        .clock-gmt{font-size:.75rem;color:var(--gold);font-weight:700;margin-bottom:4px;letter-spacing:1px;direction:ltr;}
         .date-sub{font-size:1rem;color:var(--text-main);margin-bottom:3px;font-weight:500;text-shadow: 0 1px 5px rgba(0,0,0,0.8);}
         .date-sub.dim{color:var(--text-dim);font-size:.9rem;}
         .top-right-icons{display:flex;gap:10px;align-items:center;width:200px;justify-content:flex-end;}
@@ -808,6 +808,7 @@
                     </div>
                     <div class="top-center-time">
                         <div class="clock-large" id="clock">02:23</div>
+                        <div class="clock-gmt" id="clock-gmt">GMT+1</div>
                         <div class="date-sub" id="hijri-date">16 جمادى الأولى 1448 هـ</div>
                         <div class="date-sub dim" id="gregorian-date">الثلاثاء 27 أكتوبر 2026</div>
                     </div>
@@ -1454,7 +1455,7 @@
                                 <div class="setting-row" style="justify-content:center;margin-top:15px;"><button type="button" class="file-btn" id="btn-test-reminder" style="background:var(--glass-bg);backdrop-filter:blur(10px);border:1px solid var(--gold);color:var(--gold);font-weight:bold;width:100%;justify-content:center;">▶ اختبار شاشة التنبيه</button></div>
                             </div>
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
-                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div></div>
+                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1" selected>GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select></div></div>
                             <div class="settings-pane" id="pane-live">
                                 <h3 style="margin:0 0 4px;color:var(--gold);">📺 قنوات البث المباشر</h3>
                                 <p style="margin:0 0 10px;font-size:.8rem;color:var(--text-dim);">أضف/عدّل القنوات (الاسم + الرابط) — تظهر تلقائياً في صفحة بث مباشر.</p>
@@ -1596,7 +1597,7 @@
         // PARAMÈTRES
         // ==================================================
         let settings = {
-            countryId:'morocco', cityId:'oujda', method:'Morocco', asr:'Shafi', clockFormat:24,
+            countryId:'morocco', cityId:'oujda', method:'Morocco', asr:'Shafi', clockFormat:24, gmtOffset:1,
             adhanEnabled:true, adhanVoice:'azan1', reminderEnabled:false, reminderMinutes:10,
             reminderText:true, reminderVoice:true, geoapifyKey: '',
             globalOffset: -60,
@@ -1774,7 +1775,12 @@
             const now = new Date();
             document.getElementById('clock').textContent = formatSystemTime(now);
             
-            const city = CITIES_DB[settings.cityId];
+            const gmtEl = document.getElementById('clock-gmt');
+            if (gmtEl) {
+                const off = Number(settings.gmtOffset) || 0;
+                const sign = off >= 0 ? '+' : '';
+                gmtEl.textContent = 'GMT' + (off === 0 ? '' : (sign + off));
+            }
             const greg = now.toLocaleDateString('ar-EG-u-nu-latn-ca-gregory', { timeZone:locationTimeZone(), weekday:'long', day:'numeric', month:'long', year:'numeric' });
             document.getElementById('gregorian-date').textContent = greg;
 
@@ -3380,6 +3386,7 @@ var gender = 'male';
             document.getElementById('set-reminder-voice').checked = settings.reminderVoice !== false;
             document.querySelectorAll('#set-asr .group-btn').forEach(b => b.classList.toggle('active', b.dataset.value === settings.asr));
             document.querySelectorAll('#set-clock .group-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.value) === settings.clockFormat));
+            document.getElementById('set-gmt').value = String(settings.gmtOffset ?? 1);
             renderAdjustmentsUI();
             document.getElementById('settings-modal').classList.add('active');
         };
@@ -3419,6 +3426,7 @@ var gender = 'male';
             settings.reminderVoice = document.getElementById('set-reminder-voice').checked;
             settings.asr = document.querySelector('#set-asr .group-btn.active').dataset.value;
             settings.clockFormat = parseInt(document.querySelector('#set-clock .group-btn.active').dataset.value);
+            settings.gmtOffset = parseInt(document.getElementById('set-gmt').value, 10) || 0;
             try { localStorage.setItem('YaMousahil_settings', JSON.stringify(settings)); } catch (e) {}
             if ((settings.reminderText || settings.reminderVoice) && settings.reminderEnabled && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
             document.getElementById('settings-modal').classList.remove('active');
