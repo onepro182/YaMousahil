@@ -4416,16 +4416,12 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 if (badgeText) badgeText.textContent = isMecca ? 'مكية' : 'مدنية';
                 if (countEl) countEl.textContent = verses.length + ' آية';
                 if (basmala) basmala.style.display = (n === 1 || n === 9) ? 'none' : 'block';
-                if (text) text.innerHTML = verses.map(function(v){ return '<span class="ayah">' + quranReadNormalize(v.text) + ' <span class="quran-read-ayah">' + quranReadDigits(v.ayah) + '</span></span>'; }).join(' ');
+                if (text) text.innerHTML = verses.map(function(v){ return '<span class="ayah">' + quranReadNormalize(v.text) + ' <span class="quran-read-ayah">' + v.ayah + '</span></span>'; }).join(' ');
                 if (status) status.style.display = 'none';
                 if (viewer) viewer.style.display = 'flex';
             } catch (e) {
                 if (status) { status.textContent = '⚠️ تعذر تحميل السورة'; status.style.display = 'block'; }
             }
-        }
-        function quranReadDigits(n) {
-            var ar = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-            return String(n).split('').map(function(d){ return ar[+d] || d; }).join('');
         }
         function quranReadNormalize(t) {
             // Signes d'annotation coraniques (U+0870..U+0888, U+08CC) absents des polices web : on les retire
