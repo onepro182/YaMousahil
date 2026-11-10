@@ -1613,7 +1613,7 @@
             const _fnp = document.getElementById('fav-next-prayer-name'); if (_fnp) _fnp.textContent = PRAYER_NAMES[nextPrayerKey];
             const now = new Date(); const city = CITIES_DB[settings.cityId];
             const hijri = now.toLocaleDateString('ar-SA-u-nu-latn-ca-islamic-umalqura', { timeZone:locationTimeZone(), day:'numeric', month:'long', year:'numeric' });
-            document.getElementById('prayers-date').textContent = `${hijri} · ${city.nameAr}`; document.getElementById('hijri-date').textContent = `${hijri} · ${city.nameAr}`;
+            document.getElementById('prayers-date').textContent = `${hijri} هـ · ${city.nameAr}`; document.getElementById('hijri-date').textContent = `${hijri} هـ · ${city.nameAr}`;
             const listContainer = document.getElementById('detailed-prayer-list'); listContainer.innerHTML = '';
             PRAYER_ORDER.forEach(key => {
                 const item = document.createElement('div'); item.className = `p-item glass-btn ${key === currentPrayerKey ? 'active' : ''} ${key === nextPrayerKey ? 'selected' : ''}`;
@@ -3322,8 +3322,8 @@ var gender = 'male';
             try {
                 var tz = (typeof locationTimeZone === 'function') ? locationTimeZone((typeof settings!=='undefined'?settings.cityId:null)) : undefined;
                 var now = new Date();
-                var hijri = now.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
-                var greg = now.toLocaleDateString('ar', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
+                var hijri = now.toLocaleDateString('ar-SA-u-nu-latn-ca-islamic-umalqura', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
+                var greg = now.toLocaleDateString('ar-u-nu-latn', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
                 dateTxt = hijri + ' هـ • ' + greg;
             } catch(e){ try { dateTxt = new Date().toLocaleDateString('ar'); } catch(e2){} }
             if (dateEl) dateEl.textContent = dateTxt;
