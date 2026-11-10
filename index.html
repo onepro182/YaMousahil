@@ -383,6 +383,64 @@
         .quran-text-header{text-align:center;padding:15px 10px 5px;}
         .quran-text-header h1{color:var(--gold);font-family:var(--font-quran);font-size:2.8rem;font-weight:700;margin-bottom:5px;}
         .quran-text-header .meta{color:var(--text-dim);font-size:0.85rem;display:flex;justify-content:center;gap:10px;align-items:center;}
+        /* ===== Encadrement arabesque du titre de sourate ===== */
+        .qtf-frame{
+            --qtf-star:polygon(50% 0%,61% 21%,78% 9%,78% 30%,100% 50%,78% 70%,78% 91%,61% 79%,50% 100%,39% 79%,22% 91%,22% 70%,0% 50%,22% 30%,22% 9%,39% 21%);
+            position:relative;display:inline-block;vertical-align:middle;padding:3px;border-radius:20px;
+            background:linear-gradient(135deg,#ffeeb0 0%,#d4af37 22%,#9a7424 45%,#e3c05c 62%,#b5892a 80%,#ffeeb0 100%);
+            box-shadow:0 8px 26px rgba(0,0,0,.4),0 0 22px rgba(212,175,55,.22);
+        }
+        .qtf-inner{
+            position:relative;padding:11px 34px 9px;border-radius:17px;
+            background:radial-gradient(ellipse 120% 85% at 50% 0%,rgba(40,116,86,.5),rgba(40,116,86,0) 72%),
+                       linear-gradient(180deg,rgba(11,46,34,.93),rgba(6,26,20,.96));
+            border:1px solid rgba(255,228,160,.2);
+        }
+        .qtf-inner::before{content:"";position:absolute;inset:5px;border:1px solid rgba(255,228,160,.14);border-radius:12px;pointer-events:none;}
+        .qtf-inner h1{
+            color:var(--gold);font-family:var(--font-quran);font-size:2.8rem;font-weight:700;margin:0;line-height:1.45;
+            text-shadow:0 2px 10px rgba(212,175,55,.35),0 0 24px rgba(212,175,55,.18);
+        }
+        .qtf-inner .meta{
+            color:var(--text-dim);font-size:.85rem;display:flex;justify-content:center;align-items:center;
+            gap:8px;flex-wrap:wrap;margin-top:3px;
+        }
+        .qtf-inner .meta > span{
+            background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);border-radius:20px;
+            padding:2px 13px;color:var(--gold-light);font-size:.78rem;white-space:nowrap;
+        }
+        .qtf-inner .meta > span.meta-badge{background:rgba(212,175,55,.2);border-color:rgba(212,175,55,.45);color:#ffe9b0;}
+        /* rosaces 8 branches aux angles */
+        .qtf-rose{
+            position:absolute;width:16px;height:16px;z-index:3;
+            background:linear-gradient(160deg,#fff6d8,#e3c05c 55%,#8a6b1f);
+            clip-path:var(--qtf-star);filter:drop-shadow(0 0 5px rgba(255,215,120,.6));
+        }
+        .qtf-tl{top:-8px;left:-8px;}
+        .qtf-tr{top:-8px;right:-8px;transform:rotate(90deg);}
+        .qtf-br{bottom:-8px;right:-8px;transform:rotate(180deg);}
+        .qtf-bl{bottom:-8px;left:-8px;transform:rotate(270deg);}
+        /* arabesques enroulees sur les cotes */
+        .qtf-curl{
+            position:absolute;top:50%;width:15px;height:15px;margin-top:-7px;z-index:3;
+            border:2px solid rgba(255,231,168,.8);border-radius:50%;
+            border-left-color:transparent;border-bottom-color:transparent;transform:rotate(45deg);
+            filter:drop-shadow(0 0 4px rgba(255,215,120,.45));
+        }
+        .qtf-cl{left:-8px;}
+        .qtf-cr{right:-8px;transform:rotate(135deg);}
+        @media (max-width:700px){
+            .qtf-inner{padding:9px 22px 7px;border-radius:15px;}
+            .qtf-inner h1{font-size:1.7rem;}
+            .qtf-inner .meta{font-size:.75rem;gap:6px;}
+            .qtf-inner .meta > span{padding:1px 10px;font-size:.7rem;}
+            .qtf-rose{width:12px;height:12px;}
+            .qtf-tl,.qtf-tr{top:-6px;} .qtf-bl,.qtf-br{bottom:-6px;}
+            .qtf-tl,.qtf-bl{left:-6px;} .qtf-tr,.qtf-cr{right:-6px;}
+            .qtf-curl{width:11px;height:11px;margin-top:-5px;}
+            .qtf-cl{left:-6px;} .qtf-cr{right:-6px;}
+        }
+        body.is-mobile .qtf-inner h1{font-size:1.7rem;}
         .meta-badge{background:rgba(163,199,181,0.2);padding:3px 8px;border-radius:10px;font-size:0.75rem;}
         .quran-audio-controls{display:flex;justify-content:center;gap:10px;padding:8px 20px;border-bottom:1px solid rgba(212,175,55,0.2);margin-bottom:10px;background:rgba(12,46,34,0.45);border-radius:12px;}
         .quran-audio-controls select{background:rgba(12,46,34,0.7);border:1px solid rgba(212,175,55,0.4);color:var(--gold-light);border-radius:8px;padding:8px 12px;font-family:var(--font);font-size:1rem;outline:none;color-scheme:dark;}
@@ -1194,9 +1252,19 @@
                             <div class="quran-text-area glass-btn">
                                 <div class="quran-text-header">
                                     <button type="button" id="isl-back-to-surahs">☰ السور</button>
-                                    <h1 id="current-surah-title">الفاتحة</h1>
-                                    <div class="meta" id="current-surah-meta">
-                                        <span>مكية</span> · <span>السورة 1</span> · <span>آيات 7</span>
+                                    <div class="qtf-frame">
+                                        <span class="qtf-rose qtf-tl"></span>
+                                        <span class="qtf-rose qtf-tr"></span>
+                                        <span class="qtf-rose qtf-br"></span>
+                                        <span class="qtf-rose qtf-bl"></span>
+                                        <span class="qtf-curl qtf-cl"></span>
+                                        <span class="qtf-curl qtf-cr"></span>
+                                        <div class="qtf-inner">
+                                            <h1 id="current-surah-title">الفاتحة</h1>
+                                            <div class="meta" id="current-surah-meta">
+                                                <span>مكية</span> · <span>السورة 1</span> · <span>آيات 7</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="quran-text-body" id="isl-quran-body"></div>
