@@ -3221,18 +3221,20 @@ var gender = 'male';
             SURAH_NAMES.forEach((name, index) => {
                 const num = index + 1; const meta = SURAH_META[index] || { type: "مكية", ayahs: "..." };
                 const item = document.createElement('div'); item.className = 'surah-item glass-btn'; item.id = `surah-item-${num}`;
-                item.innerHTML = `<div class="surah-num-circle">${num}</div><div class="surah-info"><div class="surah-name-ar">${name}</div><div class="surah-name-en">${SURAH_ENGLISH_NAMES[index] || ''}</div></div><div class="surah-meta-info"><div>آيات ${meta.ayahs}</div><div>${meta.type}</div></div>`;
+                item.innerHTML = `<div class="surah-num-circle">${num}</div><div class="surah-info"><div class="surah-name-ar">${name}</div><div class="surah-name-en">${SURAH_ENGLISH_NAMES[index] || ''}</div></div><div class="surah-meta-info"><div>آيات ${meta.ayahs}</div><div>${meta.type}</div><div>صفحة ${SURAH_PAGES[index] || ''}</div></div>`;
                 item.onclick = () => { document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active')); item.classList.add('active'); islTargetAyah = null; selectSurah(num, name, meta); showQuranTextOnMobile(); };
                 container.appendChild(item);
             });
             selectSurah(1, SURAH_NAMES[0], SURAH_META[0]); document.getElementById('surah-item-1').classList.add('active');
         }
+        // صفحات المصحف (المصحف المدني 604 صفحة) - بداية كل سورة
+        const SURAH_PAGES = [1,2,50,77,10,106,128,151,177,187,208,221,235,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,555,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,598,599,599,600,600,601,601,601,602,604,604,604,604,604,604,604,604,604];
+        // صفحة بداية كل جزء
+        const JUZ_PAGES = [1,22,42,59,74,89,106,126,151,176,201,225,249,273,297,311,325,339,353,367,381,395,409,423,437,451,465,479,493,507];
                 function generateJuzGrid() {
             const container = document.getElementById('isl-juz-list-container'); if (!container) return;
             container.innerHTML = '';
             container.classList.add('juz-grid');
-            var arNums = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-            function toAr(n){ return String(n).split('').map(function(d){ return arNums[+d]||d; }).join(''); }
             var juzNames = ['','الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر','الحادي عشر','الثاني عشر','الثالث عشر','الرابع عشر','الخامس عشر','السادس عشر','السابع عشر','الثامن عشر','التاسع عشر','العشرون','الحادي والعشرون','الثاني والعشرون','الثالث والعشرون','الرابع والعشرون','الخامس والعشرون','السادس والعشرون','السابع والعشرون','الثامن والعشرون','التاسع والعشرون','الثلاثون'];
             for (let i = 0; i < 30; i++) {
                 const juzNum = i + 1; const start = JUZ_STARTS[i]; const surahIndex = start[0] - 1; const ayahNum = start[1];
@@ -3240,9 +3242,9 @@ var gender = 'male';
                 item.type = 'button';
                 item.className = 'juz-card glass-btn';
                 var sName = (typeof SURAH_NAMES !== 'undefined' && SURAH_NAMES[surahIndex]) ? SURAH_NAMES[surahIndex] : '';
-                item.innerHTML = '<span class="juz-num">' + toAr(juzNum) + '</span>'
-                    + '<span class="juz-label">الجزء ' + (juzNames[juzNum]||toAr(juzNum)) + '</span>'
-                    + '<span class="juz-start">سورة ' + sName + ' • الآية ' + toAr(ayahNum) + '</span>';
+                item.innerHTML = '<span class="juz-num">' + juzNum + '</span>'
+                    + '<span class="juz-label">الجزء ' + (juzNames[juzNum]||juzNum) + '</span>'
+                    + '<span class="juz-start">سورة ' + sName + ' • الآية ' + ayahNum + ' • صفحة ' + (JUZ_PAGES[i]||'') + '</span>';
                 item.onclick = () => {
                     container.querySelectorAll('.juz-card').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
