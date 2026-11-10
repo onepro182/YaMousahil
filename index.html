@@ -136,7 +136,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -833,6 +833,10 @@
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
                                     <span class="app-name">🌦 Météo</span>
                                 </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
+                                    <img class="app-icon" src="assets/img/mosquee.png" alt="مواقيت الصلاة">
+                                    <span class="app-name">مواقيت الصلاة</span>
+                                </div>
 </div>
                             </div>
                         </div>
@@ -1211,6 +1215,21 @@
                     <iframe id="mushaf-qf-frame" src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" data-src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" title="تصفح القرآن - مصحف ورش (QuranFlash)" style="position:absolute;inset:0;width:100%;height:100%;min-height:65vh;border:0;background:#fff;" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
+            </div>
+
+            <!-- MOWAKIT FM6OA SCREEN (التوقيت الرسمي للمملكة المغربية) -->
+            <div id="fm6oa-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-fm6oa">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">مواقيت الصلاة</h1>
+                        <p style="font-size:.8rem;color:var(--text-dim);margin:2px 0 0;">حسب التوقيت الرسمي للمملكة المغربية (GMT)</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div style="flex:1;min-height:65vh;height:100%;position:relative;border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#fff;">
+                    <iframe id="fm6oa-frame" data-src="" title="مواقيت الصلاة - وزارة الأوقاف والحبراس (FM6OA)" style="position:absolute;inset:0;width:100%;height:100%;min-height:65vh;border:0;background:#fff;" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
             </div>
 
             <!-- WIRD SCREEN -->
@@ -3220,8 +3239,8 @@ var gender = 'male';
             document.getElementById('adhkar-back-to-cats').onclick = () => { const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.remove('show-text'); window.scrollTo(0, 0); };
         }
 
-        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
         // SETTINGS HANDLERS
         populateCountrySelect();
@@ -3707,6 +3726,10 @@ function notifyPrayer(prayerKey, isTest) {
         })();
         document.getElementById('card-weather').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(weatherScreen); var c = weatherSelectedCity(); fetchWeather(c.lat, c.lon, c.name); };
         document.getElementById('btn-back-from-weather').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
+        // مواقيت الصلاة - التوقيت الرسمي للمملكة المغربية (FM6OA)
+        const FM6OA_CITY_CODES = { casablanca:15, rabat:1, fes:106, marrakech:40, oujda:78, tangier:60, agadir:151, meknes:124 };
+        document.getElementById('card-prayer-fm6oa').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('fm6oa-frame'); if (fr) { var code = (typeof FM6OA_CITY_CODES !== 'undefined' && FM6OA_CITY_CODES[settings.cityId]) ? FM6OA_CITY_CODES[settings.cityId] : 78; fr.src = 'https://fm6oa.org/prieres/code/index.php?ville=' + code; } var fs = document.getElementById('fm6oa-screen'); if (fs && typeof showScreen==='function') showScreen(fs); };
+        document.getElementById('btn-back-from-fm6oa').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
             var cm = document.getElementById('card-mushaf');
@@ -3827,7 +3850,7 @@ function notifyPrayer(prayerKey, isTest) {
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
