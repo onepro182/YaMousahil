@@ -503,7 +503,7 @@
 .fm6oa-city-select optgroup option{background:#0c2e22;color:var(--text-main);font-weight:400;padding-inline-start:12px;}
 .fm6oa-hero{position:relative;overflow:hidden;border-radius:16px;padding:14px 16px 12px;text-align:center;background:linear-gradient(160deg,rgba(212,175,55,0.16),rgba(12,46,34,0.55) 60%);}
 .fm6oa-hero-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
-.fm6oa-hero-label{font-size:.78rem;color:var(--text-dim);}
+.fm6oa-mihrab{width:16px;height:16px;vertical-align:middle;margin-inline-end:4px;color:var(--gold);}
 .fm6oa-hero-name{font-family:var(--font-quran);font-weight:800;font-size:1.35rem;color:#fff;}
 .fm6oa-hero-time{font-family:var(--font-quran);font-weight:800;font-size:1.7rem;color:var(--gold);font-variant-numeric:tabular-nums;direction:ltr;}
 .fm6oa-hero-cd{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--glass-border);border-radius:999px;padding:4px 12px;background:rgba(0,0,0,.25);margin-top:8px;}
@@ -528,9 +528,9 @@
 .fm6oa-tab.active{background:rgba(212,175,55,.22);border-color:var(--gold);color:var(--gold);font-weight:700;}
 .fm6oa-month-title{text-align:center;font-family:var(--font-quran);font-weight:700;color:var(--gold);font-size:1.05rem;margin:2px 0 8px;}
 .fm6oa-month-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--glass-border);background:rgba(12,46,34,.35);}
-.fm6oa-month{width:100%;border-collapse:collapse;font-size:.72rem;min-width:640px;}
-.fm6oa-month th,.fm6oa-month td{padding:7px 6px;text-align:center;border-bottom:1px solid rgba(212,175,55,.12);white-space:nowrap;}
-.fm6oa-month thead th{background:rgba(212,175,55,.18);color:var(--gold);font-weight:700;position:sticky;top:0;font-size:.7rem;}
+.fm6oa-month{width:100%;border-collapse:collapse;font-size:.72rem;min-width:520px;}
+.fm6oa-month th,.fm6oa-month td{padding:5px 4px;text-align:center;border-bottom:1px solid rgba(212,175,55,.12);white-space:nowrap;}
+.fm6oa-month thead th{background:rgba(212,175,55,.18);color:var(--gold);font-weight:700;position:sticky;top:0;font-size:.66rem;}
 .fm6oa-month tbody tr:hover{background:rgba(212,175,55,.06);}
 .fm6oa-month tbody tr.today{background:rgba(212,175,55,.22);font-weight:700;}
 .fm6oa-month tbody tr.today td{color:var(--gold);}
@@ -1278,7 +1278,7 @@
                         <!-- HERO : prochaine prière + compte à rebours -->
                         <div class="fm6oa-hero glass-btn">
                             <div class="fm6oa-hero-row">
-                                <span class="fm6oa-hero-label">الصلاة القادمة</span>
+                                <span class="fm6oa-hero-label"><svg class="fm6oa-mihrab" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M4 21h16"/><path d="M9 21v-5a3 3 0 0 1 6 0v5"/></svg> الصلاة القادمة</span>
                                 <span id="fm6oa-next-name" class="fm6oa-hero-name">—</span>
                                 <span id="fm6oa-next-time" class="fm6oa-hero-time">--:--</span>
                                 <span class="fm6oa-hero-cd">
@@ -1323,7 +1323,6 @@
                                     <thead>
                                         <tr>
                                             <th>اليوم</th>
-                                            <th>هجري</th>
                                             <th>ميلادي</th>
                                             <th>الفجر</th>
                                             <th>الشروق</th>
@@ -3998,7 +3997,11 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             renderCitySelect(code);
             var gregEl = document.getElementById("fm6oa-greg");
             if (gregEl) gregEl.textContent = data.greg || '';
-            try { document.getElementById("fm6oa-hijri").textContent = new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { day:'numeric', month:'long', year:'numeric' }); } catch (e) { document.getElementById("fm6oa-hijri").textContent = ''; }
+            var hijriEl = document.getElementById("fm6oa-hijri");
+            if (hijriEl) {
+                if (data.month && data.month.hijri) hijriEl.textContent = data.month.hijri;
+                else try { hijriEl.textContent = new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { month:'long' }); } catch (e) { hijriEl.textContent = ''; }
+            }
             var next = fm6oaComputeNext(data.times);
             _fm6oaLastIdx = -1;
             document.getElementById("fm6oa-next-name").textContent = next.nextName;
@@ -4022,8 +4025,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                     (m.rows || []).forEach(function(r) {
                         var tr = document.createElement('tr');
                         if (r.today) tr.className = 'today';
-                        tr.innerHTML = '<td class="wday">' + r.weekday + '</td>' +
-                            '<td>' + r.hijriDay + '</td>' +
+                        tr.innerHTML = '<td class="wday">' + r.weekday + ' ' + r.hijriDay + '</td>' +
                             '<td>' + r.gregDate + '</td>' +
                             '<td>' + r.fajr + '</td>' +
                             '<td>' + r.shurooq + '</td>' +
