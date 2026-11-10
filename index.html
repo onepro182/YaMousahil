@@ -528,7 +528,7 @@
 .fm6oa-tab.active{background:rgba(212,175,55,.22);border-color:var(--gold);color:var(--gold);font-weight:700;}
 .fm6oa-month-title{text-align:center;font-family:var(--font-quran);font-weight:700;color:var(--gold);font-size:1.05rem;margin:2px 0 8px;}
 .fm6oa-month-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--glass-border);background:rgba(12,46,34,.35);}
-.fm6oa-month{width:100%;border-collapse:collapse;font-size:.72rem;min-width:520px;}
+.fm6oa-month{width:100%;border-collapse:collapse;font-size:.72rem;min-width:640px;}
 .fm6oa-month th,.fm6oa-month td{padding:5px 4px;text-align:center;border-bottom:1px solid rgba(212,175,55,.12);white-space:nowrap;}
 .fm6oa-month thead th{background:rgba(212,175,55,.18);color:var(--gold);font-weight:700;position:sticky;top:0;font-size:.66rem;}
 .fm6oa-month tbody tr:hover{background:rgba(212,175,55,.06);}
@@ -1322,8 +1322,9 @@
                                 <table id="fm6oa-month" class="fm6oa-month">
                                     <thead>
                                         <tr>
-                                            <th>اليوم</th>
-                                            <th>ميلادي</th>
+                                            <th>الأيام</th>
+                                            <th id="fm6oa-month-hijri-header">هجري</th>
+                                            <th id="fm6oa-month-greg-header">ميلادي</th>
                                             <th>الفجر</th>
                                             <th>الشروق</th>
                                             <th>الظهر</th>
@@ -4022,10 +4023,15 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 var m = data.month || null;
                 if (m) {
                     if (monthTitle) monthTitle.textContent = 'مواقيت صلاة شهر ' + (m.hijri || '') + ' — ' + (m.gregorian || '') + ' لمدينة ' + name;
+                    var hijriHeader = document.getElementById('fm6oa-month-hijri-header');
+                    var gregHeader = document.getElementById('fm6oa-month-greg-header');
+                    if (hijriHeader && m.hijri) hijriHeader.textContent = m.hijri;
+                    if (gregHeader && m.gregorian) gregHeader.textContent = m.gregorian;
                     (m.rows || []).forEach(function(r) {
                         var tr = document.createElement('tr');
                         if (r.today) tr.className = 'today';
-                        tr.innerHTML = '<td class="wday">' + r.weekday + ' ' + r.hijriDay + '</td>' +
+                        tr.innerHTML = '<td class="wday">' + r.weekday + '</td>' +
+                            '<td>' + r.hijriDay + '</td>' +
                             '<td>' + r.gregDate + '</td>' +
                             '<td>' + r.fajr + '</td>' +
                             '<td>' + r.shurooq + '</td>' +
