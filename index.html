@@ -3377,7 +3377,8 @@ var gender = 'male';
             const recs = QP_RECITERS.filter(r => r.ed || r.mq);
             const sel = document.getElementById('isl-reciter');
             if (!islSelectedReciter && recs.length) {
-                islSelectedReciter = recs.find(r => r.ed === 'ar.alafasy') || recs[0];
+                // الافتراضي: القارئ ياسين الجزائري (رواية ورش عن نافع)
+                islSelectedReciter = recs.find(r => String(r.name || '').indexOf('ياسين الجزائري') !== -1) || recs[0];
                 if (sel) sel.value = islReciterKey(islSelectedReciter);
             }
             menu.innerHTML = '';
