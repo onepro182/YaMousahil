@@ -1613,7 +1613,7 @@
             const _fnp = document.getElementById('fav-next-prayer-name'); if (_fnp) _fnp.textContent = PRAYER_NAMES[nextPrayerKey];
             const now = new Date(); const city = CITIES_DB[settings.cityId];
             const hijri = now.toLocaleDateString('ar-SA-u-nu-latn-ca-islamic-umalqura', { timeZone:locationTimeZone(), day:'numeric', month:'long', year:'numeric' });
-            document.getElementById('prayers-date').textContent = `${hijri} هـ · ${city.nameAr}`; document.getElementById('hijri-date').textContent = `${hijri} هـ · ${city.nameAr}`;
+            document.getElementById('prayers-date').textContent = `${hijri} هـ`; document.getElementById('hijri-date').textContent = `${hijri} هـ`;
             const listContainer = document.getElementById('detailed-prayer-list'); listContainer.innerHTML = '';
             PRAYER_ORDER.forEach(key => {
                 const item = document.createElement('div'); item.className = `p-item glass-btn ${key === currentPrayerKey ? 'active' : ''} ${key === nextPrayerKey ? 'selected' : ''}`;
@@ -3325,7 +3325,7 @@ var gender = 'male';
                 var hijri = now.toLocaleDateString('ar-SA-u-nu-latn-ca-islamic-umalqura', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
                 var greg = now.toLocaleDateString('ar-u-nu-latn', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
                 dateTxt = hijri + ' هـ • ' + greg;
-            } catch(e){ try { dateTxt = new Date().toLocaleDateString('ar'); } catch(e2){} }
+            } catch(e){ try { dateTxt = new Date().toLocaleDateString('ar-u-nu-latn'); } catch(e2){} }
             if (dateEl) dateEl.textContent = dateTxt;
             if (dateRow) dateRow.style.display = dateTxt ? '' : 'none';
             if (overlay) overlay.classList.add('active');
