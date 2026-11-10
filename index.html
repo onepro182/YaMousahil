@@ -539,6 +539,11 @@
 .quran-read-name{flex:1;font-family:var(--font-quran);font-weight:600;color:var(--text-main);}
 .quran-read-logo{width:16px;height:16px;object-fit:contain;}
 .quran-read-meta{font-size:.68rem;color:var(--text-dim);white-space:nowrap;}
+.quran-read-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.quran-read-nav-btn{border-radius:999px;padding:6px 13px;color:var(--gold);font-family:var(--font);font-weight:700;font-size:.8rem;white-space:nowrap;}
+.quran-read-nav-btn:disabled{opacity:.4;cursor:default;}
+.quran-read-nav-title{font-family:var(--font-quran);font-weight:700;color:var(--gold);font-size:1.05rem;}
+.quran-read-head-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
 .quran-read-item{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);cursor:pointer;transition:all .15s;font-size:.78rem;}
 @media (max-width:820px){
   .quran-read-index{flex-wrap:wrap;overflow-x:visible;gap:6px;padding-bottom:4px;}
@@ -1412,14 +1417,15 @@
                         <div id="quran-read-index" class="quran-read-index"></div>
                     </div>
                     <div id="quran-read-viewer" style="display:none;flex-direction:column;gap:12px;max-width:820px;margin:0 auto;">
-                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                            <button type="button" class="glass-btn" id="quran-read-back-index" style="border-radius:999px;padding:6px 14px;color:var(--gold);font-family:var(--font);font-weight:700;font-size:.8rem;">‹ الفهرس</button>
-                            <div id="quran-read-surah-title" style="font-family:var(--font-quran);font-weight:700;color:var(--gold);font-size:1.1rem;"></div>
-                            <div style="width:80px;"></div>
+                        <div class="quran-read-nav">
+                            <button type="button" class="quran-read-nav-btn glass-btn" id="quran-read-back-index">الفهرس</button>
+                            <button type="button" class="quran-read-nav-btn glass-btn" id="quran-read-prev">‹ السابق</button>
+                            <div id="quran-read-surah-title" class="quran-read-nav-title"></div>
+                            <button type="button" class="quran-read-nav-btn glass-btn" id="quran-read-next">التالي ›</button>
                         </div>
                         <div class="quran-read-head">
-                            <div class="quran-read-head-name" id="quran-read-head-name"></div>
-                            <div class="quran-read-head-meta">
+                            <div class="quran-read-head-row">
+                                <span class="quran-read-head-name" id="quran-read-head-name"></span>
                                 <span class="quran-read-badge"><img class="quran-read-badge-logo" id="quran-read-badge-logo" src="assets/img/mecca.png" alt=""><span id="quran-read-badge-text">مكية</span></span>
                                 <span id="quran-read-count"></span>
                                 <span id="quran-read-page"></span>
@@ -4234,6 +4240,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         document.getElementById('card-quran-read').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var qs = document.getElementById('quran-read-screen'); if (qs && typeof showScreen==='function') showScreen(qs); quranReadInit(); };
         document.getElementById('btn-back-from-quran-read').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('quran-read-back-index').onclick = () => { document.getElementById('quran-read-viewer').style.display = 'none'; document.getElementById('quran-read-wrap').style.display = 'flex'; };
+        document.getElementById('quran-read-prev').onclick = () => { var n = (parseInt(document.getElementById('quran-read-surah-title').getAttribute('data-n'), 10) || 1) - 1; if (n >= 1) quranReadLoadSurah(n); };
+        document.getElementById('quran-read-next').onclick = () => { var n = (parseInt(document.getElementById('quran-read-surah-title').getAttribute('data-n'), 10) || 0) + 1; if (n <= 114) quranReadLoadSurah(n); };
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
             var cm = document.getElementById('card-mushaf');
@@ -4399,13 +4407,27 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         function quranReadParseHtml(html) {
             var m = html.match(/<div class="quran">([\s\S]*?)<\/div>/);
             if (!m) return [];
-            var zone = m[1].replace(/<p>\s*<img[^>]*\/>\s*<\/p>/, ' @@BS@@ ');
+            var zone = m[1].replace(/<a\s+h2[^>]*>[\s\S]*?<\/a>/g, ' ');
+            zone = zone.replace(/<p>\s*<img[^>]*\/>\s*<\/p>/, ' @@BS@@ ');
             var p = zone.indexOf('@@BS@@');
             if (p >= 0) zone = zone.substring(p + 7);
             zone = zone.replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, ' ');
             var q = zone.indexOf('لا تنسنا من دعوة');
             if (q > 0) zone = zone.substring(0, q);
             zone = zone.replace(/\s+/g, ' ').trim();
+            // retirer la basmala textuelle (سورة 1)
+            var diac = '[\\u064B-\\u0652\\u0670\\u0653-\\u0655\\u06D6-\\u06ED\\u08F0-\\u08F3\\u08CC\\u0870\\u0898]';
+            var target = 'بسماللهالرحمنالرحيم';
+            var plain = '', i0 = 0;
+            while (i0 < zone.length) {
+                var ch = zone.charAt(i0);
+                var isDiac = new RegExp(diac).test(ch);
+                if (!isDiac && ch !== ' ') plain += ch;
+                i0++;
+                if (target.indexOf(plain) !== 0) { if (!isDiac && ch !== ' ') i0--; break; }
+                if (plain === target) break;
+            }
+            if (plain === target) zone = zone.substring(i0).replace(new RegExp('^[' + diac + '\\s]+'), '');
             var parts = zone.split(/\((\d{1,3})\)/);
             var verses = [];
             for (var i = 1; i < parts.length - 1; i += 2) {
@@ -4488,7 +4510,11 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             }
             var name = info && info.name ? info.name : ('سورة ' + n);
             var isMecca = info ? info.type !== 'مدنية' : true;
-            if (title) title.textContent = name;
+            if (title) { title.textContent = name; title.setAttribute('data-n', n); }
+            var prevBtn = document.getElementById('quran-read-prev');
+            var nextBtn = document.getElementById('quran-read-next');
+            if (prevBtn) prevBtn.disabled = (n <= 1);
+            if (nextBtn) nextBtn.disabled = (n >= 114);
             if (headName) headName.textContent = 'سورة ' + name;
             if (badgeLogo) { badgeLogo.src = isMecca ? 'assets/img/mecca.png' : 'assets/img/medina.png'; badgeLogo.className = 'quran-read-badge-logo ' + (isMecca ? 'mecca' : 'medina'); badgeLogo.alt = isMecca ? 'مكية' : 'مدنية'; }
             if (badgeText) badgeText.textContent = isMecca ? 'مكية' : 'مدنية';

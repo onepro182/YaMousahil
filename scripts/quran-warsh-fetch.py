@@ -51,24 +51,50 @@ def parse_index(html):
     return rows
 
 
+DIAC = "\u064B-\u0652\u0670\u0653-\u0655\u06D6-\u06ED\u08F0-\u08F3\u08CC\u0870\u0898"
+
+
+def strip_basmala_text(s):
+    """Retire la basmala textuelle (سورة 1) du debut du texte."""
+    t = s.lstrip()
+    target = "\u0628\u0633\u0645\u0627\u0644\u0644\u0647\u0627\u0644\u0631\u062d\u0645\u0646\u0627\u0644\u0631\u062d\u064a\u0645"
+    plain = ""
+    i = 0
+    while i < len(t):
+        ch = t[i]
+        is_diac = re.match("[" + DIAC + "]", ch)
+        if not is_diac and ch != " ":
+            plain += ch
+        i += 1
+        if not target.startswith(plain):
+            if not is_diac and ch != " ":
+                i -= 1
+            break
+        if plain == target:
+            break
+    if plain == target:
+        return re.sub("^[" + DIAC + "\\s]+", "", t[i:].lstrip())
+    return s
+
+
 def parse_surah(html, n):
     # zone de lecture
     m = re.search(r'<div class="quran">(.*?)</div>', html, re.S)
     if not m:
         return []
     zone = m.group(1)
+    zone = re.sub(r"<a\s+h2[^>]*>.*?</a>", " ", zone, flags=re.S)   # titre "سورة X للقراءة..."
     zone = re.sub(r"<p>\s*<img[^>]*/>\s*</p>", " @@BASMALA@@ ", zone)
-    # couper l'en-tete (titre du site) avant la basmala
     p = zone.find("@@BASMALA@@")
     if p >= 0:
         zone = zone[p + len("@@BASMALA@@"):]
     zone = re.sub(r"<br\s*/?>", " ", zone)
     zone = re.sub(r"<[^>]+>", " ", zone)
-    # supprimer la zone de fin de page (slogan du site)
     p = zone.find("لا تنسنا من دعوة")
     if p > 0:
         zone = zone[:p]
     zone = re.sub(r"\s+", " ", zone).strip()
+    zone = strip_basmala_text(zone)
     # separation des versets : le numero suit le verset -> texte precedent
     parts = re.split(r"\((\d{1,3})\)", zone)
     verses = []
