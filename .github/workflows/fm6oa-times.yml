@@ -1,0 +1,35 @@
+name: FM6OA times mirror
+
+on:
+  schedule:
+    - cron: "35 3 * * *"   # 03:35 UTC chaque jour (04:35 heure du Maroc)
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/fm6oa-times.yml"
+      - "assets/data/fm6oa-times.json"
+      - "scripts/fm6oa-fetch.py"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch FM6OA times and build JSON
+        run: python3 scripts/fm6oa-fetch.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/fm6oa-times.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement - rien a commettre."
+          else
+            git commit -m "data: miroir horaires FM6OA [skip ci]"
+            git push
+          fi

@@ -3749,7 +3749,27 @@ function notifyPrayer(prayerKey, isTest) {
         const FM6OA_PRAYERS = [ { key:'fajr', name:'الفجر', ico:'🌅' }, { key:'dhuhr', name:'الظهر', ico:'☀️' }, { key:'asr', name:'العصر', ico:'🌤️' }, { key:'maghrib', name:'المغرب', ico:'🌇' }, { key:'isha', name:'العشاء', ico:'🌙' } ];
         var _fm6oaCache = null;
         function fm6oaTodayKey() { return new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-gregory', { day:'numeric', month:'numeric', year:'numeric' }); }
+        function fm6oaIsoToday() { var d = new Date(); return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2); }
+        function fm6oaDayMatch(day) { return day === fm6oaIsoToday() || day === fm6oaTodayKey(); }
+        function fm6oaJsonStamp() { var d = new Date(); return d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2); }
         function fetchWithTimeout(url, ms) { var ctl = new AbortController(); var to = setTimeout(function(){ ctl.abort(); }, ms); return fetch(url, { signal: ctl.signal }).then(function(r){ clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }).catch(function(e){ clearTimeout(to); throw e; }); }
+        function fm6oaComputeNext(times) {
+            var now = new Date(); var cur = now.getHours()*60 + now.getMinutes();
+            for (var i = 0; i < times.length; i++) {
+                var parts = String(times[i]).split(':'); var t = (+parts[0])*60 + (+parts[1]);
+                if (t > cur) return { nextName: FM6OA_PRAYERS[i].name, nextTime: times[i] };
+            }
+            return { nextName: FM6OA_PRAYERS[0].name, nextTime: times[0] };
+        }
+        function fm6oaNormalizeFromJSON(json, cityId) {
+            var c = (json && json.cities && json.cities[cityId]) || null;
+            if (!c || !c.times) return null;
+            var times = FM6OA_PRAYERS.map(function(p){ return c.times[p.key] || ''; });
+            var valid = times.filter(function(v){ return /^\d{1,2}:\d{2}$/.test(v); }).length;
+            if (valid < 5) return null;
+            var next = fm6oaComputeNext(times);
+            return { times: times, greg: c.greg || '', nextName: next.nextName, nextTime: next.nextTime, day: json.day || fm6oaIsoToday() };
+        }
         function parseFm6oa(html) {
             var doc = new DOMParser().parseFromString(html, 'text/html');
             var times = [];
@@ -3774,35 +3794,73 @@ function notifyPrayer(prayerKey, isTest) {
             document.getElementById("fm6oa-city").textContent = '📍 ' + (city || 'المملكة المغربية');
             document.getElementById("fm6oa-greg").textContent = data.greg || '';
             try { document.getElementById("fm6oa-hijri").textContent = new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { day:'numeric', month:'long', year:'numeric' }); } catch (e) { document.getElementById("fm6oa-hijri").textContent = ''; }
+            var next = fm6oaComputeNext(data.times);
             var list = document.getElementById("fm6oa-list"); list.innerHTML = '';
             FM6OA_PRAYERS.forEach(function(p, i) {
                 var item = document.createElement('div');
-                var isNext = data.nextName && data.nextName.indexOf(p.name) !== -1;
+                var isNext = next.nextName === p.name;
                 item.className = 'p-item glass-btn' + (isNext ? ' selected' : '');
                 item.style.cssText = 'border-radius:12px;';
                 item.innerHTML = '<span class="p-name">' + p.ico + ' ' + p.name + '</span><span class="p-right"><span style="font-weight:800;font-size:1.15rem;color:' + (isNext ? 'var(--gold)' : 'var(--text-main)') + ';">' + data.times[i] + '</span></span>';
                 list.appendChild(item);
             });
-            if (data.nextName && data.nextTime) { document.getElementById("fm6oa-next").style.display = 'block'; document.getElementById("fm6oa-next-name").textContent = data.nextName + ' — الساعة ' + data.nextTime; } else { document.getElementById("fm6oa-next").style.display = 'none'; }
+            if (next.nextName && next.nextTime) { document.getElementById("fm6oa-next").style.display = 'block'; document.getElementById("fm6oa-next-name").textContent = next.nextName + ' — الساعة ' + next.nextTime; } else { document.getElementById("fm6oa-next").style.display = 'none'; }
             var note = document.getElementById("fm6oa-note");
             if (fromCache) { note.textContent = '⚠️ بيانات محفوظة محلياً (تعذر الاتصال بخادم الوزارة)'; note.style.display = 'block'; } else { note.style.display = 'none'; }
             document.getElementById("fm6oa-status").style.display = 'none';
             document.getElementById("fm6oa-wrap").style.display = 'flex';
         }
         async function fetchFm6oaTimes() {
-            var code = (typeof FM6OA_CITY_CODES !== 'undefined' && FM6OA_CITY_CODES[settings.cityId]) ? FM6OA_CITY_CODES[settings.cityId] : 78;
-            var target = 'https://fm6oa.org/prieres/code/index.php?ville=' + code;
-            var proxies = [ 'https://api.allorigins.win/raw?url=' + encodeURIComponent(target), 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(target) ];
-            document.getElementById("fm6oa-status").style.display = 'block'; document.getElementById("fm6oa-status").textContent = 'جارٍ تحميل المواقيت...'; document.getElementById("fm6oa-wrap").style.display = 'none';
-            for (var pi = 0; pi < proxies.length; pi++) {
+            var cityId = settings.cityId;
+            var statusEl = document.getElementById("fm6oa-status");
+            var wrapEl = document.getElementById("fm6oa-wrap");
+            // 1) afficher tout de suite le cache local s'il y en a un
+            var cached = null;
+            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v1') || 'null'); } catch (e) {}
+            if (cached && cached.times && cached.times.length === 5) {
+                renderFm6oa(cached, !fm6oaDayMatch(cached.day));
+            } else {
+                statusEl.style.display = 'block'; statusEl.textContent = 'جارٍ تحميل المواقيت...'; wrapEl.style.display = 'none';
+            }
+            var done = false;
+            function finish() { done = true; }
+            // 2) source primaire : miroir JSON du depot via jsDelivr (CORS *, CDN rapide)
+            var jsonUrls = [
+                'https://cdn.jsdelivr.net/gh/onepro182/YaMousahil@main/assets/data/fm6oa-times.json?t=' + fm6oaJsonStamp(),
+                'https://raw.githubusercontent.com/onepro182/YaMousahil/main/assets/data/fm6oa-times.json?t=' + fm6oaJsonStamp()
+            ];
+            for (var ji = 0; ji < jsonUrls.length && !done; ji++) {
                 try {
-                    var html = await fetchWithTimeout(proxies[pi], 14000);
-                    var data = parseFm6oa(html);
-                    if (data) { _fm6oaCache = data; try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {} renderFm6oa(data, false); return; }
+                    var raw = await fetchWithTimeout(jsonUrls[ji], 10000);
+                    var json = JSON.parse(raw);
+                    var data = fm6oaNormalizeFromJSON(json, cityId);
+                    if (data) {
+                        _fm6oaCache = data;
+                        try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {}
+                        renderFm6oa(data, !fm6oaDayMatch(data.day)); finish(); return;
+                    }
                 } catch (e) {}
             }
-            try { var cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v1') || 'null'); if (cached && cached.times && cached.times.length === 5) { renderFm6oa(cached, cached.day !== fm6oaTodayKey()); return; } } catch (e) {}
-            document.getElementById("fm6oa-status").textContent = '⚠️ تعذر تحميل المواقيت — تحقق من الاتصال ثم اضغط ↻ تحديث';
+            // 3) secours : page FM6OA en direct via proxies CORS
+            var code = (typeof FM6OA_CITY_CODES !== 'undefined' && FM6OA_CITY_CODES[cityId]) ? FM6OA_CITY_CODES[cityId] : 78;
+            var target = 'https://fm6oa.org/prieres/code/index.php?ville=' + code;
+            var proxies = [ 'https://api.allorigins.win/raw?url=' + encodeURIComponent(target), 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(target), 'https://cors.eu.org/' + target ];
+            for (var pi = 0; pi < proxies.length && !done; pi++) {
+                try {
+                    var html = await fetchWithTimeout(proxies[pi], 9000);
+                    var data = parseFm6oa(html);
+                    if (data) {
+                        _fm6oaCache = data;
+                        try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {}
+                        renderFm6oa(data, false); finish(); return;
+                    }
+                } catch (e) {}
+            }
+            // 4) rien n'a abouti
+            if (!done) {
+                statusEl.style.display = 'block';
+                statusEl.textContent = '⚠️ تعذر تحميل المواقيت — تحقق من الاتصال ثم اضغط ↻ تحديث';
+            }
         }
         document.getElementById('card-prayer-fm6oa').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fs = document.getElementById('fm6oa-screen'); if (fs && typeof showScreen==='function') showScreen(fs); fetchFm6oaTimes(); };
         document.getElementById('fm6oa-refresh').onclick = () => fetchFm6oaTimes();
