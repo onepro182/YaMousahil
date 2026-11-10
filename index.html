@@ -516,7 +516,21 @@
 .fm6oa-chip.active{background:rgba(212,175,55,.22);border-color:var(--gold);color:var(--gold);font-weight:700;}
 .fm6oa-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .fm6oa-footer .glass-btn{border-radius:999px;padding:8px 18px;color:var(--gold);font-family:var(--font);font-weight:700;font-size:.85rem;}
-#fm6oa-list .p-item.past{opacity:.5;}
+.fm6oa-tabs{display:flex;gap:6px;justify-content:center;}
+.fm6oa-tab{flex:1;max-width:160px;border:1px solid var(--glass-border);border-radius:999px;padding:8px 14px;background:rgba(255,255,255,.05);color:var(--text-main);font-family:var(--font);font-size:.82rem;cursor:pointer;transition:all .15s;}
+.fm6oa-tab:hover{border-color:var(--gold);}
+.fm6oa-tab.active{background:rgba(212,175,55,.22);border-color:var(--gold);color:var(--gold);font-weight:700;}
+.fm6oa-month-title{text-align:center;font-family:var(--font-quran);font-weight:700;color:var(--gold);font-size:1.05rem;margin:2px 0 8px;}
+.fm6oa-month-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--glass-border);background:rgba(12,46,34,.35);}
+.fm6oa-month{width:100%;border-collapse:collapse;font-size:.72rem;min-width:640px;}
+.fm6oa-month th,.fm6oa-month td{padding:7px 6px;text-align:center;border-bottom:1px solid rgba(212,175,55,.12);white-space:nowrap;}
+.fm6oa-month thead th{background:rgba(212,175,55,.18);color:var(--gold);font-weight:700;position:sticky;top:0;font-size:.7rem;}
+.fm6oa-month tbody tr:hover{background:rgba(212,175,55,.06);}
+.fm6oa-month tbody tr.today{background:rgba(212,175,55,.22);font-weight:700;}
+.fm6oa-month tbody tr.today td{color:var(--gold);}
+.fm6oa-month .wday{font-size:.68rem;color:var(--text-dim);}
+.fm6oa-panel{display:none;}
+.fm6oa-panel.active{display:block;}
         .tasbih-embedded input,.tasbih-embedded textarea,.tasbih-embedded select{background:rgba(255,255,255,0.06);color:#f4ecd8;border-color:rgba(212,175,55,0.35);}
         .tasbih-modal{position:absolute;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(2,13,8,0.9);backdrop-filter:blur(8px);color:#f4ecd8;font-family:var(--font-quran);user-select:text;-webkit-user-select:text;}
         .tasbih-modal[hidden]{display:none !important;}
@@ -1286,8 +1300,37 @@
                         </div>
                         <!-- VILLES -->
                         <div id="fm6oa-cities" class="fm6oa-cities"></div>
-                        <!-- LISTE DES PRIÈRES -->
-                        <div id="fm6oa-list" class="prayer-list" style="gap:8px;"></div>
+                        <!-- ONGLETS -->
+                        <div class="fm6oa-tabs">
+                            <button type="button" class="fm6oa-tab active" data-tab="day">اليوم</button>
+                            <button type="button" class="fm6oa-tab" data-tab="month">مواقيت شهر</button>
+                        </div>
+                        <!-- PANEL JOUR -->
+                        <div id="fm6oa-panel-day" class="fm6oa-panel active">
+                            <div id="fm6oa-list" class="prayer-list" style="gap:8px;"></div>
+                        </div>
+                        <!-- PANEL MOIS -->
+                        <div id="fm6oa-panel-month" class="fm6oa-panel">
+                            <div id="fm6oa-month-title" class="fm6oa-month-title"></div>
+                            <div class="fm6oa-month-wrap">
+                                <table id="fm6oa-month" class="fm6oa-month">
+                                    <thead>
+                                        <tr>
+                                            <th>اليوم</th>
+                                            <th>هجري</th>
+                                            <th>ميلادي</th>
+                                            <th>الفجر</th>
+                                            <th>الشروق</th>
+                                            <th>الظهر</th>
+                                            <th>العصر</th>
+                                            <th>المغرب</th>
+                                            <th>العشاء</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="fm6oa-month-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
                         <!-- PIED -->
                         <div class="fm6oa-footer">
                             <span id="fm6oa-updated" style="font-size:.72rem;color:var(--text-dim);"></span>
@@ -3822,7 +3865,7 @@ function notifyPrayer(prayerKey, isTest) {
             var valid = times.filter(function(v){ return /^\d{1,2}:\d{2}$/.test(v); }).length;
             if (valid < 5) return null;
             var next = fm6oaComputeNext(times);
-            return { cityId: cityId, times: times, greg: c.greg || '', nextName: next.nextName, nextTime: next.nextTime, day: json.day || fm6oaIsoToday(), updated: json.updated || '' };
+            return { cityId: cityId, times: times, greg: c.greg || '', nextName: next.nextName, nextTime: next.nextTime, day: json.day || fm6oaIsoToday(), updated: json.updated || '', month: c.month || null };
         }
         function parseFm6oa(html) {
             var doc = new DOMParser().parseFromString(html, 'text/html');
@@ -3841,7 +3884,25 @@ function notifyPrayer(prayerKey, isTest) {
             var nextName = null, nextTime = null;
             var npEl = doc.getElementById('prayerTimeDisplay');
             if (npEl) { try { var tr = npEl.closest('tr'); var raw = (tr.cells[0].textContent||'').replace(/\s+/g,' ').trim(); var m = raw.match(/^(.*?)\s*الساعة\s*(\d{1,2}:\d{2})$/); if (m) { nextName = m[1].trim(); nextTime = m[2]; } } catch (e) {} }
-            return { times: times.slice(0,5), greg: greg, nextName: nextName, nextTime: nextTime, day: fm6oaTodayKey() };
+            return { times: times.slice(0,5), greg: greg, nextName: nextName, nextTime: nextTime, day: fm6oaTodayKey(), month: parseFm6oaMonth(html) };
+        }
+        function parseFm6oaMonth(html) {
+            var hijri_month = null, greg_month = null;
+            var hm = html.match(/<th class="wakt">\s*(.*?)\s*<\/th>\s*<th class="wakt">\s*(.*?)\s*<\/th>\s*<th class="wakt">الفجر/);
+            if (hm) { hijri_month = hm[1].replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); greg_month = hm[2].replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); }
+            var mt = html.match(/<table id="horaire".*?<\/thead>\s*<tbody>(.*?)<\/tbody>/s);
+            var rows = [];
+            if (mt) {
+                var trs = mt[1].match(/<tr[^>]*>(.*?)<\/tr>/gs) || [];
+                for (var i = 0; i < trs.length; i++) {
+                    var tds = trs[i].match(/<td[^>]*>(.*?)<\/td>/gs) || [];
+                    if (tds.length < 9) continue;
+                    var vals = tds.slice(0,9).map(function(t){ return t.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); });
+                    var isToday = /class=["']active["']/.test(trs[i]);
+                    rows.push({ weekday: vals[0], hijriDay: vals[1], gregDate: vals[2], fajr: vals[3], shurooq: vals[4], dhuhr: vals[5], asr: vals[6], maghrib: vals[7], isha: vals[8], today: isToday });
+                }
+            }
+            return { hijri: hijri_month, gregorian: greg_month, rows: rows };
         }
         var _fm6oaCountdownTimer = null, _fm6oaLastIdx = -1;
         function fm6oaStopCountdown() { if (_fm6oaCountdownTimer) { clearInterval(_fm6oaCountdownTimer); _fm6oaCountdownTimer = null; } }
@@ -3919,6 +3980,33 @@ function notifyPrayer(prayerKey, isTest) {
             renderCityChips(cityId);
             var upd = document.getElementById("fm6oa-updated");
             if (upd) { upd.textContent = data.updated ? ('آخر تحديث: ' + String(data.updated).replace('T',' ').replace('Z',' UTC')) : 'مصدر مباشر: fm6oa.org'; }
+            // tableau mensuel
+            var monthBody = document.getElementById('fm6oa-month-body');
+            var monthTitle = document.getElementById('fm6oa-month-title');
+            if (monthBody) {
+                monthBody.innerHTML = '';
+                var m = data.month || null;
+                if (m) {
+                    if (monthTitle) monthTitle.textContent = 'مواقيت صلاة شهر ' + (m.hijri || '') + (m.gregorian ? ' — ' + m.gregorian : '');
+                    (m.rows || []).forEach(function(r) {
+                        var tr = document.createElement('tr');
+                        if (r.today) tr.className = 'today';
+                        tr.innerHTML = '<td class="wday">' + r.weekday + '</td>' +
+                            '<td>' + r.hijriDay + '</td>' +
+                            '<td>' + r.gregDate + '</td>' +
+                            '<td>' + r.fajr + '</td>' +
+                            '<td>' + r.shurooq + '</td>' +
+                            '<td>' + r.dhuhr + '</td>' +
+                            '<td>' + r.asr + '</td>' +
+                            '<td>' + r.maghrib + '</td>' +
+                            '<td>' + r.isha + '</td>';
+                        monthBody.appendChild(tr);
+                    });
+                    // faire defiler jusqu'a aujourd'hui
+                    var todayRow = monthBody.querySelector('tr.today');
+                    if (todayRow) { try { todayRow.scrollIntoView({ block: 'center' }); } catch (e) {} }
+                }
+            }
             var noteEl = document.getElementById("fm6oa-note");
             if (note === 'stale-json') { noteEl.textContent = '⚠️ المواقيت بتاريخ ' + data.day + ' — يتم التحديث تلقائياً في الصباح'; noteEl.style.display = 'block'; }
             else if (note === 'cache') { noteEl.textContent = '⚠️ بيانات محفوظة محلياً (تعذر الاتصال بخادم الوزارة)'; noteEl.style.display = 'block'; }
@@ -3934,7 +4022,7 @@ function notifyPrayer(prayerKey, isTest) {
             fm6oaStopCountdown();
             // 1) cache local immediat (pour la ville choisie)
             var cached = null;
-            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v1') || 'null'); } catch (e) {}
+            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v2') || 'null'); } catch (e) {}
             if (cached && cached.times && cached.times.length === 5 && (!cached.cityId || cached.cityId === cityId)) {
                 renderFm6oa(cached, fm6oaDayMatch(cached.day) ? null : 'cache');
             } else {
@@ -3955,7 +4043,7 @@ function notifyPrayer(prayerKey, isTest) {
                     var data = fm6oaNormalizeFromJSON(json, cityId);
                     if (data) {
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v2', JSON.stringify(data)); } catch (e) {}
                         if (fm6oaDayMatch(data.day)) { renderFm6oa(data, null); finish(); return; }
                         staleData = data;
                         break;
@@ -3973,7 +4061,7 @@ function notifyPrayer(prayerKey, isTest) {
                     if (data) {
                         data.cityId = cityId; data.updated = '';
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v2', JSON.stringify(data)); } catch (e) {}
                         renderFm6oa(data, null); finish(); return;
                     }
                 } catch (e) {}
@@ -3988,6 +4076,16 @@ function notifyPrayer(prayerKey, isTest) {
         }
         document.getElementById('card-prayer-fm6oa').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fs = document.getElementById('fm6oa-screen'); if (fs && typeof showScreen==='function') showScreen(fs); fetchFm6oaTimes(); };
         document.getElementById('fm6oa-refresh').onclick = () => fetchFm6oaTimes();
+        document.querySelectorAll('.fm6oa-tab').forEach(function(btn) {
+            btn.onclick = function() {
+                document.querySelectorAll('.fm6oa-tab').forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                var tab = btn.getAttribute('data-tab');
+                document.querySelectorAll('.fm6oa-panel').forEach(function(p){ p.classList.remove('active'); });
+                var panel = document.getElementById('fm6oa-panel-' + (tab === 'month' ? 'month' : 'day'));
+                if (panel) panel.classList.add('active');
+            };
+        });
         document.getElementById('btn-back-from-fm6oa').onclick = () => { fm6oaStopCountdown(); showScreen(homeScreen); navHome.classList.add('active'); };
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
