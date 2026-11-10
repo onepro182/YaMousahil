@@ -3806,7 +3806,9 @@ function notifyPrayer(prayerKey, isTest) {
             });
             if (next.nextName && next.nextTime) { document.getElementById("fm6oa-next").style.display = 'block'; document.getElementById("fm6oa-next-name").textContent = next.nextName + ' — الساعة ' + next.nextTime; } else { document.getElementById("fm6oa-next").style.display = 'none'; }
             var note = document.getElementById("fm6oa-note");
-            if (fromCache) { note.textContent = '⚠️ بيانات محفوظة محلياً (تعذر الاتصال بخادم الوزارة)'; note.style.display = 'block'; } else { note.style.display = 'none'; }
+            if (fromCache === 'stale-json') { note.textContent = '⚠️ المواقيت بتاريخ ' + data.day + ' — يتم التحديث تلقائياً في الصباح'; note.style.display = 'block'; }
+            else if (fromCache === 'cache') { note.textContent = '⚠️ بيانات محفوظة محلياً (تعذر الاتصال بخادم الوزارة)'; note.style.display = 'block'; }
+            else { note.style.display = 'none'; }
             document.getElementById("fm6oa-status").style.display = 'none';
             document.getElementById("fm6oa-wrap").style.display = 'flex';
         }
@@ -3818,7 +3820,7 @@ function notifyPrayer(prayerKey, isTest) {
             var cached = null;
             try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v1') || 'null'); } catch (e) {}
             if (cached && cached.times && cached.times.length === 5) {
-                renderFm6oa(cached, !fm6oaDayMatch(cached.day));
+                renderFm6oa(cached, fm6oaDayMatch(cached.day) ? null : 'cache');
             } else {
                 statusEl.style.display = 'block'; statusEl.textContent = 'جارٍ تحميل المواقيت...'; wrapEl.style.display = 'none';
             }
@@ -3837,7 +3839,7 @@ function notifyPrayer(prayerKey, isTest) {
                     if (data) {
                         _fm6oaCache = data;
                         try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {}
-                        renderFm6oa(data, !fm6oaDayMatch(data.day)); finish(); return;
+                        renderFm6oa(data, fm6oaDayMatch(data.day) ? null : 'stale-json'); finish(); return;
                     }
                 } catch (e) {}
             }
