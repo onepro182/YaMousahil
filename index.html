@@ -1727,7 +1727,11 @@
         }
 
         function formatSystemTime(date) {
-            const h = date.getHours(), m = date.getMinutes();
+            const offset = Number(settings.gmtOffset) || 0;
+            // Affiche l'heure dans le fuseau GMT+offset choisi
+            const utcMs = date.getTime() + (date.getTimezoneOffset() * 60000);
+            const target = new Date(utcMs + (offset * 3600000));
+            const h = target.getUTCHours(), m = target.getUTCMinutes();
             if (settings.clockFormat === 12) { const ampm = h >= 12 ? ' PM' : ' AM'; let hh = h % 12 || 12; return `${pad(hh)}:${pad(m)}${ampm}`; }
             return `${pad(h)}:${pad(m)}`;
         }
