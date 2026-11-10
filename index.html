@@ -1022,7 +1022,44 @@
                                     <span class="app-name">🌦 Météo</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
-                                    <img class="app-icon" src="assets/img/mosquee.png" alt="مواقيت الصلاة">
+                                    <svg class="app-icon" viewBox="0 0 64 64" role="img" aria-label="مواقيت الصلاة">
+                                        <defs>
+                                            <linearGradient id="q3dPrayBg" x1="0" y1="0" x2="0.32" y2="1">
+                                                <stop offset="0" stop-color="#2a8fb8"/><stop offset="0.5" stop-color="#0f4f6b"/><stop offset="1" stop-color="#052232"/>
+                                            </linearGradient>
+                                            <linearGradient id="q3dPrayDome" x1="0.1" y1="0" x2="0.7" y2="1">
+                                                <stop offset="0" stop-color="#6fe0b2"/><stop offset="0.45" stop-color="#1e9670"/><stop offset="1" stop-color="#0a4c38"/>
+                                            </linearGradient>
+                                            <linearGradient id="q3dPrayGold" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0" stop-color="#ffeeb0"/><stop offset="0.5" stop-color="#e3c05c"/><stop offset="1" stop-color="#b5892a"/>
+                                            </linearGradient>
+                                            <linearGradient id="q3dPrayFace" x1="0" y1="0" x2="0.4" y2="1">
+                                                <stop offset="0" stop-color="#ffffff"/><stop offset="0.6" stop-color="#eef2f9"/><stop offset="1" stop-color="#c6d2e6"/>
+                                            </linearGradient>
+                                            <radialGradient id="q3dPrayShade" cx="0.5" cy="0.5" r="0.5">
+                                                <stop offset="0" stop-color="#000000" stop-opacity=".45"/><stop offset="1" stop-color="#000000" stop-opacity="0"/>
+                                            </radialGradient>
+                                            <mask id="q3dPrayMask">
+                                                <rect width="64" height="64" fill="#ffffff"/>
+                                                <circle cx="25.2" cy="6.6" r="4.4" fill="#000000"/>
+                                            </mask>
+                                        </defs>
+                                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#q3dPrayBg)"/>
+                                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                        <ellipse cx="21" cy="54" rx="20" ry="5" fill="url(#q3dPrayShade)"/>
+                                        <path d="M6 47 C6 30 11 20 21 11 C31 20 36 30 36 47 Z" fill="url(#q3dPrayDome)"/>
+                                        <path d="M21 11 C14.5 20 10 29 9.2 47 L6 47 C6 30 11 20 21 11 Z" fill="#ffffff" opacity=".2"/>
+                                        <rect x="3" y="45" width="36" height="8" rx="3" fill="url(#q3dPrayGold)"/>
+                                        <rect x="3" y="45" width="36" height="8" rx="3" fill="none" stroke="#8a6517" stroke-width="1" opacity=".55"/>
+                                        <path d="M21 11 L21 6.5" stroke="url(#q3dPrayGold)" stroke-width="2.4" stroke-linecap="round"/>
+                                        <circle cx="21" cy="8.4" r="5.2" fill="url(#q3dPrayGold)" mask="url(#q3dPrayMask)"/>
+                                        <circle cx="46" cy="45" r="13.2" fill="url(#q3dPrayGold)"/>
+                                        <circle cx="46" cy="45" r="10.6" fill="url(#q3dPrayFace)"/>
+                                        <path d="M46 45 L46 36.6" stroke="#16202f" stroke-width="2.1" stroke-linecap="round"/>
+                                        <path d="M46 45 L51.4 48.4" stroke="#16202f" stroke-width="2.1" stroke-linecap="round"/>
+                                        <circle cx="46" cy="45" r="1.8" fill="#b5892a"/>
+                                        <path d="M39.5 39.2 A9 9 0 0 1 51 37.8" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".85"/>
+                                    </svg>
                                     <span class="app-name">مواقيت الصلاة</span>
                                 </div>
 </div>
