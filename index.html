@@ -1227,8 +1227,24 @@
                     </div>
                     <div style="width:80px;"></div>
                 </header>
-                <div style="flex:1;min-height:65vh;height:100%;position:relative;border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#fff;">
-                    <iframe id="fm6oa-frame" data-src="" title="مواقيت الصلاة - وزارة الأوقاف والحبراس (FM6OA)" style="position:absolute;inset:0;width:100%;height:100%;min-height:65vh;border:0;background:#fff;" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div style="flex:1;overflow-y:auto;padding:10px;">
+                    <div id="fm6oa-status" style="text-align:center;padding:40px 12px;color:var(--text-dim);">جارٍ تحميل المواقيت...</div>
+                    <div id="fm6oa-wrap" style="display:none;flex-direction:column;gap:12px;max-width:640px;margin:0 auto;">
+                        <div class="glass-btn" style="border-radius:14px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                            <div style="text-align:right;">
+                                <div id="fm6oa-city" style="font-weight:700;color:var(--gold);">📍</div>
+                                <div id="fm6oa-greg" style="font-size:.85rem;color:var(--text-dim);"></div>
+                            </div>
+                            <div id="fm6oa-hijri" style="font-family:var(--font-quran);color:var(--gold);"></div>
+                        </div>
+                        <div id="fm6oa-next" style="display:none;border-radius:14px;padding:12px 18px;background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.45);text-align:center;">
+                            <div style="font-size:.8rem;color:var(--text-dim);">الصلاة القادمة</div>
+                            <div id="fm6oa-next-name" style="font-weight:800;font-size:1.2rem;color:var(--gold);"></div>
+                        </div>
+                        <div id="fm6oa-list" class="prayer-list" style="gap:8px;"></div>
+                        <div id="fm6oa-note" style="display:none;font-size:.75rem;color:var(--text-dim);text-align:center;"></div>
+                        <button type="button" class="glass-btn" id="fm6oa-refresh" style="border-radius:999px;padding:10px 22px;color:var(--gold);font-family:var(--font);font-weight:700;margin:4px auto 0;">↻ تحديث</button>
+                    </div>
                 </div>
             </div>
 
@@ -3727,9 +3743,68 @@ function notifyPrayer(prayerKey, isTest) {
         })();
         document.getElementById('card-weather').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(weatherScreen); var c = weatherSelectedCity(); fetchWeather(c.lat, c.lon, c.name); };
         document.getElementById('btn-back-from-weather').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
-        // مواقيت الصلاة - التوقيت الرسمي للمملكة المغربية (FM6OA)
+        // مواقيت الصلاة - التوقيت الرسمي للمملكة المغربية (FM6OA) - rendu natif style app
         const FM6OA_CITY_CODES = { casablanca:15, rabat:1, fes:106, marrakech:40, oujda:78, tangier:60, agadir:151, meknes:124 };
-        document.getElementById('card-prayer-fm6oa').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fr=document.getElementById('fm6oa-frame'); if (fr) { var code = (typeof FM6OA_CITY_CODES !== 'undefined' && FM6OA_CITY_CODES[settings.cityId]) ? FM6OA_CITY_CODES[settings.cityId] : 78; fr.src = 'https://fm6oa.org/prieres/code/index.php?ville=' + code; } var fs = document.getElementById('fm6oa-screen'); if (fs && typeof showScreen==='function') showScreen(fs); };
+        const FM6OA_PRAYERS = [ { key:'fajr', name:'الفجر', ico:'🌅' }, { key:'dhuhr', name:'الظهر', ico:'☀️' }, { key:'asr', name:'العصر', ico:'🌤️' }, { key:'maghrib', name:'المغرب', ico:'🌇' }, { key:'isha', name:'العشاء', ico:'🌙' } ];
+        var _fm6oaCache = null;
+        function fm6oaTodayKey() { return new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-gregory', { day:'numeric', month:'numeric', year:'numeric' }); }
+        function fetchWithTimeout(url, ms) { var ctl = new AbortController(); var to = setTimeout(function(){ ctl.abort(); }, ms); return fetch(url, { signal: ctl.signal }).then(function(r){ clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }).catch(function(e){ clearTimeout(to); throw e; }); }
+        function parseFm6oa(html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var times = [];
+            var tables = doc.querySelectorAll('table');
+            for (var ti = 0; ti < tables.length && times.length < 5; ti++) {
+                var ths = tables[ti].querySelectorAll('thead th');
+                if (ths.length >= 5 && (ths[0].textContent||'').indexOf('الفجر') !== -1) {
+                    times = [];
+                    tables[ti].querySelectorAll('tbody td').forEach(function(td){ var v = (td.textContent||'').replace(/\s+/g,' ').trim(); if (/^\d{1,2}:\d{2}$/.test(v)) times.push(v); });
+                }
+            }
+            if (times.length < 5) return null;
+            var greg = null;
+            doc.querySelectorAll('table tr').forEach(function(tr){ var th = tr.querySelector('th'); if (th && (th.textContent||'').indexOf('الميلادي') !== -1) { var td = tr.querySelector('td'); if (td) greg = (td.textContent||'').replace(/\s+/g,' ').trim(); } });
+            var nextName = null, nextTime = null;
+            var npEl = doc.getElementById('prayerTimeDisplay');
+            if (npEl) { try { var tr = npEl.closest('tr'); var raw = (tr.cells[0].textContent||'').replace(/\s+/g,' ').trim(); var m = raw.match(/^(.*?)\s*الساعة\s*(\d{1,2}:\d{2})$/); if (m) { nextName = m[1].trim(); nextTime = m[2]; } } catch (e) {} }
+            return { times: times.slice(0,5), greg: greg, nextName: nextName, nextTime: nextTime, day: fm6oaTodayKey() };
+        }
+        function renderFm6oa(data, fromCache) {
+            var city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) ? CITIES_DB[settings.cityId].nameAr : '';
+            document.getElementById("fm6oa-city").textContent = '📍 ' + (city || 'المملكة المغربية');
+            document.getElementById("fm6oa-greg").textContent = data.greg || '';
+            try { document.getElementById("fm6oa-hijri").textContent = new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { day:'numeric', month:'long', year:'numeric' }); } catch (e) { document.getElementById("fm6oa-hijri").textContent = ''; }
+            var list = document.getElementById("fm6oa-list"); list.innerHTML = '';
+            FM6OA_PRAYERS.forEach(function(p, i) {
+                var item = document.createElement('div');
+                var isNext = data.nextName && data.nextName.indexOf(p.name) !== -1;
+                item.className = 'p-item glass-btn' + (isNext ? ' selected' : '');
+                item.style.cssText = 'border-radius:12px;';
+                item.innerHTML = '<span class="p-name">' + p.ico + ' ' + p.name + '</span><span class="p-right"><span style="font-weight:800;font-size:1.15rem;color:' + (isNext ? 'var(--gold)' : 'var(--text-main)') + ';">' + data.times[i] + '</span></span>';
+                list.appendChild(item);
+            });
+            if (data.nextName && data.nextTime) { document.getElementById("fm6oa-next").style.display = 'block'; document.getElementById("fm6oa-next-name").textContent = data.nextName + ' — الساعة ' + data.nextTime; } else { document.getElementById("fm6oa-next").style.display = 'none'; }
+            var note = document.getElementById("fm6oa-note");
+            if (fromCache) { note.textContent = '⚠️ بيانات محفوظة محلياً (تعذر الاتصال بخادم الوزارة)'; note.style.display = 'block'; } else { note.style.display = 'none'; }
+            document.getElementById("fm6oa-status").style.display = 'none';
+            document.getElementById("fm6oa-wrap").style.display = 'flex';
+        }
+        async function fetchFm6oaTimes() {
+            var code = (typeof FM6OA_CITY_CODES !== 'undefined' && FM6OA_CITY_CODES[settings.cityId]) ? FM6OA_CITY_CODES[settings.cityId] : 78;
+            var target = 'https://fm6oa.org/prieres/code/index.php?ville=' + code;
+            var proxies = [ 'https://api.allorigins.win/raw?url=' + encodeURIComponent(target), 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(target) ];
+            document.getElementById("fm6oa-status").style.display = 'block'; document.getElementById("fm6oa-status").textContent = 'جارٍ تحميل المواقيت...'; document.getElementById("fm6oa-wrap").style.display = 'none';
+            for (var pi = 0; pi < proxies.length; pi++) {
+                try {
+                    var html = await fetchWithTimeout(proxies[pi], 14000);
+                    var data = parseFm6oa(html);
+                    if (data) { _fm6oaCache = data; try { localStorage.setItem('fm6oa-cache-v1', JSON.stringify(data)); } catch (e) {} renderFm6oa(data, false); return; }
+                } catch (e) {}
+            }
+            try { var cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v1') || 'null'); if (cached && cached.times && cached.times.length === 5) { renderFm6oa(cached, cached.day !== fm6oaTodayKey()); return; } } catch (e) {}
+            document.getElementById("fm6oa-status").textContent = '⚠️ تعذر تحميل المواقيت — تحقق من الاتصال ثم اضغط ↻ تحديث';
+        }
+        document.getElementById('card-prayer-fm6oa').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fs = document.getElementById('fm6oa-screen'); if (fs && typeof showScreen==='function') showScreen(fs); fetchFm6oaTimes(); };
+        document.getElementById('fm6oa-refresh').onclick = () => fetchFm6oaTimes();
         document.getElementById('btn-back-from-fm6oa').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         // تصفح القرآن (المصحف - mp3quran.net)
         (function(){
