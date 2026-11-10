@@ -2085,6 +2085,11 @@ document.getElementById('adhkar-search-btn').onclick = () => { currentAdhkarSear
         const VALID_AUDIO_EDITIONS = ['ar.abdulbasitmurattal','ar.abdullahbasfar','ar.abdurrahmaansudais','ar.ahmedajamy','ar.alafasy','ar.aymanswoaid','ar.hanirifai','ar.hudhaify','ar.husary','ar.husarymujawwad','ar.ibrahimakhbar','ar.mahermuaiqly','ar.minshawi','ar.minshawimujawwad','ar.muhammadayyoub','ar.muhammadjibreel','ar.saoodshuraym','ar.shaatree'];
         // Tous les récitateurs — photos: surahquran.com · audio: mp3quran.net (sourate complète) + alquran.cloud
         const QP_RECITERS = [
+            // قرّاء ورش عن نافع (أول القائمة)
+            { name:'ياسين الجزائري', photo:'https://i.pinimg.com/564x/47/26/1a/47261a9e304a8aa18e94d7bb67baa6db.jpg', mq:14 },
+            { name:'هشام الهراز', mq:305 },
+            { name:'العيون الكوشي', photo:'https://i.pinimg.com/564x/ef/cf/7f/efcf7f30467f6962fd15fa34f2a417cc.jpg', mq:16 },
+            { name:'عمر القزابري', photo:'https://i.pinimg.com/564x/0b/62/75/0b6275b2341fcb087fb9a3de47463c1a.jpg', mq:80 },
             { name:'أحمد العجمي', photo:'https://i.pinimg.com/564x/b1/9f/03/b19f03a9f2f09c46afbfd4f03727aee7.jpg', mq:5 },
             { name:'إبراهيم الأخضر', photo:'https://i.pinimg.com/564x/95/e4/90/95e490b6c075566f62197da844dae903.jpg', mq:1 },
             { name:'بندر بليلة', photo:'https://i.pinimg.com/564x/3e/27/fa/3e27fa5bbbd4d19ee2f4b4975224913e.jpg', mq:217 },
@@ -3299,9 +3304,10 @@ var gender = 'male';
             if (!m) return; const open = m.style.display !== 'none';
             if (open) { closeIslReciterMenu(); } else { m.style.display = 'block'; if (t) t.setAttribute('aria-expanded','true'); }
         }
+        function islReciterKey(r) { if (!r) return ''; if (r.ed) return 'ed:' + r.ed; if (r.mq) return 'mq:' + r.mq; return ''; }
         function selectIslReciter(r) {
             islSelectedReciter = r;
-            const sel = document.getElementById('isl-reciter'); if (sel) sel.value = r && r.ed ? r.ed : '';
+            const sel = document.getElementById('isl-reciter'); if (sel) sel.value = islReciterKey(r);
             updateIslReciterTrigger();
             const menu = document.getElementById('isl-reciter-menu');
             if (menu) menu.querySelectorAll('.isl-reciter-opt').forEach(o => o.classList.toggle('active', o.getAttribute('data-ed') === (r&&r.ed)));
@@ -3309,17 +3315,18 @@ var gender = 'male';
         }
         function buildIslReciterGrid() {
             const menu = document.getElementById('isl-reciter-menu'); if (!menu || typeof QP_RECITERS === 'undefined') return;
-            const recs = QP_RECITERS.filter(r => r.ed);
+            const recs = QP_RECITERS.filter(r => r.ed || r.mq);
             const sel = document.getElementById('isl-reciter');
             if (!islSelectedReciter && recs.length) {
                 islSelectedReciter = recs.find(r => r.ed === 'ar.alafasy') || recs[0];
-                if (sel) sel.value = islSelectedReciter.ed || '';
+                if (sel) sel.value = islReciterKey(islSelectedReciter);
             }
             menu.innerHTML = '';
             recs.forEach(r => {
                 const opt = document.createElement('div');
-                opt.className = 'isl-reciter-opt' + (islSelectedReciter && islSelectedReciter.ed === r.ed ? ' active' : '');
-                opt.setAttribute('role','option'); opt.setAttribute('data-ed', r.ed || ''); opt.tabIndex = 0;
+                const key = islReciterKey(r);
+                opt.className = 'isl-reciter-opt' + (islSelectedReciter && islReciterKey(islSelectedReciter) === key ? ' active' : '');
+                opt.setAttribute('role','option'); opt.setAttribute('data-key', key); opt.tabIndex = 0;
                 opt.innerHTML = _islReciterFace(r) + `<span class="isl-r-name">${r.name}</span>`;
                 opt.onclick = () => selectIslReciter(r);
                 menu.appendChild(opt);
@@ -3331,7 +3338,7 @@ var gender = 'male';
                 const sel = document.getElementById('isl-reciter');
                 if (sel) sel.innerHTML = '<option value="">-- القارئ --</option>';
                 if (typeof QP_RECITERS !== 'undefined') {
-                    QP_RECITERS.filter(r => r.ed).forEach(r => { if (!sel) return; const o = document.createElement('option'); o.value = r.ed; o.textContent = r.name; sel.appendChild(o); });
+                    QP_RECITERS.filter(r => r.ed || r.mq).forEach(r => { if (!sel) return; const o = document.createElement('option'); o.value = islReciterKey(r); o.textContent = r.name; sel.appendChild(o); });
                 }
                 buildIslReciterGrid();
             } catch (e) { console.error('Reciters:', e); }
@@ -3348,7 +3355,22 @@ var gender = 'male';
             const reciterId = document.getElementById('isl-reciter').value; if (!reciterId) { alert('اختر قارئاً'); return; }
             btn.textContent = '⏳ تحميل';
             try {
-                const res = await fetch(`https://api.alquran.cloud/v1/surah/${islSelectedSurah}/${reciterId}`); const data = await res.json();
+                if (reciterId.indexOf('mq:') === 0) {
+                    // قرّاء ورش : ملف السورة كاملة من mp3quran.net
+                    const mqId = parseInt(reciterId.slice(3), 10);
+                    if (!qpMpData) qpMpData = await (await fetch('https://mp3quran.net/api/v3/reciters?language=ar')).json();
+                    const rec = (qpMpData.reciters || []).find(x => x.id === mqId);
+                    if (!rec) throw new Error('reciter introuvable');
+                    const num = parseInt(islSelectedSurah, 10);
+                    const moshaf = (rec.moshaf || []).find(m => (',' + m.surah_list + ',').includes(',' + num + ',')) || rec.moshaf[0];
+                    if (!moshaf) throw new Error('moshaf introuvable');
+                    islQuranQueue = [moshaf.server + String(num).padStart(3, '0') + '.mp3'];
+                    islAudioAyahs = []; islQuranIndex = 0;
+                    playIslamiyatQueue();
+                    return;
+                }
+                const edId = reciterId.indexOf('ed:') === 0 ? reciterId.slice(3) : reciterId;
+                const res = await fetch(`https://api.alquran.cloud/v1/surah/${islSelectedSurah}/${edId}`); const data = await res.json();
                 islAudioAyahs = (data.data.ayahs || []).filter(a => a.audio);
                 if (islAudioAyahs.length === 0) { btn.textContent = '⚠️ القارئ غير متوفر'; setTimeout(() => btn.textContent = '▶ استماع', 3000); return; }
                 islQuranQueue = islAudioAyahs.map(a => a.audio); islQuranIndex = 0;
@@ -4256,7 +4278,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const t = document.getElementById('isl-header-title');
             const s = document.getElementById('isl-header-sub');
             if (t && s) {
-                if (name === 'quran') { t.textContent = 'قراءة القرآن الكريم'; s.textContent = 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'; }
+                if (name === 'quran') { t.textContent = 'قراءة القرآن الكريم'; s.textContent = window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'; }
                 else if (name === 'adhkar') { t.textContent = 'الأذكار'; s.textContent = 'رحلة يومك مع الذكر'; }
                 else if (name === 'tasbih') { t.textContent = 'المسبحة الإلكترونية'; s.textContent = ''; }
                 else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
