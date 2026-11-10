@@ -615,7 +615,7 @@
         .alert-mihrab-inner { position: relative; text-align: center; border-radius: 248px 248px 14px 14px; padding: 34px 26px 26px; background: rgba(11,42,32,0.78); border: 1px solid rgba(212,175,55,0.18); box-shadow: inset 0 0 60px rgba(212,175,55,0.06); overflow: hidden; }
         .alert-mihrab-inner::after { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(from 0deg at 50% -10%, rgba(212,175,55,0.006) 0deg 10deg, transparent 10deg 20deg); opacity: .4; pointer-events: none; }
         .alert-mihrab-inner > * { position: relative; z-index: 1; }
-        .alert-box .alert-icon { font-size: 2.6rem; margin-bottom: 6px; color: var(--gold); filter: drop-shadow(0 4px 14px rgba(212,175,55,0.25)); }
+        .alert-box .alert-icon { width: 78px; height: 78px; margin-bottom: 10px; object-fit: contain; border-radius: 50%; border: 2px solid rgba(212,175,55,0.45); background: rgba(255,255,255,0.05); filter: drop-shadow(0 4px 14px rgba(212,175,55,0.35)); }
         .alert-badge { display: inline-block; padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(212,175,55,0.45); background: rgba(212,175,55,0.1); color: var(--gold); font-size: .95rem; font-weight: 700; margin-bottom: 10px; letter-spacing: .2px; }
         .alert-box .alert-title { font-family: var(--font-quran); font-size: clamp(1.35rem, 4.5vw, 2rem); color: #b8f0d2; margin-bottom: 8px; line-height: 1.35; text-shadow: 0 2px 18px rgba(0,0,0,0.35); }
         .alert-box .alert-desc { font-size: clamp(1rem, 3.2vw, 1.18rem); color: var(--cream); margin-bottom: 16px; line-height: 1.7; font-weight: 600; }
@@ -1386,7 +1386,7 @@
                 <div class="alert-box alert-mihrab" role="dialog" aria-labelledby="alert-prayer-name">
                     <div class="alert-mihrab-arch">
                         <div class="alert-mihrab-inner">
-                            <div class="alert-icon">🕌</div>
+                            <img class="alert-icon" src="Logo.png" alt="شعار التطبيق" onerror="this.style.display='none'">
                             <div class="alert-badge">تنبيه الأذان</div>
                             <div class="alert-title" id="alert-prayer-name">حان الآن موعد الصلاة</div>
                             <div class="alert-desc" id="alert-text"></div>
@@ -1612,7 +1612,7 @@
             document.getElementById('home-next-prayer-name').textContent = PRAYER_NAMES[nextPrayerKey];
             const _fnp = document.getElementById('fav-next-prayer-name'); if (_fnp) _fnp.textContent = PRAYER_NAMES[nextPrayerKey];
             const now = new Date(); const city = CITIES_DB[settings.cityId];
-            const hijri = now.toLocaleDateString('ar-SA-u-nu-latn-ca-islamic-umalqura', { timeZone:locationTimeZone(), day:'numeric', month:'long', year:'numeric' });
+            const hijri = now.toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { timeZone:locationTimeZone(), day:'numeric', month:'long', year:'numeric' });
             document.getElementById('prayers-date').textContent = `${hijri}`; document.getElementById('hijri-date').textContent = `${hijri}`;
             const listContainer = document.getElementById('detailed-prayer-list'); listContainer.innerHTML = '';
             PRAYER_ORDER.forEach(key => {
@@ -3322,7 +3322,7 @@ var gender = 'male';
             try {
                 var tz = (typeof locationTimeZone === 'function') ? locationTimeZone((typeof settings!=='undefined'?settings.cityId:null)) : undefined;
                 var now = new Date();
-                var hijri = now.toLocaleDateString('ar-SA-u-nu-latn-ca-islamic-umalqura', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
+                var hijri = now.toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
                 var greg = now.toLocaleDateString('ar-u-nu-latn', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
                 dateTxt = hijri + ' • ' + greg;
             } catch(e){ try { dateTxt = new Date().toLocaleDateString('ar-u-nu-latn'); } catch(e2){} }
