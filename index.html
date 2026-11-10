@@ -3843,7 +3843,7 @@ function notifyPrayer(prayerKey, isTest) {
         function fm6oaTodayKey() { return new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-gregory', { day:'numeric', month:'numeric', year:'numeric' }); }
         function fm6oaIsoToday() { var d = new Date(); return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2); }
         function fm6oaDayMatch(day) { return day === fm6oaIsoToday() || day === fm6oaTodayKey(); }
-        function fm6oaJsonStamp() { var d = new Date(); return d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2); }
+        function fm6oaJsonStamp() { var d = new Date(); return d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2) + ('0'+d.getHours()).slice(-2); }
         function fetchWithTimeout(url, ms) { var ctl = new AbortController(); var to = setTimeout(function(){ ctl.abort(); }, ms); return fetch(url, { signal: ctl.signal }).then(function(r){ clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }).catch(function(e){ clearTimeout(to); throw e; }); }
         function fm6oaComputeNext(times) {
             var now = new Date(); var cur = now.getHours()*60 + now.getMinutes();
@@ -4022,7 +4022,7 @@ function notifyPrayer(prayerKey, isTest) {
             fm6oaStopCountdown();
             // 1) cache local immediat (pour la ville choisie)
             var cached = null;
-            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v2') || 'null'); } catch (e) {}
+            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v3') || 'null'); } catch (e) {}
             if (cached && cached.times && cached.times.length === 5 && (!cached.cityId || cached.cityId === cityId)) {
                 renderFm6oa(cached, fm6oaDayMatch(cached.day) ? null : 'cache');
             } else {
@@ -4043,7 +4043,7 @@ function notifyPrayer(prayerKey, isTest) {
                     var data = fm6oaNormalizeFromJSON(json, cityId);
                     if (data) {
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v2', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v3', JSON.stringify(data)); } catch (e) {}
                         if (fm6oaDayMatch(data.day)) { renderFm6oa(data, null); finish(); return; }
                         staleData = data;
                         break;
@@ -4061,7 +4061,7 @@ function notifyPrayer(prayerKey, isTest) {
                     if (data) {
                         data.cityId = cityId; data.updated = '';
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v2', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v3', JSON.stringify(data)); } catch (e) {}
                         renderFm6oa(data, null); finish(); return;
                     }
                 } catch (e) {}
