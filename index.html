@@ -3888,17 +3888,20 @@ function notifyPrayer(prayerKey, isTest) {
         }
         function parseFm6oaMonth(html) {
             var hijri_month = null, greg_month = null;
-            var hm = html.match(/<th class="wakt">\s*(.*?)\s*<\/th>\s*<th class="wakt">\s*(.*?)\s*<\/th>\s*<th class="wakt">الفجر/);
+            var hm = html.match(/<th class="wakt">\s*الأيام\s*<\/th>\s*<th class="wakt">\s*(.*?)\s*<\/th>\s*<th class="wakt">\s*(.*?)\s*<\/th>\s*<th class="wakt">الفجر/);
             if (hm) { hijri_month = hm[1].replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); greg_month = hm[2].replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); }
             var mt = html.match(/<table id="horaire".*?<\/thead>\s*<tbody>(.*?)<\/tbody>/s);
             var rows = [];
             if (mt) {
-                var trs = mt[1].match(/<tr[^>]*>(.*?)<\/tr>/gs) || [];
-                for (var i = 0; i < trs.length; i++) {
-                    var tds = trs[i].match(/<td[^>]*>(.*?)<\/td>/gs) || [];
+                var trRegex = /<tr([^>]*)>(.*?)<\/tr>/gs;
+                var m;
+                while ((m = trRegex.exec(mt[1])) !== null) {
+                    var attrs = m[1];
+                    var inner = m[2];
+                    var tds = inner.match(/<td[^>]*>(.*?)<\/td>/gs) || [];
                     if (tds.length < 9) continue;
                     var vals = tds.slice(0,9).map(function(t){ return t.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); });
-                    var isToday = /class=["']active["']/.test(trs[i]);
+                    var isToday = /active/.test(attrs);
                     rows.push({ weekday: vals[0], hijriDay: vals[1], gregDate: vals[2], fajr: vals[3], shurooq: vals[4], dhuhr: vals[5], asr: vals[6], maghrib: vals[7], isha: vals[8], today: isToday });
                 }
             }
@@ -4022,7 +4025,7 @@ function notifyPrayer(prayerKey, isTest) {
             fm6oaStopCountdown();
             // 1) cache local immediat (pour la ville choisie)
             var cached = null;
-            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v4') || 'null'); } catch (e) {}
+            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v5') || 'null'); } catch (e) {}
             if (cached && cached.times && cached.times.length === 5 && (!cached.cityId || cached.cityId === cityId)) {
                 renderFm6oa(cached, fm6oaDayMatch(cached.day) ? null : 'cache');
             } else {
@@ -4043,7 +4046,7 @@ function notifyPrayer(prayerKey, isTest) {
                     var data = fm6oaNormalizeFromJSON(json, cityId);
                     if (data) {
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v4', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v5', JSON.stringify(data)); } catch (e) {}
                         if (fm6oaDayMatch(data.day)) { renderFm6oa(data, null); finish(); return; }
                         staleData = data;
                         break;
@@ -4061,7 +4064,7 @@ function notifyPrayer(prayerKey, isTest) {
                     if (data) {
                         data.cityId = cityId; data.updated = '';
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v4', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v5', JSON.stringify(data)); } catch (e) {}
                         renderFm6oa(data, null); finish(); return;
                     }
                 } catch (e) {}

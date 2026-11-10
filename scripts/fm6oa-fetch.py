@@ -39,20 +39,20 @@ def parse_today(html):
 def parse_month(html):
     hijri_month = None
     greg_month = None
-    hm = re.search(r'<th class="wakt">\s*(.*?)\s*</th>\s*<th class="wakt">\s*(.*?)\s*</th>\s*<th class="wakt">الفجر', html, re.S)
+    hm = re.search(r'<th class="wakt">\s*الأيام\s*</th>\s*<th class="wakt">\s*(.*?)\s*</th>\s*<th class="wakt">\s*(.*?)\s*</th>\s*<th class="wakt">الفجر', html, re.S)
     if hm:
         hijri_month = clean(hm.group(1))
         greg_month = clean(hm.group(2))
     mt = re.search(r'<table id="horaire".*?</thead>\s*<tbody>(.*?)</tbody>', html, re.S)
     rows = []
     if mt:
-        trs = re.findall(r"<tr[^>]*>(.*?)</tr>", mt.group(1), re.S)
-        for tr in trs:
-            tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
+        trs = re.findall(r"<tr([^>]*)>(.*?)</tr>", mt.group(1), re.S)
+        for attrs, inner in trs:
+            tds = re.findall(r"<td[^>]*>(.*?)</td>", inner, re.S)
             if len(tds) < 9:
                 continue
             vals = [clean(t) for t in tds[:9]]
-            is_today = 'class="active"' in tr or "class='active'" in tr
+            is_today = 'active' in attrs
             rows.append({
                 "weekday": vals[0],
                 "hijriDay": vals[1],
