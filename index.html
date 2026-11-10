@@ -4022,7 +4022,7 @@ function notifyPrayer(prayerKey, isTest) {
             fm6oaStopCountdown();
             // 1) cache local immediat (pour la ville choisie)
             var cached = null;
-            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v3') || 'null'); } catch (e) {}
+            try { cached = _fm6oaCache || JSON.parse(localStorage.getItem('fm6oa-cache-v4') || 'null'); } catch (e) {}
             if (cached && cached.times && cached.times.length === 5 && (!cached.cityId || cached.cityId === cityId)) {
                 renderFm6oa(cached, fm6oaDayMatch(cached.day) ? null : 'cache');
             } else {
@@ -4032,8 +4032,8 @@ function notifyPrayer(prayerKey, isTest) {
             function finish() { done = true; }
             // 2) miroir JSON du depot (genere depuis fm6oa.org) via jsDelivr - rapide et fiable
             var jsonUrls = [
-                'https://cdn.jsdelivr.net/gh/onepro182/YaMousahil@main/assets/data/fm6oa-times.json?t=' + fm6oaJsonStamp(),
-                'https://raw.githubusercontent.com/onepro182/YaMousahil/main/assets/data/fm6oa-times.json?t=' + fm6oaJsonStamp()
+                'https://raw.githubusercontent.com/onepro182/YaMousahil/main/assets/data/fm6oa-times.json?v=2&t=' + fm6oaJsonStamp(),
+                'https://cdn.jsdelivr.net/gh/onepro182/YaMousahil@main/assets/data/fm6oa-times.json?v=2&t=' + fm6oaJsonStamp()
             ];
             var staleData = null;
             for (var ji = 0; ji < jsonUrls.length && !done; ji++) {
@@ -4043,7 +4043,7 @@ function notifyPrayer(prayerKey, isTest) {
                     var data = fm6oaNormalizeFromJSON(json, cityId);
                     if (data) {
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v3', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v4', JSON.stringify(data)); } catch (e) {}
                         if (fm6oaDayMatch(data.day)) { renderFm6oa(data, null); finish(); return; }
                         staleData = data;
                         break;
@@ -4061,7 +4061,7 @@ function notifyPrayer(prayerKey, isTest) {
                     if (data) {
                         data.cityId = cityId; data.updated = '';
                         _fm6oaCache = data;
-                        try { localStorage.setItem('fm6oa-cache-v3', JSON.stringify(data)); } catch (e) {}
+                        try { localStorage.setItem('fm6oa-cache-v4', JSON.stringify(data)); } catch (e) {}
                         renderFm6oa(data, null); finish(); return;
                     }
                 } catch (e) {}
