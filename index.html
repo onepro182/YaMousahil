@@ -4056,6 +4056,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 renderFm6oa(cached, fm6oaDayMatch(cached.day) ? null : 'cache');
             } else {
                 statusEl.style.display = 'block'; statusEl.textContent = 'جارٍ تحميل المواقيت...'; wrapEl.style.display = 'none';
+                var lb = document.getElementById('fm6oa-list'); if (lb) lb.innerHTML = '';
+                var mb = document.getElementById('fm6oa-month-body'); if (mb) mb.innerHTML = '';
             }
             var done = false;
             function finish() { done = true; }
@@ -4106,7 +4108,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             // 5) rien n'a abouti
             if (!done) {
                 statusEl.style.display = 'block';
-                statusEl.textContent = '⚠️ تعذر تحميل المواقيت — تحقق من الاتصال ثم اضغط ↻ تحديث';
+                statusEl.textContent = '⚠️ تعذر تحميل مواقيت ' + ( (typeof FM6OA_ALL_CITIES !== 'undefined' && FM6OA_ALL_CITIES[code]) ? FM6OA_ALL_CITIES[code] : '' ) + ' — تحقق من الاتصال ثم اضغط ↻ تحديث';
             }
         }
         document.getElementById('card-prayer-fm6oa').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var fs = document.getElementById('fm6oa-screen'); if (fs && typeof showScreen==='function') showScreen(fs); fetchFm6oaTimes(); };
