@@ -534,11 +534,30 @@
 .fm6oa-month-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--glass-border);background:rgba(12,46,34,.35);}
 .quran-read-index{display:flex;flex-direction:row;gap:8px;overflow-x:auto;padding-bottom:8px;}
 .quran-read-col{display:flex;flex-direction:column;gap:4px;min-width:150px;}
-.quran-read-item{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);cursor:pointer;transition:all .15s;font-size:.78rem;}
 .quran-read-item:hover{border-color:var(--gold);background:rgba(212,175,55,.08);}
 .quran-read-num{font-weight:700;color:var(--gold);min-width:22px;text-align:center;font-size:.75rem;}
 .quran-read-name{flex:1;font-family:var(--font-quran);font-weight:600;color:var(--text-main);}
 .quran-read-logo{width:16px;height:16px;object-fit:contain;}
+.quran-read-meta{font-size:.68rem;color:var(--text-dim);white-space:nowrap;}
+.quran-read-item{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);cursor:pointer;transition:all .15s;font-size:.78rem;}
+@media (max-width:820px){
+  .quran-read-index{flex-wrap:wrap;overflow-x:visible;gap:6px;padding-bottom:4px;}
+  .quran-read-col{min-width:0;flex:1 1 calc(50% - 3px);gap:4px;}
+  .quran-read-item{padding:5px 6px;font-size:.72rem;gap:5px;}
+  .quran-read-name{font-size:.82rem;}
+  .quran-read-meta{display:none;}
+  .quran-read-num{min-width:18px;font-size:.7rem;}
+  .quran-read-logo{width:13px;height:13px;}
+  #quran-read-page{font-size:.68rem;}
+  .quran-read-page{font-size:1.3rem;line-height:2.2;padding:14px 12px;}
+  .quran-read-ayah{width:1.25em;height:1.25em;font-size:.6em;}
+  .quran-read-head{padding:10px 12px;}
+  .quran-read-head-name{font-size:1.25rem;}
+  .quran-read-basmala{font-size:1.1rem;}
+}
+@media (max-width:400px){
+  .quran-read-col{flex:1 1 100%;}
+}
 .quran-read-head{text-align:center;padding:14px 16px;border-radius:14px;border:1px solid rgba(212,175,55,.45);background:linear-gradient(180deg,rgba(212,175,55,.12),rgba(12,46,34,.5));box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
 .quran-read-head-name{font-family:var(--font-quran);font-weight:800;font-size:1.55rem;color:var(--gold);}
 .quran-read-head-meta{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;font-size:.78rem;color:var(--text-dim);}
@@ -1403,6 +1422,7 @@
                             <div class="quran-read-head-meta">
                                 <span class="quran-read-badge"><img class="quran-read-badge-logo" id="quran-read-badge-logo" src="assets/img/mecca.png" alt=""><span id="quran-read-badge-text">مكية</span></span>
                                 <span id="quran-read-count"></span>
+                                <span id="quran-read-page"></span>
                             </div>
                             <div class="quran-read-basmala" id="quran-read-basmala">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
                         </div>
@@ -4342,45 +4362,96 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         let prayerDateStamp = locationDate().toDateString();
         setInterval(() => { const currentStamp = locationDate().toDateString(); if (currentStamp !== prayerDateStamp) { prayerDateStamp = currentStamp; refreshPrayerData(); renderUI(); } updateClocks(); runPrayerAlerts(); }, 1000);
 
-        // قراءة القرآن الكريم (مصحف ورش عن نافع)
-        const QURAN_SURAHS = [
-            [1,"الفاتحة",true],[2,"البقرة",false],[3,"آل عمران",false],[4,"النساء",false],[5,"المائدة",false],[6,"الأنعام",true],[7,"الأعراف",true],[8,"الأنفال",false],[9,"التوبة",false],[10,"يونس",true],
-            [11,"هود",true],[12,"يوسف",true],[13,"الرعد",false],[14,"إبراهيم",true],[15,"الحجر",true],[16,"النحل",true],[17,"الإسراء",true],[18,"الكهف",true],[19,"مريم",true],[20,"طه",true],
-            [21,"الأنبياء",true],[22,"الحج",false],[23,"المؤمنون",true],[24,"النور",false],[25,"الفرقان",true],[26,"الشعراء",true],[27,"النمل",true],[28,"القصص",true],[29,"العنكبوت",true],[30,"الروم",true],
-            [31,"لقمان",true],[32,"السجدة",true],[33,"الأحزاب",false],[34,"سبأ",true],[35,"فاطر",true],[36,"يس",true],[37,"الصافات",true],[38,"ص",true],[39,"الزمر",true],[40,"غافر",true],
-            [41,"فصلت",true],[42,"الشورى",true],[43,"الزخرف",true],[44,"الدخان",true],[45,"الجاثية",true],[46,"الأحقاف",true],[47,"محمد",false],[48,"الفتح",false],[49,"الحجرات",false],[50,"ق",true],
-            [51,"الذاريات",true],[52,"الطور",true],[53,"النجم",true],[54,"القمر",true],[55,"الرحمن",false],[56,"الواقعة",true],[57,"الحديد",false],[58,"المجادلة",false],[59,"الحشر",false],[60,"الممتحنة",false],
-            [61,"الصف",false],[62,"الجمعة",false],[63,"المنافقون",false],[64,"التغابن",false],[65,"الطلاق",false],[66,"التحريم",false],[67,"الملك",true],[68,"القلم",true],[69,"الحاقة",true],[70,"المعارج",true],
-            [71,"نوح",true],[72,"الجن",true],[73,"المزمل",true],[74,"المدثر",true],[75,"القيامة",true],[76,"الإنسان",false],[77,"المرسلات",true],[78,"النبأ",true],[79,"النازعات",true],[80,"عبس",true],
-            [81,"التكوير",true],[82,"الانفطار",true],[83,"المطففين",true],[84,"الانشقاق",true],[85,"البروج",true],[86,"الطارق",true],[87,"الأعلى",true],[88,"الغاشية",true],[89,"الفجر",true],[90,"البلد",true],
-            [91,"الشمس",true],[92,"الليل",true],[93,"الضحى",true],[94,"الشرح",true],[95,"التين",true],[96,"العلق",true],[97,"القدر",true],[98,"البينة",false],[99,"الزلزلة",false],[100,"العاديات",true],
-            [101,"القارعة",true],[102,"التكاثر",true],[103,"العصر",true],[104,"الهمزة",true],[105,"الفيل",true],[106,"قريش",true],[107,"الماعون",true],[108,"الكوثر",true],[109,"الكافرون",true],[110,"النصر",false],
-            [111,"المسد",true],[112,"الإخلاص",true],[113,"الفلق",true],[114,"الناس",true]
+        // قراءة القرآن الكريم (مصحف ورش عن نافع) - source : surahquran.com/warsh
+        const QURAN_DATA_BASE = [
+            'https://raw.githubusercontent.com/onepro182/YaMousahil/main/assets/data/',
+            'https://cdn.jsdelivr.net/gh/onepro182/YaMousahil@main/assets/data/'
         ];
-        function quranReadInit() {
+        const QURAN_PROXIES = [
+            function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); },
+            function (u) { return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u); },
+            function (u) { return 'https://cors.eu.org/' + u; }
+        ];
+        var QURAN_INDEX = null;
+        function quranReadStamp() { var d = new Date(); return d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2) + ('0'+d.getHours()).slice(-2); }
+        async function quranReadFetchJson(path) {
+            for (var i = 0; i < QURAN_DATA_BASE.length; i++) {
+                try {
+                    var res = await fetch(QURAN_DATA_BASE[i] + path + '?t=' + quranReadStamp());
+                    if (res.ok) { var j = await res.json(); if (j) return j; }
+                } catch (e) {}
+            }
+            return null;
+        }
+        async function quranReadFetchHtml(n) {
+            var target = 'https://surahquran.com/warsh/' + n + '.html';
+            for (var i = 0; i < QURAN_PROXIES.length; i++) {
+                try {
+                    var res = await fetch(QURAN_PROXIES[i](target), { signal: AbortSignal.timeout(12000) });
+                    if (res.ok) {
+                        var html = await res.text();
+                        if (html.indexOf('class="quran"') >= 0) return html;
+                    }
+                } catch (e) {}
+            }
+            return null;
+        }
+        function quranReadParseHtml(html) {
+            var m = html.match(/<div class="quran">([\s\S]*?)<\/div>/);
+            if (!m) return [];
+            var zone = m[1].replace(/<p>\s*<img[^>]*\/>\s*<\/p>/, ' @@BS@@ ');
+            var p = zone.indexOf('@@BS@@');
+            if (p >= 0) zone = zone.substring(p + 7);
+            zone = zone.replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, ' ');
+            var q = zone.indexOf('لا تنسنا من دعوة');
+            if (q > 0) zone = zone.substring(0, q);
+            zone = zone.replace(/\s+/g, ' ').trim();
+            var parts = zone.split(/\((\d{1,3})\)/);
+            var verses = [];
+            for (var i = 1; i < parts.length - 1; i += 2) {
+                var txt = parts[i - 1].trim();
+                if (txt) verses.push({ n: parseInt(parts[i], 10), t: txt });
+            }
+            var tail = parts[parts.length - 1].trim();
+            if (tail) verses.push({ n: verses.length ? verses[verses.length - 1].n + 1 : 1, t: tail });
+            return verses;
+        }
+        async function quranReadInit() {
             var status = document.getElementById('quran-read-status');
             var wrap = document.getElementById('quran-read-wrap');
             var index = document.getElementById('quran-read-index');
-            if (status) { status.style.display = 'none'; }
+            if (status) { status.style.display = 'block'; status.textContent = 'جارٍ تحميل الفهرس...'; }
+            if (!QURAN_INDEX) {
+                var data = await quranReadFetchJson('quran-index.json');
+                if (!data || !data.surahs || !data.surahs.length) {
+                    if (status) { status.textContent = '⚠️ تعذر تحميل الفهرس — تحقق من الاتصال ثم أعد المحاولة'; status.style.display = 'block'; }
+                    return;
+                }
+                QURAN_INDEX = data.surahs;
+            }
             if (index && index.children.length === 0) {
                 var cols = [];
-                for (var i = 0; i < QURAN_SURAHS.length; i += 6) {
+                for (var i = 0; i < QURAN_INDEX.length; i += 6) {
                     var col = document.createElement('div');
                     col.className = 'quran-read-col';
-                    for (var j = i; j < i + 6 && j < QURAN_SURAHS.length; j++) {
-                        var s = QURAN_SURAHS[j];
+                    for (var j = i; j < i + 6 && j < QURAN_INDEX.length; j++) {
+                        var s = QURAN_INDEX[j];
+                        var isMecca = s.type !== 'مدنية';
                         var item = document.createElement('div');
                         item.className = 'quran-read-item';
-                        item.innerHTML = '<span class="quran-read-num">' + s[0] + '</span>' +
-                            '<img class="quran-read-logo ' + (s[2] ? 'mecca' : 'medina') + '" src="' + (s[2] ? 'assets/img/mecca.png' : 'assets/img/medina.png') + '" alt="' + (s[2] ? 'مكية' : 'مدنية') + '">' +
-                            '<span class="quran-read-name">' + s[1] + '</span>';
-                        item.onclick = (function(n){ return function(){ quranReadLoadSurah(n); }; })(s[0]);
+                        item.title = s.name + ' — ' + s.type + ' — ' + s.count + ' آية — صفحة ' + s.page;
+                        item.innerHTML = '<span class="quran-read-num">' + s.n + '</span>' +
+                            '<img class="quran-read-logo ' + (isMecca ? 'mecca' : 'medina') + '" src="' + (isMecca ? 'assets/img/mecca.png' : 'assets/img/medina.png') + '" alt="' + (isMecca ? 'مكية' : 'مدنية') + '">' +
+                            '<span class="quran-read-name">' + s.name + '</span>' +
+                            '<span class="quran-read-meta">' + s.count + ' آية</span>';
+                        item.onclick = (function(nn){ return function(){ quranReadLoadSurah(nn); }; })(s.n);
                         col.appendChild(item);
                     }
                     cols.push(col);
                 }
                 cols.forEach(function(c){ index.appendChild(c); });
             }
+            if (status) status.style.display = 'none';
             if (wrap) wrap.style.display = 'flex';
             var viewer = document.getElementById('quran-read-viewer');
             if (viewer) viewer.style.display = 'none';
@@ -4395,33 +4466,38 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             var badgeLogo = document.getElementById('quran-read-badge-logo');
             var badgeText = document.getElementById('quran-read-badge-text');
             var countEl = document.getElementById('quran-read-count');
+            var pageEl = document.getElementById('quran-read-page');
             var basmala = document.getElementById('quran-read-basmala');
             if (status) { status.style.display = 'block'; status.textContent = 'جارٍ تحميل السورة...'; }
             if (wrap) wrap.style.display = 'none';
             if (viewer) viewer.style.display = 'none';
             var info = null;
-            for (var i = 0; i < QURAN_SURAHS.length; i++) { if (QURAN_SURAHS[i][0] === n) { info = QURAN_SURAHS[i]; break; } }
-            try {
-                var res = await fetch('https://quranpedia.net/surah/4/' + n + '.md');
-                var md = await res.text();
-                var verses = [];
-                var re = /^>\s*(.+?)\s*\[(\d+):(\d+)\]\s*$/gm;
-                var m;
-                while ((m = re.exec(md)) !== null) { verses.push({ text: m[1].trim(), ayah: parseInt(m[3], 10) }); }
-                var name = info ? info[1] : ('سورة ' + n);
-                var isMecca = info ? info[2] : true;
-                if (title) title.textContent = name;
-                if (headName) headName.textContent = 'سورة ' + name;
-                if (badgeLogo) { badgeLogo.src = isMecca ? 'assets/img/mecca.png' : 'assets/img/medina.png'; badgeLogo.className = 'quran-read-badge-logo ' + (isMecca ? 'mecca' : 'medina'); badgeLogo.alt = isMecca ? 'مكية' : 'مدنية'; }
-                if (badgeText) badgeText.textContent = isMecca ? 'مكية' : 'مدنية';
-                if (countEl) countEl.textContent = verses.length + ' آية';
-                if (basmala) basmala.style.display = (n === 1 || n === 9) ? 'none' : 'block';
-                if (text) text.innerHTML = verses.map(function(v){ return '<span class="ayah">' + quranReadNormalize(v.text) + ' <span class="quran-read-ayah">' + v.ayah + '</span></span>'; }).join(' ');
-                if (status) status.style.display = 'none';
-                if (viewer) viewer.style.display = 'flex';
-            } catch (e) {
-                if (status) { status.textContent = '⚠️ تعذر تحميل السورة'; status.style.display = 'block'; }
+            if (QURAN_INDEX) { for (var k = 0; k < QURAN_INDEX.length; k++) { if (QURAN_INDEX[k].n === n) { info = QURAN_INDEX[k]; break; } } }
+            var verses = [];
+            var data = await quranReadFetchJson('quran-warsh/' + n + '.json');
+            if (data && data.verses && data.verses.length) {
+                verses = data.verses.map(function(v){ return { n: v.n, t: v.t }; });
+                if (data.name && !info) info = { name: data.name, type: data.type, count: data.count, page: data.page };
+            } else {
+                var html = await quranReadFetchHtml(n);
+                if (html) verses = quranReadParseHtml(html);
             }
+            if (!verses.length) {
+                if (status) { status.textContent = '⚠️ تعذر تحميل السورة — تحقق من الاتصال ثم أعد المحاولة'; status.style.display = 'block'; }
+                return;
+            }
+            var name = info && info.name ? info.name : ('سورة ' + n);
+            var isMecca = info ? info.type !== 'مدنية' : true;
+            if (title) title.textContent = name;
+            if (headName) headName.textContent = 'سورة ' + name;
+            if (badgeLogo) { badgeLogo.src = isMecca ? 'assets/img/mecca.png' : 'assets/img/medina.png'; badgeLogo.className = 'quran-read-badge-logo ' + (isMecca ? 'mecca' : 'medina'); badgeLogo.alt = isMecca ? 'مكية' : 'مدنية'; }
+            if (badgeText) badgeText.textContent = isMecca ? 'مكية' : 'مدنية';
+            if (countEl) countEl.textContent = (info && info.count ? info.count : verses.length) + ' آية';
+            if (pageEl) pageEl.textContent = info && info.page ? ('صفحة ' + info.page) : '';
+            if (basmala) basmala.style.display = (n === 1 || n === 9) ? 'none' : 'block';
+            if (text) text.innerHTML = verses.map(function(v){ return '<span class="ayah">' + quranReadNormalize(v.t) + ' <span class="quran-read-ayah">' + v.n + '</span></span>'; }).join(' ');
+            if (status) status.style.display = 'none';
+            if (viewer) viewer.style.display = 'flex';
         }
         function quranReadNormalize(t) {
             // Signes d'annotation coraniques (U+0870..U+0888, U+08CC) absents des polices web : on les retire

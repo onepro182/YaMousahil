@@ -1,4 +1,4 @@
-name: FM6OA times mirror
+name: Update data mirrors
 
 on:
   schedule:
@@ -8,7 +8,9 @@ on:
     paths:
       - ".github/workflows/fm6oa-times.yml"
       - "assets/data/fm6oa-times.json"
+      - "assets/data/quran-index.json"
       - "scripts/fm6oa-fetch.py"
+      - "scripts/quran-warsh-fetch.py"
 
 permissions:
   contents: write
@@ -22,14 +24,17 @@ jobs:
       - name: Fetch FM6OA times and build JSON
         run: python3 scripts/fm6oa-fetch.py
 
+      - name: Fetch Warsh Quran (surahquran.com) and build JSON
+        run: python3 scripts/quran-warsh-fetch.py
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/data/fm6oa-times.json
+          git add assets/data/fm6oa-times.json assets/data/quran-index.json assets/data/quran-warsh
           if git diff --cached --quiet; then
             echo "Aucun changement - rien a commettre."
           else
-            git commit -m "data: miroir horaires FM6OA [skip ci]"
+            git commit -m "data: miroir horaires FM6OA + Quran Warsh [skip ci]"
             git push
           fi
