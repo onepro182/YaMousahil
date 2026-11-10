@@ -3197,7 +3197,21 @@ var gender = 'male';
         const SURAH_META = [{ type:"مكية", ayahs:7 },{ type:"مدنية", ayahs:286 },{ type:"مدنية", ayahs:200 },{ type:"مدنية", ayahs:176 },{ type:"مدنية", ayahs:120 },{ type:"مكية", ayahs:165 },{ type:"مكية", ayahs:206 },{ type:"مدنية", ayahs:75 },{ type:"مدنية", ayahs:129 },{ type:"مكية", ayahs:109 },{ type:"مكية", ayahs:123 },{ type:"مكية", ayahs:111 },{ type:"مدنية", ayahs:43 },{ type:"مكية", ayahs:52 },{ type:"مكية", ayahs:99 },{ type:"مكية", ayahs:128 },{ type:"مكية", ayahs:111 },{ type:"مكية", ayahs:110 },{ type:"مكية", ayahs:98 },{ type:"مكية", ayahs:135 },{ type:"مكية", ayahs:112 },{ type:"مدنية", ayahs:78 },{ type:"مكية", ayahs:118 },{ type:"مدنية", ayahs:64 },{ type:"مكية", ayahs:77 },{ type:"مكية", ayahs:227 },{ type:"مكية", ayahs:93 },{ type:"مكية", ayahs:88 },{ type:"مكية", ayahs:69 },{ type:"مكية", ayahs:60 },{ type:"مكية", ayahs:34 },{ type:"مكية", ayahs:30 },{ type:"مدنية", ayahs:73 },{ type:"مكية", ayahs:54 },{ type:"مكية", ayahs:45 },{ type:"مكية", ayahs:83 },{ type:"مكية", ayahs:182 },{ type:"مكية", ayahs:88 },{ type:"مكية", ayahs:75 },{ type:"مكية", ayahs:85 },{ type:"مكية", ayahs:54 },{ type:"مكية", ayahs:53 },{ type:"مكية", ayahs:89 },{ type:"مكية", ayahs:59 },{ type:"مكية", ayahs:37 },{ type:"مكية", ayahs:35 },{ type:"مدنية", ayahs:38 },{ type:"مدنية", ayahs:29 },{ type:"مدنية", ayahs:18 },{ type:"مكية", ayahs:45 },{ type:"مكية", ayahs:60 },{ type:"مكية", ayahs:49 },{ type:"مكية", ayahs:62 },{ type:"مكية", ayahs:55 },{ type:"مدنية", ayahs:78 },{ type:"مكية", ayahs:96 },{ type:"مدنية", ayahs:29 },{ type:"مدنية", ayahs:22 },{ type:"مدنية", ayahs:24 },{ type:"مدنية", ayahs:13 },{ type:"مدنية", ayahs:14 },{ type:"مدنية", ayahs:11 },{ type:"مدنية", ayahs:11 },{ type:"مدنية", ayahs:18 },{ type:"مدنية", ayahs:12 },{ type:"مدنية", ayahs:12 },{ type:"مكية", ayahs:30 },{ type:"مكية", ayahs:52 },{ type:"مكية", ayahs:52 },{ type:"مكية", ayahs:44 },{ type:"مكية", ayahs:28 },{ type:"مكية", ayahs:28 },{ type:"مكية", ayahs:20 },{ type:"مكية", ayahs:56 },{ type:"مكية", ayahs:40 },{ type:"مكية", ayahs:31 },{ type:"مكية", ayahs:50 },{ type:"مكية", ayahs:40 },{ type:"مكية", ayahs:46 },{ type:"مكية", ayahs:42 },{ type:"مكية", ayahs:29 },{ type:"مكية", ayahs:19 },{ type:"مكية", ayahs:36 },{ type:"مكية", ayahs:25 },{ type:"مكية", ayahs:22 },{ type:"مكية", ayahs:17 },{ type:"مكية", ayahs:19 },{ type:"مكية", ayahs:26 },{ type:"مكية", ayahs:30 },{ type:"مكية", ayahs:20 },{ type:"مكية", ayahs:15 },{ type:"مكية", ayahs:21 },{ type:"مكية", ayahs:11 },{ type:"مكية", ayahs:8 },{ type:"مكية", ayahs:8 },{ type:"مكية", ayahs:19 },{ type:"مكية", ayahs:5 },{ type:"مكية", ayahs:8 },{ type:"مكية", ayahs:8 },{ type:"مكية", ayahs:11 },{ type:"مكية", ayahs:11 },{ type:"مكية", ayahs:8 },{ type:"مكية", ayahs:3 },{ type:"مكية", ayahs:9 },{ type:"مكية", ayahs:5 },{ type:"مكية", ayahs:4 },{ type:"مكية", ayahs:7 },{ type:"مكية", ayahs:3 },{ type:"مكية", ayahs:6 },{ type:"مكية", ayahs:3 },{ type:"مكية", ayahs:5 },{ type:"مكية", ayahs:4 },{ type:"مكية", ayahs:5 },{ type:"مكية", ayahs:6 }];
         const JUZ_STARTS = [[1,1],[2,142],[2,253],[3,92],[4,24],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[21,1],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[46,1],[51,31],[58,1],[67,1],[78,1]];
 
-        let islInitDone = false; let islSelectedSurah = null; let islQuranAyahs = []; let islQuranAudio = new Audio(); let islQuranQueue = []; let islQuranIndex = 0; let islQuranPlaying = false; let islReciters = []; let islTargetAyah = null; let islAudioAyahs = []; let islWarshTimeline = null; let islCurrentAyah = 0;
+        let islInitDone = false; let islSelectedSurah = null; let islQuranAyahs = []; let islQuranAudio = new Audio(); let islQuranQueue = []; let islQuranIndex = 0; let islQuranPlaying = false; let islReciters = []; let islTargetAyah = null; let islAudioAyahs = []; let islWarshTimeline = null; let islCurrentAyah = 0; let islWarshExact = false; let islTimingCache = {};
+        // التوقيت الرسمي لكل آية (mp3quran) - يتزامن مع الصوت بدقة
+        async function fetchIslWarshTimings(surahNum, mqId) {
+            const key = mqId + ':' + surahNum;
+            if (islTimingCache[key]) return islTimingCache[key];
+            try {
+                const res = await fetch('https://mp3quran.net/api/v3/ayat_timing?surah=' + surahNum + '&read=' + mqId);
+                if (!res.ok) return null;
+                const data = await res.json();
+                if (!Array.isArray(data) || !data.length) return null;
+                const timings = data.filter(t => t && t.ayah && typeof t.start_time === 'number').map(t => ({ ayah: t.ayah, start: t.start_time, end: t.end_time }));
+                if (timings.length) islTimingCache[key] = timings;
+                return timings.length ? timings : null;
+            } catch (e) { return null; }
+        }
         // توزيع زمني تقديري للآيات (للمصحف الصوتي بملف واحد) - متناسب مع طول الآية
         function computeIslWarshTimeline() {
             const verses = islQuranAyahs || [];
@@ -3325,18 +3339,31 @@ var gender = 'male';
             } catch (e) {}
         }
         // lecture d'un fichier sourate unique (قرّاء ورش) avec suivi automatique de l'ayah
-        function islPlayWarshFile(src) {
+        function islPlayWarshFile(src, timings) {
             islQuranQueue = [src]; islAudioAyahs = []; islQuranIndex = 0;
-            islWarshTimeline = computeIslWarshTimeline(); islCurrentAyah = 0;
+            islWarshExact = !!(timings && timings.length);
+            islWarshTimeline = islWarshExact ? timings : computeIslWarshTimeline();
+            islCurrentAyah = 0;
             islQuranAudio.onended = function () { stopIslamiyatAudio(); };
-            islQuranAudio.onerror = function () { const b = document.getElementById('isl-play-btn'); if (b) b.textContent = '⚠️ خطأ'; islQuranPlaying = false; };
+            islQuranAudio.onerror = function () { if (!islQuranPlaying) return; const b = document.getElementById('isl-play-btn'); if (b) b.textContent = '⚠️ خطأ'; islQuranPlaying = false; };
             islQuranAudio.ontimeupdate = function () {
-                if (!islWarshTimeline || !islWarshTimeline.length || !islQuranAudio.duration) return;
-                const frac = islQuranAudio.currentTime / islQuranAudio.duration;
-                let idx = 0;
-                for (let i = 0; i < islWarshTimeline.length; i++) { if (frac <= islWarshTimeline[i]) { idx = i; break; } idx = i; }
-                const verse = (islQuranAyahs || [])[idx];
-                const n = verse && verse.numberInSurah;
+                const tl = islWarshTimeline;
+                if (!tl || !tl.length) return;
+                let n = 0;
+                if (islWarshExact) {
+                    const ms = islQuranAudio.currentTime * 1000;
+                    for (let i = 0; i < tl.length; i++) {
+                        if (ms >= tl[i].start && ms < tl[i].end) { n = tl[i].ayah; break; }
+                        if (ms >= tl[i].end) n = tl[i].ayah;
+                    }
+                } else {
+                    if (!islQuranAudio.duration) return;
+                    const frac = islQuranAudio.currentTime / islQuranAudio.duration;
+                    let idx = 0;
+                    for (let i = 0; i < tl.length; i++) { if (frac <= tl[i]) { idx = i; break; } idx = i; }
+                    const verse = (islQuranAyahs || [])[idx];
+                    n = verse && verse.numberInSurah;
+                }
                 if (n && n !== islCurrentAyah) { islCurrentAyah = n; highlightAyah(n); }
             };
             islQuranAudio.src = src;
@@ -3357,7 +3384,12 @@ var gender = 'male';
                 if (rec) {
                     const num = parseInt(islSelectedSurah, 10);
                     const moshaf = (rec.moshaf || []).find(m => (',' + m.surah_list + ',').includes(',' + num + ',')) || rec.moshaf[0];
-                    if (moshaf) { islPlayWarshFile(moshaf.server + String(num).padStart(3, '0') + '.mp3'); return; }
+                    if (moshaf) {
+                        const src = moshaf.server + String(num).padStart(3, '0') + '.mp3';
+                        islPlayWarshFile(src, null);
+                        fetchIslWarshTimings(num, mqId).then(function (t) { if (t && t.length) { islWarshTimeline = t; islWarshExact = true; } });
+                        return;
+                    }
                 }
             }
             toggleIslamiyatPlay();
@@ -3424,10 +3456,11 @@ var gender = 'male';
                     const num = parseInt(islSelectedSurah, 10);
                     const moshaf = (rec.moshaf || []).find(m => (',' + m.surah_list + ',').includes(',' + num + ',')) || rec.moshaf[0];
                     if (!moshaf) throw new Error('moshaf introuvable');
-                    islPlayWarshFile(moshaf.server + String(num).padStart(3, '0') + '.mp3');
+                    const timings = await fetchIslWarshTimings(num, mqId);
+                    islPlayWarshFile(moshaf.server + String(num).padStart(3, '0') + '.mp3', timings);
                     return;
                 }
-                islWarshTimeline = null; islCurrentAyah = 0;
+                islWarshTimeline = null; islCurrentAyah = 0; islWarshExact = false;
                 islQuranAudio.ontimeupdate = null;
                 const edId = reciterId.indexOf('ed:') === 0 ? reciterId.slice(3) : reciterId;
                 const res = await fetch(`https://api.alquran.cloud/v1/surah/${islSelectedSurah}/${edId}`); const data = await res.json();
