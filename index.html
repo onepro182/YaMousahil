@@ -755,7 +755,30 @@
             font-family:var(--font);font-size:.95rem;
         }
         .sihatar-search input::placeholder{color:var(--text-dim);}
-        .sihatar-chips{display:flex;flex-wrap:wrap;gap:8px;}
+        .sihatar-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+        .sihatar-chips .sihatar-label{white-space:nowrap;}
+        .sihatar-chips select{flex:1;min-width:160px;}
+        /* grille des tarifs : 6 analyses par ligne */
+        .sihatar-tarifs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
+        .si-tarif{
+            background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;
+            padding:9px 7px;display:flex;flex-direction:column;gap:6px;text-align:center;min-width:0;
+        }
+        .si-tarif-nom{font-size:.72rem;color:var(--text-main);line-height:1.45;min-height:2.9em;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+        .si-tarif-prix{font-size:.92rem;font-weight:800;color:var(--gold);direction:ltr;white-space:nowrap;text-shadow:0 2px 8px rgba(212,175,55,.25);}
+        /* bouton Proches */
+        .sihatar-near{
+            display:flex;align-items:center;gap:12px;text-align:right;padding:13px 14px;border-radius:16px;cursor:pointer;
+            font-family:var(--font);color:var(--text-main);width:100%;
+            background:linear-gradient(120deg,rgba(212,175,55,.18),rgba(212,175,55,.05));
+            border:1px solid rgba(212,175,55,.4);
+            transition:transform .15s ease,box-shadow .15s ease;
+        }
+        .sihatar-near:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.35);}
+        .sihatar-near .sihatar-mtxt b{font-size:.95rem;color:var(--gold-light);}
+        @media (max-width:900px){ .sihatar-tarifs{grid-template-columns:repeat(4,minmax(0,1fr));} }
+        @media (max-width:700px){ .sihatar-tarifs{grid-template-columns:repeat(3,minmax(0,1fr));} .si-tarif-prix{font-size:.85rem;} }
+        @media (max-width:480px){ .sihatar-tarifs{grid-template-columns:repeat(2,minmax(0,1fr));} .si-tarif-prix{font-size:.8rem;} }
         .sihatar-chip{
             padding:6px 13px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);
             color:var(--text-main);font-family:var(--font);font-size:.78rem;cursor:pointer;white-space:nowrap;
@@ -1645,6 +1668,11 @@
                         </button>
                     </div>
 
+                    <button type="button" class="sihatar-near glass-btn" id="btn-sihatar-near">
+                        <span class="sihatar-mico">📍</span>
+                        <span class="sihatar-mtxt"><b>القريبة مني</b><i>Pharmacies de garde près de chez moi</i></span>
+                    </button>
+
                     <div class="sihatar-sep"></div>
                     <p class="sihatar-legal">Ce site est un service indépendant et ne remplace ni un médecin ni un pharmacien.</p>
                 </div>
@@ -1658,7 +1686,10 @@
                         <div class="sihatar-search glass-btn">
                             <input type="search" id="sihatar-search" placeholder="🔍 ابحث بالاسم أو العنوان أو التخصص..." autocomplete="off">
                         </div>
-                        <div class="sihatar-chips" id="sihatar-chips"></div>
+                        <div class="sihatar-chips" id="sihatar-chips" style="display:none;">
+                            <label class="sihatar-label" for="sihatar-specialite">التخصص</label>
+                            <select id="sihatar-specialite" class="mosques-city-select"></select>
+                        </div>
                         <div class="sihatar-list" id="sihatar-list"></div>
                     </div>
                 </div>
@@ -5215,6 +5246,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             ['khemisset','الخميسات'],['berrechid','برشيد'],['temara','تمارة'],['ait-melloul','آيت ملول']
         ];
         const sihaState = { ville:'oujda', section:null, data:null, query:'', filtre:'', filtreNom:'', cache:{}, stamp:0 };
+        const SIHA_SECTIONS_EXTRA = { proches: { ar:'القريبة مني', fr:'Pharmacies de garde à proximité', ico:'📍' } };
 
         function sihaStamp() { return String(Math.floor(Date.now()/3600000)); }
 
@@ -5340,14 +5372,14 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
 
         async function sihaOpenSection(secId) {
             const sec = SIHA_SECTIONS[secId]; if (!sec) return;
-            sihaState.section = secId; sihaState.query = ''; sihaState.filtre = '';
+            sihaState.section = secId; sihaState.query = ''; sihaState.filtre = ''; sihaState.filtreNom = '';
             const search = document.getElementById('sihatar-search');
-            if (search) search.value = '';
+            if (search) { search.value = ''; search.disabled = false; }
             document.getElementById('sihatar-menus').style.display = 'none';
             document.getElementById('sihatar-panel').style.display = 'flex';
             document.getElementById('sihatar-panel-title').textContent = sec.ar + ' — ' + sec.fr;
             document.getElementById('sihatar-list').innerHTML = '<div class="sihatar-loading">⏳ جارٍ التحميل...</div>';
-            document.getElementById('sihatar-chips').innerHTML = '';
+            document.getElementById('sihatar-chips').style.display = 'none';
             const path = sec.kind === 'tarifs' ? 'tarifs.json' : sec.file + '/' + sihaState.ville + '.json';
             const data = await sihaLoad(path);
             sihaState.data = data;
@@ -5364,25 +5396,26 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
 
         function sihaRenderChips(specs) {
             const box = document.getElementById('sihatar-chips');
-            if (!box) return;
-            let html = '<button type="button" class="sihatar-chip active" data-spec="" data-nom="">الكل (' + (sihaState.data.items || []).length + ')</button>';
+            const sel = document.getElementById('sihatar-specialite');
+            if (!box || !sel) return;
+            const total = (sihaState.data && sihaState.data.items ? sihaState.data.items.length : 0);
+            let html = '<option value="">الكل (' + total + ')</option>';
             specs.forEach(s => {
-                html += '<button type="button" class="sihatar-chip" data-spec="' + sihaEscape(s.slug) + '" data-nom="' + sihaEscape(s.nom) + '">' + sihaEscape(s.nom) + ' (' + s.nb + ')</button>';
+                html += '<option value="' + sihaEscape(s.slug) + '" data-nom="' + sihaEscape(s.nom) + '">' + sihaEscape(s.nom) + ' (' + s.nb + ')</option>';
             });
-            box.innerHTML = html;
-            box.querySelectorAll('.sihatar-chip').forEach(c => {
-                c.onclick = function () {
-                    box.querySelectorAll('.sihatar-chip').forEach(x => x.classList.remove('active'));
-                    this.classList.add('active');
-                    sihaState.filtre = this.getAttribute('data-spec') || '';
-                    sihaState.filtreNom = this.getAttribute('data-nom') || '';
-                    sihaRenderList();
-                };
-            });
+            sel.innerHTML = html;
+            sel.value = sihaState.filtre || '';
+            box.style.display = 'flex';
+            sel.onchange = function () {
+                const opt = this.options[this.selectedIndex];
+                sihaState.filtre = this.value || '';
+                sihaState.filtreNom = opt ? (opt.getAttribute('data-nom') || '') : '';
+                sihaRenderList();
+            };
         }
 
         function sihaRenderList() {
-            const sec = SIHA_SECTIONS[sihaState.section]; if (!sec) return;
+            const sec = SIHA_SECTIONS[sihaState.section] || SIHA_SECTIONS_EXTRA[sihaState.section]; if (!sec) return;
             const list = document.getElementById('sihatar-list');
             const data = sihaState.data; if (!data) return;
             let items = [];
@@ -5409,6 +5442,18 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 return;
             }
             const limit = 300;
+            // ---- tarifs : grille de 6 analyses par ligne ----
+            if (sec.kind === 'tarifs') {
+                let g = '<div class="sihatar-tarifs">';
+                items.slice(0, limit).forEach(it => {
+                    const px = it.prix || (it.min != null ? it.min + ' – ' + it.max + ' DH' : '');
+                    g += '<div class="si-tarif"><span class="si-tarif-nom">' + sihaEscape(it.nom) + '</span><span class="si-tarif-prix">' + sihaEscape(px) + '</span></div>';
+                });
+                g += '</div>';
+                if (items.length > limit) g += '<div class="sihatar-empty">… ' + (items.length - limit) + ' analyse(s) de plus (utilisez la recherche)</div>';
+                list.innerHTML = g;
+                return;
+            }
             let html = '';
             items.slice(0, limit).forEach(it => {
                 const tel = it.tel || '';
@@ -5418,11 +5463,9 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 html += '<span class="si-body">';
                 html += '<span class="si-name">' + sihaEscape(it.nom) + '</span>';
                 if (it.specialite) html += '<span class="si-tags"><span class="si-tag">' + sihaEscape(it.specialite) + '</span></span>';
-                if (sec.kind === 'tarifs') {
-                    const px = it.prix || (it.min != null ? it.min + ' – ' + it.max + ' DH' : '');
-                    html += '<span class="si-price">' + sihaEscape(px) + '</span>';
-                } else if (it.adresse) html += '<span class="si-addr">' + sihaEscape(it.adresse) + '</span>';
-                if (sec.kind === 'pharmacies') {
+                if (it.adresse) html += '<span class="si-addr">' + sihaEscape(it.adresse) + '</span>';
+                if (it.distance != null) html += '<span class="si-tags"><span class="si-tag garde">' + (it.distance < 1 ? Math.round(it.distance * 1000) + ' م' : it.distance.toFixed(1) + ' كم') + '</span></span>';
+                if (sec.kind === 'pharmacies' || sihaState.section === 'proches') {
                     html += '<span class="si-tags"><span class="si-tag garde">صيدلية حراسة</span>';
                     if (it.garde) html += '<span class="si-tag">' + sihaEscape(sihaGardeLabel(it.garde)) + '</span>';
                     const hl = sihaHeuresLabel(it.heures);
@@ -5439,7 +5482,47 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             list.innerHTML = html;
         }
 
-        // ---------- branchement ----------
+        // distance en km entre deux points (formule de haversine)
+        function sihaDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371, toRad = x => x * Math.PI / 180;
+            const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        // pharmacie de garde la plus proche de ma position
+        async function sihaNearby() {
+            const list = document.getElementById('sihatar-list');
+            document.getElementById('sihatar-menus').style.display = 'none';
+            document.getElementById('sihatar-panel').style.display = 'flex';
+            document.getElementById('sihatar-panel-title').textContent = 'القريبة مني — Pharmacies de garde à proximité';
+            document.getElementById('sihatar-chips').style.display = 'none';
+            list.innerHTML = '<div class="sihatar-loading">⏳ جارٍ تحديد موقعك...</div>';
+            const data = await sihaLoad('pharmacies/' + sihaState.ville + '.json');
+            if (!data) {
+                list.innerHTML = '<div class="sihatar-empty">لا توجد بيانات متاحة لهذه المدينة.</div>';
+                return;
+            }
+            const garde = (data.garde || []).slice();
+            let pos = null;
+            try {
+                pos = await new Promise((resolve) => {
+                    if (!navigator.geolocation) return resolve(null);
+                    navigator.geolocation.getCurrentPosition(p => resolve({ lat: p.coords.latitude, lon: p.coords.longitude }), () => resolve(null), { enableHighAccuracy: true, timeout: 9000, maximumAge: 300000 });
+                });
+            } catch (e) { pos = null; }
+            if (pos) {
+                garde.forEach(it => { if (it.lat != null && it.lon != null) it.distance = sihaDistance(pos.lat, pos.lon, it.lat, it.lon); });
+                garde.sort((a, b) => (a.distance != null ? a.distance : 1e9) - (b.distance != null ? b.distance : 1e9));
+            }
+            sihaState.section = 'proches';
+            sihaState.data = { items: garde, villeAr: data.villeAr };
+            const box = document.getElementById('sihatar-search');
+            if (box) { box.value = ''; box.disabled = true; }
+            sihaRenderList();
+            sihaToast(pos ? '📍 تم تحديد موقعك — أقرب الصيدليات' : '📍 تعذّر تحديد الموقع — عرض كل صيدليات الحراسة', pos ? 'ok' : 'ko');
+        }
         const _cardSihatar = document.getElementById('card-sihatar');
         if (_cardSihatar) _cardSihatar.onclick = () => {
             if (typeof radioPlaying!=='undefined'&&radioPlaying) stopRadio();
@@ -5456,7 +5539,12 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             sihaState.section = null;
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-menus').style.display = 'grid';
+            document.getElementById('sihatar-chips').style.display = 'none';
+            const box = document.getElementById('sihatar-search');
+            if (box) { box.disabled = false; box.value = ''; }
+            sihaState.query = '';
         };
+        document.getElementById('btn-sihatar-near').onclick = () => { sihaNearby(); };
         document.getElementById('sihatar-search').addEventListener('input', function () {
             sihaState.query = this.value; sihaRenderList();
         });
