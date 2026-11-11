@@ -162,7 +162,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -715,6 +715,91 @@
         .setting-row {display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);padding:12px 15px;border-radius:8px;margin-bottom:10px;}
         .setting-title{font-weight:600;font-size:.95rem;}
         .setting-hint{width:100%;font-size:.78rem;color:var(--text-dim);margin-top:8px;direction:ltr;text-align:left;opacity:.9;}
+        /* ================= SIHATAR (SANTE) ================= */
+        #sihatar-screen{min-width:0;}
+        #sihatar-screen .header-prayers{width:100%;min-width:0;}
+        #sihatar-screen .title-prayers{min-width:0;}
+        #sihatar-screen .title-prayers h1{font-size:1.7rem;}
+        #sihatar-screen .title-prayers p{font-size:.78rem;line-height:1.7;overflow-wrap:anywhere;word-break:break-word;}
+        .sihatar-wrap{flex:1;min-width:0;overflow-y:auto;padding:14px 14px 40px;display:flex;flex-direction:column;gap:14px;}
+        .sihatar-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;border-radius:14px;}
+        .sihatar-label{font-weight:700;color:var(--gold);font-size:.9rem;white-space:nowrap;}
+        .sihatar-city{flex:1;min-width:150px;}
+        .sihatar-updated{font-size:.72rem;color:var(--text-dim);margin-right:auto;}
+        .sihatar-menus{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;min-width:0;}
+        .sihatar-menu{
+            display:flex;align-items:center;gap:12px;text-align:right;padding:14px 14px;border-radius:16px;
+            cursor:pointer;font-family:var(--font);color:var(--text-main);
+            transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+        }
+        .sihatar-menu:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.35);}
+        .sihatar-menu:active{transform:translateY(0);}
+        .sihatar-mico{
+            width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;font-size:1.35rem;
+            background:linear-gradient(160deg,rgba(212,175,55,.22),rgba(212,175,55,.06));
+            border:1px solid rgba(212,175,55,.35);border-radius:13px;
+        }
+        .sihatar-mtxt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;}
+        .sihatar-mtxt b{font-size:.95rem;color:var(--gold-light);font-weight:700;}
+        .sihatar-mtxt i{font-style:normal;font-size:.72rem;color:var(--text-dim);direction:ltr;text-align:right;}
+        .sihatar-mcount{
+            flex:none;min-width:34px;height:26px;padding:0 8px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+            background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.35);color:var(--gold);font-size:.78rem;font-weight:700;
+        }
+        .sihatar-panel{display:flex;flex-direction:column;gap:12px;flex:1;min-width:0;}
+        .sihatar-panel-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+        .sihatar-panel-head h2{font-family:var(--font-quran);color:var(--gold);font-size:1.35rem;margin:0;flex:1;}
+        .sihatar-search{padding:10px 14px;border-radius:14px;}
+        .sihatar-search input{
+            width:100%;background:transparent;border:none;outline:none;color:var(--text-main);
+            font-family:var(--font);font-size:.95rem;
+        }
+        .sihatar-search input::placeholder{color:var(--text-dim);}
+        .sihatar-chips{display:flex;flex-wrap:wrap;gap:8px;}
+        .sihatar-chip{
+            padding:6px 13px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);
+            color:var(--text-main);font-family:var(--font);font-size:.78rem;cursor:pointer;white-space:nowrap;
+        }
+        .sihatar-chip.active{background:rgba(212,175,55,.2);border-color:rgba(212,175,55,.55);color:var(--gold-light);font-weight:700;}
+        .sihatar-list{display:flex;flex-direction:column;gap:10px;min-width:0;}
+        .sihatar-item{
+            display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:14px;min-width:0;
+            background:rgba(255,255,255,.04);border:1px solid var(--glass-border);
+        }
+        .sihatar-item .si-ico{
+            width:36px;height:36px;flex:none;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+            background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);
+        }
+        .sihatar-item .si-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+        .sihatar-item .si-name{font-weight:700;color:var(--text-main);font-size:.95rem;line-height:1.5;}
+        .sihatar-item .si-addr{font-size:.78rem;color:var(--text-dim);line-height:1.6;direction:ltr;text-align:right;}
+        .sihatar-item .si-tags{display:flex;flex-wrap:wrap;gap:6px;}
+        .sihatar-item .si-tag{
+            font-size:.68rem;padding:2px 9px;border-radius:11px;background:rgba(212,175,55,.14);
+            border:1px solid rgba(212,175,55,.3);color:var(--gold-light);
+        }
+        .sihatar-item .si-tag.garde{background:rgba(46,204,113,.16);border-color:rgba(46,204,113,.4);color:#8ff0b8;}
+        .sihatar-item .si-actions{display:flex;flex-direction:column;gap:6px;flex:none;}
+        .sihatar-act{
+            display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:10px;cursor:pointer;
+            background:rgba(212,175,55,.14);border:1px solid rgba(212,175,55,.32);color:var(--gold-light);
+            font-family:var(--font);font-size:.74rem;font-weight:700;text-decoration:none;white-space:nowrap;
+        }
+        .sihatar-act.map{background:rgba(255,255,255,.06);border-color:var(--glass-border);color:var(--text-main);}
+        .sihatar-empty{padding:26px 14px;text-align:center;color:var(--text-dim);font-size:.9rem;line-height:1.9;}
+        .sihatar-loading{padding:26px 14px;text-align:center;color:var(--gold);font-size:.9rem;}
+        .sihatar-src{font-size:.7rem;color:var(--text-dim);text-align:center;margin:4px 0 0;line-height:1.8;}
+        @media (max-width:560px){
+            .sihatar-wrap{padding:12px 10px 34px;}
+            .sihatar-menus{grid-template-columns:1fr 1fr;gap:10px;}
+            .sihatar-menu{padding:11px 10px;gap:9px;}
+            .sihatar-mico{width:36px;height:36px;font-size:1.1rem;}
+            .sihatar-mtxt b{font-size:.82rem;}
+            .sihatar-mtxt i{display:none;}
+            .sihatar-mcount{min-width:28px;height:22px;font-size:.7rem;padding:0 6px;}
+            .sihatar-item{flex-wrap:wrap;padding:11px 12px;}
+            .sihatar-item .si-actions{flex-direction:row;width:100%;}
+        }
         .setting-select {background:rgba(12,46,34,0.7);color:var(--gold-light);padding:8px 12px;border-radius:8px;border:1px solid rgba(212,175,55,0.4);font-family:var(--font);outline:none;font-size:.9rem;direction:ltr;color-scheme:dark;}
         .setting-select:focus {border-color:var(--gold);}
         .setting-select option{background:#0f3a2a;color:var(--cream);}
@@ -1107,9 +1192,28 @@
                                     <span class="app-name">📻 إذاعات القرآن</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-inheritance"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" alt="حساب المواريث"><span class="app-name">حساب المواريث</span></div>
-                                <div class="app-card glass-btn" tabindex="0" id="card-pharmacy">
-                                    <img class="app-icon" src="assets/img/pha.png" alt="Pharmacie" style="max-height:48px; object-fit:contain;" onerror="this.src='assets/img/Logo.png'">
-                                    <span class="app-name">🏥 صيدلية الحراسة</span>
+                                <div class="app-card glass-btn" tabindex="0" id="card-sihatar" title="دليل الخدمات الصحية">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="صحتي">
+                                        <defs>
+                                            <linearGradient id="q3dHealthBg" x1="0" y1="0" x2="0.35" y2="1">
+                                                <stop offset="0" stop-color="#2fc2a0"/><stop offset="0.5" stop-color="#0e7460"/><stop offset="1" stop-color="#053028"/>
+                                            </linearGradient>
+                                            <linearGradient id="q3dHealthCross" x1="0.15" y1="0" x2="0.7" y2="1">
+                                                <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#eef8f5"/><stop offset="1" stop-color="#b3d6cc"/>
+                                            </linearGradient>
+                                            <linearGradient id="q3dHealthGold" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#q3dHealthBg)"/>
+                                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                        <ellipse cx="32" cy="52" rx="18" ry="4" fill="#000" opacity=".22"/>
+                                        <rect x="26" y="11" width="12" height="42" rx="4.5" fill="url(#q3dHealthCross)"/>
+                                        <rect x="11" y="26" width="42" height="12" rx="4.5" fill="url(#q3dHealthCross)"/>
+                                        <path d="M28 11 h8 a4.5 4.5 0 0 1 4.5 4.5 v6 h-17 v-6 a4.5 4.5 0 0 1 4.5 -4.5 z" fill="#ffffff" opacity=".55"/>
+                                        <path d="M6 32 h10 l4 -9 l6 18 l4.5 -9 H58" fill="none" stroke="url(#q3dHealthGold)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span class="app-name">صحتي</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-weather">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
@@ -1466,6 +1570,66 @@
                 <p style="text-align:center; font-size:0.78rem; color:var(--text-dim); padding:6px 8px; line-height:1.7;">
                     بيانات الصيدليات عبر OpenStreetMap. لمعرفة <strong style="color:var(--gold);">صيدلية الحراسة</strong> (المناوبة) الرسمية، يُنصح بالتحقق من المصادر المحلية/الرسمية لمدينتك.
                 </p>
+            </div>
+
+            <!-- ================= SIHATAR (SANTE) SCREEN ================= -->
+            <div id="sihatar-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-sihatar">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">صحتي</h1>
+                        <p>دليل الخدمات الصحية : صيدليات الحراسة، العيادات، مختبرات التحاليل، الأطباء وأسعار التحاليل</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="sihatar-wrap">
+                    <div class="sihatar-top glass-btn">
+                        <label class="sihatar-label" for="sihatar-city">المدينة</label>
+                        <select id="sihatar-city" class="mosques-city-select sihatar-city"></select>
+                        <span class="sihatar-updated" id="sihatar-updated"></span>
+                    </div>
+
+                    <div class="sihatar-menus" id="sihatar-menus">
+                        <button type="button" class="sihatar-menu glass-btn" data-sec="garde">
+                            <span class="sihatar-mico">💊</span>
+                            <span class="sihatar-mtxt"><b>صيدليات الحراسة</b><i>Pharmacies de garde</i></span>
+                            <span class="sihatar-mcount" data-count="garde">—</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-sec="cliniques">
+                            <span class="sihatar-mico">🏥</span>
+                            <span class="sihatar-mtxt"><b>العيادات</b><i>Cliniques</i></span>
+                            <span class="sihatar-mcount" data-count="cliniques">—</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-sec="laboratoires">
+                            <span class="sihatar-mico">🔬</span>
+                            <span class="sihatar-mtxt"><b>مختبرات التحاليل</b><i>Laboratoires</i></span>
+                            <span class="sihatar-mcount" data-count="laboratoires">—</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-sec="medecins">
+                            <span class="sihatar-mico">🩺</span>
+                            <span class="sihatar-mtxt"><b>الأطباء</b><i>Médecins</i></span>
+                            <span class="sihatar-mcount" data-count="medecins">—</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-sec="tarifs">
+                            <span class="sihatar-mico">💰</span>
+                            <span class="sihatar-mtxt"><b>أسعار التحاليل</b><i>Tarifs des analyses</i></span>
+                            <span class="sihatar-mcount" data-count="tarifs">—</span>
+                        </button>
+                    </div>
+
+                    <div class="sihatar-panel" id="sihatar-panel" style="display:none;">
+                        <div class="sihatar-panel-head">
+                            <button type="button" class="back-btn glass-btn" id="btn-sihatar-back">‹ القائمة</button>
+                            <h2 id="sihatar-panel-title">—</h2>
+                        </div>
+                        <div class="sihatar-search glass-btn">
+                            <input type="search" id="sihatar-search" placeholder="🔍 ابحث بالاسم أو العنوان أو التخصص..." autocomplete="off">
+                        </div>
+                        <div class="sihatar-chips" id="sihatar-chips"></div>
+                        <div class="sihatar-list" id="sihatar-list"></div>
+                        <p class="sihatar-src" id="sihatar-src"></p>
+                    </div>
+                </div>
             </div>
 
             <!-- LIVE SCREEN -->
@@ -3147,7 +3311,8 @@ var gender = 'male';
                 { enableHighAccuracy: true, timeout: 9000 }
             );
         }
-        document.getElementById('card-pharmacy').onclick = () => {
+        const _cardPharmacy = document.getElementById('card-pharmacy');
+        if (_cardPharmacy) _cardPharmacy.onclick = () => {
             if (typeof radioPlaying!=='undefined'&&radioPlaying) stopRadio();
             if (typeof marocPlaying!=='undefined'&&marocPlaying) stopMarocPlayer();
             showScreen(pharmacyScreen);
@@ -3866,8 +4031,8 @@ var gender = 'male';
             document.getElementById('adhkar-back-to-cats').onclick = () => { const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.remove('show-text'); window.scrollTo(0, 0); };
         }
 
-        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
         // SETTINGS HANDLERS
         populateCountrySelect();
@@ -4995,6 +5160,241 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.addEventListener("visibilitychange", function () { if (document.hidden) stopAutomatic(); }); window.addEventListener("pagehide", stopAutomatic); window.addEventListener("resize", fitPhrase);
             loadCustoms(); loadTasbihState(); createBeads(); buildDhikrMenu(); applyLanguage(); setInterval(function () { var old = state.day; checkDay(); if (old !== state.day) $("todayDisplay").textContent = state.today; var sec = Math.floor((Date.now() - startedAt)/1000); $("timeDisplay").textContent = String(Math.floor(sec/60)).padStart(2,"0") + ":" + String(sec%60).padStart(2,"0"); }, 1000);
         })();
+
+        // ==================================================
+        // صحتي — sante : pharmacies de garde, cliniques,
+        // laboratoires, medecins, tarifs des analyses
+        // Source des donnees : sihamaroc.com (miroir dans le depot)
+        // ==================================================
+        const SIHA_SECTIONS = {
+            garde:       { ar:'صيدليات الحراسة', fr:'Pharmacies de garde', ico:'💊', kind:'pharmacies', file:'pharmacies' },
+            cliniques:   { ar:'العيادات',         fr:'Cliniques',            ico:'🏥', kind:'cliniques',   file:'cliniques' },
+            laboratoires:{ ar:'مختبرات التحاليل',fr:'Laboratoires',         ico:'🔬', kind:'laboratoires',file:'laboratoires' },
+            medecins:    { ar:'الأطباء',          fr:'Médecins',             ico:'🩺', kind:'medecins',    file:'medecins' },
+            tarifs:      { ar:'أسعار التحاليل',   fr:'Tarifs des analyses',  ico:'💰', kind:'tarifs',      file:'tarifs' }
+        };
+        const SIHA_CITY_FALLBACK = [
+            ['oujda','وجدة'],['casablanca','الدار البيضاء'],['rabat','الرباط'],['fes','فاس'],
+            ['marrakech','مراكش'],['tanger','طنجة'],['kenitra','القنيطرة'],['agadir','أكادير'],
+            ['meknes','مكناس'],['nador','الناظور'],['sale','سلا'],['safi','آسفي'],
+            ['el-jadida','الجديدة'],['mohammedia','المحمدية'],['beni-mellal','بني ملال'],
+            ['khouribga','خريبكة'],['berkane','بركان'],['tiznit','تيزنيت'],
+            ['essaouira','الصويرة'],['ouarzazate','ورزازات'],['taourirt','تاوريرت'],
+            ['khemisset','الخميسات'],['berrechid','برشيد'],['temara','تمارة'],['ait-melloul','آيت ملول']
+        ];
+        const sihaState = { ville:'oujda', section:null, data:null, query:'', filtre:'', cache:{} };
+
+        function sihaStamp() { return String(Math.floor(Date.now()/3600000)); }
+
+        async function sihaLoad(file) {
+            const key = file;
+            if (sihaState.cache[key]) return sihaState.cache[key];
+            const st = sihaStamp();
+            const urls = [
+                'assets/data/siha/' + file + '?t=' + st,
+                'https://cdn.jsdelivr.net/gh/onepro182/YaMousahil@main/assets/data/siha/' + file + '?t=' + st,
+                'https://raw.githubusercontent.com/onepro182/YaMousahil/main/assets/data/siha/' + file + '?t=' + st
+            ];
+            for (const u of urls) {
+                try {
+                    const r = await fetch(u);
+                    if (!r.ok) continue;
+                    const j = await r.json();
+                    if (j && typeof j === 'object') { sihaState.cache[key] = j; return j; }
+                } catch (e) {}
+            }
+            return null;
+        }
+
+        function sihaEscape(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function sihaTelHref(tel) {
+            if (!tel) return '';
+            let d = String(tel).replace(/[^\d+]/g, '');
+            if (!d) return '';
+            if (d.indexOf('00') === 0) d = '+' + d.slice(2);          // 00212...
+            else if (d.indexOf('+') === 0) { /* deja au format international */ }
+            else if (d.indexOf('212') === 0) d = '+' + d;             // 212...
+            else if (d.charAt(0) === '0') d = '+212' + d.slice(1);     // 05 36 ...
+            else d = '+212' + d;                                       // 6 24 ...
+            return 'tel:' + d;
+        }
+        function sihaMapUrl(lat, lon, nom) {
+            if (lat != null && lon != null) {
+                return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(lat + ',' + lon);
+            }
+            return nom && nom.url ? nom.url : '';
+        }
+
+        function sihaRenderCities() {
+            const sel = document.getElementById('sihatar-city');
+            if (!sel) return;
+            if (sel.options.length > 1) return;
+            SIHA_CITY_FALLBACK.forEach(([id, ar]) => {
+                const o = document.createElement('option'); o.value = id; o.textContent = ar; sel.appendChild(o);
+            });
+            sel.value = sihaState.ville;
+            sel.onchange = function () {
+                sihaState.ville = this.value; sihaState.cache = {};
+                sihaState.section = null;
+                document.getElementById('sihatar-panel').style.display = 'none';
+                document.getElementById('sihatar-menus').style.display = 'grid';
+                sihaLoadCounts();
+            };
+        }
+
+        // compteurs sur les cartes du menu
+        async function sihaLoadCounts() {
+            const sec = SIHA_SECTIONS;
+            const ville = sihaState.ville;
+            const setC = (id, v) => { const el = document.querySelector('[data-count="' + id + '"]'); if (el) el.textContent = v; };
+            try {
+                const ph = await sihaLoad('pharmacies/' + ville + '.json');
+                setC('garde', ph ? (ph.garde || []).length : '—');
+            } catch (e) { setC('garde', '—'); }
+            try {
+                const cl = await sihaLoad('cliniques/' + ville + '.json');
+                setC('cliniques', cl ? (cl.items || []).length : '—');
+            } catch (e) { setC('cliniques', '—'); }
+            try {
+                const lb = await sihaLoad('laboratoires/' + ville + '.json');
+                setC('laboratoires', lb ? (lb.items || []).length : '—');
+            } catch (e) { setC('laboratoires', '—'); }
+            try {
+                const md = await sihaLoad('medecins/' + ville + '.json');
+                setC('medecins', md ? (md.items || []).length : '—');
+            } catch (e) { setC('medecins', '—'); }
+            try {
+                const tf = await sihaLoad('tarifs.json');
+                setC('tarifs', tf ? (tf.items || []).length : '—');
+            } catch (e) { setC('tarifs', '—'); }
+        }
+
+        async function sihaOpenSection(secId) {
+            const sec = SIHA_SECTIONS[secId]; if (!sec) return;
+            sihaState.section = secId; sihaState.query = ''; sihaState.filtre = '';
+            const search = document.getElementById('sihatar-search');
+            if (search) search.value = '';
+            document.getElementById('sihatar-menus').style.display = 'none';
+            document.getElementById('sihatar-panel').style.display = 'flex';
+            document.getElementById('sihatar-panel-title').textContent = sec.ar + ' — ' + sec.fr;
+            document.getElementById('sihatar-list').innerHTML = '<div class="sihatar-loading">⏳ جارٍ التحميل...</div>';
+            document.getElementById('sihatar-chips').innerHTML = '';
+            const path = sec.kind === 'tarifs' ? 'tarifs.json' : sec.file + '/' + sihaState.ville + '.json';
+            const data = await sihaLoad(path);
+            sihaState.data = data;
+            const upd = document.getElementById('sihatar-updated');
+            if (upd && data && data.updated) upd.textContent = 'آخر تحديث: ' + data.updated.replace('T', ' ').replace('Z', ' UTC');
+            if (!data) {
+                document.getElementById('sihatar-list').innerHTML =
+                    '<div class="sihatar-empty">⚠️ لا تتوفر بيانات لهذه المدينة حالياً.<br>جرّب مدينة أخرى أو أعد المحاولة لاحقاً.</div>';
+                return;
+            }
+            if (sec.kind === 'medecins' && data.specialites && data.specialites.length) sihaRenderChips(data.specialites);
+            sihaRenderList();
+        }
+
+        function sihaRenderChips(specs) {
+            const box = document.getElementById('sihatar-chips');
+            if (!box) return;
+            let html = '<button type="button" class="sihatar-chip active" data-spec="">الكل (' + (sihaState.data.items || []).length + ')</button>';
+            specs.forEach(s => {
+                html += '<button type="button" class="sihatar-chip" data-spec="' + sihaEscape(s.slug) + '">' + sihaEscape(s.nom) + ' (' + s.nb + ')</button>';
+            });
+            box.innerHTML = html;
+            box.querySelectorAll('.sihatar-chip').forEach(c => {
+                c.onclick = function () {
+                    box.querySelectorAll('.sihatar-chip').forEach(x => x.classList.remove('active'));
+                    this.classList.add('active');
+                    sihaState.filtre = this.getAttribute('data-spec') || '';
+                    sihaRenderList();
+                };
+            });
+        }
+
+        function sihaRenderList() {
+            const sec = SIHA_SECTIONS[sihaState.section]; if (!sec) return;
+            const list = document.getElementById('sihatar-list');
+            const data = sihaState.data; if (!data) return;
+            let items = [];
+            if (sec.kind === 'pharmacies') items = (data.garde || []).map(x => Object.assign({ _garde:true }, x));
+            else if (sec.kind === 'tarifs') items = data.items || [];
+            else items = data.items || [];
+
+            // filtre specialite (medecins)
+            if (sec.kind === 'medecins' && sihaState.filtre) {
+                items = items.filter(x => x.specSlug === sihaState.filtre);
+            }
+            // recherche
+            const q = (sihaState.query || '').trim().toLowerCase();
+            if (q) {
+                items = items.filter(x => {
+                    const hay = [x.nom, x.adresse, x.specialite, x.garde, x.prix].join(' ').toLowerCase();
+                    return hay.indexOf(q) !== -1;
+                });
+            }
+            if (!items.length) {
+                list.innerHTML = '<div class="sihatar-empty">' + (q ? '🔍 لا توجد نتائج لـ «' + sihaEscape(sihaState.query) + '»' : 'لا توجد عناصر متاحة لهذه المدينة.') + '</div>';
+                return;
+            }
+            const limit = 300;
+            let html = '';
+            items.slice(0, limit).forEach(it => {
+                const tel = it.tel || '';
+                const th = sihaTelHref(tel);
+                html += '<div class="sihatar-item">';
+                html += '<span class="si-ico">' + sec.ico + '</span>';
+                html += '<span class="si-body">';
+                html += '<span class="si-name">' + sihaEscape(it.nom) + '</span>';
+                if (it.specialite) html += '<span class="si-tags"><span class="si-tag">' + sihaEscape(it.specialite) + '</span></span>';
+                if (it.adresse) html += '<span class="si-addr">' + sihaEscape(it.adresse) + '</span>';
+                if (sec.kind === 'pharmacies') {
+                    html += '<span class="si-tags"><span class="si-tag garde">صيدلية حراسة</span>';
+                    if (it.garde) html += '<span class="si-tag">' + sihaEscape(it.garde) + '</span>';
+                    if (it.heures && it.heures.length) html += '<span class="si-tag">' + sihaEscape(it.heures.join(' · ')) + '</span>';
+                    html += '</span>';
+                }
+                if (sec.kind === 'tarifs') {
+                    html += '<span class="si-tags"><span class="si-tag">' + sihaEscape(it.prix || (it.min != null ? it.min + ' – ' + it.max + ' DH' : '')) + '</span></span>';
+                }
+                html += '</span>';
+                html += '<span class="si-actions">';
+                if (th) html += '<a class="sihatar-act" href="' + th + '">📞 اتصال</a>';
+                if (it.lat != null && it.lon != null) html += '<a class="sihatar-act map" href="' + sihaMapUrl(it.lat, it.lon) + '" target="_blank" rel="noopener">🗺️ موقع</a>';
+                else if (it.url) html += '<a class="sihatar-act map" href="' + it.url + '" target="_blank" rel="noopener">🔗 المصدر</a>';
+                html += '</span></div>';
+            });
+            if (items.length > limit) html += '<div class="sihatar-empty">… ' + (items.length - limit) + ' نتيجة أخرى (استعمل البحث)</div>';
+            list.innerHTML = html;
+            const src = document.getElementById('sihatar-src');
+            if (src) src.innerHTML = 'المصدر: <a href="https://sihamaroc.com" target="_blank" rel="noopener" style="color:var(--gold);">sihamaroc.com</a> · ' + (data.villeAr || 'المغرب');
+        }
+
+        // ---------- branchement ----------
+        const _cardSihatar = document.getElementById('card-sihatar');
+        if (_cardSihatar) _cardSihatar.onclick = () => {
+            if (typeof radioPlaying!=='undefined'&&radioPlaying) stopRadio();
+            if (typeof marocPlaying!=='undefined'&&marocPlaying) stopMarocPlayer();
+            showScreen(sihatarScreen);
+            sihaRenderCities();
+            document.getElementById('sihatar-menus').style.display = 'grid';
+            document.getElementById('sihatar-panel').style.display = 'none';
+            sihaLoadCounts();
+            window.scrollTo(0,0);
+        };
+        document.getElementById('btn-back-from-sihatar').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
+        document.getElementById('btn-sihatar-back').onclick = () => {
+            sihaState.section = null;
+            document.getElementById('sihatar-panel').style.display = 'none';
+            document.getElementById('sihatar-menus').style.display = 'grid';
+        };
+        document.getElementById('sihatar-search').addEventListener('input', function () {
+            sihaState.query = this.value; sihaRenderList();
+        });
+        document.querySelectorAll('#sihatar-menus .sihatar-menu').forEach(b => {
+            b.onclick = () => sihaOpenSection(b.getAttribute('data-sec'));
+        });
     });
     </script>
 </body>
