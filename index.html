@@ -3552,21 +3552,23 @@ var gender = 'male';
 
         async function fetchOverpassMosques(lat, lon) {
             const radiusM = mosqueRadiusKm * 1000;
-            const body = `[out:json];(node["amenity"="place_of_worship"]["religion"~"muslim|islam"](around:${radiusM}, ${lat}, ${lon});way["amenity"="place_of_worship"]["religion"~"muslim|islam"](around:${radiusM}, ${lat}, ${lon});node["amenity"="mosque"](around:${radiusM}, ${lat}, ${lon}););out center;`;
-            const tryOne = async (ep) => {
-                const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 7000);
+            const body = `[out:json][timeout:25];(node["amenity"="place_of_worship"]["religion"~"muslim|islam"](around:${radiusM}, ${lat}, ${lon});way["amenity"="place_of_worship"]["religion"~"muslim|islam"](around:${radiusM}, ${lat}, ${lon});relation["amenity"="place_of_worship"]["religion"~"muslim|islam"](around:${radiusM}, ${lat}, ${lon});node["amenity"="mosque"](around:${radiusM}, ${lat}, ${lon}););out center;`;
+            const eps = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+            const tryOne = async (ep, useGet) => {
+                const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 15000);
                 try {
-                    const response = await fetch(ep, { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'data=' + encodeURIComponent(body), signal: ctrl.signal });
+                    const url = useGet ? (ep + '?data=' + encodeURIComponent(body)) : ep;
+                    const opts = useGet ? { signal: ctrl.signal } : { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'data=' + encodeURIComponent(body), signal: ctrl.signal };
+                    const response = await fetch(url, opts);
                     clearTimeout(t);
                     if (!response.ok) return null;
                     const data = await response.json();
                     return data.elements || null;
-                } catch (e) { clearTimeout(t); console.warn('Overpass failed:', ep); return null; }
+                } catch (e) { clearTimeout(t); return null; }
             };
-            const results = await Promise.all([
-                tryOne('https://overpass-api.de/api/interpreter'),
-                tryOne('https://overpass.kumi.systems/api/interpreter')
-            ]);
+            // POST sur les 2 miroirs, puis GET en secours (Overpass est souvent sature)
+            let results = await Promise.all([tryOne(eps[0], false), tryOne(eps[1], false)]);
+            if (!results.some(r => r)) results = await Promise.all([tryOne(eps[0], true), tryOne(eps[1], true)]);
             for (const r of results) { if (r) return r; }
             return null;
         }
@@ -3575,14 +3577,30 @@ var gender = 'male';
             const dLat = mosqueRadiusKm / 111.0;
             const dLon = mosqueRadiusKm / (111.0 * Math.cos(lat * Math.PI / 180));
             const vb = [lon - dLon, lat + dLat, lon + dLon, lat - dLat].map(n => n.toFixed(6)).join(',');
-            const url = 'https://nominatim.openstreetmap.org/search?q=mosque&format=json&limit=50&addressdetails=1&bounded=1&viewbox=' + vb;
-            const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 7000);
+            const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 12000);
             try {
-                const r = await fetch(url, { signal: ctrl.signal });
+                // les noms de mosquees au Maroc sont en arabe : interroger les deux termes puis fusionner
+                const urls = [
+                    'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent('مسجد') + '&format=json&limit=50&addressdetails=1&bounded=1&viewbox=' + vb,
+                    'https://nominatim.openstreetmap.org/search?q=mosque&format=json&limit=50&addressdetails=1&bounded=1&viewbox=' + vb
+                ];
+                const rs = await Promise.all(urls.map(u => fetch(u, { signal: ctrl.signal }).then(r => r.json()).catch(() => null)));
                 clearTimeout(t);
-                const d = await r.json();
-                if (!Array.isArray(d)) return null;
-                return d.map(x => ({ lat: parseFloat(x.lat), lon: parseFloat(x.lon), name: x.display_name ? x.display_name.split(',')[0].trim() : 'مسجد', address: x.display_name || 'العنوان غير متوفر' }));
+                const seen = new Set(); const out = []; let anyOk = false;
+                for (const d of rs) {
+                    if (!Array.isArray(d)) continue;
+                    anyOk = true;
+                    d.forEach(x => {
+                        const la = parseFloat(x.lat), lo = parseFloat(x.lon);
+                        if (isNaN(la) || isNaN(lo)) return;
+                        const key = la.toFixed(4) + ',' + lo.toFixed(4);
+                        if (seen.has(key)) return;
+                        seen.add(key);
+                        out.push({ lat: la, lon: lo, name: x.display_name ? x.display_name.split(',')[0].trim() : 'مسجد', address: x.display_name || 'العنوان غير متوفر' });
+                    });
+                }
+                if (!anyOk) return null;
+                return out;
             } catch (e) { clearTimeout(t); console.warn('Nominatim failed', e); return null; }
         }
 
@@ -3687,28 +3705,32 @@ var gender = 'male';
             const listContainer = document.getElementById('mosques-list');
             if (!navigator.geolocation) { listContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#f88;">متصفحك لا يدعم تحديد الموقع.</div>'; return; }
             listContainer.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-dim);">📡 جاري تحديد موقعك بدقة...</div>';
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    lastRealPos = { lat: position.coords.latitude, lon: position.coords.longitude };
-                    const selM = document.getElementById('mosques-city-select'); if (selM) selM.value = '';
-                    searchMosques(lastRealPos.lat, lastRealPos.lon);
-                },
-                async (error) => {
-                    console.error('Geolocation error:', error);
-                    // Le GPS est refusé → tenter la localisation par adresse IP
-                    const ipPos = await locateByIP();
-                    if (ipPos) {
-                        searchMosques(ipPos.lat, ipPos.lon, 'IP' + (ipPos.city ? ': ' + ipPos.city : ''),
-                            '<div style="text-align:center;padding:12px;color:var(--gold-light);line-height:1.7;">📍 موقع تقريبي' + (ipPos.city ? ' (' + ipPos.city + ')' : '') + ' obtenu via الإنترنت.<br>Pour ton emplacement <b>exact</b> : 🔒 dans la barre d\'adresse ← <b>الموقع / Location</b> ← <b>سماح / Autoriser</b>, puis 📍 تحديث الموقع.</div>');
-                    } else if (fromButton) {
-                        listContainer.innerHTML = '<div style="text-align:center; padding:16px; color:var(--gold-light); line-height:1.8;">🔒 موقعك الحقيقي غير متاح (الإذن مرفوض).<br>الحل: اضغط على أيقونة 🔒 في شريط عنوان المتصفح ← <b>الموقع</b> ← <b>سماح</b>، ثم اضغط <b>📍 تحديث الموقع</b> مجدداً.</div>';
-                    } else {
-                        const city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) || CITIES_DB.oujda;
-                        searchMosques(city.lat, city.lng, city.nameAr, '<div style="text-align:center;padding:12px;color:var(--gold-light);">⚠️ لم نحصل على موقعك الدقيق — جاري عرض مساجد ' + city.nameAr + '. اضغط 📍 تحديث الموقع للحصول على موقعك الحقيقي.</div>');
-                    }
-                },
-                { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
-            );
+            const onOk = (position) => {
+                lastRealPos = { lat: position.coords.latitude, lon: position.coords.longitude };
+                const selM = document.getElementById('mosques-city-select'); if (selM) selM.value = '';
+                searchMosques(lastRealPos.lat, lastRealPos.lon);
+            };
+            const onFinalError = async (error) => {
+                console.error('Geolocation error:', error);
+                // Le GPS est refusé/indisponible → tenter la localisation par adresse IP
+                const ipPos = await locateByIP();
+                if (ipPos) {
+                    searchMosques(ipPos.lat, ipPos.lon, 'IP' + (ipPos.city ? ': ' + ipPos.city : ''),
+                        '<div style="text-align:center;padding:12px;color:var(--gold-light);line-height:1.7;">📍 موقع تقريبي' + (ipPos.city ? ' (' + ipPos.city + ')' : '') + ' obtenu via الإنترنت.<br>Pour ton emplacement <b>exact</b> : 🔒 dans la barre d\'adresse ← <b>الموقع / Location</b> ← <b>سماح / Autoriser</b>, puis 📍 تحديث الموقع.</div>');
+                } else if (fromButton) {
+                    listContainer.innerHTML = '<div style="text-align:center; padding:16px; color:var(--gold-light); line-height:1.8;">🔒 موقعك الحقيقي غير متاح (الإذن مرفوض).<br>الحل: اضغط على أيقونة 🔒 في شريط عنوان المتصفح ← <b>الموقع</b> ← <b>سماح</b>، ثم اضغط <b>📍 تحديث الموقع</b> مجدداً.</div>';
+                } else {
+                    const city = (typeof CITIES_DB !== 'undefined' && CITIES_DB[settings.cityId]) || CITIES_DB.oujda;
+                    searchMosques(city.lat, city.lng, city.nameAr, '<div style="text-align:center;padding:12px;color:var(--gold-light);">⚠️ لم نحصل على موقعك الدقيق — جاري عرض مساجد ' + city.nameAr + '. اضغط 📍 تحديث الموقع للحصول على موقعك الحقيقي.</div>');
+                }
+            };
+            // 1er essai : haute precision ; en cas d'erreur 2 (indisponible) ou 3 (delai) → 2e essai standard
+            navigator.geolocation.getCurrentPosition(onOk, (error) => {
+                if (error && (error.code === 2 || error.code === 3)) {
+                    listContainer.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-dim);">📡 إعادة المحاولة لتحديد موقعك...</div>';
+                    navigator.geolocation.getCurrentPosition(onOk, onFinalError, { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 });
+                } else { onFinalError(error); }
+            }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });
         }
 
         async function findNearbyMosques() {
@@ -4292,6 +4314,12 @@ var gender = 'male';
         const adhanAudio = document.getElementById('adhan-audio');
         const ADHAN_FILES = { azan1:'https://www.islamcan.com/audio/adhan/azan1.mp3', azan2:'https://www.islamcan.com/audio/adhan/azan2.mp3', azan3:'https://www.islamcan.com/audio/adhan/azan3.mp3', azan4:'https://www.islamcan.com/audio/adhan/azan4.mp3', azan5:'https://www.islamcan.com/audio/adhan/azan5.mp3', azan6:'https://www.islamcan.com/audio/adhan/azan6.mp3', azan7:'https://www.islamcan.com/audio/adhan/azan7.mp3', azan8:'https://www.islamcan.com/audio/adhan/azan8.mp3', azan9:'https://www.islamcan.com/audio/adhan/azan9.mp3', azan10:'https://www.islamcan.com/audio/adhan/azan10.mp3' };
         let adhanUnlocked = false;
+        // secours : raw.githubusercontent (CORS fiable, heberge stable)
+        const ADHAN_FALLBACKS = [
+            'https://raw.githubusercontent.com/abodehq/Athan-MP3/master/Sounds/Athan%20Makkah.mp3',
+            'https://raw.githubusercontent.com/abodehq/Athan-MP3/master/Sounds/Athan%20Mishary%20Alafasi.mp3',
+            'https://raw.githubusercontent.com/meypod/audio_files/main/adhan/masjid_an_nabawi.mp3'
+        ];
 
                 function showAlertOverlay(prayerKey, mode) {
             window._lastAlertPrayerKey = prayerKey;
@@ -4346,10 +4374,33 @@ function notifyPrayer(prayerKey, isTest) {
 
         async function playAdhan(prayerKey, isTest=false) {
             const voice = document.getElementById('set-adhan-voice').value || settings.adhanVoice || 'azan1';
-            adhanAudio.pause(); adhanAudio.currentTime = 0; adhanAudio.src = ADHAN_FILES[voice] || ADHAN_FILES.azan1; adhanAudio.load();
+            adhanAudio.pause();
             const status = document.getElementById('adhan-status');
-            try { await adhanAudio.play(); adhanUnlocked = true; if(!isTest) showAdhanOverlay(prayerKey); status.textContent = isTest ? 'يتم تشغيل الأذان التجريبي.' : 'يتم تشغيل الأذان الآن.'; const tb = document.getElementById('btn-test-adhan'); if (tb && isTest) tb.textContent = '⏹ إيقاف الاختبار'; }
-            catch (err) { status.textContent = 'تعذر التشغيل: تحقق من الإنترنت واضغط اختبار الصوت للسماح بالتشغيل.'; console.warn('Adhan playback blocked:', err); const tb = document.getElementById('btn-test-adhan'); if (tb) tb.textContent = '▶ اختبار صوت الأذان'; }
+            // chaine de sources : voix choisie puis secours (islamcan peut echouer sur certains reseaux)
+            const sources = [];
+            if (ADHAN_FILES[voice]) sources.push(ADHAN_FILES[voice]);
+            if (voice !== 'azan1' && ADHAN_FILES.azan1) sources.push(ADHAN_FILES.azan1);
+            ADHAN_FALLBACKS.forEach(u => { if (sources.indexOf(u) === -1) sources.push(u); });
+            let played = false;
+            for (const src of sources) {
+                try {
+                    adhanAudio.src = src; adhanAudio.load();
+                    await adhanAudio.play();
+                    played = true; adhanUnlocked = true;
+                    break;
+                } catch (err) { console.warn('Source adhan echouee:', src); }
+            }
+            if (played) {
+                if (!isTest) showAdhanOverlay(prayerKey);
+                status.textContent = isTest ? 'يتم تشغيل الأذان التجريبي.' : 'يتم تشغيل الأذان الآن.';
+                const tb = document.getElementById('btn-test-adhan');
+                if (tb && isTest) tb.textContent = '⏹ إيقاف الاختبار';
+            } else {
+                status.textContent = 'تعذر التشغيل: تحقق من الإنترنت واضغط اختبار الصوت للسماح بالتشغيل.';
+                console.warn('Adhan playback blocked: toutes les sources ont echoue');
+                const tb = document.getElementById('btn-test-adhan');
+                if (tb) tb.textContent = '▶ اختبار صوت الأذان';
+            }
         }
         adhanAudio.addEventListener('ended', () => { const tb = document.getElementById('btn-test-adhan'); if (tb) tb.textContent = '▶ اختبار صوت الأذان'; });
         adhanAudio.addEventListener('pause', () => { if (adhanAudio.currentTime === 0 || adhanAudio.ended) { const tb = document.getElementById('btn-test-adhan'); if (tb) tb.textContent = '▶ اختبار صوت الأذان'; } });
