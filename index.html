@@ -768,7 +768,27 @@
         .si-tarif{
             background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;
             padding:9px 7px;display:flex;flex-direction:column;gap:6px;text-align:center;min-width:0;
+            font-family:var(--font);color:var(--text-main);cursor:pointer;width:100%;
+            transition:transform .15s ease,border-color .15s ease,background .15s ease;
         }
+        .si-tarif:hover,.si-tarif.open{border-color:rgba(212,175,55,.55);background:rgba(212,175,55,.10);transform:translateY(-2px);}
+        .si-tarif-ico{font-size:1.4rem;line-height:1;filter:drop-shadow(0 2px 5px rgba(0,0,0,.45));}
+        .si-tarif-tip{display:none;}
+        /* tactile (Android) : l'explication s'affiche dans la tuile au clic */
+        @media (hover:none), (max-width:700px){
+            .si-tarif.open .si-tarif-tip{
+                display:block;margin-top:6px;padding:7px 9px;font-size:.7rem;line-height:1.75;
+                color:var(--text-dim);text-align:right;border-top:1px dashed rgba(212,175,55,.3);
+            }
+        }
+        .si-tipbox{
+            position:fixed;z-index:120000;max-width:min(320px,88vw);
+            background:rgba(9,16,36,.97);border:1px solid rgba(212,175,55,.55);border-radius:12px;
+            padding:10px 13px;color:var(--text-main);font-family:var(--font);font-size:.78rem;line-height:1.8;
+            text-align:right;pointer-events:none;box-shadow:0 12px 32px rgba(0,0,0,.55);
+            opacity:0;transition:opacity .14s ease;
+        }
+        .si-tipbox.on{opacity:1;}
         .si-tarif-nom{font-size:.72rem;color:var(--text-main);line-height:1.45;min-height:2.9em;display:flex;align-items:center;justify-content:center;overflow:hidden;}
         .si-tarif-prix{font-size:.92rem;font-weight:800;color:var(--gold);direction:ltr;white-space:nowrap;text-shadow:0 2px 8px rgba(212,175,55,.25);}
         /* ===== vue carte "Autour de moi" ===== */
@@ -5625,6 +5645,163 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             };
         }
 
+        // ===== TARIFS : icone + explication par analyse =====
+        // [regle, icone, explication] — la 1re regle qui correspond gagne
+        const SIHA_TARIF_RULES = [
+            [/western blot|elisa|immunoblot|immunohistochim|dosage immunologique/i, '🧫', 'اختبار مناعي (Western Blot / ELISA) — يأكد وجود مولد أو مضاد أجسام.'],
+            [/recherche (d.{0,3})?antig[èe]ne|antig[èe]ne/i, '🦠', 'البحث عن مستضد في الدم أو السوائل — كشف عدوى أو طفيلي.'],
+            [/confirmation par|confirmer|confirm/i, '🧬', 'اختبار تأكيد بعد نتيجة أولية موجبة.'],
+            [/cytologie|cytopatholog|anaplasie|histolog|cellulitee des/i, '🧪', 'تحليل الخلايا (Citologie) — فحص عينة تحت المجهر لكشف الخلايا الشاذة.'],
+            [/ectoparasite|gale|poux|acar/i, '🦠', 'البحث عن طفيليات خارجية (الجرب، القمل…) — فحص ميكروسكوبي.'],
+            [/c[ée]tost[ée]ro[ïi]de|st[ée]ro[ïi]de/i, '⚗️', 'هرمونات ستيرويدية (17-OH) — تقييم عمل الغدة الكظرية.'],
+            [/hydroxyindol|5hia|s[ée]rotonine|cat[ée]cholamin/i, '🧠', 'هرمون مرتبط بالجهاز العصبي — يُفحص غالباً عند الاشتباه في أورام عصبية.'],
+            [/sulfamidogram|sulfamide/i, '🧪', 'حساسية مضادات حيوية من نوع السلفاميد — لاختيار الدواء المناسب.'],
+            [/toxine|tox[èe]mie|pesticide/i, '🧪', 'فحص سموم — مخبري دقيق.'],
+            [/flore|vagin|leucorrh[ée]e|prélèvement/i, '🦠', 'فحص ميكروبيولوجي (flore) — كشف العدوى.'],
+            [/biopsie|ponction|aspiration/i, '🧪', 'تحليل عينة (biopsie) — فحص الأنسجة أو السائل.'],
+            [/h[ée]moglobine glyc|hba1c|glyc[ée]mie|h[ée]moglobine glyqu[ée]e/i, '🍬', 'قياس السكر في الدم — يُستعمل لتشخيص داء السكري ومتابعة العلاج.'],
+            [/^glyc[ée]mie|glucose|sucre (sanguin|de sang)|glycosurie|insuline|peptide c|proinsuline/i, '🍬', 'مستوى السكر (صائم أو غير صائم) — الكشف عن داء السكري ومتابعة علاجه.'],
+            [/cholest[ée]rol total/i, '🧪', 'الكوليسترول الكلي — تقييم خطر أمراض القلب والشرايين مع HDL و LDL.'],
+            [/\bhdl\b/i, '💚', 'الكوليسترول النافع (HDL) — كلما ارتفع قلّ خطر أمراض القلب.'],
+            [/\bldl\b/i, '❤️', 'الكوليسترول الضار (LDL) — ارتفاعه يزيد خطر تصلب الشرايين.'],
+            [/triglyc[ée]rid|acide gras|graisses totales/i, '🧪', 'الدهون الثلاثية — ارتفاعها يرتبط بمتلازمة الأيض والشرايين.'],
+            [/crp|prot[ée]ine c r[ée]active|procalcitonine/i, '🌡️', 'مؤشر الالتهاب — ارتفاعه يدل على عدوى أو التهاب نشط في الجسم.'],
+            [/vitesse de s[ée]dimentation|\bvsg\b|s[ée]dimentation/i, '🌡️', 'معدل ترسب كريات الدم — مؤشر التهاب غير نوعي، يُستعمل للمتابعة.'],
+            [/nfs|num[ée]ration formule|h[ée]mogramme|h[ée]matogramme|formule sanguine/i, '🩸', 'تحليل الدم الشامل (كريات حمراء وبيضاء وصفائح) — الفحص الأساسي لتقييم الحالة العامة.'],
+            [/h[ée]moglobine|h[ée]matocrite|\bhb\b|an[ée]mie/i, '🩸', 'الهيموغلوبين والهيماتوكريت — كشف فقر الدم (الأنيميا) ونقص الهيموغلوبين.'],
+            [/leucocyte|lymphocyte|monocyte|[ée]osinophile|basophile|neutrophile|globules blancs/i, '🩸', 'كريات الدم البيضاء — تقييم الالتهاب والمناعة.'],
+            [/plaquette|thrombocyte/i, '🩸', 'الصفائح الدموية — تقييم تخثر الدم والنزف.'],
+            [/ferritine/i, '🫀', 'مخزون الحديد في الجسم — يفرّق بين نقص الحديد والالتهاب المزمن.'],
+            [/fer s[ée]rique|transferrine|saturation|coefficient de saturation/i, '🩸', 'الحديد في الدم وقدرة نقله — تشخيص فقر الدم وأسبابه.'],
+            [/vitamine d\b|25-oh|25oh|cholecalciferol/i, '☀️', 'مستوى فيتامين د — مهم لصحة العظام والمناعة (التعرض للشمس مصدر رئيسي).'],
+            [/vitamine b12|cyanocobalamine/i, '🧠', 'فيتامين B12 — صحة الأعصاب والخلايا العصبية، ونقصه يسبب فقر دم.'],
+            [/acide folique|folates|folic/i, '🥬', 'حمض الفوليك — ضروري لتكوين خلايا الدم وصحة الجهاز العصبي.'],
+            [/\btsh\b|thyr[ée]otropine/i, '🦋', 'هرمون المنشط للدرقية (TSH) — الفحص الأول لتقييم الغدة الدرقية.'],
+            [/\bt3\b|\bt4\b|thyro[ïi]de|thyroxine|triiodothyronine/i, '🦋', 'هرمونات الغدة الدرقية (T3/T4) — تقييم نشاط الغدة (فرط أو نقص).'],
+            [/cortisol/i, '🧪', 'هرمون الكورتيزول — تقييم الغدة الكظرية والتوتر وأثر الكورتيزون.'],
+            [/prolactine/i, '🤱', 'البرولاكتين — هرمون الحليب، يُفحص عند اضطرابات الدورة والعقم.'],
+            [/testost[ée]rone/i, '🏋️', 'التستوستيرون — الهرمون الذكري وتقييم الخصوبة عند الرجال.'],
+            [/\bhcg\b|beta hcg|β-hcg|grossesse|hormone de la grossesse/i, '🤰', 'هرمون الحمل (β-HCG) — يأكد الحمل ويعطي تقدير العمر.'],
+            [/\bpsa\b|antig[èe]ne prostatique sp[ée]cifique/i, '🧠', 'مؤشر PSA — كشف تضخم البروستات أو التهابها عند الرجال.'],
+            [/cr[ée]atinine|cr[ée]atinin[ée]mie|creatinine/i, '🫘', 'الكرياتينين في الدم — المقياس الأساسي لوظيفة الكلى.'],
+            [/ur[ée]e sanguine|^\s*ur[ée]e\b|bun\b|uree/i, '🫘', 'اليوريا في الدم — تقييم عمل الكلى مع الكرياتينين.'],
+            [/d[ée]bit de filtration|\bdfg\b|filtration glom[ée]rulaire/i, '🫘', 'معدل الترشيح الكبيبي (DFG) — الأدق لتقييم مراحل ضعف الكلى.'],
+            [/acide urique/i, '🧪', 'حمض اليوريك — مرتبط بداء النقرس والحصوات الكلوية.'],
+            [/transaminase|\basat\b|\balt\b|\bgot\b|\bgpt\b/i, '🫁', 'إنزيمات الكبد (ASAT/ALAT) — كشف الالتهاب أو تلف خلايا الكبد.'],
+            [/gamma ?gt|\bggt\b|gammagt/i, '🫁', 'إنزيم غاماغت — علامة على انسداد القنوات المرارية أو الكحول أو الكبد.'],
+            [/bilirubine/i, '🫁', 'البيليروبين — يكشف اليرقان ويقيّم نشاط الكبد.'],
+            [/lipase/i, '🫁', 'إنزيم الليباز — تقييم التهاب البنكرياس.'],
+            [/amylase/i, '🫁', 'إنزيم الأميلاز — انتفاخ البنكرياس والقنوات اللعابية.'],
+            [/\bcpk\b|cr[ée]atine kinase|myoglobine|myoglobine/i, '💗', 'إنزيمات العضلات — كشف تلف العضلات أو إصابة القلب.'],
+            [/troponine/i, '💗', 'التروبونين — العلامة الحاسمة عند الشك في جلطة القلب.'],
+            [/\bbnp\b|nt-probnp/i, '💗', 'هرمون BNP — علامة على قصور القلب والالتهاب في البطين.'],
+            [/sodium|potassium|chlorure|\bcalcium\b|magn[ée]sium|phosphore/i, '⚡', 'أملاح الدم — توازن الأيونات الضروري لعمل القلب والعضلات والأعصاب.'],
+            [/albumine|prot[ée]ines totales|prot[ée]in[ée]mie/i, '🧪', 'بروتينات الدم — تقييم الحالة الغذائية ووظيفة الكبد.'],
+            [/fibrinog[èe]ne/i, '🧪', 'الفيبرينوجين — عامل أساسي في تخثر الدم.'],
+            [/d-?dim[èe]re|ddimer/i, '🧪', 'D-dimères — استبعاد الجلط الوريدي والتهاب الأوعية.'],
+            [/groupage|groupe sanguin|rh[ée]sus|rhesus/i, '🩸', 'تحديد فصيلة الدم وعامل Rh — أساسي قبل التبرع والنقل.'],
+            [/coombs/i, '🩸', 'اختبار كومبس — كشف فقر الدم المناعي.'],
+            [/hbsag|antig[èe]ne hbs|ag hbs|hbs ag/i, '🫁', 'مستضد التهاب الكبد B — الكشف عن الإصابة الحالية.'],
+            [/anti hbs|anticorps anti hbs|anti-hbs/i, '💉', 'أجسام مضادة لالتهاب الكبد B — تقييم مناعة التلقيح.'],
+            [/anti hbc|anti-hbc/i, '💉', 'أجسام مضادة لالتهاب الكبد B — تدل على تعرض سابق للفيروس.'],
+            [/h[ée]patite c|v[ée]mic |vbc|vih\b|hcv/i, '🫁', 'التهاب الكبد C — فحص الكشف أو تأكيد الإصابة (PCR).'],
+            [/h[ée]patite a|vha\b|hav\b|hepatite a/i, '🫁', 'التهاب الكبد A — عدوى تُنقل غالباً عبر الغذاء والماء.'],
+            [/\bhiv\b|sida|anti hiv|vih\b/i, '💉', 'اختبار فيروس نقص المناعة البشرية — فحص وقائي أو تأكيدي.'],
+            [/syphilis|vdrl|tpha/i, '💉', 'فحص السيphilis (الزهري) — فحص دم أو مسحة.'],
+            [/h\.? pylori|helicobacter/i, '🫁', 'الملوية البوابية — سبب شائع لقرحة والالتهاب المعدي.'],
+            [/widal|typho[ïi]de|f[èe]vre typho/i, '🦠', 'اختبار الحمى التيفية (Widal) — يشخّص التيفوئيد.'],
+            [/toxoplasm|toxoplasma/i, '🦠', 'داء الكوكس (Toxoplasmose) — مهم قبل الحمل وللمصابين بنقص المناعة.'],
+            [/rub[ée]ole|rubella/i, '🦠', 'الحمراء — فحص المناعة قبل الحمل.'],
+            [/\bcmv\b|cytomegal/i, '🦠', 'فيروس cytomegalovirus (CMV) — عدوى شائعة، مهمة للجنين والمناعة المنخفضة.'],
+            [/covid|sars-cov|grippe|h1n1|influenza/i, '🧬', 'كشف الفيروس (PCR) — SARS-CoV-2 أو الإنفلونزا حسب الطلب.'],
+            [/\bpcr\b|polymerase|amplification par/i, '🧬', 'تفاعل PCR — تكبير جزيء DNA للكشف عن الجراثيم أو الطفيليات.'],
+            [/salmonelle|salmonella|typhi\b/i, '🦠', 'بكتيريا السالمونيلا — الحمى التيفية وأمراض الأمعاء.'],
+            [/gonocoque|chlamydia|mycoplasme|urethre|uretrite/i, '🧫', 'جراثيم التناسلية — فحص مسحة أو بول للكشف عن العدوى.'],
+            [/[\s]ecbu|[\s]bu\b|analyse d.{0,3}urine|urine\b|urinaire|cystite|colibacille/i, '💧', 'تحليل بول ECBU — كشف التهابات المسالك البولية والبولين.'],
+            [/coprologie|parasitolog|selles|s[ée]diment/i, '🦠', 'تحليل براز (Coprologie) — كشف الطفيليات والديدان.'],
+            [/goutte [ée]paisse|paludisme|malaria/i, '🦠', 'Goutte épaisse — فحص الملاريا في الدم.'],
+            [/h[ée]moculture|culture\b/i, '🧫', 'زرع مخبري — تحديد البكتيريا المسببة للحمى أو العدوى.'],
+            [/antibiogramme|sensibilit[ée]/i, '🧫', 'اختبار حساسية المضادات الحيوية — تحديد المضاد الحيوي المناسب.'],
+            [/radio|radiograph|scanner|\birm\b|[ée]chographie|imagerie|densitom[ée]trie|mammograph/i, '🩻', 'فحص تصويري — بالأشعة أو الموجات (لا يحتاج مخبراً).'],
+            [/allerg|allerg[èe]ne|\bige\b/i, '🌾', 'فحص الحساسية — IgE الكلي أو تحاليل مواد محددة.'],
+            [/\bana\b|antinuclear|\banca\b|facteur rhumatismato[ïi]de|\baslo\b|auto-anticorps/i, '🧬', 'الأجسام المضادة الذاتية — علامات على الأمراض الروماتيزمية والمناعية.'],
+            [/spermatozo|sperme|fertility|fertilit[ée]/i, '🦠', 'تحليل السائل المنوي — تقييم القدرة على الإنجاب.'],
+            [/\bamh\b|r[ée]serve ovarienne/i, '🦋', 'هرمون AMH — تقييم مخزون المبيض والخصوبة.'],
+            [/[œo]estradiol|[œo]strog[èe]ne|progest[ée]rone/i, '🦋', 'هرمونات الأنوثة — متابعة دورة الحيض والخصوبة.'],
+            [/s[ée]rum|phosphate biliaire|cholest[ée]rique/i, '🧪', 'تحليل الدم (السيروم) — قيم المرجع خاصة بالمختبر ولكل حالة.'],
+            [/h[ée]moglobine glyqu[ée]e|nfs|fs/i, '🩸', 'تحليل الدم الأساسي — يُطلب مع باقي الفحوصات المخبرية.'],
+            [/médicaments?|dosage m[ée]dicament|methotrexate/i, '💊', 'قياس مستوى الدواء في الدم — ضبط الجرعة.'],
+            [/vitamines?/i, '☀️', 'فيتامينات — تقييم النقص (D، B12، C…).'],
+            [/toxines?|alcool|ethanol|cdt/i, '🧪', 'فحص سموم أو كحول — مخبري دقيق.'],
+            [/spermatozo/i, '🦠', 'تحليل خصوبة.'],
+            [/glyc[ée]mie.*h[ée]mo|glyco/i, '🍬', 'مؤشر السكر — متابعة داء السكري.'],
+            [/glyco prot[ée]in[ée]e|h[ée]moglobine glycat/i, '🍬', 'البروتين السكرية — متوسط مستوى السكر خلال 3 أشهر.'],
+            [/potassium|mg\b|calcium i/i, '⚡', 'أملاح الدم.'],
+            [/bilirubine.*direct|conjugu[ée]e/i, '🫁', 'البيليروبين المباشر — تمييز سبب اليرقان.'],
+            [/lipide|lipid[ée]mie|bilan lipidique/i, '🧪', 'الدهون الكلية — التقييم الشامل لمخاطر القلب والشرايين.'],
+            [/h[ée]patite|viral/i, '🫁', 'فحص فيروسات الكبد — حسب الطلب.'],
+            [/h[ée]moglobine|globule/i, '🩸', 'كريات الدم — الفحص المورفولوجي (شكل الخلايا) الأساسي.'],
+            [/probe|t[ée]st|gr[èe]pe|exam/i, '🧪', 'فحص مخبري حسب وصف الطبيب.']
+        ];
+        const SIHA_TARIF_CATS = [
+            [/ur[ée]e|ebu|urine|urinaire/i, '💧'],
+            [/\bpcr\b|adn|dna|viru|hiv|vhb|vbc|cmv|covid|grippe/i, '🧬'],
+            [/radio|scanner|irm|[ée]chograph|imagerie|densitom|mammograph/i, '🩻'],
+            [/h[ée]moculture|culture|antibiogramme|strepto|staphylo|gono|chlamy/i, '🧫'],
+            [/coprolog|parasitol|goutte [ée]paisse|paludisme|bilharz|ascaris|taenia/i, '🦠'],
+            [/\btsh\b|t3|t4|thyro|cortisol|prolactine|testost[ée]rone|hcg|\bpsa\b|amh|[œo]strog|progester/i, 'مؤشر PSA — كشف تضخم البروستات أو التهابها عند الرجال.'],
+            [/cr[ée]atinine|ur[ée]e|\bdfg\b|filtration|prot[ée]inurie|rein|n[ée]phro/i, '🫘'],
+            [/vitamine d|calcium|phosphore|densitom|os\b|osteo/i, '🦴'],
+            [/glyc|hba1c|glucose|diab|insuline/i, '🍬'],
+            [/crp|procalcitonine|vsg|s[ée]dimentation|inflamm/i, '🌡️'],
+            [/troponine|cpk|bnp|myoglobine|c[œ]ur|cœur/i, '💗'],
+            [/allerg|\bige\b/i, '🌾'],
+            [/grossesse|fc[ée]/i, '🤰'],
+            [/s[ée]rum|sang|prel[èe]vement/i, '💉'],
+            [/neuro|cerveau|psychiatr/i, '🧠'],
+            [/ophtalmo|oculus|yeux|retine/i, '👁️']
+        ];
+        function sihaTarifMeta(nom) {
+            const n = String(nom || '');
+            for (let i = 0; i < SIHA_TARIF_RULES.length; i++) {
+                if (SIHA_TARIF_RULES[i][0].test(n)) return { ico: SIHA_TARIF_RULES[i][1], exp: SIHA_TARIF_RULES[i][2] };
+            }
+            for (let i = 0; i < SIHA_TARIF_CATS.length; i++) {
+                if (SIHA_TARIF_CATS[i][0].test(n)) {
+                    return { ico: SIHA_TARIF_CATS[i][1], exp: 'تحليل «' + n + '» — فحص مخبري ضمن الفحوصات الأساسية، تُفسّر قيمه حسب ملفك الطبيYLE.' };
+                }
+            }
+            return { ico: '🧪', exp: 'تحليل «' + n + '» — فحص مخبري ضمن الفحوصات الأساسية. اسأل طبيبك عن دلالته والقيم المرجعية.' };
+        }
+        // bulle d'explication flottante (desktop)
+        let sihaTipBox = null;
+        function sihaEnsureTip() {
+            if (sihaTipBox) return sihaTipBox;
+            sihaTipBox = document.createElement('div');
+            sihaTipBox.className = 'si-tipbox';
+            sihaTipBox.setAttribute('role', 'tooltip');
+            document.body.appendChild(sihaTipBox);
+            return sihaTipBox;
+        }
+        function sihaShowTip(el) {
+            const box = sihaEnsureTip();
+            const txt = el.getAttribute('data-exp');
+            if (!txt) return;
+            box.textContent = txt;
+            box.classList.add('on');
+            box.style.display = 'block';
+            const r = el.getBoundingClientRect();
+            const bw = box.offsetWidth, bh = box.offsetHeight;
+            let left = r.left + r.width / 2 - bw / 2;
+            left = Math.max(8, Math.min(left, window.innerWidth - bw - 8));
+            let top = r.top - bh - 10;
+            if (top < 8) top = Math.min(r.bottom + 10, window.innerHeight - bh - 8);
+            box.style.left = left + 'px';
+            box.style.top = top + 'px';
+        }
+        function sihaHideTip() { if (sihaTipBox) { sihaTipBox.classList.remove('on'); sihaTipBox.style.display = 'none'; } }
+        const sihaCanHover = (typeof window.matchMedia === 'function') ? window.matchMedia('(hover: hover)').matches : true;
+
         function sihaRenderList() {
             const sec = SIHA_SECTIONS[sihaState.section] || SIHA_SECTIONS_EXTRA[sihaState.section]; if (!sec) return;
             const list = document.getElementById('sihatar-list');
@@ -5658,7 +5835,13 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 let g = '<div class="sihatar-tarifs">';
                 items.slice(0, limit).forEach(it => {
                     const px = it.prix || (it.min != null ? it.min + ' – ' + it.max + ' DH' : '');
-                    g += '<div class="si-tarif"><span class="si-tarif-nom">' + sihaEscape(it.nom) + '</span><span class="si-tarif-prix">' + sihaEscape(px) + '</span></div>';
+                    const meta = sihaTarifMeta(it.nom || '');
+                    g += '<button type="button" class="si-tarif" data-exp="' + sihaEscape(meta.exp) + '" aria-expanded="false">'
+                       + '<span class="si-tarif-ico" aria-hidden="true">' + meta.ico + '</span>'
+                       + '<span class="si-tarif-nom">' + sihaEscape(it.nom) + '</span>'
+                       + '<span class="si-tarif-prix">' + sihaEscape(px) + '</span>'
+                       + '<span class="si-tarif-tip">' + sihaEscape(meta.exp) + '</span>'
+                       + '</button>';
                 });
                 g += '</div>';
                 if (items.length > limit) g += '<div class="sihatar-empty">… ' + (items.length - limit) + ' analyse(s) de plus (utilisez la recherche)</div>';
@@ -5970,6 +6153,43 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         document.getElementById('sihatar-search').addEventListener('input', function () {
             sihaState.query = this.value; sihaRenderList();
         });
+        // Tarifs : survol (Windows) ou clic (Android) -> explication de l'analyse
+        (function initTarifTips() {
+            const box = document.getElementById('sihatar-list');
+            if (!box) return;
+            const closeAll = () => {
+                box.querySelectorAll('.si-tarif.open').forEach(x => { x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); });
+            };
+            box.addEventListener('mouseover', function (e) {
+                const t = e.target.closest ? e.target.closest('.si-tarif') : null;
+                if (!t || !sihaCanHover) return;
+                if (t.classList.contains('open')) return;
+                sihaShowTip(t);
+            });
+            box.addEventListener('mouseout', function (e) {
+                const t = e.target.closest ? e.target.closest('.si-tarif') : null;
+                if (!t) return;
+                if (e.relatedTarget && t.contains(e.relatedTarget)) return;
+                if (t.classList.contains('open')) return;
+                sihaHideTip();
+            });
+            box.addEventListener('click', function (e) {
+                const t = e.target.closest ? e.target.closest('.si-tarif') : null;
+                if (!t) return;
+                const wasOpen = t.classList.contains('open');
+                closeAll();
+                if (wasOpen) { sihaHideTip(); return; }
+                t.classList.add('open');
+                t.setAttribute('aria-expanded', 'true');
+                if (sihaCanHover) sihaShowTip(t);
+            });
+            const wrap = document.querySelector('.sihatar-wrap');
+            if (wrap) wrap.addEventListener('scroll', () => { sihaHideTip(); closeAll(); }, { passive: true });
+            document.addEventListener('click', function (e) {
+                if (e.target.closest && e.target.closest('.si-tarif')) return;
+                closeAll(); sihaHideTip();
+            });
+        })();
         // actualiser toute la base de donnees صحتي
         document.getElementById('btn-sihatar-refresh').onclick = async function () {
             const btn = this;
