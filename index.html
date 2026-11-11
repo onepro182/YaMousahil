@@ -1923,7 +1923,7 @@
         Object.entries(CITIES_DB).forEach(([id,city]) => city.timeZone = CITY_TIMEZONES[id] || 'Africa/Casablanca');
 
         function locationTimeZone(cityId=settings.cityId) { return (CITIES_DB[cityId] && CITIES_DB[cityId].timeZone) || 'Africa/Casablanca'; }
-        function locationDate() { const parts = new Intl.DateTimeFormat('en-CA', {timeZone:locationTimeZone(),year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()); const part = type => Number(parts.find(p => p.type === type).value); return new Date(part('year'), part('month')-1, part('day')); }
+        function locationDate() { const parts = new Intl.DateTimeFormat('en-CA', {timeZone:'UTC',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(moroccoNow(new Date())); const part = type => Number(parts.find(p => p.type === type).value); return new Date(part('year'), part('month')-1, part('day')); }
         
         if (!CITIES_DB[settings.cityId]) settings.cityId = 'oujda';
         settings.countryId = CITIES_DB[settings.cityId].countryId;
@@ -2011,13 +2011,13 @@
 
         let clockTzPreview = null;   // fuseau en cours de previsualisation dans les reglages
         function formatSystemTime(date) {
-            // 'auto' => heure locale reelle du Maroc (Africa/Casablanca : GMT+1, et GMT+0 pendant le Ramadan)
+            // 'auto' => heure officielle du Maroc (UTC+1, et GMT+0 pendant le Ramadan)
             const tz = effectiveClockTz();
             const auto = (tz === 'auto' || tz === undefined);
             let h, m;
             if (auto) {
-                const parts = new Intl.DateTimeFormat('en-US', { timeZone: locationTimeZone(), hour:'2-digit', minute:'2-digit', hourCycle:'h23' }).formatToParts(date);
-                h = Number(parts.find(p => p.type === 'hour').value); m = Number(parts.find(p => p.type === 'minute').value);
+                const p = moroccoParts(date);
+                h = p.hour % 24; m = p.minute;
             } else {
                 const offset = Number(tz) || 0;
                 const utcMs = date.getTime() + (date.getTimezoneOffset() * 60000);
@@ -2037,6 +2037,34 @@
                 return Math.round((asUTC - Math.floor(date.getTime() / 1000) * 1000) / 60000);
             } catch (e) { return 0; }
         }
+        // ===== Regle officielle du Maroc =====
+        // UTC+1 en permanence, sauf pendant le Ramadan ou l'heure officielle est reculee a UTC+0
+        // (du dernier dimanche de fevrier au dernier dimanche de mars).
+        // Necessaire car la base de fuseaux de certains navigateurs est ancienne et ignore
+        // la regle marocaine en vigueur depuis 2018 (elle affichait GMT au lieu de GMT+1).
+        function moroccoOffsetMinutes(date) {
+            const y = date.getFullYear();
+            const day = new Date(Date.UTC(y, date.getMonth(), date.getDate()));
+            const lastSunday = (m) => { const d = new Date(Date.UTC(y, m + 1, 0)); while (d.getUTCDay() !== 0) d.setUTCDate(d.getUTCDate() - 1); return d; };
+            const start = lastSunday(1);   // dernier dimanche de fevrier : passage a GMT+0
+            const end = lastSunday(2);     // dernier dimanche de mars   : retour a GMT+1
+            if (day >= start && day < end) return 0;
+            return 60;
+        }
+        // instant "maintenant" vu au Maroc (UTC + decalage marocain), independant de la base tz
+        function moroccoNow(date) {
+            const off = moroccoOffsetMinutes(date);
+            const utcMs = date.getTime() + (date.getTimezoneOffset() * 60000);
+            return new Date(utcMs + off * 60000);
+        }
+        // heure + jour au Maroc
+        function moroccoParts(date) {
+            const mn = moroccoNow(date);
+            const dtf = new Intl.DateTimeFormat('en-US', { timeZone:'UTC', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hourCycle:'h23' });
+            const p = {};
+            dtf.formatToParts(mn).forEach(x => { if (x.type !== 'literal') p[x.type] = Number(x.value); });
+            return p;
+        }
         // fuseau affiche : 'auto' => decalage reel du Maroc, sinon le GMT choisi par l'utilisateur
         function effectiveClockTz() {
             if (clockTzPreview !== null && clockTzPreview !== undefined) return clockTzPreview;
@@ -2045,7 +2073,7 @@
         function displayGmtOffset(date) {
             const tz = effectiveClockTz();
             const auto = (tz === 'auto' || tz === undefined);
-            if (auto) return Math.round(tzOffsetMinutes(date, locationTimeZone()) / 60);
+            if (auto) return Math.round(moroccoOffsetMinutes(date) / 60);
             return Number(tz) || 0;
         }
         // heure + libelle pour un fuseau donne (auto ou GMT fixe)
@@ -2053,9 +2081,9 @@
             const auto = (tzValue === 'auto' || tzValue === undefined || tzValue === '');
             let h, m, off;
             if (auto) {
-                const parts = new Intl.DateTimeFormat('en-US', { timeZone: locationTimeZone(), hour:'2-digit', minute:'2-digit', hourCycle:'h23' }).formatToParts(date);
-                h = Number(parts.find(p => p.type === 'hour').value); m = Number(parts.find(p => p.type === 'minute').value);
-                off = Math.round(tzOffsetMinutes(date, locationTimeZone()) / 60);
+                const p = moroccoParts(date);
+                h = p.hour % 24; m = p.minute;
+                off = Math.round(moroccoOffsetMinutes(date) / 60);
             } else {
                 const o = parseInt(tzValue, 10) || 0;
                 const utcMs = date.getTime() + (date.getTimezoneOffset() * 60000);
@@ -2096,7 +2124,7 @@
             document.getElementById('home-next-prayer-name').textContent = PRAYER_NAMES[nextPrayerKey];
             const _fnp = document.getElementById('fav-next-prayer-name'); if (_fnp) _fnp.textContent = PRAYER_NAMES[nextPrayerKey];
             const now = new Date(); const city = CITIES_DB[settings.cityId];
-            const hijri = now.toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { timeZone:locationTimeZone(), day:'numeric', month:'long', year:'numeric' });
+            const hijri = moroccoNow(now).toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { timeZone:'UTC', day:'numeric', month:'long', year:'numeric' });
             document.getElementById('prayers-date').textContent = `${hijri}`; document.getElementById('hijri-date').textContent = `${hijri}`;
             const listContainer = document.getElementById('detailed-prayer-list'); listContainer.innerHTML = '';
             PRAYER_ORDER.forEach(key => {
@@ -2126,7 +2154,7 @@
                 gmtEl.textContent = 'GMT' + (off === 0 ? '' : (off > 0 ? '+' + off : String(off)));
             }
             updateGmtHint();
-            const greg = now.toLocaleDateString('ar-EG-u-nu-latn-ca-gregory', { timeZone:locationTimeZone(), weekday:'long', day:'numeric', month:'long', year:'numeric' });
+            const greg = moroccoNow(now).toLocaleDateString('ar-EG-u-nu-latn-ca-gregory', { timeZone:'UTC', weekday:'long', day:'numeric', month:'long', year:'numeric' });
             document.getElementById('gregorian-date').textContent = greg;
 
             let tempNextKey = null;
