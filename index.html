@@ -805,6 +805,8 @@
         .sihatar-seg button.on{background:rgba(212,175,55,.24);color:var(--gold-light);font-weight:700;}
         .sihatar-map{height:280px;border-radius:14px;overflow:hidden;border:1px solid var(--glass-border);z-index:1;}
         .sihatar-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.72rem;color:var(--text-dim);direction:ltr;justify-content:center;}
+        .sihatar-mapnote{font-size:.76rem;color:var(--text-dim);text-align:center;min-height:1.1em;line-height:1.7;}
+        .sihatar-mapnote b{color:var(--gold-light);}
         .sihatar-legend span{display:inline-flex;align-items:center;gap:5px;}
         .lg{width:11px;height:11px;border-radius:50%;display:inline-block;border:1.5px solid #fff;}
         .lg-garde{background:#d4af37;}
@@ -1730,6 +1732,7 @@
                             <span><i class="lg lg-autre"></i>Autres pharmacies</span>
                             <span><i class="lg lg-moi"></i>Moi</span>
                         </div>
+                        <div class="sihatar-mapnote" id="sihatar-mapnote"></div>
                         <div class="sihatar-list" id="sihatar-maplist"></div>
                     </div>
 
@@ -5573,18 +5576,42 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             }
             return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(dest) + '&travelmode=driving';
         }
+        // format distance identique a la source : <1 km -> X m, sinon x,x km (virgule)
+        function sihaKmLabel(km) {
+            return km < 1 ? Math.round(km * 1000) + ' م' : km.toFixed(1).replace('.', ',') + ' كم';
+        }
+        // temps de marche (80 m/min) comme la source, pour < 3 km
+        function sihaWalkLabel(km) {
+            return km < 3 ? ' · ' + Math.max(1, Math.round(km * 1000 / 80)) + ' دقيقة مشيا' : '';
+        }
+        // tri identique a la source : de garde d'abord, puis par distance
+        function sihaSortNear(items) {
+            items.sort(function (a, b) {
+                const ga = a._garde ? 0 : 1, gb = b._garde ? 0 : 1;
+                if (ga !== gb) return ga - gb;
+                return (a.distance != null ? a.distance : 1e9) - (b.distance != null ? b.distance : 1e9);
+            });
+            return items;
+        }
         function sihaRenderMap() {
             if (!sihaMap) return;
             sihaMarkers.forEach(m => { try { sihaMap.removeLayer(m); } catch (e) {} }); sihaMarkers = [];
             let items = sihaMapItems.slice();
             if (sihaMapMode === 'garde') items = items.filter(x => x._garde);
-            if (sihaMapMode === 'proches' && sihaMapPos) items = items.filter(x => x.distance != null);
+            if (sihaMapMode === 'proches') items = items.filter(x => x.distance != null);
+            if (sihaMapPos) {
+                // source : /api/pharmacies/near -> limit 30, tri garde puis distance
+                items = sihaSortNear(items).slice(0, 30);
+            }
             const list = document.getElementById('sihatar-maplist');
+            const note = document.getElementById('sihatar-mapnote');
             const q = (document.getElementById('sihatar-map-q').value || '').trim().toLowerCase();
             if (q) items = items.filter(x => ((x.nom || '') + ' ' + (x.adresse || '')).toLowerCase().indexOf(q) !== -1);
             const bounds = [];
+            let onMap = 0;
             items.forEach(it => {
                 if (it.lat == null || it.lon == null) return;
+                onMap++;
                 const icon = L.divIcon({ className: 'sihatar-pin', html: it._garde ? SIHA_PIN.garde : SIHA_PIN.autre, iconSize: [26, 32], iconAnchor: [13, 32] });
                 const mk = L.marker([it.lat, it.lon], { icon: icon }).addTo(sihaMap);
                 const tel = it.tel ? '<br><a href="tel:' + sihaTelHref(it.tel) + '">' + sihaEscape(it.tel) + '</a>' : '';
@@ -5600,6 +5627,18 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             if (bounds.length) {
                 try { sihaMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 }); } catch (e) {}
             }
+            // barre de comptage + note "sans emplacement exact" (comme la source)
+            if (note) {
+                const sansGps = items.filter(x => x.lat == null).length;
+                let n = '';
+                if (sihaMapPos) {
+                    n = '<b>' + items.length + ' قريبة</b>';
+                    if (sansGps) n += ' · ' + sansGps + ' صيدلية بدون موقع دقيق: في القائمة، ليست على الخريطة';
+                } else if (items.length) {
+                    n = items.length + ' صيدلية';
+                }
+                note.innerHTML = n;
+            }
             // liste
             let html = '';
             items.slice(0, 200).forEach(it => {
@@ -5608,7 +5647,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 html += '<span class="si-ico">' + (it._garde ? '💊' : '🏪') + '</span>';
                 html += '<span class="si-body"><span class="si-name">' + sihaEscape(it.nom) + '</span>';
                 if (it.adresse) html += '<span class="si-addr">' + sihaEscape(it.adresse) + '</span>';
-                if (it.distance != null) html += '<span class="si-tags"><span class="si-tag garde">' + (it.distance < 1 ? Math.round(it.distance * 1000) + ' م' : it.distance.toFixed(1) + ' كم') + '</span></span>';
+                if (it.distance != null) html += '<span class="si-tags"><span class="si-tag garde">' + sihaKmLabel(it.distance) + sihaWalkLabel(it.distance) + '</span></span>';
                 if (it._garde) html += '<span class="si-tags"><span class="si-tag garde">صيدلية حراسة</span>';
                 if (it.heures && it.heures.length) html += '<span class="si-tag">' + sihaEscape(sihaHeuresLabel(it.heures)) + '</span>';
                 html += '</span></span>';
@@ -5617,7 +5656,22 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 html += '<a class="sihatar-act map" href="' + sihaRouteUrl(it) + '" target="_blank" rel="noopener">🧭 itineraire</a>';
                 html += '</span></div>';
             });
-            list.innerHTML = items.length ? html : '<div class="sihatar-empty">لا توجد صيدليات مطابقة.</div>';
+            list.innerHTML = items.length ? html : '<div class="sihatar-empty">' + (sihaMapPos ? 'لا توجد صيدلية قريبة.' : 'لا توجد صيدليات مطابقة.') + '</div>';
+        }
+        // applique une position connue : distances, tri garde puis km, filtre القريبة
+        function sihaApplyPos(lat, lon) {
+            sihaMapPos = { lat: lat, lon: lon };
+            sihaMapItems.forEach(function (it) {
+                if (it.lat != null && it.lon != null) it.distance = sihaDistance(lat, lon, it.lat, it.lon);
+            });
+            if (sihaMap) { try { sihaMap.setView([lat, lon], 13); } catch (e) {} }
+            const cta = document.querySelector('#sihatar-mapview .sihatar-cta');
+            if (cta) cta.style.display = 'none';
+            const gpsBtn = document.getElementById('btn-sihatar-gps');
+            if (gpsBtn) gpsBtn.classList.add('on');
+            sihaMapMode = 'proches';
+            document.querySelectorAll('#sihatar-seg button').forEach(b => b.classList.toggle('on', b.getAttribute('data-m') === 'proches'));
+            sihaRenderMap();
         }
         async function sihaOpenMapView() {
             document.getElementById('sihatar-menus').style.display = 'none';
@@ -5625,6 +5679,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.getElementById('sihatar-mapview').style.display = 'flex';
             const list = document.getElementById('sihatar-maplist');
             list.innerHTML = '<div class="sihatar-loading">⏳ جارٍ التحميل...</div>';
+            const cta = document.querySelector('#sihatar-mapview .sihatar-cta');
+            if (cta) cta.style.display = '';
             sihaInitMap();
             setTimeout(() => { try { if (sihaMap) sihaMap.invalidateSize(); } catch (e) {} }, 260);
             const data = await sihaLoad('pharmacies/' + sihaState.ville + '.json');
@@ -5632,30 +5688,42 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const items = (data.garde || []).map(x => Object.assign({ _garde: true }, x))
                 .concat((data.autres || []).map(x => Object.assign({ _garde: false }, x)));
             sihaMapItems = items;
-            sihaMapMode = 'all';
-            document.querySelectorAll('#sihatar-seg button').forEach(b => b.classList.toggle('on', b.getAttribute('data-m') === 'all'));
-            sihaRenderMap();
-            sihaToast('📍 اضغط « Autour de moi » لتحديد موقعك', 'load');
+            // source : position en cache (< 6 h) => « autour de moi » immediatement
+            let cached = null;
+            try {
+                const c = JSON.parse(localStorage.getItem('siha-pos') || 'null');
+                if (c && c.lat != null && Date.now() - c.t < 6 * 36e5) cached = c;
+            } catch (e) {}
+            if (cached) {
+                sihaApplyPos(cached.lat, cached.lon);
+                sihaToast('📍 الصيدليات القريبة منك', 'ok');
+            } else {
+                sihaMapMode = 'all';
+                sihaMapPos = null;
+                document.querySelectorAll('#sihatar-seg button').forEach(b => b.classList.toggle('on', b.getAttribute('data-m') === 'all'));
+                sihaRenderMap();
+                sihaToast('📍 اضغط « Autour de moi » لتحديد موقعك', 'load');
+            }
         }
-        // active le GPS et centre la carte sur l'utilisateur
+        // active le GPS — messages et reglages identiques a la source
         function sihaLocateMe() {
-            if (!navigator.geolocation) { sihaToast('⚠️ تحديد الموقع غير متاح', 'ko'); return; }
+            if (!navigator.geolocation) {
+                sihaToast('⚠️ فعّل الموقع لرؤية الصيدليات القريبة منك، أو ابحث بالمدينة أو الاسم.', 'ko');
+                return;
+            }
             const btn = document.getElementById('btn-sihatar-gps');
             btn.classList.add('on');
-            sihaToast('📍 جارٍ تحديد موقعك...', 'load');
+            sihaToast('📍 جارٍ تحديد موقعك… يُستعمل موقعك فقط للبحث حولك ولا يتم تسجيله.', 'load');
             navigator.geolocation.getCurrentPosition(function (p) {
-                sihaMapPos = { lat: p.coords.latitude, lon: p.coords.longitude };
-                sihaMapItems.forEach(function (it) {
-                    if (it.lat != null && it.lon != null) it.distance = sihaDistance(sihaMapPos.lat, sihaMapPos.lon, it.lat, it.lon);
-                });
-                sihaMapItems.sort(function (a, b) { return (a.distance != null ? a.distance : 1e9) - (b.distance != null ? b.distance : 1e9); });
-                if (sihaMap) { try { sihaMap.setView([sihaMapPos.lat, sihaMapPos.lon], 14); } catch (e) {} }
-                sihaRenderMap();
-                sihaToast('✓ تم تحديد موقعك — pharmacies les plus proches', 'ok');
+                btn.classList.remove('on');
+                const pos = { lat: p.coords.latitude, lon: p.coords.longitude, t: Date.now() };
+                try { localStorage.setItem('siha-pos', JSON.stringify(pos)); } catch (e) {}
+                sihaApplyPos(pos.lat, pos.lon);
+                sihaToast('✓ تم تحديد موقعك — الصيدليات القريبة منك', 'ok');
             }, function () {
                 btn.classList.remove('on');
-                sihaToast('⚠️ تعذّر تحديد الموقع', 'ko');
-            }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 120000 });
+                sihaToast('⚠️ تم رفض الموقع: ابحث بالمدينة أو الاسم.', 'ko');
+            }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 6 * 36e5 });
         }
 
         // pharmacie de garde la plus proche de ma position
