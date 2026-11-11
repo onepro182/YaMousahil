@@ -792,6 +792,24 @@
             display:flex;align-items:center;justify-content:center;
         }
         .sihatar-gps.on{background:var(--gold);color:#0b132b;}
+        /* plein ecran de la carte (mobile) */
+        .sihatar-fs{
+            width:38px;height:38px;flex:none;border-radius:11px;cursor:pointer;font-size:1.05rem;line-height:1;
+            background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.4);color:var(--gold);
+            display:flex;align-items:center;justify-content:center;
+        }
+        @media (min-width:701px){ .sihatar-fs{display:none;} }
+        .sihatar-map.mapfs{
+            position:fixed;inset:0;width:100%;height:100%;z-index:99998;border-radius:0;border:none;
+        }
+        .sihatar-fs-exit{
+            position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:100000;
+            display:none;align-items:center;gap:6px;padding:9px 16px;border-radius:22px;cursor:pointer;
+            background:rgba(11,19,43,.88);border:1px solid rgba(212,175,55,.55);color:var(--gold);
+            font-family:var(--font);font-weight:700;font-size:.85rem;
+            box-shadow:0 6px 22px rgba(0,0,0,.5);
+        }
+        .sihatar-fs-exit.on{display:flex;}
         .sihatar-seg{display:flex;gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--glass-border);width:fit-content;}
         .sihatar-seg button{
             padding:8px 16px;background:rgba(255,255,255,.04);border:none;color:var(--text-main);
@@ -1719,6 +1737,7 @@
                         </div>
                         <div class="sihatar-mapbar glass-btn">
                             <input type="search" id="sihatar-map-q" placeholder="🔍 Ville ou nom de pharmacie" autocomplete="off">
+                            <button type="button" class="sihatar-fs" id="btn-sihatar-fs" title="ملء الشاشة" aria-label="عرض الخريطة بملء الشاشة">⛶</button>
                             <button type="button" class="sihatar-gps" id="btn-sihatar-gps" title="Autour de moi" aria-label="Autour de moi">📍</button>
                         </div>
                         <div class="sihatar-seg" id="sihatar-seg">
@@ -1727,6 +1746,7 @@
                             <button type="button" data-m="proches">القريبة</button>
                         </div>
                         <div class="sihatar-map" id="sihatar-map"></div>
+                        <button type="button" class="sihatar-fs-exit" id="sihatar-fs-exit" aria-label="إغلاق ملء الشاشة">✕ إغلاق ملء الشاشة</button>
                         <div class="sihatar-legend">
                             <span><i class="lg lg-garde"></i>De garde aujourd'hui</span>
                             <span><i class="lg lg-autre"></i>Autres pharmacies</span>
@@ -5440,6 +5460,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.getElementById('sihatar-menus').style.display = 'none';
             const cta = document.getElementById('sihatar-cta');
             if (cta) cta.style.display = 'none';
+            sihaMapFs(false);
             document.getElementById('sihatar-panel').style.display = 'flex';
             document.getElementById('sihatar-mapview').style.display = 'none';
             document.getElementById('sihatar-panel-title').textContent = sec.ar + ' — ' + sec.fr;
@@ -5675,6 +5696,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             sihaRenderMap();
         }
         async function sihaOpenMapView() {
+            sihaMapFs(false);
             document.getElementById('sihatar-menus').style.display = 'none';
             const cta = document.getElementById('sihatar-cta');
             if (cta) cta.style.display = 'none';
@@ -5726,6 +5748,16 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 sihaToast('⚠️ تم رفض الموقع: ابحث بالمدينة أو الاسم.', 'ko');
             }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 6 * 36e5 });
         }
+        // plein ecran de la carte (mobile) : bascule et fermeture
+        function sihaMapFs(on) {
+            const map = document.getElementById('sihatar-map');
+            if (!map) return;
+            const active = (on === undefined) ? !map.classList.contains('mapfs') : !!on;
+            map.classList.toggle('mapfs', active);
+            const ex = document.getElementById('sihatar-fs-exit');
+            if (ex) ex.classList.toggle('on', active);
+            setTimeout(() => { try { if (sihaMap) sihaMap.invalidateSize(); } catch (e) {} }, 130);
+        }
 
         // pharmacie de garde la plus proche de ma position
         async function sihaNearby() {
@@ -5768,6 +5800,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.getElementById('sihatar-menus').style.display = 'grid';
             const cta0 = document.getElementById('sihatar-cta');
             if (cta0) cta0.style.display = '';
+            sihaMapFs(false);
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'none';
             sihaLoadCounts();
@@ -5776,6 +5809,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         document.getElementById('btn-back-from-sihatar').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         document.getElementById('btn-sihatar-back').onclick = () => {
             sihaState.section = null;
+            sihaMapFs(false);
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-menus').style.display = 'grid';
             document.getElementById('sihatar-chips').style.display = 'none';
@@ -5797,6 +5831,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             } catch (e) {}
             if (!cached) sihaLocateMe();
         };
+        document.getElementById('btn-sihatar-fs').onclick = () => { sihaMapFs(); };
+        document.getElementById('sihatar-fs-exit').onclick = () => { sihaMapFs(false); };
         document.getElementById('btn-sihatar-gps').onclick = () => { sihaLocateMe(); };
         document.getElementById('sihatar-map-q').addEventListener('input', function () { sihaRenderMap(); });
         document.querySelectorAll('#sihatar-seg button').forEach(b => {
@@ -5841,6 +5877,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             b.onclick = () => sihaOpenSection(sec);
         });
         document.getElementById('btn-sihatar-nearback').onclick = () => {
+            sihaMapFs(false);
             document.getElementById('sihatar-mapview').style.display = 'none';
             document.getElementById('sihatar-menus').style.display = 'grid';
             const cta = document.getElementById('sihatar-cta');
