@@ -882,6 +882,10 @@
             width:36px;height:36px;flex:none;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;
             background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);
         }
+        /* icone 3D (SVG) dans les menus et les listes */
+        .sihatar-ico3d{width:34px;height:34px;display:block;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
+        .sihatar-item .si-ico .sihatar-ico3d{width:28px;height:28px;}
+        .sihatar-mico .sihatar-ico3d{width:36px;height:36px;}
         .sihatar-item .si-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
         .sihatar-item .si-name{font-weight:700;color:var(--text-main);font-size:.95rem;line-height:1.5;}
         .sihatar-item .si-addr{font-size:.78rem;color:var(--text-dim);line-height:1.6;direction:ltr;text-align:right;}
@@ -1767,7 +1771,9 @@
                             <span class="sihatar-mcount" data-count="laboratoires">—</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="medecins">
-                            <span class="sihatar-mico">🩺</span>
+                            <span class="sihatar-mico">
+                                <svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="Médecins"><use href="#siha-ico-medecin"/></svg>
+                            </span>
                             <span class="sihatar-mtxt"><b>الأطباء</b><i>Médecins</i></span>
                             <span class="sihatar-mcount" data-count="medecins">—</span>
                         </button>
@@ -5460,7 +5466,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             garde:       { ar:'صيدليات الحراسة', fr:'Pharmacies de garde', ico:'💊', kind:'pharmacies', file:'pharmacies' },
             cliniques:   { ar:'العيادات',         fr:'Cliniques',            ico:'🏥', kind:'cliniques',   file:'cliniques' },
             laboratoires:{ ar:'مختبرات التحاليل',fr:'Laboratoires',         ico:'🔬', kind:'laboratoires',file:'laboratoires' },
-            medecins:    { ar:'الأطباء',          fr:'Médecins',             ico:'🩺', kind:'medecins',    file:'medecins' },
+            medecins:    { ar:'الأطباء',          fr:'Médecins',             ico:'🩺', kind:'medecins',    file:'medecins',
+                           svg:'<svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="Médecins"><use href="#siha-ico-medecin"/></svg>' },
             tarifs:      { ar:'أسعار التحاليل',   fr:'Tarifs des analyses',  ico:'💰', kind:'tarifs',      file:'tarifs' }
         };
         const SIHA_CITY_FALLBACK = [
@@ -5768,7 +5775,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             }
             for (let i = 0; i < SIHA_TARIF_CATS.length; i++) {
                 if (SIHA_TARIF_CATS[i][0].test(n)) {
-                    return { ico: SIHA_TARIF_CATS[i][1], exp: 'تحليل «' + n + '» — فحص مخبري ضمن الفحوصات الأساسية، تُفسّر قيمه حسب ملفك الطبيYLE.' };
+                    return { ico: SIHA_TARIF_CATS[i][1], exp: 'تحليل «' + n + '» — فحص مخبري ضمن الفحوصات الأساسية، تُفسّر قيمه حسب ملفك الطبي.' };
                 }
             }
             return { ico: '🧪', exp: 'تحليل «' + n + '» — فحص مخبري ضمن الفحوصات الأساسية. اسأل طبيبك عن دلالته والقيم المرجعية.' };
@@ -5853,7 +5860,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 const tel = it.tel || '';
                 const th = sihaTelHref(tel);
                 html += '<div class="sihatar-item">';
-                html += '<span class="si-ico">' + sec.ico + '</span>';
+                html += '<span class="si-ico">' + (sec.svg || sihaEscape(sec.ico)) + '</span>';
                 html += '<span class="si-body">';
                 html += '<span class="si-name">' + sihaEscape(it.nom) + '</span>';
                 if (it.specialite) html += '<span class="si-tags"><span class="si-tag">' + sihaEscape(it.specialite) + '</span></span>';
@@ -6229,5 +6236,33 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         };
     });
     </script>
+
+    <!-- sprite SVG partage : icone 3D "medecine" (stethoscope) -->
+    <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="sihaMedBg" x1="0" y1="0" x2="0.35" y2="1">
+                <stop offset="0" stop-color="#2fc2a0"/><stop offset="0.5" stop-color="#0e7460"/><stop offset="1" stop-color="#053028"/>
+            </linearGradient>
+            <linearGradient id="sihaMedGold" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/>
+            </linearGradient>
+            <linearGradient id="sihaMedWhite" x1="0.15" y1="0" x2="0.7" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#eef8f5"/><stop offset="1" stop-color="#b3d6cc"/>
+            </linearGradient>
+            <symbol id="siha-ico-medecin" viewBox="0 0 64 64">
+                <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#sihaMedBg)"/>
+                <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                <ellipse cx="32" cy="54" rx="16" ry="3.4" fill="#000" opacity=".22"/>
+                <path d="M19 15 v11 a11 11 0 0 0 22 0 V15" fill="none" stroke="url(#sihaMedGold)" stroke-width="3.4" stroke-linecap="round"/>
+                <circle cx="19" cy="13" r="3.2" fill="url(#sihaMedWhite)"/>
+                <circle cx="41" cy="13" r="3.2" fill="url(#sihaMedWhite)"/>
+                <path d="M30 37 v5 a7 7 0 0 0 13 2.5" fill="none" stroke="url(#sihaMedGold)" stroke-width="3.2" stroke-linecap="round"/>
+                <circle cx="43" cy="45" r="7.2" fill="url(#sihaMedWhite)"/>
+                <circle cx="43" cy="45" r="4.4" fill="url(#sihaMedBg)"/>
+                <rect x="41.2" y="39.6" width="3.6" height="10.8" rx="1.4" fill="url(#sihaMedGold)"/>
+                <rect x="37.6" y="43.2" width="10.8" height="3.6" rx="1.4" fill="url(#sihaMedGold)"/>
+            </symbol>
+        </defs>
+    </svg>
 </body>
 </html>

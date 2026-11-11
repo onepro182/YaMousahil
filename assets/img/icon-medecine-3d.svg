@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 64 64">
+    <defs>
+        <linearGradient id="sihaMedBg" x1="0" y1="0" x2="0.35" y2="1">
+            <stop offset="0" stop-color="#2fc2a0"/><stop offset="0.5" stop-color="#0e7460"/><stop offset="1" stop-color="#053028"/>
+        </linearGradient>
+        <linearGradient id="sihaMedGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/>
+        </linearGradient>
+        <linearGradient id="sihaMedWhite" x1="0.15" y1="0" x2="0.7" y2="1">
+            <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#eef8f5"/><stop offset="1" stop-color="#b3d6cc"/>
+        </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#sihaMedBg)"/>
+    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+    <ellipse cx="32" cy="54" rx="16" ry="3.4" fill="#000" opacity=".22"/>
+    <path d="M19 15 v11 a11 11 0 0 0 22 0 V15" fill="none" stroke="url(#sihaMedGold)" stroke-width="3.4" stroke-linecap="round"/>
+    <circle cx="19" cy="13" r="3.2" fill="url(#sihaMedWhite)"/>
+    <circle cx="41" cy="13" r="3.2" fill="url(#sihaMedWhite)"/>
+    <path d="M30 37 v5 a7 7 0 0 0 13 2.5" fill="none" stroke="url(#sihaMedGold)" stroke-width="3.2" stroke-linecap="round"/>
+    <circle cx="43" cy="45" r="7.2" fill="url(#sihaMedWhite)"/>
+    <circle cx="43" cy="45" r="4.4" fill="url(#sihaMedBg)"/>
+    <rect x="41.2" y="39.6" width="3.6" height="10.8" rx="1.4" fill="url(#sihaMedGold)"/>
+    <rect x="37.6" y="43.2" width="10.8" height="3.6" rx="1.4" fill="url(#sihaMedGold)"/>
+</svg>
