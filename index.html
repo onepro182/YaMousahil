@@ -98,6 +98,15 @@
         body.is-mobile .home-action-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;grid-auto-rows:68px;}
         body.is-mobile .home-action-row .app-icon{width:24px;height:24px;}
         body.is-mobile .home-action-row .app-name{font-size:.68rem;}
+        /* ===== ligne المفضلة : boutons a la taille EXACTE des boutons du bas (Meteo) ===== */
+        .fav-grid{grid-auto-rows:minmax(72px,auto);}
+        .fav-grid .app-card{height:100%;min-height:72px;padding:8px 6px;gap:4px;justify-content:center;align-items:center;border-radius:12px;}
+        .fav-grid .app-icon{width:28px;height:28px;object-fit:contain;}
+        .fav-grid .app-name{font-size:.72rem;line-height:1.25;text-align:center;word-break:break-word;}
+        @media (max-width:700px){ .fav-grid .app-card{min-height:68px;} }
+        @media (max-width:480px){ .fav-grid{grid-auto-rows:minmax(68px,auto);} }
+        body.is-mobile .fav-grid .app-icon{width:24px;height:24px;}
+        body.is-mobile .fav-grid .app-name{font-size:.68rem;}
         
         .app-card { border-radius:10px; padding:18px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; }
         #card-surah-kahf{}
