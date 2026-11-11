@@ -67,9 +67,15 @@ DETAIL_CITIES = [
     ("nador", "الناظور"),
 ]
 
+# Les medecins exigent 1 requete par specialite : on limite les villes
+# detaillees pour rester sous la limite de debit du site.
+DOCTOR_CITIES = [
+    ("oujda", "وجدة"), ("casablanca", "الدار البيضاء"), ("rabat", "الرباط"), ("fes", "فاس"),
+]
+
 _cache = {}
 _disk_cache = os.path.join(ROOT, ".cache", "siha")
-_MIN_INTERVAL = 4.5           # ~13 requetes/min : rythme accepte par le site (429 au-dela)
+_MIN_INTERVAL = 12.0          # ~5 requetes/min : rythme accepte par sihamaroc (429 au-dela)
 _last_request = [0.0]
 _rate_lock = threading.Lock()
 
@@ -481,7 +487,8 @@ def main():
         # les villes prioritaires : le site limite fortement le debit (HTTP 429).
         detail = True
         if kind in ("cliniques", "laboratoires", "medecins"):
-            detail = (slug, ar) in DETAIL_CITIES
+            ref = DOCTOR_CITIES if kind == "medecins" else DETAIL_CITIES
+            detail = (slug, ar) in ref
         try:
             data = fn(slug, ar, detail) if kind in ("cliniques", "laboratoires", "medecins") else fn(slug, ar)
         except Exception as e:  # noqa
