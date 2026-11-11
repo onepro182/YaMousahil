@@ -5595,6 +5595,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 const mi = L.divIcon({ className: 'sihatar-pin', html: SIHA_PIN.moi, iconSize: [26, 32], iconAnchor: [13, 32] });
                 if (sihaMeMarker) { try { sihaMap.removeLayer(sihaMeMarker); } catch (e) {} }
                 sihaMeMarker = L.marker([sihaMapPos.lat, sihaMapPos.lon], { icon: mi }).addTo(sihaMap);
+                bounds.push([sihaMapPos.lat, sihaMapPos.lon]);
             }
             if (bounds.length) {
                 try { sihaMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 }); } catch (e) {}
@@ -5625,6 +5626,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const list = document.getElementById('sihatar-maplist');
             list.innerHTML = '<div class="sihatar-loading">⏳ جارٍ التحميل...</div>';
             sihaInitMap();
+            setTimeout(() => { try { if (sihaMap) sihaMap.invalidateSize(); } catch (e) {} }, 260);
             const data = await sihaLoad('pharmacies/' + sihaState.ville + '.json');
             if (!data) { list.innerHTML = '<div class="sihatar-empty">لا توجد بيانات متاحة لهذه المدينة.</div>'; return; }
             const items = (data.garde || []).map(x => Object.assign({ _garde: true }, x))
