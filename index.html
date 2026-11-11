@@ -773,16 +773,34 @@
         .si-tarif-prix{font-size:.92rem;font-weight:800;color:var(--gold);direction:ltr;white-space:nowrap;text-shadow:0 2px 8px rgba(212,175,55,.25);}
         /* ===== vue carte "Autour de moi" ===== */
         .sihatar-mapview{display:flex;flex-direction:column;gap:11px;}
-        .sihatar-cta{padding:14px 16px;border-radius:16px;border:1px solid rgba(212,175,55,.35);}
-        .sihatar-cta strong{display:block;color:var(--gold);font-size:1rem;margin-bottom:5px;}
-        .sihatar-cta p{margin:0 0 11px;color:var(--text-dim);font-size:.84rem;line-height:1.75;direction:ltr;text-align:left;}
-        .sihatar-cta-btn{
-            display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:22px;cursor:pointer;
-            background:linear-gradient(135deg,#ffeeb0,#d4af37);color:#0b132b;border:none;
-            font-family:var(--font);font-weight:800;font-size:.85rem;
-            box-shadow:0 6px 18px rgba(212,175,55,.28);transition:transform .15s ease;
+        .sihatar-cta{
+            display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:18px;
+            border:1px solid rgba(212,175,55,.38);
+            background:linear-gradient(120deg,rgba(212,175,55,.16),rgba(60,107,99,.10));
         }
-        .sihatar-cta-btn:hover{transform:translateY(-1px);}
+        .sihatar-cta-ico{
+            width:52px;height:52px;flex:none;display:flex;align-items:center;justify-content:center;
+            background:linear-gradient(160deg,rgba(212,175,55,.26),rgba(212,175,55,.06));
+            border:1px solid rgba(212,175,55,.42);border-radius:15px;
+            filter:drop-shadow(0 3px 8px rgba(212,175,55,.28));
+        }
+        .sihatar-cta-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+        .sihatar-cta-body b{color:var(--gold-light);font-size:1rem;font-weight:700;}
+        .sihatar-cta-body strong{color:var(--gold);font-size:.86rem;font-weight:700;direction:ltr;text-align:right;}
+        .sihatar-cta-body p{margin:0;color:var(--text-dim);font-size:.8rem;line-height:1.7;direction:ltr;text-align:left;}
+        .sihatar-cta-btn{
+            display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:none;
+            padding:11px 20px;border-radius:24px;cursor:pointer;
+            background:linear-gradient(135deg,#ffeeb0,#d4af37);color:#0b132b;border:none;
+            font-family:var(--font);font-weight:800;font-size:.85rem;white-space:nowrap;
+            box-shadow:0 6px 18px rgba(212,175,55,.3);transition:transform .15s ease,box-shadow .15s ease;
+        }
+        .sihatar-cta-btn:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(212,175,55,.4);}
+        .sihatar-cta-btn:active{transform:translateY(0);}
+        @media (max-width:700px){
+            .sihatar-cta{flex-wrap:wrap;}
+            .sihatar-cta .sihatar-cta-btn{width:100%;}
+        }
         .sihatar-mapbar{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:14px;}
         .sihatar-mapbar input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--text-main);font-family:var(--font);font-size:.92rem;}
         .sihatar-mapbar input::placeholder{color:var(--text-dim);}
@@ -1697,11 +1715,6 @@
                             <span class="sihatar-mtxt"><b>صيدليات الحراسة</b><i>Pharmacies de garde</i></span>
                             <span class="sihatar-mcount" data-count="garde">—</span>
                         </button>
-                        <button type="button" class="sihatar-menu glass-btn" id="btn-sihatar-near">
-                            <span class="sihatar-mico">📍</span>
-                            <span class="sihatar-mtxt"><b>القريبة مني</b><i>Autour de moi</i></span>
-                            <span class="sihatar-mcount">📍</span>
-                        </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="cliniques">
                             <span class="sihatar-mico">🏥</span>
                             <span class="sihatar-mtxt"><b>العيادات</b><i>Cliniques</i></span>
@@ -1725,8 +1738,22 @@
                     </div>
 
                     <div class="sihatar-cta glass-btn" id="sihatar-cta">
-                        <strong>Pharmacie de garde ?</strong>
-                        <p>Trouvez les pharmacies autour de vous, avec téléphone et itinéraire.</p>
+                        <span class="sihatar-cta-ico" aria-hidden="true">
+                            <svg width="30" height="36" viewBox="0 0 38 46">
+                                <defs>
+                                    <linearGradient id="sihaCtaPin" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M19 2C10 2 3 9 3 18c0 12 16 26 16 26s16-14 16-26C35 9 28 2 19 2Z" fill="url(#sihaCtaPin)" stroke="#0b132b" stroke-width="2.5"/>
+                                <circle cx="19" cy="18" r="6" fill="#0b132b" opacity=".8"/>
+                            </svg>
+                        </span>
+                        <span class="sihatar-cta-body">
+                            <b>صيدليات الحراسة حولك</b>
+                            <strong>Pharmacie de garde ?</strong>
+                            <p>Trouvez les pharmacies autour de vous, avec téléphone et itinéraire.</p>
+                        </span>
                         <button type="button" class="sihatar-cta-btn" id="btn-sihatar-around">📍 Autour de moi</button>
                     </div>
 
@@ -5820,7 +5847,6 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             if (box) { box.disabled = false; box.value = ''; }
             sihaState.query = '';
         };
-        document.getElementById('btn-sihatar-near').onclick = () => { sihaOpenMapView(); };
         document.getElementById('btn-sihatar-around').onclick = () => {
             // comme la source : ouvre la vue carte et lance la geolocalisation
             sihaOpenMapView();
