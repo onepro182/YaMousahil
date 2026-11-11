@@ -766,16 +766,6 @@
         }
         .si-tarif-nom{font-size:.72rem;color:var(--text-main);line-height:1.45;min-height:2.9em;display:flex;align-items:center;justify-content:center;overflow:hidden;}
         .si-tarif-prix{font-size:.92rem;font-weight:800;color:var(--gold);direction:ltr;white-space:nowrap;text-shadow:0 2px 8px rgba(212,175,55,.25);}
-        /* bouton Proches */
-        .sihatar-near{
-            display:flex;align-items:center;gap:12px;text-align:right;padding:13px 14px;border-radius:16px;cursor:pointer;
-            font-family:var(--font);color:var(--text-main);width:100%;
-            background:linear-gradient(120deg,rgba(212,175,55,.18),rgba(212,175,55,.05));
-            border:1px solid rgba(212,175,55,.4);
-            transition:transform .15s ease,box-shadow .15s ease;
-        }
-        .sihatar-near:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.35);}
-        .sihatar-near .sihatar-mtxt b{font-size:.95rem;color:var(--gold-light);}
         /* ===== vue carte "Autour de moi" ===== */
         .sihatar-mapview{display:flex;flex-direction:column;gap:11px;}
         .sihatar-cta{padding:14px 16px;border-radius:16px;border:1px solid rgba(212,175,55,.35);}
@@ -856,7 +846,7 @@
         .sihatar-loading{padding:26px 14px;text-align:center;color:var(--gold);font-size:.9rem;}
         /* separateur + mention legale */
         .sihatar-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45),transparent);margin:6px 2px 2px;border-radius:1px;}
-        .sihatar-legal{font-size:.74rem;color:var(--text-dim);text-align:center;line-height:1.8;margin:0;padding:0 8px;direction:ltr;}
+        .sihatar-legal{font-size:.76rem;color:var(--text-dim);text-align:center;line-height:1.9;margin:0;padding:0 8px;direction:rtl;}
         /* bouton actualiser */
         .sihatar-refresh{
             width:38px;height:38px;flex:none;margin-right:auto;border-radius:12px;cursor:pointer;
@@ -1684,6 +1674,11 @@
                             <span class="sihatar-mtxt"><b>صيدليات الحراسة</b><i>Pharmacies de garde</i></span>
                             <span class="sihatar-mcount" data-count="garde">—</span>
                         </button>
+                        <button type="button" class="sihatar-menu glass-btn" id="btn-sihatar-near">
+                            <span class="sihatar-mico">📍</span>
+                            <span class="sihatar-mtxt"><b>القريبة مني</b><i>Autour de moi</i></span>
+                            <span class="sihatar-mcount">📍</span>
+                        </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="cliniques">
                             <span class="sihatar-mico">🏥</span>
                             <span class="sihatar-mtxt"><b>العيادات</b><i>Cliniques</i></span>
@@ -1706,12 +1701,11 @@
                         </button>
                     </div>
 
-                    <button type="button" class="sihatar-near glass-btn" id="btn-sihatar-near">
-                        <span class="sihatar-mico">📍</span>
-                        <span class="sihatar-mtxt"><b>القريبة مني</b><i>Autour de moi — Pharmacies de garde</i></span>
-                    </button>
-
                     <div class="sihatar-mapview" id="sihatar-mapview" style="display:none;">
+                        <div class="sihatar-panel-head">
+                            <button type="button" class="back-btn glass-btn" id="btn-sihatar-nearback">‹ القائمة</button>
+                            <h2>القريبة مني — Pharmacies de garde</h2>
+                        </div>
                         <div class="sihatar-cta glass-btn">
                             <strong>Pharmacie de garde ?</strong>
                             <p>Trouvez les pharmacies autour de vous, avec téléphone et itinéraire.</p>
@@ -1736,11 +1730,6 @@
                         <div class="sihatar-list" id="sihatar-maplist"></div>
                     </div>
 
-                    <div class="sihatar-sep"></div>
-                    <p class="sihatar-legal">Ce site est un service indépendant et ne remplace ni un médecin ni un pharmacien.</p>
-                </div>
-                <div class="sihatar-toast" id="sihatar-toast"></div>
-            </div>
                     <div class="sihatar-panel" id="sihatar-panel" style="display:none;">
                         <div class="sihatar-panel-head">
                             <button type="button" class="back-btn glass-btn" id="btn-sihatar-back">‹ القائمة</button>
@@ -1755,7 +1744,11 @@
                         </div>
                         <div class="sihatar-list" id="sihatar-list"></div>
                     </div>
+
+                    <div class="sihatar-sep"></div>
+                    <p class="sihatar-legal">هذا الموقع هو خدمة مستقلة ولا يحل محل طبيب أو صيدلية.<br>البيانات تتغير حسب المدينة والتاريخ؛ يرجى الاتصال بالمؤسسة قبل التنقل. الأسعار إرشادية وقد تختلف حسب المختبر.</p>
                 </div>
+                <div class="sihatar-toast" id="sihatar-toast"></div>
             </div>
 
             <!-- LIVE SCREEN -->
@@ -5822,8 +5815,14 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             btn.classList.remove('spinning');
         };
         document.querySelectorAll('#sihatar-menus .sihatar-menu').forEach(b => {
-            b.onclick = () => sihaOpenSection(b.getAttribute('data-sec'));
+            const sec = b.getAttribute('data-sec');
+            if (!sec) return;
+            b.onclick = () => sihaOpenSection(sec);
         });
+        document.getElementById('btn-sihatar-nearback').onclick = () => {
+            document.getElementById('sihatar-mapview').style.display = 'none';
+            document.getElementById('sihatar-menus').style.display = 'grid';
+        };
     });
     </script>
 </body>
