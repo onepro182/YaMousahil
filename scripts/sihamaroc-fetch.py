@@ -62,20 +62,18 @@ CITIES = [
 # : le site limite le debit, on priorise les grandes villes.
 DETAIL_CITIES = [
     ("oujda", "وجدة"), ("casablanca", "الدار البيضاء"), ("rabat", "الرباط"),
-    ("fes", "فاس"), ("marrakech", "مراكش"), ("tanger", "طنجة"),
-    ("kenitra", "القنيطرة"), ("agadir", "أكادير"), ("meknes", "مكناس"),
-    ("nador", "الناظور"),
+    ("fes", "فاس"), ("marrakech", "مراكش"),
 ]
 
 # Les medecins exigent 1 requete par specialite : on limite les villes
 # detaillees pour rester sous la limite de debit du site.
 DOCTOR_CITIES = [
-    ("oujda", "وجدة"), ("casablanca", "الدار البيضاء"), ("rabat", "الرباط"), ("fes", "فاس"),
+    ("oujda", "وجدة"), ("rabat", "الرباط"),
 ]
 
 _cache = {}
 _disk_cache = os.path.join(ROOT, ".cache", "siha")
-_MIN_INTERVAL = 12.0          # ~5 requetes/min : rythme accepte par sihamaroc (429 au-dela)
+_MIN_INTERVAL = 18.0          # ~3 requetes/min : rythme accepte par sihamaroc (429 en dessous)
 _last_request = [0.0]
 _rate_lock = threading.Lock()
 
