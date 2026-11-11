@@ -791,8 +791,8 @@
         }
         .sihatar-act.map{background:rgba(255,255,255,.06);border-color:var(--glass-border);color:var(--text-main);}
         .sihatar-empty{padding:26px 14px;text-align:center;color:var(--text-dim);font-size:.9rem;line-height:1.9;}
+        .sihatar-empty a{color:var(--gold);text-decoration:underline;}
         .sihatar-loading{padding:26px 14px;text-align:center;color:var(--gold);font-size:.9rem;}
-        .sihatar-src{font-size:.7rem;color:var(--text-dim);text-align:center;margin:4px 0 0;line-height:1.8;}
         @media (max-width:560px){
             .sihatar-wrap{padding:12px 10px 34px;}
             .sihatar-menus{grid-template-columns:1fr 1fr;gap:10px;}
@@ -1631,7 +1631,6 @@
                         </div>
                         <div class="sihatar-chips" id="sihatar-chips"></div>
                         <div class="sihatar-list" id="sihatar-list"></div>
-                        <p class="sihatar-src" id="sihatar-src"></p>
                     </div>
                 </div>
             </div>
@@ -5317,7 +5316,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 document.getElementById('sihatar-list').innerHTML =
                     '<div class="sihatar-empty">⏳ البيانات لهذه المدينة قيد التحديث.<br>' +
                     'تُحدَّث قوائم <b style="color:var(--gold);">صحتي</b> يومياً — يمكنك فتح المصدر مباشرة في هذه الأثناء.<br>' +
-                    '<a class="sihatar-act" style="margin-top:12px;display:inline-flex;" target="_blank" rel="noopener" href="' + sihaSourceUrl(sec.kind, sihaState.ville) + '">🔗 عرض في sihamaroc.com</a></div>';
+                    '<a href="' + sihaSourceUrl(sec.kind, sihaState.ville) + '" target="_blank" rel="noopener">sihamaroc.com</a></div>';
                 return;
             }
             if (sec.kind === 'medecins' && data.specialites && data.specialites.length) sihaRenderChips(data.specialites);
@@ -5365,10 +5364,9 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 });
             }
             if (!items.length) {
-                const srcLink = '<a class="sihatar-act" style="margin-top:12px;display:inline-flex;" target="_blank" rel="noopener" href="' + sihaSourceUrl(sec.kind, sihaState.ville) + '">🔗 عرض في sihamaroc.com</a>';
                 list.innerHTML = '<div class="sihatar-empty">' +
                     (q ? '🔍 لا توجد نتائج لـ «' + sihaEscape(sihaState.query) + '»' : 'لا توجد عناصر متاحة لهذه المدينة.') +
-                    '<br>' + srcLink + '</div>';
+                    '</div>';
                 return;
             }
             const limit = 300;
@@ -5400,8 +5398,6 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             });
             if (items.length > limit) html += '<div class="sihatar-empty">… ' + (items.length - limit) + ' نتيجة أخرى (استعمل البحث)</div>';
             list.innerHTML = html;
-            const src = document.getElementById('sihatar-src');
-            if (src) src.innerHTML = 'المصدر: <a href="https://sihamaroc.com" target="_blank" rel="noopener" style="color:var(--gold);">sihamaroc.com</a> · ' + (data.villeAr || 'المغرب');
         }
 
         // ---------- branchement ----------
