@@ -68,12 +68,12 @@ DETAIL_CITIES = [
 # Les medecins exigent 1 requete par specialite : on limite les villes
 # detaillees pour rester sous la limite de debit du site.
 DOCTOR_CITIES = [
-    ("oujda", "وجدة"), ("rabat", "الرباط"),
+    ("oujda", "وجدة"),
 ]
 
 _cache = {}
 _disk_cache = os.path.join(ROOT, ".cache", "siha")
-_MIN_INTERVAL = 18.0          # ~3 requetes/min : rythme accepte par sihamaroc (429 en dessous)
+_MIN_INTERVAL = 25.0          # ~2.4 requetes/min : rythme accepte par sihamaroc (429 en dessous)
 _last_request = [0.0]
 _rate_lock = threading.Lock()
 
@@ -121,9 +121,8 @@ def fetch(url, tries=4):
     for attempt in range(tries):
         try:
             req = urllib.request.Request(url, headers={
-                "User-Agent": UA,
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "fr-FR,fr;q=0.9",
+                "User-Agent": "Mozilla/5.0",
+                "Accept": "text/html",
             })
             ctx = _CTX_RELAXED if _ssl_mode["relaxed"] else _CTX_VERIFIED
             _throttle()

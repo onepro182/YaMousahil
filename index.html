@@ -773,6 +773,10 @@
         .sihatar-item .si-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
         .sihatar-item .si-name{font-weight:700;color:var(--text-main);font-size:.95rem;line-height:1.5;}
         .sihatar-item .si-addr{font-size:.78rem;color:var(--text-dim);line-height:1.6;direction:ltr;text-align:right;}
+        .sihatar-item .si-price{
+            font-size:1.25rem;font-weight:800;color:var(--gold);line-height:1.4;direction:ltr;text-align:right;
+            text-shadow:0 2px 8px rgba(212,175,55,.28);margin-top:2px;
+        }
         .sihatar-item .si-tags{display:flex;flex-wrap:wrap;gap:6px;}
         .sihatar-item .si-tag{
             font-size:.68rem;padding:2px 9px;border-radius:11px;background:rgba(212,175,55,.14);
@@ -5225,6 +5229,15 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             }
             return nom && nom.url ? nom.url : '';
         }
+        // page source sihamaroc correspondant a la section + la ville
+        function sihaSourceUrl(kind, ville) {
+            const v = ville || sihaState.ville;
+            if (kind === 'pharmacies') return 'https://sihamaroc.com/pharmacies/' + v;
+            if (kind === 'cliniques') return 'https://sihamaroc.com/cliniques/' + v;
+            if (kind === 'laboratoires') return 'https://sihamaroc.com/laboratoires-analyses/' + v;
+            if (kind === 'medecins') return 'https://sihamaroc.com/medecins/' + v;
+            return 'https://sihamaroc.com/tarifs-analyses';
+        }
         // traduction du libelle de garde (source en francais)
         function sihaGardeLabel(g) {
             if (!g) return '';
@@ -5302,7 +5315,9 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             if (upd && data && data.updated) upd.textContent = 'آخر تحديث: ' + data.updated.replace('T', ' ').replace('Z', ' UTC');
             if (!data) {
                 document.getElementById('sihatar-list').innerHTML =
-                    '<div class="sihatar-empty">⚠️ لا تتوفر بيانات لهذه المدينة حالياً.<br>جرّب مدينة أخرى أو أعد المحاولة لاحقاً.</div>';
+                    '<div class="sihatar-empty">⏳ البيانات لهذه المدينة قيد التحديث.<br>' +
+                    'تُحدَّث قوائم <b style="color:var(--gold);">صحتي</b> يومياً — يمكنك فتح المصدر مباشرة في هذه الأثناء.<br>' +
+                    '<a class="sihatar-act" style="margin-top:12px;display:inline-flex;" target="_blank" rel="noopener" href="' + sihaSourceUrl(sec.kind, sihaState.ville) + '">🔗 عرض في sihamaroc.com</a></div>';
                 return;
             }
             if (sec.kind === 'medecins' && data.specialites && data.specialites.length) sihaRenderChips(data.specialites);
@@ -5350,7 +5365,10 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 });
             }
             if (!items.length) {
-                list.innerHTML = '<div class="sihatar-empty">' + (q ? '🔍 لا توجد نتائج لـ «' + sihaEscape(sihaState.query) + '»' : 'لا توجد عناصر متاحة لهذه المدينة.') + '</div>';
+                const srcLink = '<a class="sihatar-act" style="margin-top:12px;display:inline-flex;" target="_blank" rel="noopener" href="' + sihaSourceUrl(sec.kind, sihaState.ville) + '">🔗 عرض في sihamaroc.com</a>';
+                list.innerHTML = '<div class="sihatar-empty">' +
+                    (q ? '🔍 لا توجد نتائج لـ «' + sihaEscape(sihaState.query) + '»' : 'لا توجد عناصر متاحة لهذه المدينة.') +
+                    '<br>' + srcLink + '</div>';
                 return;
             }
             const limit = 300;
@@ -5363,7 +5381,10 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 html += '<span class="si-body">';
                 html += '<span class="si-name">' + sihaEscape(it.nom) + '</span>';
                 if (it.specialite) html += '<span class="si-tags"><span class="si-tag">' + sihaEscape(it.specialite) + '</span></span>';
-                if (it.adresse) html += '<span class="si-addr">' + sihaEscape(it.adresse) + '</span>';
+                if (sec.kind === 'tarifs') {
+                    const px = it.prix || (it.min != null ? it.min + ' – ' + it.max + ' DH' : '');
+                    html += '<span class="si-price">' + sihaEscape(px) + '</span>';
+                } else if (it.adresse) html += '<span class="si-addr">' + sihaEscape(it.adresse) + '</span>';
                 if (sec.kind === 'pharmacies') {
                     html += '<span class="si-tags"><span class="si-tag garde">صيدلية حراسة</span>';
                     if (it.garde) html += '<span class="si-tag">' + sihaEscape(sihaGardeLabel(it.garde)) + '</span>';
@@ -5371,14 +5392,10 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                     if (hl) html += '<span class="si-tag">' + sihaEscape(hl) + '</span>';
                     html += '</span>';
                 }
-                if (sec.kind === 'tarifs') {
-                    html += '<span class="si-tags"><span class="si-tag">' + sihaEscape(it.prix || (it.min != null ? it.min + ' – ' + it.max + ' DH' : '')) + '</span></span>';
-                }
                 html += '</span>';
                 html += '<span class="si-actions">';
                 if (th) html += '<a class="sihatar-act" href="' + th + '">📞 اتصال</a>';
                 if (it.lat != null && it.lon != null) html += '<a class="sihatar-act map" href="' + sihaMapUrl(it.lat, it.lon) + '" target="_blank" rel="noopener">🗺️ موقع</a>';
-                else if (it.url) html += '<a class="sihatar-act map" href="' + it.url + '" target="_blank" rel="noopener">🔗 المصدر</a>';
                 html += '</span></div>';
             });
             if (items.length > limit) html += '<div class="sihatar-empty">… ' + (items.length - limit) + ' نتيجة أخرى (استعمل البحث)</div>';
