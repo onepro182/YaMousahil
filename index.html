@@ -5182,7 +5182,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             ['essaouira','الصويرة'],['ouarzazate','ورزازات'],['taourirt','تاوريرت'],
             ['khemisset','الخميسات'],['berrechid','برشيد'],['temara','تمارة'],['ait-melloul','آيت ملول']
         ];
-        const sihaState = { ville:'oujda', section:null, data:null, query:'', filtre:'', cache:{} };
+        const sihaState = { ville:'oujda', section:null, data:null, query:'', filtre:'', filtreNom:'', cache:{} };
 
         function sihaStamp() { return String(Math.floor(Date.now()/3600000)); }
 
@@ -5321,9 +5321,9 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         function sihaRenderChips(specs) {
             const box = document.getElementById('sihatar-chips');
             if (!box) return;
-            let html = '<button type="button" class="sihatar-chip active" data-spec="">الكل (' + (sihaState.data.items || []).length + ')</button>';
+            let html = '<button type="button" class="sihatar-chip active" data-spec="" data-nom="">الكل (' + (sihaState.data.items || []).length + ')</button>';
             specs.forEach(s => {
-                html += '<button type="button" class="sihatar-chip" data-spec="' + sihaEscape(s.slug) + '">' + sihaEscape(s.nom) + ' (' + s.nb + ')</button>';
+                html += '<button type="button" class="sihatar-chip" data-spec="' + sihaEscape(s.slug) + '" data-nom="' + sihaEscape(s.nom) + '">' + sihaEscape(s.nom) + ' (' + s.nb + ')</button>';
             });
             box.innerHTML = html;
             box.querySelectorAll('.sihatar-chip').forEach(c => {
@@ -5331,6 +5331,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                     box.querySelectorAll('.sihatar-chip').forEach(x => x.classList.remove('active'));
                     this.classList.add('active');
                     sihaState.filtre = this.getAttribute('data-spec') || '';
+                    sihaState.filtreNom = this.getAttribute('data-nom') || '';
                     sihaRenderList();
                 };
             });
@@ -5345,9 +5346,9 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             else if (sec.kind === 'tarifs') items = data.items || [];
             else items = data.items || [];
 
-            // filtre specialite (medecins)
+            // filtre specialite (medecins) : par slug, ou par nom pour les listes echantillon
             if (sec.kind === 'medecins' && sihaState.filtre) {
-                items = items.filter(x => x.specSlug === sihaState.filtre);
+                items = items.filter(x => x.specSlug === sihaState.filtre || x.specialite === sihaState.filtreNom);
             }
             // recherche
             const q = (sihaState.query || '').trim().toLowerCase();
