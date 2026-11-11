@@ -249,31 +249,29 @@ def fetch_pharmacies(slug, ar_name):
                 garde.append(it)
         elif "autres pharmacies" in low:
             autres = parse_pharmacies_html("<ul>" + body + "</ul>")
-    # JSON-LD : horaires + coordonnees precises des pharmacies de garde
+    # JSON-LD : horaires + coordonnees precises (correspondance par slug : robuste)
     geo = {}
     for obj in ld_json(html):
         if obj.get("@type") == "ItemList":
             for entry in obj.get("itemListElement", []):
                 it = entry.get("item", {})
                 g = it.get("geo") or {}
-                key = clean(it.get("name"))
+                url = it.get("url", "")
+                slug = url.rsplit("/", 1)[-1] if url else ""
                 hours = it.get("specialOpeningHoursSpecification") or []
-                if g.get("latitude") is not None:
-                    geo[key] = {
+                if g.get("latitude") is not None and slug:
+                    geo[slug] = {
                         "lat": g.get("latitude"),
                         "lon": g.get("longitude"),
-                        "url": it.get("url", ""),
+                        "url": url,
                         "heures": [("%s-%s" % (h.get("opens", ""), h.get("closes", ""))) for h in hours],
                     }
-    for it in garde:
-        g = geo.get(it["nom"])
+    for it in garde + autres:
+        g = geo.get(it["slug"])
         if g:
             it["lat"], it["lon"], it["url"] = g["lat"], g["lon"], g["url"]
-            it["heures"] = g["heures"]
-    for it in autres:
-        g = geo.get(it["nom"])
-        if g and "url" not in it:
-            it["url"] = g["url"]
+            if g["heures"]:
+                it["heures"] = g["heures"]
     return {"updated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "ville": slug, "villeAr": ar_name,
             "garde": garde, "autres": autres}
