@@ -760,6 +760,11 @@
         .sihatar-chips select{flex:1;min-width:160px;}
         /* grille des tarifs : 6 analyses par ligne */
         .sihatar-tarifs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;}
+        /* cliniques : 3 par colonne sur ordinateur */
+        .sihatar-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:start;}
+        @media (max-width:1100px){ .sihatar-grid3{grid-template-columns:repeat(2,minmax(0,1fr));} }
+        @media (max-width:700px){ .sihatar-grid3{grid-template-columns:1fr;} }
+        .sihatar-grid3 .sihatar-item{width:100%;}
         .si-tarif{
             background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;
             padding:9px 7px;display:flex;flex-direction:column;gap:6px;text-align:center;min-width:0;
@@ -1701,15 +1706,16 @@
                         </button>
                     </div>
 
+                    <div class="sihatar-cta glass-btn" id="sihatar-cta">
+                        <strong>Pharmacie de garde ?</strong>
+                        <p>Trouvez les pharmacies autour de vous, avec téléphone et itinéraire.</p>
+                        <button type="button" class="sihatar-cta-btn" id="btn-sihatar-around">📍 Autour de moi</button>
+                    </div>
+
                     <div class="sihatar-mapview" id="sihatar-mapview" style="display:none;">
                         <div class="sihatar-panel-head">
                             <button type="button" class="back-btn glass-btn" id="btn-sihatar-nearback">‹ القائمة</button>
                             <h2>القريبة مني — Pharmacies de garde</h2>
-                        </div>
-                        <div class="sihatar-cta glass-btn">
-                            <strong>Pharmacie de garde ?</strong>
-                            <p>Trouvez les pharmacies autour de vous, avec téléphone et itinéraire.</p>
-                            <button type="button" class="sihatar-cta-btn" id="btn-sihatar-around">📍 Autour de moi</button>
                         </div>
                         <div class="sihatar-mapbar glass-btn">
                             <input type="search" id="sihatar-map-q" placeholder="🔍 Ville ou nom de pharmacie" autocomplete="off">
@@ -5432,6 +5438,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const search = document.getElementById('sihatar-search');
             if (search) { search.value = ''; search.disabled = false; }
             document.getElementById('sihatar-menus').style.display = 'none';
+            const cta = document.getElementById('sihatar-cta');
+            if (cta) cta.style.display = 'none';
             document.getElementById('sihatar-panel').style.display = 'flex';
             document.getElementById('sihatar-mapview').style.display = 'none';
             document.getElementById('sihatar-panel-title').textContent = sec.ar + ' — ' + sec.fr;
@@ -5511,7 +5519,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 list.innerHTML = g;
                 return;
             }
-            let html = '';
+            let html = (sec.kind === 'cliniques') ? '<div class="sihatar-grid3">' : '';
             items.slice(0, limit).forEach(it => {
                 const tel = it.tel || '';
                 const th = sihaTelHref(tel);
@@ -5532,9 +5540,11 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 html += '</span>';
                 html += '<span class="si-actions">';
                 if (th) html += '<a class="sihatar-act" href="' + th + '">📞 اتصال</a>';
+                if (sec.kind === 'medecins') html += '<a class="sihatar-act map" href="https://www.google.com/maps/" target="_blank" rel="noopener">🧭 Itinéraire</a>';
                 if (it.lat != null && it.lon != null) html += '<a class="sihatar-act map" href="' + sihaMapUrl(it.lat, it.lon) + '" target="_blank" rel="noopener">🗺️ موقع</a>';
                 html += '</span></div>';
             });
+            if (sec.kind === 'cliniques') html += '</div>';
             if (items.length > limit) html += '<div class="sihatar-empty">… ' + (items.length - limit) + ' نتيجة أخرى (استعمل البحث)</div>';
             list.innerHTML = html;
         }
@@ -5658,8 +5668,6 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 if (it.lat != null && it.lon != null) it.distance = sihaDistance(lat, lon, it.lat, it.lon);
             });
             if (sihaMap) { try { sihaMap.setView([lat, lon], 13); } catch (e) {} }
-            const cta = document.querySelector('#sihatar-mapview .sihatar-cta');
-            if (cta) cta.style.display = 'none';
             const gpsBtn = document.getElementById('btn-sihatar-gps');
             if (gpsBtn) gpsBtn.classList.add('on');
             sihaMapMode = 'proches';
@@ -5668,12 +5676,12 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         }
         async function sihaOpenMapView() {
             document.getElementById('sihatar-menus').style.display = 'none';
+            const cta = document.getElementById('sihatar-cta');
+            if (cta) cta.style.display = 'none';
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'flex';
             const list = document.getElementById('sihatar-maplist');
             list.innerHTML = '<div class="sihatar-loading">⏳ جارٍ التحميل...</div>';
-            const cta = document.querySelector('#sihatar-mapview .sihatar-cta');
-            if (cta) cta.style.display = '';
             sihaInitMap();
             setTimeout(() => { try { if (sihaMap) sihaMap.invalidateSize(); } catch (e) {} }, 260);
             const data = await sihaLoad('pharmacies/' + sihaState.ville + '.json');
@@ -5758,6 +5766,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             showScreen(sihatarScreen);
             sihaRenderCities();
             document.getElementById('sihatar-menus').style.display = 'grid';
+            const cta0 = document.getElementById('sihatar-cta');
+            if (cta0) cta0.style.display = '';
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'none';
             sihaLoadCounts();
@@ -5770,12 +5780,23 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.getElementById('sihatar-menus').style.display = 'grid';
             document.getElementById('sihatar-chips').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'none';
+            const cta = document.getElementById('sihatar-cta');
+            if (cta) cta.style.display = '';
             const box = document.getElementById('sihatar-search');
             if (box) { box.disabled = false; box.value = ''; }
             sihaState.query = '';
         };
         document.getElementById('btn-sihatar-near').onclick = () => { sihaOpenMapView(); };
-        document.getElementById('btn-sihatar-around').onclick = () => { sihaLocateMe(); };
+        document.getElementById('btn-sihatar-around').onclick = () => {
+            // comme la source : ouvre la vue carte et lance la geolocalisation
+            sihaOpenMapView();
+            let cached = null;
+            try {
+                const c = JSON.parse(localStorage.getItem('siha-pos') || 'null');
+                if (c && c.lat != null && Date.now() - c.t < 6 * 36e5) cached = c;
+            } catch (e) {}
+            if (!cached) sihaLocateMe();
+        };
         document.getElementById('btn-sihatar-gps').onclick = () => { sihaLocateMe(); };
         document.getElementById('sihatar-map-q').addEventListener('input', function () { sihaRenderMap(); });
         document.querySelectorAll('#sihatar-seg button').forEach(b => {
@@ -5822,6 +5843,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         document.getElementById('btn-sihatar-nearback').onclick = () => {
             document.getElementById('sihatar-mapview').style.display = 'none';
             document.getElementById('sihatar-menus').style.display = 'grid';
+            const cta = document.getElementById('sihatar-cta');
+            if (cta) cta.style.display = '';
         };
     });
     </script>
