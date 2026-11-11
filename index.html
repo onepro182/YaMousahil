@@ -714,6 +714,7 @@
         .settings-pane.active{display:block;}
         .setting-row {display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);padding:12px 15px;border-radius:8px;margin-bottom:10px;}
         .setting-title{font-weight:600;font-size:.95rem;}
+        .setting-hint{width:100%;font-size:.78rem;color:var(--text-dim);margin-top:8px;direction:ltr;text-align:left;opacity:.9;}
         .setting-select {background:rgba(12,46,34,0.7);color:var(--gold-light);padding:8px 12px;border-radius:8px;border:1px solid rgba(212,175,55,0.4);font-family:var(--font);outline:none;font-size:.9rem;direction:ltr;color-scheme:dark;}
         .setting-select:focus {border-color:var(--gold);}
         .setting-select option{background:#0f3a2a;color:var(--cream);}
@@ -1735,7 +1736,7 @@
                                 <div class="setting-row" style="justify-content:center;margin-top:15px;"><button type="button" class="file-btn" id="btn-test-reminder" style="background:var(--glass-bg);backdrop-filter:blur(10px);border:1px solid var(--gold);color:var(--gold);font-weight:bold;width:100%;justify-content:center;">▶ اختبار شاشة التنبيه</button></div>
                             </div>
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
-                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (المغرب)</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select></div></div>
+                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (المغرب)</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div></div>
                             <div class="settings-pane" id="pane-live">
                                 <h3 style="margin:0 0 4px;color:var(--gold);">📺 قنوات البث المباشر</h3>
                                 <p style="margin:0 0 10px;font-size:.8rem;color:var(--text-dim);">أضف/عدّل القنوات (الاسم + الرابط) — تظهر تلقائياً في صفحة بث مباشر.</p>
@@ -1889,7 +1890,8 @@
                 const parsed = JSON.parse(saved);
                 settings = Object.assign(settings, parsed);
                 // les anciens reglages (gmtOffset fige) basculent sur l'heure reelle du Maroc
-                if (!parsed.clockTz) settings.clockTz = 'auto';
+                // attention : clockTz=0 est une valeur valide -> il faut tester la presence de la cle
+                if (!('clockTz' in parsed)) settings.clockTz = 'auto';
                 if(!settings.adjustments) settings.adjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
             }
         } catch (e) { console.warn('localStorage blocked'); }
@@ -2007,15 +2009,17 @@
             nextPrayerKey = null; for (const k of ['fajr','dhuhr','asr','maghrib','isha']) { if (prayerTimesToday[k] > now) { nextPrayerKey = k; break; } } if (!nextPrayerKey) nextPrayerKey = 'fajr';
         }
 
+        let clockTzPreview = null;   // fuseau en cours de previsualisation dans les reglages
         function formatSystemTime(date) {
             // 'auto' => heure locale reelle du Maroc (Africa/Casablanca : GMT+1, et GMT+0 pendant le Ramadan)
-            const auto = (settings.clockTz === 'auto' || settings.clockTz === undefined);
+            const tz = effectiveClockTz();
+            const auto = (tz === 'auto' || tz === undefined);
             let h, m;
             if (auto) {
                 const parts = new Intl.DateTimeFormat('en-US', { timeZone: locationTimeZone(), hour:'2-digit', minute:'2-digit', hourCycle:'h23' }).formatToParts(date);
                 h = Number(parts.find(p => p.type === 'hour').value); m = Number(parts.find(p => p.type === 'minute').value);
             } else {
-                const offset = Number(settings.clockTz) || 0;
+                const offset = Number(tz) || 0;
                 const utcMs = date.getTime() + (date.getTimezoneOffset() * 60000);
                 const target = new Date(utcMs + (offset * 3600000));
                 h = target.getUTCHours(); m = target.getUTCMinutes();
@@ -2034,10 +2038,43 @@
             } catch (e) { return 0; }
         }
         // fuseau affiche : 'auto' => decalage reel du Maroc, sinon le GMT choisi par l'utilisateur
+        function effectiveClockTz() {
+            if (clockTzPreview !== null && clockTzPreview !== undefined) return clockTzPreview;
+            return settings.clockTz;
+        }
         function displayGmtOffset(date) {
-            const auto = (settings.clockTz === 'auto' || settings.clockTz === undefined);
+            const tz = effectiveClockTz();
+            const auto = (tz === 'auto' || tz === undefined);
             if (auto) return Math.round(tzOffsetMinutes(date, locationTimeZone()) / 60);
-            return Number(settings.clockTz) || 0;
+            return Number(tz) || 0;
+        }
+        // heure + libelle pour un fuseau donne (auto ou GMT fixe)
+        function clockForTimeZone(date, tzValue) {
+            const auto = (tzValue === 'auto' || tzValue === undefined || tzValue === '');
+            let h, m, off;
+            if (auto) {
+                const parts = new Intl.DateTimeFormat('en-US', { timeZone: locationTimeZone(), hour:'2-digit', minute:'2-digit', hourCycle:'h23' }).formatToParts(date);
+                h = Number(parts.find(p => p.type === 'hour').value); m = Number(parts.find(p => p.type === 'minute').value);
+                off = Math.round(tzOffsetMinutes(date, locationTimeZone()) / 60);
+            } else {
+                const o = parseInt(tzValue, 10) || 0;
+                const utcMs = date.getTime() + (date.getTimezoneOffset() * 60000);
+                const t = new Date(utcMs + (o * 3600000));
+                h = t.getUTCHours(); m = t.getUTCMinutes(); off = o;
+            }
+            let txt;
+            if (settings.clockFormat === 12) { const ampm = h >= 12 ? ' PM' : ' AM'; const hh = h % 12 || 12; txt = `${pad(hh)}:${pad(m)}${ampm}`; }
+            else txt = `${pad(h)}:${pad(m)}`;
+            const lbl = 'GMT' + (off === 0 ? '' : (off > 0 ? '+' + off : String(off)));
+            return { time: txt, label: lbl };
+        }
+        // apercu sous le reglage "المنطقة الزمنية (GMT)" : l'heure qui sera affichee
+        function updateGmtHint() {
+            const el = document.getElementById('set-gmt-hint'); if (!el) return;
+            const sel = document.getElementById('set-gmt');
+            const val = sel ? sel.value : (settings.clockTz === undefined ? 'auto' : String(settings.clockTz));
+            const r = clockForTimeZone(new Date(), val);
+            el.textContent = 'الوقت المعروض: ' + r.time + ' ' + r.label;
         }
         function formatTime(date, cityId=settings.cityId) {
             if (!date) return '--:--';
@@ -2088,6 +2125,7 @@
                 const off = displayGmtOffset(now);
                 gmtEl.textContent = 'GMT' + (off === 0 ? '' : (off > 0 ? '+' + off : String(off)));
             }
+            updateGmtHint();
             const greg = now.toLocaleDateString('ar-EG-u-nu-latn-ca-gregory', { timeZone:locationTimeZone(), weekday:'long', day:'numeric', month:'long', year:'numeric' });
             document.getElementById('gregorian-date').textContent = greg;
 
@@ -3823,11 +3861,21 @@ var gender = 'male';
             document.querySelectorAll('#set-asr .group-btn').forEach(b => b.classList.toggle('active', b.dataset.value === settings.asr));
             document.querySelectorAll('#set-clock .group-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.value) === settings.clockFormat));
             document.getElementById('set-gmt').value = (settings.clockTz === 'auto' || settings.clockTz === undefined) ? 'auto' : String(settings.clockTz);
+            updateGmtHint();
             renderAdjustmentsUI();
             document.getElementById('settings-modal').classList.add('active');
         };
         
-        document.getElementById('btn-close-settings').onclick = () => { document.getElementById('settings-modal').classList.remove('active'); try { renderLiveMenu(); } catch (e) {} };
+        document.getElementById('btn-close-settings').onclick = () => { document.getElementById('settings-modal').classList.remove('active'); clockTzPreview = null; try { updateClocks(); } catch (e) {} try { renderLiveMenu(); } catch (e) {} };
+        // changement de fuseau : apercu immediat (l'heure de l'horloge change aussitot)
+        (function(){
+            var _s = document.getElementById('set-gmt'); if (!_s) return;
+            _s.addEventListener('change', function(){
+                clockTzPreview = _s.value;
+                updateGmtHint();
+                updateClocks();
+            });
+        })();
 
         document.querySelectorAll('.toggle-group').forEach(group => {
             group.querySelectorAll('.group-btn').forEach(btn => {
@@ -3866,6 +3914,7 @@ var gender = 'male';
             const _tzSel = document.getElementById('set-gmt').value;
             settings.clockTz = (_tzSel === 'auto') ? 'auto' : (parseInt(_tzSel, 10) || 0);
             settings.gmtOffset = (settings.clockTz === 'auto') ? 1 : settings.clockTz;
+            clockTzPreview = null;
             try { localStorage.setItem('YaMousahil_settings', JSON.stringify(settings)); } catch (e) {}
             if ((settings.reminderText || settings.reminderVoice) && settings.reminderEnabled && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
             document.getElementById('settings-modal').classList.remove('active');
