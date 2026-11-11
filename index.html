@@ -5197,9 +5197,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             ];
             for (const u of urls) {
                 try {
-                    const r = await fetch(u);
-                    if (!r.ok) continue;
-                    const j = await r.json();
+                    const raw = await fetchWithTimeout(u, 12000);
+                    const j = JSON.parse(raw);
                     if (j && typeof j === 'object') { sihaState.cache[key] = j; return j; }
                 } catch (e) {}
             }
@@ -5267,31 +5266,23 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             };
         }
 
-        // compteurs sur les cartes du menu
+        // compteurs sur les cartes du menu (chargements en parallele)
         async function sihaLoadCounts() {
-            const sec = SIHA_SECTIONS;
             const ville = sihaState.ville;
             const setC = (id, v) => { const el = document.querySelector('[data-count="' + id + '"]'); if (el) el.textContent = v; };
-            try {
-                const ph = await sihaLoad('pharmacies/' + ville + '.json');
-                setC('garde', ph ? (ph.garde || []).length : '—');
-            } catch (e) { setC('garde', '—'); }
-            try {
-                const cl = await sihaLoad('cliniques/' + ville + '.json');
-                setC('cliniques', cl ? (cl.items || []).length : '—');
-            } catch (e) { setC('cliniques', '—'); }
-            try {
-                const lb = await sihaLoad('laboratoires/' + ville + '.json');
-                setC('laboratoires', lb ? (lb.items || []).length : '—');
-            } catch (e) { setC('laboratoires', '—'); }
-            try {
-                const md = await sihaLoad('medecins/' + ville + '.json');
-                setC('medecins', md ? (md.items || []).length : '—');
-            } catch (e) { setC('medecins', '—'); }
-            try {
-                const tf = await sihaLoad('tarifs.json');
-                setC('tarifs', tf ? (tf.items || []).length : '—');
-            } catch (e) { setC('tarifs', '—'); }
+            const jobs = [
+                ['garde', 'pharmacies/' + ville + '.json', d => (d.garde || []).length],
+                ['cliniques', 'cliniques/' + ville + '.json', d => (d.items || []).length],
+                ['laboratoires', 'laboratoires/' + ville + '.json', d => (d.items || []).length],
+                ['medecins', 'medecins/' + ville + '.json', d => (d.items || []).length],
+                ['tarifs', 'tarifs.json', d => (d.items || []).length]
+            ];
+            await Promise.all(jobs.map(async ([id, path, pick]) => {
+                try {
+                    const d = await sihaLoad(path);
+                    setC(id, d ? pick(d) : '—');
+                } catch (e) { setC(id, '—'); }
+            }));
         }
 
         async function sihaOpenSection(secId) {
