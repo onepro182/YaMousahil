@@ -989,11 +989,32 @@
         #radio-toggle{display:flex;align-items:center;justify-content:center;gap:8px;}
         .about-content { text-align: center; padding: 20px; }
         .about-content h2 { color: var(--gold); margin-bottom: 15px; font-family: var(--font-quran); font-size: 2rem; }
-        .about-content .salawat { font-family: var(--font-quran); font-size: 1.4rem; line-height: 2; color: var(--cream); margin-bottom: 30px; white-space: pre-wrap; }
         .about-content .contact-info { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; display: inline-block; text-align: right; }
         .about-content .contact-info p { margin-bottom: 10px; color: var(--text-main); }
         .about-content .contact-info a { color: var(--gold); text-decoration: none; }
         .about-content .contact-info a:hover { text-decoration: underline; }
+        /* actions "حول التطبيق" */
+        .about-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0 6px;}
+        .about-act{
+            display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:13px;cursor:pointer;
+            background:rgba(255,255,255,.05);border:1px solid var(--glass-border);color:var(--text-main);
+            font-family:var(--font);font-weight:700;font-size:.88rem;text-decoration:none;
+            transition:transform .15s ease,border-color .15s ease,color .15s ease;
+        }
+        .about-act:hover{transform:translateY(-2px);border-color:rgba(212,175,55,.55);color:var(--gold-light);}
+        .about-act:active{transform:translateY(0);}
+        /* code a barre / QR */
+        .about-qr{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:18px;}
+        .about-qr img{
+            background:#fff;padding:9px;border-radius:16px;border:2px solid rgba(212,175,55,.5);
+            box-shadow:0 8px 26px rgba(0,0,0,.4);max-width:100%;height:auto;
+        }
+        .about-qr-cap{font-size:.8rem;color:var(--text-dim);}
+        .about-qr-link{font-size:.76rem;color:var(--gold);text-decoration:none;direction:ltr;}
+        .about-qr.qr-fallback::before{
+            content:"Code à barre — onepro182.github.io/YaMousahil";font-size:.8rem;color:var(--gold-light);
+            border:1px dashed rgba(212,175,55,.5);border-radius:12px;padding:16px 18px;
+        }
 
         .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;padding:10px;overflow-y:auto;max-height:580px;overflow-x:hidden;}
         .card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);position:relative;}
@@ -2093,8 +2114,17 @@
                             <div class="settings-pane" id="pane-about">
                                 <div class="about-content">
                                     <h2>حول التطبيق</h2>
-                                    <div class="salawat">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ. اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ</div>
-                                    <div class="contact-info"><p><strong>تطوير:</strong> فريق YaMousahil</p><p><strong>البريد:</strong> <a href="mailto:onepro182@gmail.com"> onepro182@gmail.com </a></p><p><strong>الموقع:</strong> <a href="https://yamousahil.com" target="_blank">yamousahil.com</a></p></div>
+                                    <div class="contact-info"><p><strong>تطوير:</strong> فريق YaMousahil</p><p><strong>البريد:</strong> <a href="mailto:onepro182@gmail.com"> onepro182@gmail.com </a></p><p><strong>الموقع:</strong> <a href="https://yamousahil.com" target="_blank" rel="noopener">yamousahil.com</a></p></div>
+                                    <div class="about-actions">
+                                        <button type="button" class="about-act" id="btn-app-update">⟳ تحديث التطبيق</button>
+                                        <a class="about-act" href="mailto:onepro182@gmail.com?subject=YaMousahil%20-%20message%20du%20developpeur" title="مراسلة المطور">📧 مراسلة المطور</a>
+                                        <a class="about-act" href="https://github.com/onepro182/YaMousahil/issues" target="_blank" rel="noopener" title="الإبلاغ عن مشكلة">💻 الإبلاغ عن مشكلة</a>
+                                    </div>
+                                    <div class="about-qr">
+                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=https%3A%2F%2Fonepro182.github.io%2FYaMousahil%2F" alt="رمز استجابة سريعة للتطبيق" width="180" height="180" loading="lazy" onerror="this.onerror=null;this.src='https://quickchart.io/qr?size=220&text='+encodeURIComponent('https://onepro182.github.io/YaMousahil/');this.onerror=function(){this.style.display='none';this.parentNode.classList.add('qr-fallback');};">
+                                        <span class="about-qr-cap">امسح الرمز لفتح التطبيق — Code à barre</span>
+                                        <a class="about-qr-link" href="https://onepro182.github.io/YaMousahil/" target="_blank" rel="noopener">onepro182.github.io/YaMousahil</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-buttons"><button type="button" class="btn-cancel" id="btn-close-settings">إلغاء</button><button type="button" class="btn-save" id="btn-save-settings">حفظ</button></div>
@@ -4412,6 +4442,23 @@ function notifyPrayer(prayerKey, isTest) {
         document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('isha', 'now'); notifyPrayer('isha', true); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES.isha); else if (typeof speakArabic === 'function') speakArabic('حان الآن موعد صلاة ' + PRAYER_NAMES.isha); } });
         // Test après déploiement: ?testAlert=1
         try{var _ta=new URLSearchParams(location.search); if(_ta.get('testAlert')==='1'||_ta.get('testalert')==='1'||_ta.get('test')==='alert'){setTimeout(function(){if(typeof showAlertOverlay==='function') showAlertOverlay('isha','now');},900);}}catch(e){}
+        // "تحديث التطبيق" : purge des caches + rechargement forcé de la dernière version
+        (function initAppUpdate(){
+            var btn = document.getElementById('btn-app-update');
+            if (!btn) return;
+            btn.onclick = async function () {
+                if (btn.dataset.busy) return;
+                btn.dataset.busy = '1';
+                btn.textContent = '⏳ جارٍ التحديث...';
+                try { if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) { const rs = await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r => r.unregister())); } } catch (e) {}
+                try { if ('caches' in window) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch (e) {}
+                try { localStorage.removeItem('siha-pos'); } catch (e) {}
+                setTimeout(function () {
+                    var base = location.pathname || '/';
+                    location.replace(base + '?cb=' + Date.now());
+                }, 350);
+            };
+        })();
 
         function speakArabic(message) {
             if (!('speechSynthesis' in window)) return false;
