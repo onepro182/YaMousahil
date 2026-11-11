@@ -5226,6 +5226,29 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             }
             return nom && nom.url ? nom.url : '';
         }
+        // traduction du libelle de garde (source en francais)
+        function sihaGardeLabel(g) {
+            if (!g) return '';
+            let s = String(g);
+            s = s.replace(/de\s+garde/gi, 'مفتوحة الآن');
+            s = s.replace(/jour\s+et\s+nuit/gi, 'نهاراً وليلياً');
+            s = s.replace(/nuit/gi, 'ليلاً');
+            s = s.replace(/jour/gi, 'نهاراً');
+            return s.trim();
+        }
+        // libelle lisible des horaires d'ouverture
+        function sihaHeuresLabel(heures) {
+            if (!heures || !heures.length) return '';
+            if (heures.length === 1) {
+                const p = String(heures[0]).split('-');
+                if (p[0] === '00:00' && (p[1] === '23:59' || p[1] === '24:00')) return '24 ساعة / 24';
+                return p[0] + ' → ' + p[1];
+            }
+            const first = String(heures[0]).split('-');
+            const last = String(heures[heures.length - 1]).split('-');
+            if (last[0] === '00:00') return 'من ' + first[0] + ' إلى ' + last[1];
+            return heures.map(h => String(h).replace('-', ' → ')).join(' / ');
+        }
 
         function sihaRenderCities() {
             const sel = document.getElementById('sihatar-city');
@@ -5351,8 +5374,9 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 if (it.adresse) html += '<span class="si-addr">' + sihaEscape(it.adresse) + '</span>';
                 if (sec.kind === 'pharmacies') {
                     html += '<span class="si-tags"><span class="si-tag garde">صيدلية حراسة</span>';
-                    if (it.garde) html += '<span class="si-tag">' + sihaEscape(it.garde) + '</span>';
-                    if (it.heures && it.heures.length) html += '<span class="si-tag">' + sihaEscape(it.heures.join(' · ')) + '</span>';
+                    if (it.garde) html += '<span class="si-tag">' + sihaEscape(sihaGardeLabel(it.garde)) + '</span>';
+                    const hl = sihaHeuresLabel(it.heures);
+                    if (hl) html += '<span class="si-tag">' + sihaEscape(hl) + '</span>';
                     html += '</span>';
                 }
                 if (sec.kind === 'tarifs') {
