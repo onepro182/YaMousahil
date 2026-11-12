@@ -1121,6 +1121,13 @@
         .asma-act-btn:hover{border-color:var(--gold);background:rgba(212,175,55,.12);transform:translateY(-2px);}
         .asma-act-btn.off{color:var(--text-dim);opacity:.7;}
         .asma-act-btn.on{background:rgba(212,175,55,.24);border-color:rgba(212,175,55,.6);}
+        .asma-card{position:relative;}
+        .asma-card .asma-num{font-size:.68rem;color:rgba(255,255,255,.5);margin-top:6px;}
+        .asma-card .asma-info-hint{
+            position:absolute;top:6px;left:7px;font-size:.72rem;color:rgba(212,175,55,.65);
+            line-height:1;pointer-events:none;
+        }
+        .asma-card:hover .asma-info-hint{color:var(--gold);}
         .asma-tip{
             position:fixed;z-index:120000;max-width:min(360px,86vw);display:none;
             background:rgba(7,24,17,.97);border:1px solid rgba(212,175,55,.55);border-radius:14px;
@@ -3420,8 +3427,8 @@ var gender = 'male';
                 <div class="asma-card" data-ar="${s.ar.replace(/"/g, '&quot;')}" data-num="${s.num}" data-desc="${String(s.desc).replace(/"/g, '&quot;')}" onclick="playAsmaAudio('${s.ar}')" style="cursor:pointer; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:14px 10px; text-align:center; backdrop-filter:blur(8px); transition:border-color .2s, box-shadow .2s, background .2s, transform .15s;">
                     <div class="asma-speaker" style="font-size:.8rem;color:var(--gold);min-height:1rem;"></div>
                     <div style="font-family:var(--font-quran); font-size:1.35rem; color:#f4d03f; margin-bottom:6px; line-height:1.4;">${s.ar}</div>
-                    <div style="font-size:0.78rem; color:#fff; line-height:1.5;">${s.desc}</div>
-                    <div style="font-size:0.68rem; color:rgba(255,255,255,0.5); margin-top:6px;">${s.num}</div>
+                    <div class="asma-num">${s.num}</div>
+                    <span class="asma-info-hint" title="التفاصيل" aria-hidden="true">ℹ</span>
                 </div>`).join('');
         }
 
