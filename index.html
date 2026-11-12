@@ -1258,7 +1258,8 @@
             flex:1;min-height:70vh;height:100%;position:relative;overflow:hidden;
             border:1px solid var(--glass-border);border-radius:14px;background:#fff;
         }
-        .tajweed-viewport iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;}
+        /* on masque le bandeau-titre d'archive.org (titre complet du livre) en rognant 56px */
+        .tajweed-viewport iframe{position:absolute;left:0;top:-56px;width:100%;height:calc(100% + 56px);border:0;background:#fff;}
         .mushaf-viewport{
             flex:1;min-height:65vh;height:100%;position:relative;
             border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#fff;
@@ -2094,7 +2095,7 @@
                 <header class="header-prayers">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-tajweed">‹ الرئيسية</button>
                     <div class="title-prayers">
-                        <h1 style="font-family:var(--font-quran);font-size:1.5rem;">المصحف التجويد الملون برواية ورش</h1>
+                        <h1 style="font-family:var(--font-quran);font-size:1.6rem;">مصحف التجويد</h1>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
