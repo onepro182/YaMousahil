@@ -1027,6 +1027,9 @@
         .about-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0 6px;}
         /* pane "نشر البرنامج" */
         .share-content{display:flex;flex-direction:column;align-items:center;text-align:center;}
+        .about-about{display:flex;flex-direction:column;align-items:center;text-align:center;}
+        .about-about .contact-info{text-align:right;}
+        .about-about h2{margin-bottom:14px;}
         .share-logo-wrap{
             width:104px;height:104px;flex:none;border-radius:26px;padding:8px;margin-bottom:14px;
             background:linear-gradient(160deg,rgba(212,175,55,.30),rgba(212,175,55,.06));
@@ -1165,6 +1168,20 @@
         .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
             /* تصفح القرآن - mushaf viewer (mp3quran mushaf2) */
         #mushaf-screen{gap:10px;}
+        .mushaf-viewport{
+            flex:1;min-height:65vh;height:100%;position:relative;
+            border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#fff;
+        }
+        .mushaf-viewport iframe{position:absolute;inset:0;width:100%;height:100%;min-height:65vh;border:0;background:#fff;}
+        /* Android / tactile : le lecteur QuranFlash n'affiche UNE page (et non 2 en vis-a-vis)
+           que si l'iframe est en portrait : regle interne 1.3 x largeur < hauteur.
+           On impose donc une hauteur elevee (150vw) pour basculer en "page simple". */
+        body.is-mobile .mushaf-viewport{
+            height:calc(100dvh - 58px);
+            min-height:max(78vh, 150vw);
+            border-radius:0;border:0;
+        }
+        body.is-mobile .mushaf-viewport iframe{min-height:0;}
         .mushaf-viewer{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;}
         .mushaf-ctrl{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;flex-shrink:0;direction:rtl;}
         .mushaf-nav-btn{padding:8px 14px;border-radius:999px;font-size:.9rem;cursor:pointer;white-space:nowrap;}
@@ -1953,12 +1970,12 @@
                 <header class="header-prayers">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-mushaf">‹ الرئيسية</button>
                     <div class="title-prayers">
-                        <h1 style="font-family:var(--font-quran);">تصفح القرآن</h1>
+                        <h1 style="font-family:var(--font-quran);">المصحف المصور</h1>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
-                <div style="flex:1;min-height:65vh;height:100%;position:relative;border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#fff;">
-                    <iframe id="mushaf-qf-frame" src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" data-src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" title="تصفح القرآن - مصحف ورش (QuranFlash)" style="position:absolute;inset:0;width:100%;height:100%;min-height:65vh;border:0;background:#fff;" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="mushaf-viewport">
+                    <iframe id="mushaf-qf-frame" src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" data-src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" title="المصحف المصور - مصحف ورش (QuranFlash)" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
             </div>
@@ -2179,7 +2196,10 @@
                                 </div>
                             </div>
                             <div class="settings-pane" id="pane-about">
-                                <div class="about-content">
+                                <div class="about-content about-about">
+                                    <div class="share-logo-wrap">
+                                        <img class="share-logo logo3d" src="Logo.png" alt="شعار تطبيق YaMousahil" onerror="this.style.display='none'">
+                                    </div>
                                     <h2>حول التطبيق</h2>
                                     <div class="contact-info"><p><strong>تطوير:</strong> فريق YaMousahil</p><p><strong>البريد:</strong> <a href="mailto:onepro182@gmail.com"> onepro182@gmail.com </a></p><p><strong>الموقع:</strong> <a href="https://yamousahil.com" target="_blank" rel="noopener">yamousahil.com</a></p></div>
                                     <div class="about-actions">
