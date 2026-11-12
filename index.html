@@ -593,12 +593,20 @@
             filter:drop-shadow(0 1px 3px rgba(0,0,0,.55));
         }
         .tasbih-embedded .counter-small{font-family:var(--font-quran);fill:#e9f1e6;font-size:6.4px;}
-        .tasbih-embedded .counter-small-sm{font-family:var(--font-quran);fill:#c9d8c6;font-size:5.4px;}
         .tasbih-embedded .counter-phrase{
             font-family:var(--font-quran);font-weight:700;fill:#e8c96a;font-size:11px;
             filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));
         }
-        .tasbih-embedded .counter-badge rect{fill:rgba(5,24,15,.62);stroke:rgba(212,175,55,.65);stroke-width:.5;}
+        /* encadré "من أصل / الجولة" : en bas a droite de la page */
+        .tasbih-embedded .counter-info-box{
+            position:absolute;bottom:12px;right:12px;z-index:4;
+            display:flex;flex-direction:column;gap:1px;align-items:center;
+            padding:7px 13px;border-radius:12px;
+            background:rgba(5,24,15,.66);border:1px solid rgba(212,175,55,.55);
+            box-shadow:0 6px 18px rgba(0,0,0,.42);
+        }
+        .tasbih-embedded .counter-info-line{font-family:var(--font-quran);color:#e9f1e6;font-size:.9rem;line-height:1.5;white-space:nowrap;}
+        .tasbih-embedded .counter-info-line:last-child{color:#c9d8c6;font-size:.78rem;}
         .tasbih-embedded .progress{transition:stroke-dashoffset .2s ease;}
         .tasbih-embedded #progressArc{stroke:#f4d03f;}
         .tasbih-embedded .tap-btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;min-width:140px;min-height:38px;padding:6px 16px;border:1px solid #ffffff59;border-radius:999px;background:linear-gradient(110deg,#0c2e22,#397766 65%,#d4af37);color:white;cursor:pointer;}
@@ -1715,13 +1723,12 @@
                                                     <g id="tasselThreads"></g>
                                                 </g>
                                                 <text id="phraseDisplay" class="counter-phrase" x="60" y="27.5" text-anchor="middle" font-size="10" direction="rtl">سُبْحَانَ ٱللَّٰهِ</text>
-                                                <text id="countDisplay" class="counter-number" x="60" y="58" text-anchor="middle" font-size="30" direction="ltr">٠</text>
-                                                <g class="counter-badge">
-                                                    <rect x="61.5" y="65.5" width="34" height="15" rx="3.2"></rect>
-                                                    <text id="targetDisplay" class="counter-small" x="78.5" y="71.8" text-anchor="middle" font-size="5.1" direction="rtl">من أصل ٣٣</text>
-                                                    <text id="roundDisplay" class="counter-small counter-small-sm" x="78.5" y="77.9" text-anchor="middle" font-size="4.7" direction="rtl">الجولة ١</text>
-                                                </g>
+                                                <text id="countDisplay" class="counter-number" x="60" y="58" text-anchor="middle" font-size="30" direction="ltr">0</text>
                                             </svg>
+                                        </div>
+                                        <div class="counter-info-box" aria-live="polite">
+                                            <span id="targetDisplay" class="counter-info-line">من أصل 33</span>
+                                            <span id="roundDisplay" class="counter-info-line">الجولة 1</span>
                                         </div>
                                         <button class="tap-btn" id="tapBtn" type="button"><span class="tap-symbol" aria-hidden="true"></span><span class="tap-label" id="tapLabel">اضغط للعد</span></button>
                                         <p class="auto-status" id="autoStatus"></p>
@@ -5494,11 +5501,10 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             function updateEditorLabels() { $("customTitle").textContent = t(editingText === null ? "customTitle" : "editTitle"); $("saveCustomBtn").textContent = t(editingText === null ? "addCustom" : "saveEdit"); $("cancelEditBtn").hidden = editingText === null; }
             function updateAutoLabel() { var delay = String(state.delay); $("tapBtn").classList.toggle("running", running); if (running) { $("tapLabel").textContent = t("stop"); $("autoStatus").textContent = "العد التلقائي يعمل — كل "+delay+" ثانية"; } else if (state.auto) { $("tapLabel").textContent = t("start"); $("autoStatus").textContent = "العد التلقائي — كل "+delay+" ثانية"; } else { $("tapLabel").textContent = t("tap"); $("autoStatus").textContent = t("manual"); } $("tapBtn").setAttribute("aria-label", $("tapLabel").textContent); }
             function applyLanguage() { language = "ar"; var el = $("tasbihEmbedded"); el.lang = "ar"; el.dir = "rtl"; $("svgTitle").textContent = t("title"); document.querySelectorAll(".tasbih-embedded [data-i18n], .tasbih-modal [data-i18n]").forEach(function (n) { n.textContent = t(n.getAttribute("data-i18n")); }); document.querySelectorAll(".tasbih-modal [data-close]").forEach(function (n) { n.setAttribute("aria-label", t("close")); }); $("languageSelect").value = "ar"; $("customInput").placeholder = t("customPlaceholder"); var _fsb2=$("fullscreenBtn"); if(_fsb2){_fsb2.setAttribute("aria-label", t("fullscreen")); _fsb2.title = t("fullscreen");} $("openDhikrBtn").setAttribute("aria-label", t("choose")); if (!$("settingsError").hidden) $("settingsError").textContent = t("invalidDelay"); if (messageKey) $("customMessage").textContent = t(messageKey); if (noticeKey) $("notice").textContent = t(noticeKey); updateEditorLabels(); renderCustomManager(); render(); }
-            function toArDigits(n) { return String(n).replace(/[0-9]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'[d]; }); }
             function fitPhrase() { var n = $("phraseDisplay"); if (!n) return; n.textContent = state.selected; n.style.fontSize = "11px"; try { var w = n.getComputedTextLength(); if (w > 64) { var sz = 11*64/w; if (sz >= 5) n.style.fontSize = sz + "px"; else n.textContent = ""; } } catch (e) {} }
             function updateTasbihSoundBtn() { var b = $("tasbih-sound-btn"); if (!b) return; b.textContent = state.sound ? "🔊" : "🔇"; b.classList.toggle("off", !state.sound); b.setAttribute("aria-label", state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"); b.title = state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"; }
             function updateTasbihVoiceBtn() { var b = document.getElementById("tasbih-voice-btn"); if (!b) return; b.textContent = state.voice ? "🗣️" : "🤐"; b.classList.toggle("off", !state.voice); b.setAttribute("aria-label", state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"); b.title = state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"; }
-            function render() { checkDay(); var count = state.session % state.target; var rounds = Math.floor(state.session / state.target); $("countDisplay").textContent = toArDigits(count); $("targetDisplay").textContent = t("outOf") + " " + toArDigits(state.target); $("roundDisplay").textContent = t("round") + " " + toArDigits(rounds + 1); $("todayDisplay").textContent = toArDigits(state.today); $("roundsDisplay").textContent = toArDigits(rounds); $("totalDisplay").textContent = toArDigits(state.total); $("targetLabel").textContent = t("target") + " " + toArDigits(state.target); $("currentDhikrArabic").textContent = state.selected; $("currentDhikrArabic").title = state.selected; $("undoBtn").disabled = state.session === 0; fitPhrase(); $("progressArc").setAttribute("stroke-dasharray", arcLength); $("progressArc").setAttribute("stroke-dashoffset", arcLength * (1 - count/state.target)); var lit = count === 0 ? 0 : ((count - 1) % 33) + 1; beads.forEach(function (b, i) { b.setAttribute("fill", i < lit ? "url(#jade)" : "url(#ivory)"); }); menuButtons.forEach(function (e) { var sel = e.text === state.selected; e.button.classList.toggle("selected", sel); e.button.setAttribute("aria-pressed", String(sel)); }); updateAutoLabel(); updateTasbihSoundBtn(); updateTasbihVoiceBtn(); }
+            function render() { checkDay(); var count = state.session % state.target; var rounds = Math.floor(state.session / state.target); $("countDisplay").textContent = count; $("targetDisplay").textContent = t("outOf") + " " + state.target; $("roundDisplay").textContent = t("round") + " " + (rounds + 1); $("todayDisplay").textContent = state.today; $("roundsDisplay").textContent = rounds; $("totalDisplay").textContent = state.total; $("targetLabel").textContent = t("target") + " " + state.target; $("currentDhikrArabic").textContent = state.selected; $("currentDhikrArabic").title = state.selected; $("undoBtn").disabled = state.session === 0; fitPhrase(); $("progressArc").setAttribute("stroke-dasharray", arcLength); $("progressArc").setAttribute("stroke-dashoffset", arcLength * (1 - count/state.target)); var lit = count === 0 ? 0 : ((count - 1) % 33) + 1; beads.forEach(function (b, i) { b.setAttribute("fill", i < lit ? "url(#jade)" : "url(#ivory)"); }); menuButtons.forEach(function (e) { var sel = e.text === state.selected; e.button.classList.toggle("selected", sel); e.button.setAttribute("aria-pressed", String(sel)); }); updateAutoLabel(); updateTasbihSoundBtn(); updateTasbihVoiceBtn(); }
             function beep() { if (!state.sound) return; try { var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; if (!audio || audio.state === "closed") audio = new AC(); function tone() { try { if (!state.sound) return; var now = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = "sine"; o.frequency.setValueAtTime(720, now); g.gain.setValueAtTime(.0001, now); g.gain.exponentialRampToValueAtTime(.06, now + .008); g.gain.exponentialRampToValueAtTime(.0001, now + .09); o.connect(g); g.connect(audio.destination); o.onended = function () { o.disconnect(); g.disconnect(); }; o.start(now); o.stop(now + .1); } catch (e) {} } if (audio.state === "suspended") audio.resume().then(tone).catch(function(){}); else tone(); } catch (e) {} }
             var DHIKR_MP3_COUNT = 12;
             var _dhikrAudio = null;
@@ -5529,7 +5535,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
 
             document.addEventListener("keydown", function (e) { if (currentModal) { if (e.key === "Escape") { e.preventDefault(); closeModal(); return; } if (e.key === "Tab") { var nodes = currentModal.querySelectorAll("button:not([disabled]):not([hidden]), input:not([disabled]), textarea, select"); var vis = Array.prototype.filter.call(nodes, function (n) { return n.getClientRects().length > 0; }); if (!vis.length) return; var first = vis[0], last = vis[vis.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } } return; } if (e.code !== "Space" || e.repeat) return; var pane = document.getElementById("isl-pane-tasbih"); if (!pane || pane.offsetParent === null) return; if (e.target instanceof Element && e.target.closest("button, input, textarea, select, [contenteditable]")) return; e.preventDefault(); handleTap(); });
             document.addEventListener("visibilitychange", function () { if (document.hidden) stopAutomatic(); }); window.addEventListener("pagehide", stopAutomatic); window.addEventListener("resize", fitPhrase);
-            loadCustoms(); loadTasbihState(); createBeads(); buildDhikrMenu(); applyLanguage(); setInterval(function () { var old = state.day; checkDay(); if (old !== state.day) $("todayDisplay").textContent = toArDigits(state.today); var sec = Math.floor((Date.now() - startedAt)/1000); $("timeDisplay").textContent = String(Math.floor(sec/60)).padStart(2,"0") + ":" + String(sec%60).padStart(2,"0"); }, 1000);
+            loadCustoms(); loadTasbihState(); createBeads(); buildDhikrMenu(); applyLanguage(); setInterval(function () { var old = state.day; checkDay(); if (old !== state.day) $("todayDisplay").textContent = state.today; var sec = Math.floor((Date.now() - startedAt)/1000); $("timeDisplay").textContent = String(Math.floor(sec/60)).padStart(2,"0") + ":" + String(sec%60).padStart(2,"0"); }, 1000);
         })();
 
         // ==================================================
