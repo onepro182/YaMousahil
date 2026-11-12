@@ -1490,6 +1490,48 @@
         .tajweed-row small{margin-right:auto;color:var(--text-dim);font-size:.72rem;}
         .tajweed-row.mark{background:rgba(212,175,55,.14);border-color:rgba(212,175,55,.4);}
         .tajweed-empty{text-align:center;padding:22px;color:var(--text-dim);font-size:.9rem;line-height:1.9;}
+        /* ===== تلاوة : barre du lecteur audio ===== */
+        .tajweed-listen-btn{width:auto;padding:0 10px;gap:6px;display:flex;align-items:center;font-family:var(--font);font-size:.82rem;font-weight:700;}
+        .tajweed-listen-btn svg{width:15px;height:15px;}
+        .tajweed-listen-btn.on{background:rgba(212,175,55,.3);border-color:var(--gold);color:#ffeeb0;}
+        @media (max-width:520px){
+            .tajweed-listen-btn{width:34px;padding:0;font-size:0;gap:0;}
+        }
+        .tajweed-audio{
+            position:absolute;left:0;right:0;bottom:0;z-index:13;display:none;align-items:center;gap:6px;
+            padding:6px 8px;background:#06110e;border-top:1px solid rgba(212,175,55,.32);
+            box-shadow:0 -10px 24px rgba(0,0,0,.5);
+        }
+        .tajweed-audio.on{display:flex;}
+        .tajweed-frame-wrap.has-audio .tajweed-stage{bottom:56px;}
+        .tajweed-a-meta{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:8px;overflow:hidden;}
+        .tajweed-a-verse{color:#f0e7cd;font-family:var(--font-quran);font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .tajweed-a-sel{
+            max-width:46%;min-width:0;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.14);
+            background:rgba(255,255,255,.06);color:#d1c48d;font-family:var(--font);font-size:.72rem;padding:0 4px;
+        }
+        .tajweed-audio .tajweed-nav{width:32px;height:34px;}
+        .tajweed-a-play{
+            flex:none;width:40px;height:34px;border-radius:9px;border:1px solid rgba(212,175,55,.55);
+            background:rgba(212,175,55,.18);color:#ffeeb0;font-size:.9rem;line-height:1;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+        }
+        .tajweed-a-play:active{background:rgba(212,175,55,.34);}
+        .tajweed-a-close{width:30px;height:34px;font-size:.85rem;}
+        @media (max-width:430px){
+            .tajweed-audio{gap:5px;padding:6px;}
+            .tajweed-audio .tajweed-nav{width:28px;}
+            .tajweed-a-play{width:34px;}
+            .tajweed-a-close{width:26px;}
+            .tajweed-a-verse{font-size:.74rem;}
+            .tajweed-a-sel{max-width:120px;font-size:.66rem;}
+        }
+        /* telephone : la barre audio reste collee au bas de l'ecran (le lecteur peut depasser de 100dvh) */
+        body.is-mobile .tajweed-audio{
+            position:fixed;left:0;right:0;bottom:0;
+            padding-bottom:calc(6px + env(safe-area-inset-bottom, 0px));
+        }
+        body.is-mobile .tajweed-frame-wrap.has-audio .tajweed-stage{bottom:62px;}
         /* Android : page pleine */
         body.is-mobile #tajweed-screen{height:100dvh !important;min-height:100dvh;max-height:100dvh;overflow:hidden;}
         body.is-mobile .tajweed-frame-wrap{height:100dvh;min-height:100dvh;}
@@ -2159,24 +2201,6 @@
                 </header>
                 <div class="sihatar-wrap">
                     <div class="sihatar-menus" id="quran-menus">
-                        <button type="button" class="sihatar-menu glass-btn" data-q="mushaf">
-                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="المصحف المصور">
-                                    <defs>
-                                        <linearGradient id="qmA1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2f9c7a"/><stop offset="0.5" stop-color="#0f5c44"/><stop offset="1" stop-color="#052a20"/></linearGradient>
-                                        <linearGradient id="qmA2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe3f0"/></linearGradient>
-                                        <linearGradient id="qmA3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
-                                    </defs>
-                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmA1)"/>
-                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
-                                    <path d="M32 23 C27 19 20 18 12 19 v27 c8 -1 15 0 20 4 c5 -4 12 -5 20 -4 V19 c-8 -1 -15 0 -20 4 z" fill="url(#qmA2)" stroke="#c9b98a" stroke-width="1"/>
-                                    <path d="M32 23 v27" stroke="#a8862c" stroke-width="1.1"/>
-                                    <rect x="16" y="26" width="12" height="10" rx="1.6" fill="url(#qmA3)"/>
-                                    <path d="M18 34 l3.2 3.2 L28 27" fill="none" stroke="#0b132b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <g stroke="#8a97a8" stroke-width="1.3" stroke-linecap="round"><path d="M37 29h10"/><path d="M37 34h10"/><path d="M37 39h7"/><path d="M16 41h12"/></g>
-                                </svg></span>
-                            <span class="sihatar-mtxt"><b>المصحف المصور</b><i>Mushaf illustré</i></span>
-                            <span class="sihatar-mcount">📖</span>
-                        </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="tajweed">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="مصحف التجويد برواية ورش">
                                     <defs>
@@ -2225,6 +2249,24 @@
                                 </svg></span>
                             <span class="sihatar-mtxt"><b>قراءة القرآن الكريم</b><i>Lecture du Coran</i></span>
                             <span class="sihatar-mcount">▶</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="mushaf">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="المصحف المصور">
+                                    <defs>
+                                        <linearGradient id="qmA1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2f9c7a"/><stop offset="0.5" stop-color="#0f5c44"/><stop offset="1" stop-color="#052a20"/></linearGradient>
+                                        <linearGradient id="qmA2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe3f0"/></linearGradient>
+                                        <linearGradient id="qmA3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmA1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 23 C27 19 20 18 12 19 v27 c8 -1 15 0 20 4 c5 -4 12 -5 20 -4 V19 c-8 -1 -15 0 -20 4 z" fill="url(#qmA2)" stroke="#c9b98a" stroke-width="1"/>
+                                    <path d="M32 23 v27" stroke="#a8862c" stroke-width="1.1"/>
+                                    <rect x="16" y="26" width="12" height="10" rx="1.6" fill="url(#qmA3)"/>
+                                    <path d="M18 34 l3.2 3.2 L28 27" fill="none" stroke="#0b132b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <g stroke="#8a97a8" stroke-width="1.3" stroke-linecap="round"><path d="M37 29h10"/><path d="M37 34h10"/><path d="M37 39h7"/><path d="M16 41h12"/></g>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>المصحف المصور</b><i>Mushaf illustré</i></span>
+                            <span class="sihatar-mcount">📖</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="play">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="استماع إلى القرآن الكريم">
@@ -2517,7 +2559,7 @@
 
             </div>
 
-            <!-- MUSHAF TAJWEED (lecteur QuranFlash + barre de controle) -->
+            <!-- MUSHAF TAJWEED (lecteur natif des pages + تلاوة verset par verset) -->
             <div id="tajweed-screen">
                 <div class="tajweed-frame-wrap" id="tajweed-wrap">
                     <div class="tajweed-stage" id="tajweed-stage">
@@ -2529,12 +2571,24 @@
                         <button type="button" class="tajweed-back-btn" id="tajweed-back" data-qm-back>‹ العودة</button>
                         <button type="button" class="tajweed-ico wide" id="tajweed-index-btn" aria-label="الفهرس" title="الفهرس">الفهرس</button>
                         <button type="button" class="tajweed-ico" id="tajweed-bm" aria-label="علامة مرجعية" title="علامة مرجعية" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg></button>
+                        <button type="button" class="tajweed-ico tajweed-listen-btn" id="tajweed-listen" aria-label="تلاوة" title="تلاوة" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.4l6 3.6-6 3.6z"/></svg><span>تلاوة</span></button>
                         <span class="tajweed-title">مصحف التجويد برواية ورش</span>
                         <span class="tajweed-pg" id="tajweed-page-lbl">1 / 604</span>
                         <button type="button" class="tajweed-nav" id="tajweed-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
                         <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav spread-btn" id="tajweed-spread" title="عرض صفحتين" aria-label="عرض صفحتين" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg></button>
                         <button type="button" class="tajweed-ico" id="tajweed-fs" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
+                    </div>
+                    <!-- تلاوة : lecteur audio verset par verset -->
+                    <div class="tajweed-audio" id="tajweed-audio" aria-hidden="true">
+                        <div class="tajweed-a-meta">
+                            <span class="tajweed-a-verse" id="tajweed-a-verse">تلاوة</span>
+                            <select class="tajweed-a-sel" id="tajweed-a-reciter" aria-label="اختيار القارئ"></select>
+                        </div>
+                        <button type="button" class="tajweed-nav" id="tajweed-a-prev" title="الآية السابقة" aria-label="الآية السابقة">›</button>
+                        <button type="button" class="tajweed-a-play" id="tajweed-a-play" title="تشغيل" aria-label="تشغيل">▶</button>
+                        <button type="button" class="tajweed-nav" id="tajweed-a-next" title="الآية التالية" aria-label="الآية التالية">‹</button>
+                        <button type="button" class="tajweed-ico tajweed-a-close" id="tajweed-a-close" title="إغلاق التلاوة" aria-label="إغلاق التلاوة">✕</button>
                     </div>
                     <div class="tajweed-sheet" id="tajweed-sheet" aria-hidden="true">
                         <div class="tajweed-sheet-head">
@@ -4748,6 +4802,7 @@ var gender = 'male';
             tajweedSpreadBtn();
             tajweedSyncBookmark();
             tajweedHighlight();
+            twAudioOnPageChange(base);
             return base;
         }
         function tajweedHighlight() {
@@ -4879,6 +4934,7 @@ var gender = 'male';
             var veil = document.getElementById('tajweed-veil');
             var back = document.getElementById('tajweed-back');
             if (back) back.onclick = function () {
+                if (typeof twAudioStop === 'function') twAudioStop();
                 var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen');
                 if (hs && typeof showScreen === 'function') showScreen(hs);
                 if (typeof navHome !== 'undefined' && navHome) navHome.classList.add('active');
@@ -4913,6 +4969,38 @@ var gender = 'male';
             // mise a jour du signet quand le lecteur change de page (retour au premier plan)
             window.addEventListener('focus', tajweedSyncBookmark);
             document.addEventListener('visibilitychange', function () { if (!document.hidden) tajweedSyncBookmark(); });
+            // تلاوة : barre de lecture + choix du recitateur
+            var selR = document.getElementById('tajweed-a-reciter');
+            if (selR && !selR.options.length) {
+                for (var ri = 0; ri < TAJWEED_RECITERS.length; ri++) {
+                    var op = document.createElement('option');
+                    op.value = TAJWEED_RECITERS[ri][0];
+                    op.textContent = TAJWEED_RECITERS[ri][1];
+                    selR.appendChild(op);
+                }
+            }
+            try { var rc0 = localStorage.getItem('tajweedReciter'); if (rc0) _twRec = rc0; } catch (e) {}
+            var recOk = false;
+            for (var rk = 0; rk < TAJWEED_RECITERS.length; rk++) { if (TAJWEED_RECITERS[rk][0] === _twRec) recOk = true; }
+            if (!recOk) _twRec = 'AlJazaeryWarsh';
+            if (selR) {
+                selR.value = _twRec;
+                selR.onchange = function () { twAudioSetReciter(selR.value); };
+            }
+            var lbtn = document.getElementById('tajweed-listen');
+            if (lbtn) lbtn.onclick = function () { twAudioToggle(); };
+            var aPrev = document.getElementById('tajweed-a-prev');
+            var aNext = document.getElementById('tajweed-a-next');
+            var aPlay = document.getElementById('tajweed-a-play');
+            var aClose = document.getElementById('tajweed-a-close');
+            if (aPrev) aPrev.onclick = function () { twAudioGo(-1); };
+            if (aNext) aNext.onclick = function () { twAudioGo(1); };
+            if (aPlay) aPlay.onclick = function () {
+                if (!_twSura) { twAudioToggle(); return; }
+                if (twAudioEl().paused) twAudioLoad(true); else twAudioPause();
+            };
+            if (aClose) aClose.onclick = function () { twAudioStop(); };
+            twAudioUi();
             // lecteur natif : chargement, swipe tactile, clavier, restauration de la page
             var stage = document.getElementById('tajweed-stage');
             var img = document.getElementById('tajweed-page-img');
@@ -4996,6 +5084,175 @@ var gender = 'male';
             if (typeof islShowToast === 'function') { islShowToast(msg); return; }
             var t = document.getElementById('sihatar-toast');
             if (t) { t.textContent = msg; t.classList.add('show'); setTimeout(function () { t.classList.remove('show'); }, 2200); }
+        }
+        // ===== تلاوة : recitation verset par verset (audio QuranFlash) =====
+        var TAJWEED_AUDIO_BASE = 'https://enterprise.quranflash.com/asset/audio/';
+        // premiere ayah de chaque page (604 entrees) : sura * 1000 + aya
+        var TAJWEED_PAGE_VERSE = [1001,2001,2006,2017,2025,2030,2038,2049,2058,2062,2070,2077,2084,2089,2094,2102,2106,2113,2120,2127,2135,2142,2146,2154,2164,2170,2177,2182,2187,2191,2197,2203,2211,2216,2220,2225,2231,2234,2238,2246,2249,2253,2257,2260,2265,2270,2275,2282,2283,3001,3010,3016,3023,3030,3038,3046,3053,3062,3071,3078,3084,3092,3101,3109,3116,3122,3133,3141,3149,3154,3158,3166,3174,3181,3187,3195,4001,4007,4012,4015,4020,4024,4027,4034,4038,4045,4052,4060,4066,4075,4080,4087,4092,4095,4102,4106,4114,4122,4128,4135,4141,4148,4155,4163,4171,4176,5003,5006,5010,5014,5018,5024,5032,5037,5042,5046,5051,5058,5071,5071,5077,5083,5090,5096,5104,5109,5114,6001,6009,6019,6028,6036,6045,6053,6060,6069,6074,6082,6091,6095,6102,6111,6119,6125,6132,6138,6143,6147,6152,6158,7001,7012,7023,7031,7038,7044,7052,7058,7068,7082,7082,7088,7096,7105,7121,7131,7138,7144,7150,7156,7160,7164,7171,7179,7188,7196,8001,8009,8017,8026,8034,8041,8046,8053,8062,8070,9001,9007,9014,9021,9027,9032,9037,9041,9048,9055,9062,9069,9073,9080,9087,9094,9100,9107,9112,9118,9123,10001,10007,10015,10021,10026,10034,10043,10054,10062,10071,10079,10089,10098,10107,11006,11013,11020,11029,11038,11046,11054,11063,11072,11082,11089,11098,11109,11118,12005,12015,12023,12031,12038,12044,12053,12064,12070,12079,12087,12096,12104,13001,13006,13014,13019,13029,13035,13043,14006,14011,14019,14025,14034,14043,15001,15032,15032,15052,15071,15091,16007,16015,16027,16035,16043,16055,16065,16073,16080,16088,16094,16103,16111,16119,17001,17008,17018,17028,17039,17050,17059,17067,17076,17087,17097,17105,18005,18016,18021,18028,18035,18046,18054,18062,18075,18084,18098,19001,19012,19026,19039,19052,19065,19077,19096,20013,20038,20052,20065,20077,20088,20099,20114,20126,21001,21011,21025,21036,21045,21058,21073,21082,21091,21102,22001,22006,22016,22024,22031,22039,22047,22056,22065,22073,23001,23018,23028,23043,23060,23075,23090,23105,24001,24011,24021,24028,24032,24037,24044,24054,24059,24062,25003,25012,25021,25033,25044,25056,25068,26001,26020,26040,26061,26084,26112,26137,26160,26184,26207,27001,27014,27023,27036,27045,27056,27064,27077,27089,28006,28014,28022,28029,28036,28044,28051,28060,28071,28078,28085,29007,29015,29024,29039,29039,29046,29053,29064,30006,30016,30025,30033,30042,30051,31001,31012,31020,31029,32001,32012,32021,33001,33007,33016,33023,33031,33036,33044,33051,33055,33063,34001,34008,34015,34023,34032,34040,34049,35004,35012,35019,35031,35039,35045,36013,36028,36041,36055,36071,37001,37025,37052,37077,37103,37127,37154,38001,38017,38027,38043,38062,38084,39006,39011,39022,39032,39041,39048,39057,39068,39075,40008,40017,40026,40034,40041,40050,40059,40067,40078,41001,41012,41021,41030,41039,41047,42001,42011,42016,42023,42032,42045,42052,43011,43023,43034,43048,43061,43074,44001,44019,44040,45001,45014,45023,45033,46006,46015,46021,46029,47001,47012,47020,47030,48001,48010,48016,48024,48029,49005,49012,50001,50016,50036,51007,51031,51052,52015,52032,53001,53027,53045,54007,54028,54050,55017,55041,55068,56017,56051,56077,57004,57012,57019,57025,58001,58007,58012,58022,59004,59010,59017,60001,60006,60012,61006,62001,62009,63005,64001,64010,65001,65006,66001,66008,67001,67013,67027,68016,68043,69009,69035,70011,70040,71011,72001,72014,73001,73020,74018,74048,75020,76006,76026,77020,78001,78031,79016,80001,81001,82001,83007,83035,85001,86001,87016,89001,89024,91001,92015,95001,97001,98008,100010,103001,106001,109001,112001];
+        // nombre d'ayat par sourate (1..114)
+        var TAJWEED_AYA_COUNT = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+        var TAJWEED_RECITERS = [
+            ['AlJazaeryWarsh', 'ياسين الجزائري · ورش'],
+            ['AlDosaryWarsh', 'إبراهيم الدوسري · ورش'],
+            ['AbdelBasitWarsh', 'عبد الباسط عبد الصمد · ورش'],
+            ['RashidBilaliyah', 'رشيد بلعاليه · ورش'],
+            ['Hossary', 'محمود الحصري'],
+            ['Mishary', 'مشاري العفاسي'],
+            ['Sudais', 'عبد الرحمن السديس'],
+            ['Shatery', 'أبو بكر الشاطري'],
+            ['Ajmy', 'أحمد العجمي'],
+            ['Hudhaify', 'علي الحذيفي'],
+            ['Matroud', 'عبدالله المطرود'],
+            ['Basfar', 'عبد الله بصفر'],
+            ['Qasim', 'عبد المحسن القاسم']
+        ];
+        var _twRec = 'AlJazaeryWarsh';
+        var _twSura = 0, _twAya = 0, _twAudio = null;
+        var _twWant = false, _twShown = false, _twErr = 0, _twFollowPage = 0;
+
+        function twVerseOfPage(p) {
+            p = Math.max(1, Math.min(TAJWEED_TOTAL, parseInt(p, 10) || 1));
+            return TAJWEED_PAGE_VERSE[p - 1];
+        }
+        function twPageOfVerse(sura, aya) {
+            var code = sura * 1000 + aya, lo = 0, hi = TAJWEED_PAGE_VERSE.length - 1, ans = 0;
+            while (lo <= hi) {
+                var mid = (lo + hi) >> 1;
+                if (TAJWEED_PAGE_VERSE[mid] <= code) { ans = mid; lo = mid + 1; } else { hi = mid - 1; }
+            }
+            return ans + 1;
+        }
+        function twVerseLabel(sura, aya) {
+            var nm = (typeof SURAH_NAMES !== 'undefined' && SURAH_NAMES[sura - 1]) ? SURAH_NAMES[sura - 1] : ('سورة ' + sura);
+            return nm + ' · ' + tajweedAr(aya);
+        }
+        function twAudioEl() {
+            if (_twAudio) return _twAudio;
+            _twAudio = new Audio();
+            _twAudio.preload = 'auto';
+            _twAudio.addEventListener('ended', function () { twAudioGo(1); });
+            _twAudio.addEventListener('play', function () { _twShown = true; twAudioUi(); });
+            _twAudio.addEventListener('pause', twAudioUi);
+            _twAudio.addEventListener('error', function () {
+                if (!_twWant) return;
+                if (_twErr < 2) { _twErr++; setTimeout(function () { twAudioGo(1); }, 450); }
+                else { _twWant = false; twAudioUi(); tajweedToast('تعذّر تحميل التلاوة، تحقّق من الاتصال'); }
+            });
+            return _twAudio;
+        }
+        function twAudioLoad(play) {
+            var a = twAudioEl();
+            var src = TAJWEED_AUDIO_BASE + _twRec + '/' + _twSura + '/' + _twAya;
+            var changed = a.getAttribute('src') !== src;
+            if (changed) { a.src = src; _twErr = 0; }
+            if (play) {
+                _twWant = true;
+                // quand la source change, attendre « canplay » : sinon play() est avorte par le chargement
+                if (changed) {
+                    a.addEventListener('canplay', function () {
+                        if (!_twWant) return;
+                        var pr = a.play();
+                        if (pr && pr.catch) pr.catch(function () {});
+                    }, { once: true });
+                } else {
+                    var pr2 = a.play();
+                    if (pr2 && pr2.catch) pr2.catch(function () {});
+                }
+            }
+            twAudioUi();
+        }
+        function twAudioPause() {
+            _twWant = false;
+            if (_twAudio) { try { _twAudio.pause(); } catch (e) {} }
+            twAudioUi();
+        }
+        function twAudioPlayVerse(sura, aya, play) {
+            sura = Math.max(1, Math.min(114, parseInt(sura, 10) || 1));
+            aya = Math.max(1, Math.min(TAJWEED_AYA_COUNT[sura - 1], parseInt(aya, 10) || 1));
+            _twSura = sura; _twAya = aya;
+            twAudioLoad(play !== false);
+        }
+        function twAudioGo(d) {
+            if (!_twSura) { twAudioToggle(); return; }
+            var s = _twSura, a = _twAya + d;
+            if (a < 1) {
+                if (s > 1) { s -= 1; a = TAJWEED_AYA_COUNT[s - 1]; } else { a = 1; }
+            } else if (a > TAJWEED_AYA_COUNT[s - 1]) {
+                if (s < 114) { s += 1; a = 1; } else { a = TAJWEED_AYA_COUNT[s - 1]; }
+            }
+            twAudioPlayVerse(s, a, true);
+            twAudioFollow();
+        }
+        // la page du mushaf suit le verset en cours de recitation
+        function twAudioFollow() {
+            if (!_twSura) return;
+            var scr = document.getElementById('tajweed-screen');
+            if (!scr || scr.offsetParent === null) return;
+            var target = tajweedPair(twPageOfVerse(_twSura, _twAya))[0];
+            if (!target || target === _tajweedPage) return;
+            _twFollowPage = target;
+            tajweedShowPage(target, target > _tajweedPage ? 'next' : 'prev');
+        }
+        // appele quand la page change : si l'utilisateur tourne la page, on repart de sa premiere ayah
+        function twAudioOnPageChange(base) {
+            if (!_twWant || !_twSura) return;
+            if (_twFollowPage) {
+                var wasFollow = (_twFollowPage === base);
+                _twFollowPage = 0;
+                if (wasFollow) return;
+            }
+            var code = twVerseOfPage(base);
+            twAudioPlayVerse(Math.floor(code / 1000), code % 1000, true);
+        }
+        function twAudioToggle() {
+            if (!_twAudio || !_twSura) {
+                var code = twVerseOfPage(_tajweedPage);
+                twAudioPlayVerse(Math.floor(code / 1000), code % 1000, true);
+                twAudioFollow();
+                return;
+            }
+            var a = twAudioEl();
+            if (a.paused) twAudioLoad(true); else twAudioPause();
+            twAudioUi();
+        }
+        function twAudioStop() {
+            if (_twAudio) { try { _twAudio.pause(); } catch (e) {} }
+            _twWant = false; _twShown = false; _twSura = 0; _twAya = 0; _twFollowPage = 0;
+            twAudioUi();
+        }
+        function twAudioSetReciter(id) {
+            if (!id) return;
+            _twRec = id;
+            try { localStorage.setItem('tajweedReciter', id); } catch (e) {}
+            if (_twSura) twAudioLoad(_twWant);
+            twAudioUi();
+        }
+        function twAudioUi() {
+            var a = _twAudio;
+            // « playing » = intention de lecture : evite le clignotement pendant le chargement
+            var playing = !!(_twWant && a && !a.ended);
+            var btn = document.getElementById('tajweed-listen');
+            var bar = document.getElementById('tajweed-audio');
+            var wrap = document.getElementById('tajweed-wrap');
+            var play = document.getElementById('tajweed-a-play');
+            var vs = document.getElementById('tajweed-a-verse');
+            var sel = document.getElementById('tajweed-a-reciter');
+            if (btn) {
+                btn.classList.toggle('on', playing);
+                btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+            }
+            if (bar) {
+                bar.classList.toggle('on', _twShown);
+                bar.setAttribute('aria-hidden', _twShown ? 'false' : 'true');
+            }
+            if (wrap) wrap.classList.toggle('has-audio', _twShown);
+            if (play) {
+                play.textContent = playing ? '❚❚' : '▶';
+                play.title = playing ? 'إيقاف مؤقت' : 'تشغيل';
+                play.setAttribute('aria-label', play.title);
+            }
+            if (vs) vs.textContent = _twSura ? twVerseLabel(_twSura, _twAya) : 'تلاوة';
+            if (sel && sel.value !== _twRec) sel.value = _twRec;
         }
         // ===== مصحف التجويد (lecteur QuranFlash) =====
         var ct = document.getElementById('card-tajweed');
