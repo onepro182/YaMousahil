@@ -1106,6 +1106,14 @@
         .qp-rc .fallback{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:rgba(212,175,55,0.15);color:var(--gold);font-weight:700;font-size:1.4rem;}
         .qp-rc span{font-size:.85rem;text-align:center;color:var(--text-main);font-weight:700;line-height:1.3;}
         #quran-player-modal .qp-player-bar{border:1px solid var(--gold);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:rgba(212,175,55,0.1);flex-shrink:0;}
+        /* barre + lecteur audio sur la meme ligne (Windows) */
+        #quran-player-modal .qp-player-row{display:flex;align-items:center;gap:12px;width:100%;}
+        #quran-player-modal .qp-player-row .qp-player-bar{flex:1;min-width:0;}
+        #quran-player-modal .qp-player-row audio{flex:none;width:300px;height:40px;min-width:0;display:block;border-radius:8px;}
+        @media (max-width:760px){
+            #quran-player-modal .qp-player-row{flex-direction:column;align-items:stretch;gap:8px;}
+            #quran-player-modal .qp-player-row audio{width:100%;height:38px;}
+        }
         #quran-player-modal .qp-player-bar .qp-pbtn{background:var(--gold);color:#0b132b;border:none;border-radius:8px;padding:10px 22px;font-weight:700;cursor:pointer;font-family:var(--font);font-size:1rem;}
         #quran-player-modal .qp-player-bar .qp-sbtn{background:rgba(255,255,255,0.06);color:var(--cream);border:1px solid var(--glass-border);border-radius:8px;padding:10px 18px;font-weight:700;cursor:pointer;font-family:var(--font);}
         #quran-player-modal audio{width:100%;border-radius:8px;display:none;flex-shrink:0;}
@@ -2241,16 +2249,18 @@
                     </div>
                     <h2 class="world-radio-title" style="margin:4px 0 0;">استماع القرآن بصوت أشهر القراء</h2>
                     <p class="world-radio-sub" style="margin:0 0 4px;">اختر القارئ للاستماع القرآن الكريم بجودة عالية.</p>
-                    <div class="qp-player-bar glass-btn" style="flex-wrap:wrap;gap:8px;">
-                        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;flex:1;min-width:220px;">
-                            <label for="qp-surah" style="color:var(--text-dim);font-weight:600;white-space:nowrap;">السورة</label>
-                            <select id="qp-surah" class="qp-surah-select" style="flex:1;min-width:140px;max-width:260px;"><option value="">-- اختر السورة --</option></select>
-                            <button type="button" class="qp-pbtn" id="qp-play-btn">▶ تشغيل</button>
-                            <button type="button" class="qp-sbtn" id="qp-stop-btn">⏹ إيقاف</button>
+                    <div class="qp-player-row">
+                        <div class="qp-player-bar glass-btn" style="flex-wrap:wrap;gap:8px;">
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;flex:1;min-width:220px;">
+                                <label for="qp-surah" style="color:var(--text-dim);font-weight:600;white-space:nowrap;">السورة</label>
+                                <select id="qp-surah" class="qp-surah-select" style="flex:1;min-width:140px;max-width:260px;"><option value="">-- اختر السورة --</option></select>
+                                <button type="button" class="qp-pbtn" id="qp-play-btn">▶ تشغيل</button>
+                                <button type="button" class="qp-sbtn" id="qp-stop-btn">⏹ إيقاف</button>
+                            </div>
+                            <select id="qp-reciter" style="display:none;"><option value="">-- اختر القارئ --</option></select>
                         </div>
-                        <select id="qp-reciter" style="display:none;"><option value="">-- اختر القارئ --</option></select>
+                        <audio id="qp-audio" controls></audio>
                     </div>
-                    <audio id="qp-audio" controls></audio>
                     <div class="qp-reciters" id="qp-reciters-grid"></div>
                 </div>
             </div>
@@ -3574,7 +3584,7 @@ var gender = 'male';
         document.getElementById('qp-play-btn').onclick = async () => {
             const surah = document.getElementById('qp-surah').value;
             if (!qpSelected || !surah) { alert('الرجاء اختيار القارئ والسورة'); return; }
-            qpAudio.style.display = 'block';
+            qpAudio.style.display = 'inline-block';
             try {
                 if (qpSelected.mq) {
                     // Sourate complète (fichier unique) via mp3quran.net
