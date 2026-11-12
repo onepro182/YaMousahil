@@ -1360,11 +1360,10 @@
         }
         /* masque : cache le bloc du lecteur (titre / autres livres / numero de page) */
         .tajweed-mask{
-            position:absolute;top:51px;right:0;z-index:13;width:190px;height:88px;
-            background:#221d23;border-radius:0 0 0 16px;border-left:1px solid rgba(255,255,255,.06);
-            display:block;
+            position:absolute;top:51px;left:14px;z-index:13;width:auto;height:auto;
+            background:transparent;border:0;border-radius:0;box-shadow:none;display:block;
         }
-        .tajweed-mask .tajweed-ico{position:absolute;left:14px;bottom:14px;}
+        .tajweed-mask .tajweed-ico{position:static;}
         .tajweed-ico{
             width:34px;height:34px;flex:none;border-radius:9px;border:1px solid rgba(255,255,255,.10);
             background:rgba(255,255,255,.05);color:#e8e2cf;font-size:1rem;cursor:pointer;line-height:1;
@@ -1857,7 +1856,7 @@
             <!-- QURAN RADIO SCREEN -->
             <div id="quranradio-screen">
                 <header class="header-prayers">
-                    <button type="button" class="back-btn glass-btn" id="btn-back-from-quranradio">‹ الرئيسية</button>
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-quranradio" data-qm-back>‹ الرئيسية</button>
                     <div style="width:80px;"></div>
                 </header>
                 <h2 class="world-radio-title">أهم إذاعات القرآن الكريم في العالم</h2>
@@ -4707,9 +4706,7 @@ var gender = 'male';
             var tbar = document.querySelector('.tajweed-topbar');
             function placeMask() {
                 if (!mask || !tbar) return;
-                var h = tbar.offsetHeight || 51;
-                mask.style.top = h + 'px';
-                mask.style.height = Math.max(60, 136 - h) + 'px';
+                mask.style.top = (tbar.offsetHeight || 51) + 'px';
             }
             placeMask();
             window.addEventListener('resize', placeMask);
@@ -5379,7 +5376,7 @@ window._qmMenuShow = function () {
     if (typeof navHome !== 'undefined' && navHome) navHome.classList.remove('active');
 };
 window._qmSyncLabels = function () {
-    var defs = { 'btn-back-from-islamiyat': '‹ العودة', 'btn-back-from-muhammadi': '‹ الرئيسية', 'btn-back-from-mushaf': '‹ الرئيسية', 'tajweed-back': '‹ العودة' };
+    var defs = { 'btn-back-from-islamiyat': '‹ العودة', 'btn-back-from-muhammadi': '‹ الرئيسية', 'btn-back-from-mushaf': '‹ الرئيسية', 'tajweed-back': '‹ العودة', 'btn-back-from-quranradio': '‹ الرئيسية' };
     for (var id in defs) {
         var b = document.getElementById(id);
         if (b) b.textContent = window._qmFromMenu ? '‹ العودة' : defs[id];
@@ -5428,7 +5425,14 @@ var tajweedScreen = document.getElementById('tajweed-screen');
             var k = b.getAttribute('data-q');
             window._qmFromMenu = true;
             if (typeof window._qmSyncLabels === 'function') window._qmSyncLabels();
-            var src = { mushaf: 'card-surah-kahf', tajweed: 'card-tajweed', read: 'card-quran-read', play: 'card-quran-player' }[k];
+            if (k === 'play') {
+                // «أهم إذاعات القرآن الكريم في العالم »
+                try { if (typeof initQuranStationsPage === 'function') initQuranStationsPage(); } catch (e) {}
+                var rs = document.getElementById('quranradio-screen');
+                if (rs && typeof showScreen === 'function') showScreen(rs);
+                return;
+            }
+            var src = { mushaf: 'card-surah-kahf', tajweed: 'card-tajweed', read: 'card-quran-read' }[k];
             if (src) {
                 var c = document.getElementById(src);
                 if (c) c.click();
