@@ -597,6 +597,8 @@
         .tasbih-embedded #currentDhikrArabic{display:block;direction:rtl;font-family:var(--font-quran);font-size:22px;font-weight:bold;color:#f4ecd8;}
         .tasbih-embedded .fullscreen-btn{width:100%;min-height:34px;border:1px solid var(--tsb-border);border-radius:12px;background:rgba(255,255,255,0.06);color:var(--tsb-green);font-size:18px;cursor:pointer;}
         .tasbih-embedded .stage{width:100%;max-width:330px;margin:auto;direction:ltr;}
+        /* le bouton « تفعيل قراءة الذِّكر صوتياً » est masque (correction orthographique et performance) */
+        .tasbih-embedded .tasbih-voice-btn{display:none !important;}
         .tasbih-embedded .stage svg{display:block;width:100%;height:auto;overflow:visible;}
         body.is-mobile .tasbih-embedded .stage{max-width:300px;}
         /* compteur : style identique a l'image (Amiri creme, encadrement bas-droite) */
@@ -1249,6 +1251,14 @@
         .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
             /* تصفح القرآن - mushaf viewer (mp3quran mushaf2) */
         #mushaf-screen{gap:10px;}
+        /* مصحف التجويد الملون (archive.org) */
+        #tajweed-screen{display:none;flex-direction:column;height:100%;width:100%;gap:12px;}
+        #tajweed-screen .header-prayers{flex-shrink:0;}
+        .tajweed-viewport{
+            flex:1;min-height:70vh;height:100%;position:relative;overflow:hidden;
+            border:1px solid var(--glass-border);border-radius:14px;background:#fff;
+        }
+        .tajweed-viewport iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;}
         .mushaf-viewport{
             flex:1;min-height:65vh;height:100%;position:relative;
             border:1px solid var(--glass-border);border-radius:14px;overflow:hidden;background:#fff;
@@ -1322,7 +1332,24 @@
                                 <div class="app-card glass-btn" tabindex="0" id="card-surah-kahf">
                                     <img class="app-icon" src="https://s.cafebazaar.ir/images/icons/com.alquransharifmp3-38c31d1d-cc94-4b82-af78-1941aa9abed3_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize" alt="المصحف المصور">
                                     <span class="app-name">المصحف المصور</span></div>
-                                <div class="app-card glass-btn" tabindex="0" id="card-quran-read">
+                                <div class="app-card glass-btn" tabindex="0" id="card-tajweed" title="المصحف التجويد الملون برواية ورش">
+                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="مصحف التجويد">
+                        <defs>
+                            <linearGradient id="twBg" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fc2a0"/><stop offset="0.5" stop-color="#0e7460"/><stop offset="1" stop-color="#053028"/></linearGradient>
+                            <linearGradient id="twPage" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf5"/><stop offset="1" stop-color="#e8dfc6"/></linearGradient>
+                        </defs>
+                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#twBg)"/>
+                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                        <path d="M32 20 C27 16 20 15 12 16 v30 c8 -1 15 0 20 4 c5 -4 12 -5 20 -4 V16 c-8 -1 -15 0 -20 4 z" fill="url(#twPage)" stroke="#c9b98a" stroke-width="1"/>
+                        <g stroke-linecap="round" stroke-width="2">
+                            <path d="M16 24 h12" stroke="#2e8b57"/><path d="M16 29 h12" stroke="#c0392b"/><path d="M16 34 h9" stroke="#1f6fb2"/><path d="M16 39 h11" stroke="#2e8b57"/>
+                            <path d="M36 24 h12" stroke="#c0392b"/><path d="M36 29 h12" stroke="#1f6fb2"/><path d="M36 34 h12" stroke="#2e8b57"/><path d="M36 39 h8" stroke="#c0392b"/>
+                        </g>
+                        <path d="M32 20 v30" stroke="#a8862c" stroke-width="1.2"/>
+                    </svg>
+                    <span class="app-name">مصحف التجويد</span>
+                </div>
+                <div class="app-card glass-btn" tabindex="0" id="card-quran-read">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="قراءة القرآن الكريم">
                                         <defs>
                                             <linearGradient id="q3dReadBg" x1="0" y1="0" x2="0.35" y2="1">
@@ -2060,6 +2087,20 @@
                     <iframe id="mushaf-qf-frame" src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" data-src="https://app.quranflash.com/book/Warsh1?ar#/reader/chapter/3" title="المصحف المصور - مصحف ورش (QuranFlash)" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
+            </div>
+
+            <!-- TAGEED MUSHAF (مصحف التجويد الملون برواية ورش) -->
+            <div id="tajweed-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-tajweed">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);font-size:1.5rem;">المصحف التجويد الملون برواية ورش</h1>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="tajweed-viewport">
+                    <iframe id="tajweed-frame" src="https://archive.org/embed/moshaf-tajwed-warash" data-src="https://archive.org/embed/moshaf-tajwed-warash" title="المصحف التجويد الملون برواية ورش — دار المعرفة" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
             </div>
 
             <!-- MOWAKIT FM6OA SCREEN (التوقيت الرسمي للمملكة المغربية) -->
@@ -4155,6 +4196,23 @@ var gender = 'male';
             if (ms && typeof showScreen==='function') showScreen(ms);
         };
 
+        // ===== مصحف التجويد الملون برواية ورش (archive.org) =====
+        var ct = document.getElementById('card-tajweed');
+        if (ct) ct.onclick = function () {
+            if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
+            if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
+            var tf = document.getElementById('tajweed-frame');
+            if (tf && tf.dataset && tf.dataset.src && (!tf.src || tf.src === 'about:blank' || tf.getAttribute('src') === 'about:blank')) tf.src = tf.dataset.src;
+            var ts = document.getElementById('tajweed-screen');
+            if (ts && typeof showScreen === 'function') showScreen(ts);
+            if (navHome) navHome.classList.remove('active');
+        };
+        var bt = document.getElementById('btn-back-from-tajweed');
+        if (bt) bt.onclick = function () {
+            if (homeScreen && typeof showScreen === 'function') showScreen(homeScreen);
+            if (navHome) navHome.classList.add('active');
+        };
+
         // RADIO
         const STATIONS = { mohammed6: { name:'إذاعة محمد السادس', url:'https://radoxo.com/stream/eb/radio_med_VI.m3u8' }, cairo: { name:'إذاعة القرآن - القاهرة', url:'https://stream.radiojar.com/8s5u5tpdtwzuv' } };
         let hls = null; let radioAudio = new Audio(); let radioPlaying = false; let radioInterval = null;
@@ -4375,7 +4433,7 @@ var gender = 'male';
         async function loadSurahIslamiyat(num, name, meta) {
             const textContainer = document.getElementById('isl-quran-body'); const titleEl = document.getElementById('current-surah-title'); const metaEl = document.getElementById('current-surah-meta');
             titleEl.textContent = name; metaEl.innerHTML = `<span class="meta-badge">${meta.type}</span> · <span>السورة ${num}</span> · <span>آيات ${meta.ayahs}</span>`;
-            textContainer.innerHTML = '<div style="color:var(--gold); text-align:center; font-size:1.5rem;">﷽ جاري التحميل...</div>';
+            textContainer.innerHTML = '<div style="color:var(--gold); text-align:center; font-size:1.5rem;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ جاري التحميل...</div>';
             try {
                 let verses = null;
                 if (window._quranWarshMode) verses = await quranReadWarshVerses(num);
@@ -4385,7 +4443,7 @@ var gender = 'male';
                     verses = data.data.ayahs.map(a => ({ numberInSurah: a.numberInSurah, text: a.text }));
                 }
                 islQuranAyahs = verses; let html = ''; const bm = getIslBookmark();
-                if (parseInt(num) !== 1 && parseInt(num) !== 9) html += '<div style="font-size:2.5rem; color:var(--gold); margin-bottom:20px;">﷽</div>';
+                if (parseInt(num) !== 1 && parseInt(num) !== 9) html += '<div style="font-size:2.5rem; color:var(--gold); margin-bottom:20px;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>';
                 verses.forEach((a) => { let spanClass = "ayah-span"; if (num === 1 && a.numberInSurah === 2) spanClass += " ayah-highlight"; if (bm && bm.s === parseInt(num) && bm.a === a.numberInSurah) spanClass += " ayah-bookmark"; html += `<span class="${spanClass}" id="isl-ayah-${a.numberInSurah}">${a.text} <span class="ayah-num-circle">${a.numberInSurah}</span></span> `; });
                 textContainer.innerHTML = html;
                 if (islTargetAyah) { setTimeout(() => { const el = document.getElementById('isl-ayah-' + islTargetAyah); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('ayah-reading'); setTimeout(() => el.classList.remove('ayah-reading'), 2000); } }, 500); } else textContainer.scrollTop = 0;
@@ -5578,7 +5636,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
