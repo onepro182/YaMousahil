@@ -110,12 +110,13 @@
         body.is-mobile .home-action-row .app-icon{width:24px;height:24px;}
         body.is-mobile .home-action-row .app-name{font-size:.68rem;}
         /* ===== ligne المفضلة : boutons a la taille EXACTE des boutons du bas (Meteo) ===== */
-        .fav-grid{grid-auto-rows:72px;}
-        .fav-grid .app-card{height:100%;min-height:72px;min-width:0;padding:8px 6px;gap:4px;justify-content:center;align-items:center;border-radius:12px;}
+        /* lignes auto : les titres de section ne prennent plus une ligne de 72px */
+        .fav-grid{grid-auto-rows:auto;}
+        .fav-grid .app-card{height:72px;min-height:72px;min-width:0;padding:8px 6px;gap:4px;justify-content:center;align-items:center;border-radius:12px;}
         .fav-grid .app-icon{width:28px;height:28px;object-fit:contain;}
         .fav-grid .app-name{font-size:.72rem;line-height:1.25;text-align:center;word-break:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-width:0;}
-        @media (max-width:700px){ .fav-grid{grid-auto-rows:68px;} .fav-grid .app-card{min-height:68px;} }
-        @media (max-width:480px){ .fav-grid{grid-auto-rows:68px;} }
+        @media (max-width:700px){ .fav-grid .app-card{height:68px;min-height:68px;} }
+        @media (max-width:480px){ .fav-grid .app-card{height:68px;min-height:68px;} }
         body.is-mobile .fav-grid .app-icon{width:24px;height:24px;}
         body.is-mobile .fav-grid .app-name{font-size:.68rem;}
         /* libelles des boutons du bas : 1 ligne tronquee comme les horaires (التالية / الظهر) */
@@ -1397,6 +1398,8 @@
         .tajweed-ico:active{background:rgba(212,175,55,.22);}
         @media (max-width:430px){ .tajweed-title{display:none;} .tajweed-ico.wide{width:34px;padding:0;font-size:0;} .tajweed-ico.wide::before{content:"📄";font-size:1rem;} }
         .tajweed-ico.on{background:rgba(212,175,55,.3);border-color:var(--gold);color:#ffeeb0;}
+        .tajweed-ico svg{width:16px;height:16px;display:block;}
+        .tajweed-ico.mark-on{background:rgba(212,175,55,.3);border-color:var(--gold);color:#ffeeb0;}
         .tajweed-title{flex:1;text-align:center;font-family:var(--font-quran);font-size:1rem;color:#f0e7cd;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
         .tajweed-nav{
             flex:none;width:38px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.10);
@@ -1421,11 +1424,26 @@
         }
         .tajweed-sheet.open{transform:none;}
         @media (max-width:520px){ .tajweed-sheet{width:100%;max-width:100%;} }
-        /* proxy invisible : le bouton «الفهرس » du lecteur ouvre NOTRE index */
-        .tajweed-proxy{
-            position:absolute;right:0;bottom:0;width:170px;height:88px;z-index:13;
-            background:transparent;border:0;padding:0;cursor:pointer;
+        /* l'ancien proxy ne sert plus : c'est la barre du bas qui couvre le pied du lecteur */
+        .tajweed-proxy{display:none !important;}
+        /* barre du bas : recouvre EXACTEMENT la barre d'onglets du lecteur QuranFlash
+           (الفهرس / تفسير / ترجمة / تلاوة / الإعدادات) -> l'index du lecteur ne peut plus s'ouvrir */
+        .tajweed-bottombar{
+            position:absolute;left:0;right:0;bottom:0;height:58px;z-index:13;
+            display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;
+            background:linear-gradient(180deg,rgba(9,22,18,.99),rgba(6,17,14,.99));
+            border-top:1px solid rgba(212,175,55,.28);
         }
+        .twb-btn{
+            height:36px;min-width:38px;padding:0 12px;border-radius:10px;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;gap:6px;
+            background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);
+            color:#e8e2cf;font-family:var(--font);font-weight:700;font-size:.9rem;line-height:1;
+        }
+        .twb-btn:active{background:rgba(212,175,55,.25);}
+        .twb-btn.on{background:rgba(212,175,55,.3);border-color:var(--gold);color:#ffeeb0;}
+        .twb-btn svg{width:16px;height:16px;display:block;}
+        .twb-nav{font-size:1.35rem;padding:0 14px;}
         .tajweed-sheet-head{
             display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
             min-height:136px;padding:16px 12px 10px;
@@ -1658,7 +1676,7 @@
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
                                     <span class="app-name">📻 إذاعات القرآن</span>
                                 </div>
-                                <div class="section-title" style="grid-column:1/-1;margin:10px 0 0;">إذاعات وبث مباشر</div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">إذاعات وبث مباشر</div>
                                 <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
                                     <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
                                     <span class="app-name">إذاعات مغربية</span>
@@ -1666,7 +1684,7 @@
                                     <img class="app-icon" src="https://makkahlive.org/logo.webp" alt="بث مباشر" style="border-radius:8px;">
                                     <span class="app-name">📺 بث مباشر</span>
                                 </div>
-                                <div class="section-title" style="grid-column:1/-1;margin:10px 0 0;">خدمات</div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">خدمات</div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-sihatar" title="دليل الخدمات الصحية">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="صحتي">
                                         <defs>
@@ -2158,23 +2176,6 @@
                             <span class="sihatar-mtxt"><b>المصحف المحمدي</b></span>
                             <span class="sihatar-mcount">📖</span>
                         </button>
-                        <button type="button" class="sihatar-menu glass-btn" data-q="dua">
-                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="دعاء ختم القرآن">
-                                    <defs>
-                                        <linearGradient id="qmF1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#7a5cc4"/><stop offset="0.5" stop-color="#3c2a72"/><stop offset="1" stop-color="#170f2e"/></linearGradient>
-                                        <linearGradient id="qmF2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e6e2f2"/></linearGradient>
-                                        <linearGradient id="qmF3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
-                                    </defs>
-                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmF1)"/>
-                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
-                                    <path d="M32 30 C27 26 20 25 13 26 v22 c7 -1 14 0 19 4 c5 -4 12 -5 19 -4 V26 c-7 -1 -14 0 -19 4 z" fill="url(#qmF2)" stroke="#b9aede" stroke-width="1"/>
-                                    <path d="M32 30 v22" stroke="#8a76c0" stroke-width="1.1"/>
-                                    <g stroke="#6a5aa0" stroke-width="1.5" stroke-linecap="round"><path d="M17 34h11"/><path d="M17 39h11"/><path d="M36 34h11"/><path d="M36 39h8"/></g>
-                                    <path d="M32 6 l3 7.4 8.1 1.2 -5.9 5.7 1.4 8.1 -6.6 -3.6 -6.6 3.6 1.4 -8.1 -5.9 -5.7 8.1 -1.2 z" fill="url(#qmF3)"/>
-                                </svg></span>
-                            <span class="sihatar-mtxt"><b>دعاء ختم القرآن</b><i>Dua khatmul Quran</i></span>
-                            <span class="sihatar-mcount">🤲</span>
-                        </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="read">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="قراءة القرآن الكريم">
                                     <defs>
@@ -2211,6 +2212,23 @@
                                 </svg></span>
                             <span class="sihatar-mtxt"><b>استماع إلى القرآن الكريم</b><i>Écoute du Coran</i></span>
                             <span class="sihatar-mcount">▶</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="dua">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="دعاء ختم القرآن">
+                                    <defs>
+                                        <linearGradient id="qmF1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#7a5cc4"/><stop offset="0.5" stop-color="#3c2a72"/><stop offset="1" stop-color="#170f2e"/></linearGradient>
+                                        <linearGradient id="qmF2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e6e2f2"/></linearGradient>
+                                        <linearGradient id="qmF3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmF1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 30 C27 26 20 25 13 26 v22 c7 -1 14 0 19 4 c5 -4 12 -5 19 -4 V26 c-7 -1 -14 0 -19 4 z" fill="url(#qmF2)" stroke="#b9aede" stroke-width="1"/>
+                                    <path d="M32 30 v22" stroke="#8a76c0" stroke-width="1.1"/>
+                                    <g stroke="#6a5aa0" stroke-width="1.5" stroke-linecap="round"><path d="M17 34h11"/><path d="M17 39h11"/><path d="M36 34h11"/><path d="M36 39h8"/></g>
+                                    <path d="M32 6 l3 7.4 8.1 1.2 -5.9 5.7 1.4 8.1 -6.6 -3.6 -6.6 3.6 1.4 -8.1 -5.9 -5.7 8.1 -1.2 z" fill="url(#qmF3)"/>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>دعاء ختم القرآن</b></span>
+                            <span class="sihatar-mcount">🤲</span>
                         </button>
                     </div>
                 </div>
@@ -2475,6 +2493,7 @@
                     <div class="tajweed-topbar">
                         <button type="button" class="tajweed-back-btn" id="tajweed-back" data-qm-back>‹ العودة</button>
                         <button type="button" class="tajweed-ico wide" id="tajweed-index-btn" aria-label="الفهرس" title="الفهرس">الفهرس</button>
+                        <button type="button" class="tajweed-ico" id="tajweed-bm" aria-label="علامة مرجعية" title="علامة مرجعية" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg></button>
                         <span class="tajweed-title">مصحف التجويد برواية ورش</span>
                         <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav" id="tajweed-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
@@ -2495,8 +2514,15 @@
 
                         <div class="tajweed-sheet-body" id="tajweed-sheet-body"></div>
                     </div>
+                    <div class="tajweed-bottombar" id="tajweed-bottombar">
+                        <button type="button" class="twb-btn" id="twb-index" aria-label="الفهرس" title="الفهرس">الفهرس</button>
+                        <button type="button" class="twb-btn" id="twb-bm" aria-label="علامة مرجعية" title="علامة مرجعية" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg></button>
+                        <button type="button" class="twb-btn twb-nav" id="twb-next" aria-label="الصفحة التالية" title="التالي">‹</button>
+                        <button type="button" class="twb-btn twb-nav" id="twb-prev" aria-label="الصفحة السابقة" title="السابق">›</button>
+                        <button type="button" class="twb-btn" id="twb-fs" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
+                    </div>
                     <div class="tajweed-veil" id="tajweed-veil"></div>
-                    <button type="button" class="tajweed-proxy" id="tajweed-proxy" aria-label="الفهرس" title="الفهرس"></button>
+                    <button type="button" class="tajweed-proxy" id="tajweed-proxy" aria-label="الفهرس" title="الفهرس" hidden></button>
                 </div>
             </div>
 
@@ -4624,6 +4650,7 @@ var gender = 'male';
             var fr = document.getElementById('tajweed-frame');
             if (!fr) return;
             fr.src = TAJWEED_BASE_URL + Math.max(1, Math.min(604, parseInt(chapter, 10) || 1));
+            setTimeout(tajweedSyncBookmark, 400);
         }
         // aller a la sourate (index 1..114) en passant par sa page de debut
         function tajweedGotoSurat(index) {
@@ -4644,6 +4671,17 @@ var gender = 'male';
         }
         function tajweedMarks() {
             try { return JSON.parse(localStorage.getItem('tajweedMarks') || '[]'); } catch (e) { return []; }
+        }
+        function tajweedSyncBookmark() {
+            var on = tajweedMarks().indexOf(tajweedPage()) >= 0;
+            ['tajweed-bm', 'twb-bm'].forEach(function (id) {
+                var b = document.getElementById(id);
+                if (!b) return;
+                b.classList.toggle('mark-on', on);
+                b.classList.toggle('on', on);
+                b.setAttribute('aria-pressed', on ? 'true' : 'false');
+                b.setAttribute('title', on ? 'إزالة العلامة المرجعية' : 'علامة مرجعية');
+            });
         }
         function tajweedToggleMark() {
             var marks = tajweedMarks(), c = tajweedPage(), i = marks.indexOf(c);
@@ -4749,6 +4787,20 @@ var gender = 'male';
             };
             var indexBtn = document.getElementById('tajweed-index-btn');
             if (indexBtn) indexBtn.onclick = function () { tajweedOpenSheet(_tajweedTab); };
+            // signet : marque / demarque la page courante (onglet «علامات»)
+            var bm = document.getElementById('tajweed-bm');
+            if (bm) bm.onclick = function (e) {
+                e.preventDefault(); e.stopPropagation();
+                tajweedToggleMark();
+                tajweedSyncBookmark();
+                tajweedToast(tajweedMarks().indexOf(tajweedPage()) >= 0 ? '★ تمت إضافة العلامة المرجعية' : 'تمت إزالة العلامة المرجعية');
+                var sh = document.getElementById('tajweed-sheet');
+                if (sh && sh.classList.contains('open')) tajweedRenderList();
+            };
+            tajweedSyncBookmark();
+            // mise a jour du signet quand le lecteur change de page (retour au premier plan)
+            window.addEventListener('focus', tajweedSyncBookmark);
+            document.addEventListener('visibilitychange', function () { if (!document.hidden) tajweedSyncBookmark(); });
             // le masque doit commencer exactement sous la barre du haut
             var mask = document.getElementById('tajweed-mask');
             var tbar = document.querySelector('.tajweed-topbar');
@@ -4763,6 +4815,24 @@ var gender = 'male';
             // le bouton «الفهرس » du lecteur QuranFlash ouvre notre index (sans «مصاحف أخرى »)
             var proxy = document.getElementById('tajweed-proxy');
             if (proxy) proxy.onclick = function (e) { e.preventDefault(); e.stopPropagation(); tajweedOpenSheet(_tajweedTab); };
+            // ---- barre du bas (elle recouvre les onglets du lecteur) ----
+            var bIdx = document.getElementById('twb-index');
+            if (bIdx) bIdx.onclick = function () { tajweedOpenSheet(_tajweedTab); };
+            var bBm = document.getElementById('twb-bm');
+            if (bBm) bBm.onclick = function (e) {
+                e.preventDefault(); e.stopPropagation();
+                tajweedToggleMark(); tajweedSyncBookmark();
+                tajweedToast(tajweedMarks().indexOf(tajweedPage()) >= 0 ? '★ تمت إضافة العلامة المرجعية' : 'تمت إزالة العلامة المرجعية');
+                var sh2 = document.getElementById('tajweed-sheet');
+                if (sh2 && sh2.classList.contains('open')) tajweedRenderList();
+            };
+            var bNext2 = document.getElementById('twb-next');
+            var bPrev2 = document.getElementById('twb-prev');
+            if (bNext2) bNext2.onclick = function () { tajweedCmd('next'); setTimeout(tajweedSyncBookmark, 700); };
+            if (bPrev2) bPrev2.onclick = function () { tajweedCmd('prev'); setTimeout(tajweedSyncBookmark, 700); };
+            var bFs = document.getElementById('twb-fs');
+            if (bFs) bFs.onclick = function () { if (fs) fs.click(); };
+            tajweedSyncBookmark();
             var closeS = document.getElementById('tajweed-sheet-close');
             if (closeS) closeS.onclick = function () { tajweedCloseSheet(); };
             if (veil) veil.onclick = function () { tajweedCloseSheet(); };
@@ -4771,8 +4841,8 @@ var gender = 'male';
             });
             var bPrev = document.getElementById('tajweed-prev');
             var bNext = document.getElementById('tajweed-next');
-            if (bPrev) bPrev.onclick = function () { tajweedCmd('prev'); };
-            if (bNext) bNext.onclick = function () { tajweedCmd('next'); };
+            if (bPrev) bPrev.onclick = function () { tajweedCmd('prev'); setTimeout(tajweedSyncBookmark, 700); };
+            if (bNext) bNext.onclick = function () { tajweedCmd('next'); setTimeout(tajweedSyncBookmark, 700); };
             // marquage : clic long sur la pastille
             var pill = document.getElementById('tajweed-pill-txt');
             if (pill && pill.parentElement) {
