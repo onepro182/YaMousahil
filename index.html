@@ -1384,11 +1384,8 @@
             background:#06110e;border-bottom:1px solid rgba(255,255,255,.07);
         }
         /* masque : cache le bloc du lecteur (titre / autres livres / numero de page) */
-        /* cache le bloc du lecteur (titre / مصاحف أخرى / رقم الصفحة / couverture) */
-        .tajweed-mask{
-            position:absolute;top:51px;right:0;z-index:13;width:270px;height:86px;
-            background:linear-gradient(180deg,rgba(9,22,18,.98),rgba(6,17,14,.98));border-left:1px solid rgba(212,175,55,.22);display:block;
-        }
+        /* le masque n'est plus utilise : le menu du lecteur n'est jamais ouvert */
+        .tajweed-mask{display:none !important;}
         /* bouton الفهرس dans la barre du haut */
         .tajweed-ico.wide{width:auto;padding:0 11px;font-size:.85rem;font-family:var(--font);font-weight:700;}
         .tajweed-ico{
@@ -1426,7 +1423,7 @@
         @media (max-width:520px){ .tajweed-sheet{width:100%;max-width:100%;} }
         /* proxy invisible : le bouton «الفهرس » du lecteur ouvre NOTRE index */
         .tajweed-proxy{
-            position:absolute;right:0;bottom:0;width:140px;height:76px;z-index:13;
+            position:absolute;right:0;bottom:0;width:170px;height:88px;z-index:13;
             background:transparent;border:0;padding:0;cursor:pointer;
         }
         .tajweed-sheet-head{
