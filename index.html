@@ -177,7 +177,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -1349,6 +1349,31 @@
         .mhd-thumb img{width:100%;display:block;}
         .mhd-thumb span{display:block;text-align:center;font-size:.7rem;color:var(--text-dim);padding:3px 0;background:rgba(0,0,0,.35);}
         .mhd-thumb.active{border-color:var(--gold);box-shadow:0 0 0 1px rgba(212,175,55,.5);}
+
+        /* ===== دعاء ختم القرآن (importé de surahquran.com) ===== */
+        #dua-khatm-screen{display:none;flex-direction:column;height:100vh;height:100dvh;max-height:100dvh;width:100%;overflow:hidden;gap:0;position:relative;}
+        .dua-wrap{flex:1;min-height:0;overflow-y:auto;padding:10px 12px 30px;display:flex;flex-direction:column;gap:12px;}
+        .dua-card{
+            background:linear-gradient(160deg,rgba(12,46,34,.96),rgba(9,32,24,.96));
+            border:1px solid rgba(212,175,55,.35);border-radius:18px;padding:18px 16px;
+            box-shadow:0 10px 30px rgba(0,0,0,.35);
+        }
+        .dua-card h3{
+            font-family:var(--font-quran);font-size:1.35rem;color:var(--gold-light);
+            text-align:center;margin:0 0 12px;
+        }
+        .dua-text{font-family:var(--font-quran);font-size:1.2rem;line-height:2.3;color:#f3ecd9;text-align:center;direction:rtl;}
+        .dua-text p{margin:0 0 16px;}
+        .dua-text p:last-child{margin-bottom:0;}
+        .dua-text .dua-mark{color:var(--gold);font-size:1.05em;}
+        .dua-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+        .dua-btn{
+            padding:9px 16px;border-radius:12px;background:rgba(212,175,55,.14);
+            border:1px solid rgba(212,175,55,.45);color:var(--gold-light);
+            font-family:var(--font);font-weight:700;font-size:.88rem;cursor:pointer;
+        }
+        .dua-btn:active{background:rgba(212,175,55,.3);}
+        .dua-src{margin:0;text-align:center;font-size:.75rem;color:var(--text-dim);}
         /* ===== مصحف التجويد : lecteur QuranFlash + barres de controle ===== */
         #tajweed-screen{display:none;flex-direction:column;height:100%;width:100%;overflow:hidden;gap:0;}
         .tajweed-frame-wrap{position:relative;flex:1;min-height:0;background:#0d1b17;overflow:hidden;}
@@ -2137,6 +2162,23 @@
                             <span class="sihatar-mtxt"><b>المصحف المحمدي</b></span>
                             <span class="sihatar-mcount">📖</span>
                         </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="dua">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="دعاء ختم القرآن">
+                                    <defs>
+                                        <linearGradient id="qmF1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#7a5cc4"/><stop offset="0.5" stop-color="#3c2a72"/><stop offset="1" stop-color="#170f2e"/></linearGradient>
+                                        <linearGradient id="qmF2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e6e2f2"/></linearGradient>
+                                        <linearGradient id="qmF3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmF1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 30 C27 26 20 25 13 26 v22 c7 -1 14 0 19 4 c5 -4 12 -5 19 -4 V26 c-7 -1 -14 0 -19 4 z" fill="url(#qmF2)" stroke="#b9aede" stroke-width="1"/>
+                                    <path d="M32 30 v22" stroke="#8a76c0" stroke-width="1.1"/>
+                                    <g stroke="#6a5aa0" stroke-width="1.5" stroke-linecap="round"><path d="M17 34h11"/><path d="M17 39h11"/><path d="M36 34h11"/><path d="M36 39h8"/></g>
+                                    <path d="M32 6 l3 7.4 8.1 1.2 -5.9 5.7 1.4 8.1 -6.6 -3.6 -6.6 3.6 1.4 -8.1 -5.9 -5.7 8.1 -1.2 z" fill="url(#qmF3)"/>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>دعاء ختم القرآن</b><i>Dua khatmul Quran</i></span>
+                            <span class="sihatar-mcount">🤲</span>
+                        </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="read">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="قراءة القرآن الكريم">
                                     <defs>
@@ -2211,6 +2253,30 @@
                         <button type="button" class="mhd-btn" id="mhd-sheet-close" aria-label="إغلاق">✕</button>
                     </div>
                     <div class="mhd-thumbs" id="mhd-thumbs"></div>
+                </div>
+            </div>
+
+            <!-- ================= DUA KHATM (دعاء ختم القرآن) SCREEN ================= -->
+            <div id="dua-khatm-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-dua" data-qm-back>‹ العودة</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">دعاء ختم القرآن الكريم</h1>
+                        <p>الدعاء المأثور عند إتمام تلاوة القرآن الكريم — بنصّه الكامل مشكولاً</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="dua-wrap">
+                    <div class="dua-card">
+                        <h3>﴿ دعاء ختم القرآن الكريم ﴾</h3>
+                        <div class="dua-text" id="dua-khatm-text"></div>
+                        <div class="dua-tools">
+                            <button type="button" class="dua-btn" id="dua-copy">📋 نسخ الدعاء</button>
+                            <button type="button" class="dua-btn" id="dua-share">📤 مشاركة</button>
+                            <button type="button" class="dua-btn" id="dua-size">🔎 تكبير / تصغير</button>
+                        </div>
+                    </div>
+                    <p class="dua-src">المصدر : surahquran.com — Dua khatmul Quran</p>
                 </div>
             </div>
 
@@ -5178,7 +5244,7 @@ var gender = 'male';
         }
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
         try { [].slice.call(document.querySelectorAll('[id$="-screen"]')).forEach(function (el) { if (el !== screenToShow) el.style.display = 'none'; }); } catch (e) {} }
 
 
@@ -5360,6 +5426,77 @@ function mmBuildThumbs() {
 })();
 
 
+
+// ===== دعاء ختم القرآن (données importées de surahquran.com) =====
+var DUA_KHATM = [
+        { t: "اللَّهُمَّ ارْحَمْنِي بالقُرْءَانِ وَاجْعَلهُ لِي إِمَاماً وَنُوراً وَهُدًى وَرَحْمَةً ۞" },
+        { t: "اللَّهُمَّ ذَكِّرْنِي مِنْهُ مَانَسِيتُ وَعَلِّمْنِي مِنْهُ مَاجَهِلْتُ وَارْزُقْنِي تِلاَوَتَهُ آنَاءَ اللَّيْلِ وَأَطْرَافَ النَّهَارِ وَاجْعَلْهُ لِي حُجَّةً يَارَبَّ العَالَمِينَ ۞" },
+        { t: "اللَّهُمَّ أَصْلِحْ لِي دِينِي الَّذِي هُوَ عِصْمَةُ أَمْرِي وَأَصْلِحْ لِي دُنْيَايَ الَّتِي فِيهَا مَعَاشِي وَأَصْلِحْ لِي آخِرَتِي الَّتِي فِيهَا مَعَادِي وَاجْعَلِ الحَيَاةَ زِيَادَةً لِي فِي كُلِّ خَيْرٍ وَاجْعَلِ المَوْتَ رَاحَةً لِي مِنْ كُلِّ شَرٍّ ۞" },
+        { t: "اللَّهُمَّ اجْعَلْ خَيْرَ عُمْرِي آخِرَهُ وَخَيْرَ عَمَلِي خَوَاتِمَهُ وَخَيْرَ أَيَّامِي يَوْمَ أَلْقَاكَ فِيهِ ۞" },
+        { t: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِيشَةً هَنِيَّةً وَمِيتَةً سَوِيَّةً وَمَرَدًّا غَيْرَ مُخْزٍ وَلاَ فَاضِحٍ ۞" },
+        { t: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ المَسْأَلةِ وَخَيْرَ الدُّعَاءِ وَخَيْرَ النَّجَاحِ وَخَيْرَ العِلْمِ وَخَيْرَ العَمَلِ وَخَيْرَ الثَّوَابِ وَخَيْرَ الحَيَاةِ وَخيْرَ المَمَاتِ وَثَبِّتْنِي وَثَقِّلْ مَوَازِينِي وَحَقِّقْ إِيمَانِي وَارْفَعْ دَرَجَتِي وَتَقَبَّلْ صَلاَتِي وَاغْفِرْ خَطِيئَاتِي وَأَسْأَلُكَ العُلَا مِنَ الجَنَّةِ ۞" },
+        { t: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مُوجِبَاتِ رَحْمَتِكَ وَعَزَائِمَ مَغْفِرَتِكَ وَالسَّلاَمَةَ مِنْ كُلِّ إِثْمٍ وَالغَنِيمَةَ مِنْ كُلِّ بِرٍّ وَالفَوْزَ بِالجَنَّةِ وَالنَّجَاةَ مِنَ النَّارِ ۞" },
+        { t: "اللَّهُمَّ أَحْسِنْ عَاقِبَتَنَا فِي الأُمُورِ كُلِّهَا وَأجِرْنَا مِنْ خِزْيِ الدُّنْيَا وَعَذَابِ الآخِرَةِ ۞" },
+        { t: "اللَّهُمَّ اقْسِمْ لَنَا مِنْ خَشْيَتِكَ مَاتَحُولُ بِهِ بَيْنَنَا وَبَيْنَ مَعْصِيَتِكَ وَمِنْ طَاعَتِكَ مَاتُبَلِّغُنَا بِهَا جَنَّتَكَ وَمِنَ اليَقِينِ مَاتُهَوِّنُ بِهِ عَلَيْنَا مَصَائِبَ الدُّنْيَا وَمَتِّعْنَا بِأَسْمَاعِنَا وَأَبْصَارِنَا وَقُوَّتِنَا مَاأَحْيَيْتَنَا وَاجْعَلْهُ الوَارِثَ مِنَّا وَاجْعَلْ ثَأْرَنَا عَلَى مَنْ ظَلَمَنَا وَانْصُرْنَا عَلَى مَنْ عَادَانَا وَلاَ تجْعَلْ مُصِيبَتَنَا فِي دِينِنَا وَلاَ تَجْعَلِ الدُّنْيَا أَكْبَرَ هَمِّنَا وَلَا مَبْلَغَ عِلْمِنَا وَلاَ تُسَلِّطْ عَلَيْنَا مَنْ لَا يَرْحَمُنَا ۞" },
+        { t: "اللَّهُمَّ لَا تَدَعْ لَنَا ذَنْبًا إِلَّا غَفَرْتَهُ وَلَا هَمَّا إِلَّا فَرَّجْتَهُ وَلَا دَيْنًا إِلَّا قَضَيْتَهُ وَلَا حَاجَةً مِنْ حَوَائِجِ الدُّنْيَا وَالآخِرَةِ إِلَّا قَضَيْتَهَا يَاأَرْحَمَ الرَّاحِمِينَ ۞" },
+        { t: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ وَصَلَّى اللهُ عَلَى سَيِّدِنَا وَنَبِيِّنَا مُحَمَّدٍ وَعَلَى آلِهِ وَأَصْحَابِهِ الأَخْيَارِ وَسَلَّمَ تَسْلِيمًا كَثِيراً." },
+];
+function duaRender() {
+    var box = document.getElementById('dua-khatm-text');
+    if (!box) return;
+    var html = '';
+    for (var i = 0; i < DUA_KHATM.length; i++) {
+        var t = String(DUA_KHATM[i].t).replace(/\u06de/g, '<span class="dua-mark">\u06de</span>');
+        html += '<p>' + t + '</p>';
+    }
+    box.innerHTML = html;
+}
+function duaPlainText() {
+    return DUA_KHATM.map(function (d) { return d.t; }).join('\n\n');
+}
+(function () {
+    var scr = document.getElementById('dua-khatm-screen');
+    if (!scr) return;
+    duaRender();
+    var back = document.getElementById('btn-back-from-dua');
+    if (back) back.onclick = function () {
+        var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen');
+        if (hs && typeof showScreen === 'function') showScreen(hs);
+        if (typeof navHome !== 'undefined' && navHome) navHome.classList.add('active');
+    };
+    var copy = document.getElementById('dua-copy');
+    if (copy) copy.onclick = function () {
+        var txt = duaPlainText();
+        var ok = false;
+        try {
+            var ta = document.createElement('textarea');
+            ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta); ta.select();
+            ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+        } catch (e) { ok = false; }
+        if (!ok && navigator.clipboard) {
+            navigator.clipboard.writeText(txt).then(function () {}, function () {});
+        }
+        var old = copy.textContent;
+        copy.textContent = '✔ تم النسخ';
+        setTimeout(function () { copy.textContent = old; }, 1800);
+    };
+    var share = document.getElementById('dua-share');
+    if (share) share.onclick = function () {
+        var txt = duaPlainText();
+        try { window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank'); } catch (e) {}
+    };
+    var size = document.getElementById('dua-size');
+    var txtBox = document.getElementById('dua-khatm-text');
+    var sizes = [1.2, 1.45, 1.0, 1.65];
+    var si = 0;
+    if (size) size.onclick = function () {
+        si = (si + 1) % sizes.length;
+        if (txtBox) txtBox.style.fontSize = sizes[si] + 'rem';
+    };
+})();
+
 // ===== القرآن الكريم : retour vers le menu (et non vers l'accueil) =====
 window._qmFromMenu = false;
 window._qmMenuShow = function () {
@@ -5387,6 +5524,7 @@ document.addEventListener('click', function (e) {
 // ===== القرآن الكريم : menu groupe (style صحتي) =====
 var quranMenuScreen = document.getElementById('quran-menu-screen');
 var tajweedScreen = document.getElementById('tajweed-screen');
+var duaKhatmScreen = document.getElementById('dua-khatm-screen');
 (function () {
     var card = document.getElementById('card-quran-menu');
     if (card && quranMenuScreen) {
@@ -5422,6 +5560,11 @@ var tajweedScreen = document.getElementById('tajweed-screen');
                 try { if (typeof initQuranStationsPage === 'function') initQuranStationsPage(); } catch (e) {}
                 var rs = document.getElementById('quranradio-screen');
                 if (rs && typeof showScreen === 'function') showScreen(rs);
+                return;
+            }
+            if (k === 'dua') {
+                var ds = document.getElementById('dua-khatm-screen');
+                if (ds && typeof showScreen === 'function') showScreen(ds);
                 return;
             }
             var src = { mushaf: 'card-surah-kahf', tajweed: 'card-tajweed', read: 'card-quran-read' }[k];
