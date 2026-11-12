@@ -1877,7 +1877,7 @@
             <!-- ISLAMIYAT -->
             <div id="islamiyat-screen">
                 <header class="header-prayers" style="padding-bottom:10px;margin-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);">
-                    <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat">‹ العودة</button>
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat" data-qm-back>‹ العودة</button>
                     <div style="text-align:center;flex:1;">
                         <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
                         <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
@@ -2103,27 +2103,88 @@
                 <div class="sihatar-wrap">
                     <div class="sihatar-menus" id="quran-menus">
                         <button type="button" class="sihatar-menu glass-btn" data-q="mushaf">
-                            <span class="sihatar-mico">🕌</span>
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="المصحف المصور">
+                                    <defs>
+                                        <linearGradient id="qmA1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2f9c7a"/><stop offset="0.5" stop-color="#0f5c44"/><stop offset="1" stop-color="#052a20"/></linearGradient>
+                                        <linearGradient id="qmA2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe3f0"/></linearGradient>
+                                        <linearGradient id="qmA3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmA1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 23 C27 19 20 18 12 19 v27 c8 -1 15 0 20 4 c5 -4 12 -5 20 -4 V19 c-8 -1 -15 0 -20 4 z" fill="url(#qmA2)" stroke="#c9b98a" stroke-width="1"/>
+                                    <path d="M32 23 v27" stroke="#a8862c" stroke-width="1.1"/>
+                                    <rect x="16" y="26" width="12" height="10" rx="1.6" fill="url(#qmA3)"/>
+                                    <path d="M18 34 l3.2 3.2 L28 27" fill="none" stroke="#0b132b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <g stroke="#8a97a8" stroke-width="1.3" stroke-linecap="round"><path d="M37 29h10"/><path d="M37 34h10"/><path d="M37 39h7"/><path d="M16 41h12"/></g>
+                                </svg></span>
                             <span class="sihatar-mtxt"><b>المصحف المصور</b><i>Mushaf illustré</i></span>
                             <span class="sihatar-mcount">📖</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="tajweed">
-                            <span class="sihatar-mico">📗</span>
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="مصحف التجويد برواية ورش">
+                                    <defs>
+                                        <linearGradient id="qmB1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fc2a0"/><stop offset="0.5" stop-color="#0e7460"/><stop offset="1" stop-color="#053028"/></linearGradient>
+                                        <linearGradient id="qmB2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf5"/><stop offset="1" stop-color="#e8dfc6"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmB1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 19 C26 15 18 14 10 16 v32 c8 -1 16 1 22 5 c6 -4 14 -6 22 -5 V16 c-8 -2 -16 1 -22 3 z" fill="url(#qmB2)" stroke="#c9b98a" stroke-width="1"/>
+                                    <path d="M32 19 v34" stroke="#a8862c" stroke-width="1.2"/>
+                                    <g stroke-linecap="round" stroke-width="2.2"><path d="M15 25h12" stroke="#2e8b57"/><path d="M15 31h12" stroke="#c0392b"/><path d="M15 37h8" stroke="#1f6fb2"/><path d="M37 25h12" stroke="#c0392b"/><path d="M37 31h12" stroke="#2e8b57"/><path d="M37 37h8" stroke="#1f6fb2"/></g>
+                                </svg></span>
                             <span class="sihatar-mtxt"><b>مصحف التجويد<br>برواية ورش</b></span>
                             <span class="sihatar-mcount">📖</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="fm6oa">
-                            <span class="sihatar-mico">🌙</span>
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="المصحف المحمدي">
+                                    <defs>
+                                        <linearGradient id="qmC1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#3b4a86"/><stop offset="0.5" stop-color="#1b2450"/><stop offset="1" stop-color="#0a0e26"/></linearGradient>
+                                        <linearGradient id="qmC2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmC1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <rect x="12" y="8" width="40" height="48" rx="3" fill="#fdfaf0" stroke="url(#qmC2)" stroke-width="1.6"/>
+                                    <rect x="16" y="12" width="32" height="40" rx="2" fill="none" stroke="url(#qmC2)" stroke-width="1.2"/>
+                                    <path d="M32 17 l3.6 7.3 8 1.2 -5.8 5.6 1.4 8 -7.2 -3.8 -7.2 3.8 1.4 -8 -5.8 -5.6 8 -1.2 z" fill="url(#qmC2)"/>
+                                    <g stroke="#8a97a8" stroke-width="1.4" stroke-linecap="round"><path d="M21 41h22"/><path d="M25 46h14"/></g>
+                                </svg></span>
                             <span class="sihatar-mtxt"><b>المصحف المحمدي</b></span>
                             <span class="sihatar-mcount">📖</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="read">
-                            <span class="sihatar-mico">📖</span>
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="قراءة القرآن الكريم">
+                                    <defs>
+                                        <linearGradient id="qmD1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fa37c"/><stop offset="0.5" stop-color="#0e5f45"/><stop offset="1" stop-color="#04291e"/></linearGradient>
+                                        <linearGradient id="qmD2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe6f2"/></linearGradient>
+                                        <linearGradient id="qmD3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmD1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 27 C27 23 20 22 12 23 v25 c8 -1 15 0 20 4 c5 -4 12 -5 20 -4 V23 c-8 -1 -15 0 -20 4 z" fill="url(#qmD2)" stroke="#c9b98a" stroke-width="1"/>
+                                    <path d="M32 27 v25" stroke="#a8862c" stroke-width="1.1"/>
+                                    <g stroke="#2e8b57" stroke-width="1.6" stroke-linecap="round"><path d="M16 31h11"/><path d="M16 36h11"/><path d="M16 41h7"/></g>
+                                    <g stroke="#c0392b" stroke-width="1.6" stroke-linecap="round"><path d="M37 31h11"/><path d="M37 36h11"/><path d="M37 41h7"/></g>
+                                    <path d="M45 12 l2.8 5.7 6.3 .9 -4.6 4.4 1.1 6.3 -5.6 -3 -5.6 3 1.1 -6.3 -4.6 -4.4 6.3 -.9 z" fill="url(#qmD3)"/>
+                                </svg></span>
                             <span class="sihatar-mtxt"><b>قراءة القرآن الكريم</b><i>Lecture du Coran</i></span>
                             <span class="sihatar-mcount">▶</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="play">
-                            <span class="sihatar-mico">🎧</span>
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="استماع إلى القرآن الكريم">
+                                    <defs>
+                                        <linearGradient id="qmE1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2a8a68"/><stop offset="0.5" stop-color="#0e5540"/><stop offset="1" stop-color="#052a1f"/></linearGradient>
+                                        <linearGradient id="qmE2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#a7b2d3"/></linearGradient>
+                                        <linearGradient id="qmE3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmE1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <g fill="none" stroke="url(#qmE3)" stroke-width="2.8" stroke-linecap="round"><path d="M25.5 29.5a9 9 0 0 1 13 0"/><path d="M20.5 24a16 16 0 0 1 23 0"/></g>
+                                    <path d="M16 36v-7a16 16 0 0 1 32 0v7" fill="none" stroke="url(#qmE2)" stroke-width="5.5" stroke-linecap="round"/>
+                                    <rect x="10" y="33" width="13" height="20" rx="6.5" fill="url(#qmE2)"/>
+                                    <rect x="41" y="33" width="13" height="20" rx="6.5" fill="url(#qmE2)"/>
+                                    <circle cx="16.5" cy="43" r="3" fill="#f2f5ff" opacity=".6"/>
+                                    <circle cx="47.5" cy="43" r="3" fill="#f2f5ff" opacity=".6"/>
+                                </svg></span>
                             <span class="sihatar-mtxt"><b>استماع إلى القرآن الكريم</b><i>Écoute du Coran</i></span>
                             <span class="sihatar-mcount">▶</span>
                         </button>
@@ -2134,7 +2195,7 @@
             <!-- ================= MUHAMMADI (المصحف المحمدي) SCREEN ================= -->
             <div id="muhammadi-screen">
                 <header class="header-prayers">
-                    <button type="button" class="back-btn glass-btn" id="btn-back-from-muhammadi">‹ الرئيسية</button>
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-muhammadi" data-qm-back>‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">المصحف المحمدي</h1>
                         <p>مصحف ملوّن مدمج داخل التطبيق — تصفّح الصفحات، اسحب أو استخدم الأزرار</p>
@@ -2346,7 +2407,7 @@
                         <!-- MUSHAF SCREEN (QuranFlash Warsh1) -->
 <div id="mushaf-screen">
                 <header class="header-prayers">
-                    <button type="button" class="back-btn glass-btn" id="btn-back-from-mushaf">‹ الرئيسية</button>
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-mushaf" data-qm-back>‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">المصحف المصور</h1>
                     </div>
@@ -2366,7 +2427,7 @@
                         <button type="button" class="tajweed-ico" id="tajweed-index-btn" aria-label="الفهرس" title="الفهرس">☰</button>
                     </div>
                     <div class="tajweed-topbar">
-                        <button type="button" class="tajweed-back-btn" id="tajweed-back">‹ العودة</button>
+                        <button type="button" class="tajweed-back-btn" id="tajweed-back" data-qm-back>‹ العودة</button>
                         <span class="tajweed-title">مصحف التجويد برواية ورش</span>
                         <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav" id="tajweed-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
@@ -5308,12 +5369,39 @@ function mmBuildThumbs() {
     });
 })();
 
+
+// ===== القرآن الكريم : retour vers le menu (et non vers l'accueil) =====
+window._qmFromMenu = false;
+window._qmMenuShow = function () {
+    var sc = document.getElementById('quran-menu-screen');
+    if (sc && typeof showScreen === 'function') showScreen(sc);
+    if (typeof navHome !== 'undefined' && navHome) navHome.classList.remove('active');
+};
+window._qmSyncLabels = function () {
+    var defs = { 'btn-back-from-islamiyat': '‹ العودة', 'btn-back-from-muhammadi': '‹ الرئيسية', 'btn-back-from-mushaf': '‹ الرئيسية', 'tajweed-back': '‹ العودة' };
+    for (var id in defs) {
+        var b = document.getElementById(id);
+        if (b) b.textContent = window._qmFromMenu ? '‹ العودة' : defs[id];
+    }
+};
+document.addEventListener('click', function (e) {
+    var t = (e.target && e.target.closest) ? e.target.closest('[data-qm-back]') : null;
+    if (!t || !window._qmFromMenu) return;
+    e.preventDefault();
+    e.stopPropagation();
+    window._qmFromMenu = false;
+    window._qmSyncLabels();
+    window._qmMenuShow();
+}, true);
+
 // ===== القرآن الكريم : menu groupe (style صحتي) =====
 var quranMenuScreen = document.getElementById('quran-menu-screen');
 (function () {
     var card = document.getElementById('card-quran-menu');
     if (card && quranMenuScreen) {
         card.onclick = function () {
+            window._qmFromMenu = false;
+            if (typeof window._qmSyncLabels === 'function') window._qmSyncLabels();
             if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
             if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
             if (typeof showScreen === 'function') showScreen(quranMenuScreen);
@@ -5336,6 +5424,8 @@ var quranMenuScreen = document.getElementById('quran-menu-screen');
     document.querySelectorAll('#quran-menus .sihatar-menu').forEach(function (b) {
         b.onclick = function () {
             var k = b.getAttribute('data-q');
+            window._qmFromMenu = true;
+            if (typeof window._qmSyncLabels === 'function') window._qmSyncLabels();
             var src = { mushaf: 'card-surah-kahf', tajweed: 'card-tajweed', read: 'card-quran-read', play: 'card-quran-player' }[k];
             if (src) {
                 var c = document.getElementById(src);
