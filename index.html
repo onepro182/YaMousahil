@@ -177,7 +177,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -1251,6 +1251,68 @@
         .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
             /* تصفح القرآن - mushaf viewer (mp3quran mushaf2) */
         #mushaf-screen{gap:10px;}
+
+        /* ===== المصحف المحمدي (source fm6oa.org/coran, integrée) ===== */
+        #muhammadi-screen{display:none;flex-direction:column;height:100vh;height:100dvh;max-height:100dvh;width:100%;overflow:hidden;gap:0;position:relative;}
+        .mhd-wrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;padding:8px 8px 12px;}
+        .mhd-stage{
+            flex:1;min-height:0;position:relative;overflow:auto;border-radius:14px;background:#0b1512;
+            border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;
+            -webkit-overflow-scrolling:touch;touch-action:pan-y;
+        }
+        .mhd-pages{display:flex;align-items:center;justify-content:center;gap:6px;height:100%;width:100%;}
+        .mhd-pages img{
+            max-width:100%;max-height:100%;object-fit:contain;display:block;
+            box-shadow:0 12px 34px rgba(0,0,0,.6);transition:opacity .18s ease,transform .18s ease;
+        }
+        .mhd-pages img[hidden]{display:none;}
+        .mhd-stage.zoomed{align-items:flex-start;justify-content:flex-start;}
+        .mhd-stage.zoomed .mhd-pages{width:max-content;height:max-content;align-items:flex-start;justify-content:flex-start;}
+        .mhd-stage.zoomed img{max-width:none;max-height:none;width:auto;height:auto;transform:scale(1.9);transform-origin:top left;}
+        .mhd-loader{
+            position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+            color:var(--gold-light);font-size:.9rem;background:rgba(6,20,15,.65);border-radius:14px;
+        }
+        .mhd-toolbar{
+            display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+            padding:8px 10px;border-radius:14px;
+        }
+        .mhd-btn{
+            flex:none;width:38px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.10);
+            background:rgba(255,255,255,.05);color:#e8e2cf;font-size:1.2rem;cursor:pointer;line-height:1;
+            display:flex;align-items:center;justify-content:center;
+        }
+        .mhd-btn:active{background:rgba(212,175,55,.25);}
+        .mhd-btn.on{background:rgba(212,175,55,.30);border-color:var(--gold);color:#ffeeb0;}
+        .mhd-pageno{
+            display:flex;align-items:center;gap:6px;color:#f0e7cd;font-size:.9rem;font-family:var(--font);
+            background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:4px 10px;
+        }
+        .mhd-pageno input{
+            width:62px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.12);border-radius:8px;
+            color:#ffeeb0;font-family:var(--font);font-size:.9rem;text-align:center;padding:4px 4px;
+        }
+        .mhd-sheet{
+            position:absolute;left:0;right:0;bottom:0;z-index:20;max-height:72%;
+            background:rgba(8,20,16,.99);border-top:1px solid rgba(212,175,55,.3);border-radius:16px 16px 0 0;
+            opacity:0;visibility:hidden;transition:opacity .2s ease;display:flex;flex-direction:column;
+        }
+        .mhd-sheet.open{opacity:1;visibility:visible;}
+        .mhd-sheet-head{
+            display:flex;align-items:center;justify-content:space-between;padding:12px 14px;
+            border-bottom:1px solid rgba(255,255,255,.08);color:#f0e7cd;font-family:var(--font-quran);font-size:1.05rem;
+        }
+        .mhd-thumbs{
+            display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;
+            padding:10px;overflow-y:auto;align-content:start;
+        }
+        .mhd-thumb{
+            border:1px solid rgba(255,255,255,.08);border-radius:8px;overflow:hidden;background:#0b1512;
+            cursor:pointer;padding:0;display:block;
+        }
+        .mhd-thumb img{width:100%;display:block;}
+        .mhd-thumb span{display:block;text-align:center;font-size:.7rem;color:var(--text-dim);padding:3px 0;background:rgba(0,0,0,.35);}
+        .mhd-thumb.active{border-color:var(--gold);box-shadow:0 0 0 1px rgba(212,175,55,.5);}
         /* ===== مصحف التجويد : lecteur QuranFlash + barres de controle ===== */
         #tajweed-screen{display:none;flex-direction:column;height:100%;width:100%;overflow:hidden;gap:0;}
         .tajweed-frame-wrap{position:relative;flex:1;min-height:0;background:#0d1b17;overflow:hidden;}
@@ -2011,13 +2073,13 @@
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="tajweed">
                             <span class="sihatar-mico">📗</span>
-                            <span class="sihatar-mtxt"><b>مصحف التجويد برواية ورش</b><i>Mushaf Tajweed (Warsh)</i></span>
+                            <span class="sihatar-mtxt"><b>مصحف التجويد<br>برواية ورش</b></span>
                             <span class="sihatar-mcount">📖</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="fm6oa">
-                            <span class="sihatar-mico">🌐</span>
-                            <span class="sihatar-mtxt"><b>المصحف المحمدي</b><i>fm6oa.org/coran</i></span>
-                            <span class="sihatar-mcount">↗</span>
+                            <span class="sihatar-mico">🌙</span>
+                            <span class="sihatar-mtxt"><b>المصحف المحمدي</b></span>
+                            <span class="sihatar-mcount">📖</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="read">
                             <span class="sihatar-mico">📖</span>
@@ -2030,6 +2092,42 @@
                             <span class="sihatar-mcount">▶</span>
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- ================= MUHAMMADI (المصحف المحمدي) SCREEN ================= -->
+            <div id="muhammadi-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-muhammadi">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">المصحف المحمدي</h1>
+                        <p>مصحف ملوّن مدمج داخل التطبيق — تصفّح الصفحات، اسحب أو استخدم الأزرار</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="mhd-wrap">
+                    <div class="mhd-stage" id="mhd-stage">
+                        <div class="mhd-pages" id="mhd-pages">
+                            <img id="mhd-img-b" alt="" hidden>
+                            <img id="mhd-img" alt="صفحة من المصحف المحمدي" src="">
+                        </div>
+                        <div class="mhd-loader" id="mhd-loader">جارٍ التحميل…</div>
+                    </div>
+                    <div class="mhd-toolbar glass-btn">
+                        <button type="button" class="mhd-btn" id="mhd-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
+                        <span class="mhd-pageno">صفحة <input type="number" id="mhd-page-input" min="1" max="663" value="1"> <span id="mhd-page-total">/ 663</span></span>
+                        <button type="button" class="mhd-btn" id="mhd-next" title="التالي" aria-label="الصفحة التالية">‹</button>
+                        <button type="button" class="mhd-btn" id="mhd-grid" title="الصفحات" aria-label="عرض الصفحات">▦</button>
+                        <button type="button" class="mhd-btn" id="mhd-mode" title="صفحة واحدة / صفحتان" aria-label="طريقة العرض">▥</button>
+                        <button type="button" class="mhd-btn" id="mhd-zoom" title="تكبير" aria-label="تكبير">⛶</button>
+                    </div>
+                </div>
+                <div class="mhd-sheet" id="mhd-sheet" aria-hidden="true">
+                    <div class="mhd-sheet-head">
+                        <span>الصفحات</span>
+                        <button type="button" class="mhd-btn" id="mhd-sheet-close" aria-label="إغلاق">✕</button>
+                    </div>
+                    <div class="mhd-thumbs" id="mhd-thumbs"></div>
                 </div>
             </div>
 
@@ -4994,8 +5092,147 @@ var gender = 'male';
         }
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
+        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; }
 
+
+
+// ===== المصحف المحمدي : lecteur natif (source fm6oa.org/coran) =====
+var muhammadiScreen = document.getElementById('muhammadi-screen');
+var MM_TOTAL = 663;
+var MM_IMG = 'https://fm6oa.org/coran/files/mobile/';
+var MM_THUMB = 'https://fm6oa.org/coran/files/thumb/';
+var mmPage = 1;
+var mmMode = 'single';   // 'single' | 'double'
+function mmStep() { return mmMode === 'double' ? 2 : 1; }
+function mmShow(n) {
+    n = Math.max(1, Math.min(MM_TOTAL, parseInt(n, 10) || 1));
+    mmPage = n;
+    var img = document.getElementById('mhd-img');
+    var imgB = document.getElementById('mhd-img-b');
+    if (!img) return;
+    var load = document.getElementById('mhd-loader');
+    if (load) { load.style.display = 'flex'; load.textContent = 'جارٍ التحميل…'; }
+    img.style.opacity = '.35';
+    img.onload = function () { img.style.opacity = '1'; if (load) load.style.display = 'none'; };
+    img.onerror = function () { if (load) { load.textContent = 'تعذّر تحميل الصفحة ' + n; } };
+    img.src = MM_IMG + n + '.jpg';
+    // vue double : la page précédente est affichée à gauche
+    if (imgB) {
+        if (mmMode === 'double' && n > 1) {
+            imgB.hidden = false;
+            imgB.src = MM_IMG + (n - 1) + '.jpg';
+            imgB.style.opacity = '.35';
+            imgB.onload = function () { imgB.style.opacity = '1'; if (load) load.style.display = 'none'; };
+        } else {
+            imgB.hidden = true;
+            imgB.removeAttribute('src');
+        }
+    }
+    var inp = document.getElementById('mhd-page-input');
+    if (inp) inp.value = n;
+    var st = document.getElementById('mhd-stage');
+    if (st) st.scrollTop = 0;
+    // préchargement de la page suivante
+    try { var pre = new Image(); pre.src = MM_IMG + Math.min(MM_TOTAL, n + mmStep()) + '.jpg'; } catch (e) {}
+    // vignette active
+    var th = document.querySelector('#mhd-thumbs .mhd-thumb.active');
+    if (th) th.classList.remove('active');
+}
+function mmBuildThumbs() {
+    var box = document.getElementById('mhd-thumbs');
+    if (!box || box.childElementCount) return;
+    var frag = document.createDocumentFragment();
+    for (var i = 1; i <= MM_TOTAL; i++) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'mhd-thumb';
+        b.setAttribute('data-p', i);
+        var im = document.createElement('img');
+        im.loading = 'lazy';
+        im.src = MM_THUMB + i + '.jpg';
+        im.alt = 'صفحة ' + i;
+        var sp = document.createElement('span');
+        sp.textContent = String(i);
+        b.appendChild(im);
+        b.appendChild(sp);
+        frag.appendChild(b);
+    }
+    box.appendChild(frag);
+}
+(function () {
+    var screen = muhammadiScreen;
+    if (!screen) return;
+    function openMM() {
+        if (typeof showScreen === 'function') showScreen(screen);
+        if (typeof navHome !== 'undefined' && navHome) navHome.classList.remove('active');
+        mmShow(mmPage || 1);
+    }
+    window._mmOpen = openMM;
+    var back = document.getElementById('btn-back-from-muhammadi');
+    if (back) back.onclick = function () {
+        var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen');
+        if (hs && typeof showScreen === 'function') showScreen(hs);
+        if (typeof navHome !== 'undefined' && navHome) navHome.classList.add('active');
+    };
+    var prev = document.getElementById('mhd-prev');
+    var next = document.getElementById('mhd-next');
+    if (prev) prev.onclick = function () { mmShow(mmPage - mmStep()); };
+    if (next) next.onclick = function () { mmShow(mmPage + mmStep()); };
+    var inp = document.getElementById('mhd-page-input');
+    if (inp) {
+        inp.onchange = function () { mmShow(inp.value); };
+        inp.onkeydown = function (e) { if (e.key === 'Enter') { e.preventDefault(); mmShow(inp.value); } };
+    }
+    var sheet = document.getElementById('mhd-sheet');
+    var grid = document.getElementById('mhd-grid');
+    if (grid) grid.onclick = function () {
+        mmBuildThumbs();
+        if (sheet) sheet.classList.add('open');
+    };
+    var sc = document.getElementById('mhd-sheet-close');
+    if (sc) sc.onclick = function () { if (sheet) sheet.classList.remove('open'); };
+    var thumbs = document.getElementById('mhd-thumbs');
+    if (thumbs) thumbs.onclick = function (e) {
+        var b = e.target.closest ? e.target.closest('.mhd-thumb') : null;
+        if (!b) return;
+        mmShow(b.getAttribute('data-p'));
+        if (sheet) sheet.classList.remove('open');
+    };
+    var modeBtn = document.getElementById('mhd-mode');
+    if (modeBtn) modeBtn.onclick = function () {
+        mmMode = (mmMode === 'double') ? 'single' : 'double';
+        modeBtn.classList.toggle('on', mmMode === 'double');
+        modeBtn.textContent = (mmMode === 'double') ? '▥' : '▦';
+        mmShow(mmPage);
+    };
+    var zoom = document.getElementById('mhd-zoom');
+    var stage = document.getElementById('mhd-stage');
+    if (zoom) zoom.onclick = function () {
+        if (!stage) return;
+        var on = stage.classList.toggle('zoomed');
+        zoom.classList.toggle('on', on);
+        zoom.textContent = on ? '↺' : '⛶';
+    };
+    // gestes : balayage
+    if (stage) {
+        var sx = 0, sy = 0, st0 = 0;
+        stage.addEventListener('touchstart', function (e) {
+            sx = e.touches[0].clientX; sy = e.touches[0].clientY; st0 = Date.now();
+        }, { passive: true });
+        stage.addEventListener('touchend', function (e) {
+            var dx = e.changedTouches[0].clientX - sx;
+            var dy = e.changedTouches[0].clientY - sy;
+            if (Date.now() - st0 > 700) return;
+            if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) mmShow(mmPage + (dx < 0 ? mmStep() : -mmStep()));
+        }, { passive: true });
+    }
+    document.addEventListener('keydown', function (e) {
+        if (!screen || screen.style.display === 'none') return;
+        if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+        if (e.key === 'ArrowLeft') { mmShow(mmPage + mmStep()); }
+        else if (e.key === 'ArrowRight') { mmShow(mmPage - mmStep()); }
+    });
+})();
 
 // ===== القرآن الكريم : menu groupe (style صحتي) =====
 var quranMenuScreen = document.getElementById('quran-menu-screen');
@@ -5031,7 +5268,7 @@ var quranMenuScreen = document.getElementById('quran-menu-screen');
                 if (c) c.click();
                 return;
             }
-            if (k === 'fm6oa') ymOpenExternal('https://fm6oa.org/coran/');
+            if (k === 'fm6oa') { if (typeof window._mmOpen === 'function') window._mmOpen(); }
         };
     });
 })();
