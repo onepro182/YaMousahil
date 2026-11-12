@@ -1269,7 +1269,7 @@
         .tajweed-ico:active{background:rgba(212,175,55,.22);}
         @media (max-width:430px){ .tajweed-title{display:none;} .tajweed-ico.wide{width:34px;padding:0;font-size:0;} .tajweed-ico.wide::before{content:"📄";font-size:1rem;} }
         .tajweed-ico.on{background:rgba(212,175,55,.3);border-color:var(--gold);color:#ffeeb0;}
-        .tajweed-title{flex:1;text-align:center;font-family:var(--font-quran);font-size:1.05rem;color:#f0e7cd;font-weight:700;}
+        .tajweed-title{flex:1;text-align:center;font-family:var(--font-quran);font-size:1rem;color:#f0e7cd;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
         .tajweed-nav{
             flex:none;width:38px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.10);
             background:rgba(255,255,255,.05);color:#e8e2cf;font-size:1.35rem;line-height:1;cursor:pointer;
@@ -1400,7 +1400,7 @@
                                     <img class="app-icon" src="https://s.cafebazaar.ir/images/icons/com.alquransharifmp3-38c31d1d-cc94-4b82-af78-1941aa9abed3_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize" alt="المصحف المصور">
                                     <span class="app-name">المصحف المصور</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-tajweed" title="المصحف التجويد الملون برواية ورش">
-                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="مصحف التجويد">
+                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="مصحف التجويد برواية ورش">
                         <defs>
                             <linearGradient id="twBg" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fc2a0"/><stop offset="0.5" stop-color="#0e7460"/><stop offset="1" stop-color="#053028"/></linearGradient>
                             <linearGradient id="twPage" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf5"/><stop offset="1" stop-color="#e8dfc6"/></linearGradient>
@@ -1414,7 +1414,7 @@
                         </g>
                         <path d="M32 20 v30" stroke="#a8862c" stroke-width="1.2"/>
                     </svg>
-                    <span class="app-name">مصحف التجويد</span>
+                    <span class="app-name">مصحف التجويد برواية ورش</span>
                 </div>
                 <div class="app-card glass-btn" tabindex="0" id="card-quran-read">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="قراءة القرآن الكريم">
@@ -2162,7 +2162,7 @@
                     <iframe id="tajweed-frame" src="https://app.quranflash.com/book/Tajweed?ar#/reader/chapter/3" data-src="https://app.quranflash.com/book/Tajweed?ar#/reader/chapter/3" title="مصحف التجويد الملون" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     <div class="tajweed-topbar">
                         <button type="button" class="tajweed-back-btn" id="tajweed-back">‹ العودة</button>
-                        <span class="tajweed-title">مصحف التجويد</span>
+                        <span class="tajweed-title">مصحف التجويد برواية ورش</span>
                         <button type="button" class="tajweed-ico" id="tajweed-index-btn" aria-label="الفهرس" title="الفهرس">☰</button>
                         <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav" id="tajweed-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
@@ -2170,7 +2170,7 @@
                     </div>
                     <div class="tajweed-sheet" id="tajweed-sheet" aria-hidden="true">
                         <div class="tajweed-sheet-head">
-                            <span class="tajweed-drawer-title">مصحف التجويد</span>
+                            <span class="tajweed-drawer-title">مصحف التجويد برواية ورش</span>
                             <span id="tajweed-sheet-title" hidden></span>
                             <button type="button" class="tajweed-ico" id="tajweed-sheet-close" aria-label="إغلاق">✕</button>
                         </div>
