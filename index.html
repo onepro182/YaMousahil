@@ -151,15 +151,11 @@
         .mihrab-column{width:440px;display:flex;flex-direction:column;flex-shrink:0;gap:15px;}
         
         .mihrab-arch {
-            flex:1; width:100%; background: radial-gradient(ellipse at top, rgba(17, 66, 49, 0.85) 0%, rgba(6, 31, 21, 0.95) 100%);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 3px solid var(--gold); border-bottom: none;
-            border-radius: 250px 250px 0 0; position: relative; display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 50px rgba(212,175,55,0.1), 0 0 20px rgba(0,0,0,0.6);
+            flex:1; width:100%; background:transparent; border:none; border-radius:0;
+            position:relative; display:flex; align-items:center; justify-content:center;
+            overflow:hidden; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none;
         }
-        .mihrab-arch::before {
-            content: ''; position: absolute; inset: 8px; border: 1px solid rgba(212,175,55,0.4);
-            border-bottom: none; border-radius: 242px 242px 0 0; pointer-events: none;
-        }
+        .mihrab-3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
         .mihrab-content{text-align:center;padding:40px 20px 20px;width:100%;z-index:2;}
         .mihrab-bottom-border{height:12px;background:rgba(212,175,55,0.15);border-bottom:3px solid var(--gold);border-radius:0 0 20px 20px;}
         .verse-arabic{font-family:var(--font-quran);font-size:1.8rem;line-height:1.6;color:var(--gold);margin-bottom:5px;font-weight:700;text-shadow:0 2px 10px rgba(0,0,0,0.5);}
@@ -1501,6 +1497,51 @@
 
                     <div class="mihrab-column">
                         <div class="mihrab-arch">
+                            <svg class="mihrab-3d" viewBox="0 0 440 520" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                                <defs>
+                                    <linearGradient id="mih3dGold" x1="0" y1="0" x2="0.35" y2="1">
+                                        <stop offset="0" stop-color="#fff3c8"/><stop offset="0.3" stop-color="#e0cc91"/>
+                                        <stop offset="0.62" stop-color="#a8862c"/><stop offset="1" stop-color="#f0dda6"/>
+                                    </linearGradient>
+                                    <linearGradient id="mih3dStone" x1="0" y1="0" x2="0.4" y2="1">
+                                        <stop offset="0" stop-color="#205c46"/><stop offset="0.45" stop-color="#0d3829"/><stop offset="1" stop-color="#05190f"/>
+                                    </linearGradient>
+                                    <radialGradient id="mih3dNiche" cx="50%" cy="72%" r="88%">
+                                        <stop offset="0" stop-color="#124634"/><stop offset="0.55" stop-color="#08281c"/><stop offset="1" stop-color="#020f09"/>
+                                    </radialGradient>
+                                    <linearGradient id="mih3dShadow" x1="0" y1="0" x2="0.55" y2="1">
+                                        <stop offset="0" stop-color="#000" stop-opacity=".72"/>
+                                        <stop offset="0.4" stop-color="#000" stop-opacity=".22"/>
+                                        <stop offset="1" stop-color="#000" stop-opacity="0"/>
+                                    </linearGradient>
+                                    <radialGradient id="mih3dGlow" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0" stop-color="#ffe6a6" stop-opacity=".34"/>
+                                        <stop offset="0.55" stop-color="#d4af37" stop-opacity=".11"/>
+                                        <stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
+                                    </radialGradient>
+                                    <linearGradient id="mih3dBase" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0" stop-color="#f4e2ac"/><stop offset="0.5" stop-color="#c9a227"/><stop offset="1" stop-color="#7c6118"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect width="440" height="520" fill="url(#mih3dStone)"/>
+                                <!-- niche interieure (enfoncement) -->
+                                <path d="M40 520 L40 212 C40 126 120 52 220 44 C320 52 400 126 400 212 L400 520 Z" fill="url(#mih3dNiche)"/>
+                                <path d="M40 520 L40 212 C40 126 120 52 220 44 C320 52 400 126 400 212 L400 520 Z" fill="url(#mih3dShadow)"/>
+                                <!-- lueur chaude au fond de la niche -->
+                                <ellipse cx="220" cy="330" rx="175" ry="155" fill="url(#mih3dGlow)"/>
+                                <!-- rosette a 8 branches (ornement discret) -->
+                                <g opacity=".2" fill="none" stroke="#e0cc91" stroke-width="1.1">
+                                    <circle cx="220" cy="150" r="34"/>
+                                    <path d="M220 108 L232 132 L258 120 L246 146 L274 152 L246 158 L258 184 L232 172 L220 196 L208 172 L182 184 L194 158 L166 152 L194 146 L182 120 L208 132 Z"/>
+                                </g>
+                                <!-- cadre d'or biseaute -->
+                                <path d="M14 520 L14 204 C14 108 106 26 220 14 C334 26 426 108 426 204 L426 520 Z" fill="none" stroke="url(#mih3dGold)" stroke-width="12"/>
+                                <path d="M20 520 L20 208 C20 116 110 36 220 24 C330 36 420 116 420 208 L420 520" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2"/>
+                                <path d="M50 520 L50 214 C50 134 126 64 220 56 C314 64 390 134 390 214 L390 520" fill="none" stroke="rgba(212,175,55,.5)" stroke-width="2.2"/>
+                                <!-- bandeau de base -->
+                                <rect x="0" y="498" width="440" height="22" fill="url(#mih3dBase)"/>
+                                <rect x="0" y="498" width="440" height="2.5" fill="#fff6d9" opacity=".55"/>
+                            </svg>
                             <div class="mihrab-content">
                                 <div class="verse-arabic">إِنَّ الصَّلَاةَ كَانَتْ<br>عَلَى الْمُؤْمِنِينَ<br>كِتَابًا مَّوْقُوتًا</div>
                                 <div class="verse-ref">النساء 103</div>
@@ -1510,7 +1551,6 @@
                                 <div class="mihrab-adhan" id="home-adhan-info">الأذان 02:38 · طنجة</div>
                             </div>
                         </div>
-                        <div class="mihrab-bottom-border"></div>
                     </div>
                 </main>
             </div>
@@ -4470,16 +4510,17 @@ var gender = 'male';
             var pname = (typeof PRAYER_NAMES !== 'undefined' && PRAYER_NAMES[prayerKey]) ? PRAYER_NAMES[prayerKey] : (prayerKey || '');
             var isNow = (mode === 'now' || mode === 'adhan' || mode === 'test');
             if (nameEl) nameEl.textContent = isNow ? ('حان الآن موعد صلاة ' + pname) : ('تذكير قبل صلاة ' + pname);
-            if (textEl) textEl.textContent = isNow ? ('حان وقت صلاة ' + pname + '، حيّ على الصلاة حيّ على الفلاح.') : ('باقي ' + (typeof settings !== 'undefined' ? settings.reminderMinutes : 10) + ' دقائق قبل صلاة ' + pname + '.');
-            var locTxt = '';
+            var locTxt = '', cityName = '';
             try {
                 var cdb = (typeof CITIES_DB !== 'undefined') ? CITIES_DB : null;
                 var ctry = (typeof COUNTRIES_DB !== 'undefined') ? COUNTRIES_DB : null;
                 var sid = (typeof settings !== 'undefined') ? (settings.cityId || settings.city) : null;
                 var city = cdb && sid && cdb[sid] ? cdb[sid] : null;
                 if (!city && cdb && sid) { var ks = Object.keys(cdb); for (var i=0;i<ks.length;i++){ if(ks[i]===sid||cdb[ks[i]].id===sid){city=cdb[ks[i]];break;} } }
-                if (city) { locTxt = (city.nameAr || city.name || ''); var cinfo = ctry && city.countryId && ctry[city.countryId] ? ctry[city.countryId] : null; if (cinfo && (cinfo.nameAr||cinfo.name)) locTxt += (locTxt ? '، ' : '') + (cinfo.nameAr||cinfo.name); }
+                if (!city && cdb) { var fk = Object.keys(cdb)[0]; city = cdb[fk]; }
+                if (city) { cityName = (city.nameAr || city.name || ''); locTxt = cityName; var cinfo = ctry && city.countryId && ctry[city.countryId] ? ctry[city.countryId] : null; if (cinfo && (cinfo.nameAr||cinfo.name)) locTxt += (locTxt ? '، ' : '') + (cinfo.nameAr||cinfo.name); }
             } catch(e){}
+            if (textEl) textEl.textContent = isNow ? ('حسب توقيت مدينة ' + (cityName || 'المدينة') + ' والنواحي.') : ('باقي ' + (typeof settings !== 'undefined' ? settings.reminderMinutes : 10) + ' دقائق قبل صلاة ' + pname + '.');
             if (locEl) locEl.textContent = locTxt || 'موقعك الحالي';
             if (locRow) locRow.style.display = '';
             var dateTxt = '';
