@@ -956,6 +956,12 @@
         .adhan-box { text-align: center; background: rgba(11,42,32,0.65); border: 3px solid var(--gold); border-radius: 24px; padding: 50px; box-shadow: 0 0 50px rgba(212,175,55,0.2); position: relative; overflow: hidden;}
         .adhan-box::before { content: ''; position: absolute; inset: 10px; border: 1px solid rgba(212,175,55,0.3); border-radius: 16px; pointer-events: none; }
         .adhan-icon { font-size: 5rem; margin-bottom: 20px; animation: pulse 2s infinite; }
+        /* logo de l'app dans l'alerte de l'adhan */
+        .adhan-box .adhan-icon{
+            width:96px;height:96px;margin:0 auto 16px;object-fit:contain;border-radius:50%;
+            border:2px solid rgba(212,175,55,.5);background:rgba(255,255,255,.06);
+            filter:drop-shadow(0 6px 18px rgba(212,175,55,.4));animation:pulse 2s infinite;
+        }
         .adhan-title { font-family: var(--font-quran); font-size: 3.5rem; color: var(--gold); margin-bottom: 10px; text-shadow: 0 0 20px rgba(212,175,55,0.4); }
         .adhan-subtitle { font-size: 1.5rem; color: var(--cream); margin-bottom: 30px; }
         .adhan-stop-btn { background: #a94436; color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.2rem; font-family: var(--font); font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(169, 68, 54, 0.4); transition: transform 0.1s; display: flex; align-items: center; gap: 10px; margin: 0 auto;}
@@ -1283,7 +1289,7 @@
                                     <span class="app-name">المسبحة الإلكترونية</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-asma">
-                                    <img class="app-icon" src="assets/img/logo-main.png" alt="أسماء الله">
+                                    <img class="app-icon" src="Logo.png" alt="أسماء الله">
                                     <span class="app-name">✦ أسماء الله الحسنى</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-wird"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="ورد القرآن اليومي">
@@ -1537,7 +1543,7 @@
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat">‹ العودة</button>
                     <div style="text-align:center;flex:1;">
                         <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
-                        <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
+                        <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
                     </div>
                     <div class="isl-header-spacer" style="width:80px;"></div>
                 </header>
@@ -2140,7 +2146,7 @@
                             <div class="settings-pane" id="pane-share">
                                 <div class="about-content share-content">
                                     <div class="share-logo-wrap">
-                                        <img class="share-logo" src="assets/img/logo-main.png" alt="شعار تطبيق YaMousahil" onerror="this.style.display='none'">
+                                        <img class="share-logo" src="Logo.png" alt="شعار تطبيق YaMousahil" onerror="this.style.display='none'">
                                     </div>
                                     <h2 style="color:var(--gold);margin-bottom:12px;">نشر البرنامج</h2>
                                     <p style="color:var(--text-dim);line-height:2;margin-bottom:20px;max-width:520px;margin-inline:auto;">ساهم في نشر الموقع بين الأصحاب والأقارب ليكون لنا جميعا صدقة جارية بإذن الله</p>
@@ -2230,7 +2236,7 @@
             </div>
             <div class="prayer-overlay" id="adhan-overlay">
                 <div class="adhan-box">
-                    <div class="adhan-icon">🕌</div>
+                    <img class="adhan-icon" src="Logo.png" alt="شعار التطبيق" onerror="this.style.display='none'">
                     <div class="adhan-title" id="adhan-prayer-name">صلاة المغرب</div>
                     <div class="adhan-subtitle">حان الآن موعد الصلاة</div>
                     <button class="adhan-stop-btn" id="btn-stop-adhan"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 6h12v12H6z"></path></svg>إيقاف الأذان</button>
@@ -4435,7 +4441,7 @@ function notifyPrayer(prayerKey, isTest) {
                 if (!('Notification' in window)) return;
                 if (Notification.permission === 'default' && settings.reminderEnabled) { Notification.requestPermission().then(() => {}).catch(() => {}); }
                 if (Notification.permission === 'granted') {
-                    var n = new Notification(`اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`, { body: `تبقى ${settings.reminderMinutes} دقائق لرفع أذان ${PRAYER_NAMES[prayerKey]} — ${isTest ? 'إشعار تجريبي' : 'تذكير'}`, tag: 'ya-mousahil-' + prayerKey + '-' + Date.now(), icon: 'assets/img/logo-main.png', badge: 'assets/img/logo-main.png' });
+                    var n = new Notification(`اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`, { body: `تبقى ${settings.reminderMinutes} دقائق لرفع أذان ${PRAYER_NAMES[prayerKey]} — ${isTest ? 'إشعار تجريبي' : 'تذكير'}`, tag: 'ya-mousahil-' + prayerKey + '-' + Date.now(), icon: 'Logo.png', badge: 'Logo.png' });
                     n.onclick = () => { window.focus(); n.close(); };
                 }
             } catch (e) { console.warn('Desktop notification failed:', e); }
@@ -5232,7 +5238,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 if (name === 'quran') { t.textContent = 'قراءة القرآن الكريم'; s.textContent = window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'; }
                 else if (name === 'adhkar') { t.textContent = 'الأذكار'; s.textContent = 'رحلة يومك مع الذكر'; }
                 else if (name === 'tasbih') { t.textContent = 'المسبحة الإلكترونية'; s.textContent = ''; }
-                else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · الأذكار · المسبحة <img src="assets/img/logo-main.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
+                else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · الأذكار · المسبحة <img src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
             }
         }
         document.getElementById('btn-back-from-islamiyat').onclick = () => {
