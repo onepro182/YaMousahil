@@ -1259,7 +1259,7 @@
             border:1px solid var(--glass-border);border-radius:14px;background:#fff;
         }
         /* ===== lecteur « مصحف التجويد » (identique a l'app de reference) ===== */
-        .tajweed-viewport{background:#0d1b17;border-radius:0;overflow:hidden;display:flex;flex-direction:column;}
+        .tajweed-viewport{position:relative;z-index:2;background:#0d1b17;border-radius:0;overflow:hidden;display:flex;flex-direction:column;}
         .tajweed-topbar,.tajweed-bottombar{
             flex:none;display:flex;align-items:center;gap:8px;padding:8px 10px;
             background:rgba(6,17,14,.96);border-bottom:1px solid rgba(255,255,255,.07);
@@ -1282,7 +1282,7 @@
             font-weight:700;cursor:pointer;padding:4px 6px;
         }
         .tajweed-stage{flex:1;position:relative;overflow:auto;display:flex;align-items:flex-start;justify-content:center;background:#0d1b17;}
-        .tajweed-stage img{max-width:100%;height:auto;display:block;user-select:none;-webkit-user-drag:none;}
+        .tajweed-stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;margin:auto;user-select:none;-webkit-user-drag:none;}
         .tajweed-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#d4af37;font-size:1rem;}
         .tajweed-pill{
             position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
@@ -4354,6 +4354,23 @@ var gender = 'male';
             };
             var listBtn = document.getElementById('tajweed-list-btn');
             if (listBtn) listBtn.onclick = function () { tajweedOpenList(); };
+            // entrees du tiroir
+            document.querySelectorAll('.tajweed-ditem').forEach(function (b) {
+                b.onclick = function () {
+                    var v = b.getAttribute('data-view');
+                    if (drawer) drawer.classList.remove('open');
+                    if (veil) veil.classList.remove('on');
+                    if (v === 'index' || v === 'mushaf') { tajweedOpenList(); return; }
+                    if (v === 'saved') {
+                        var saved = 1;
+                        try { saved = parseInt(localStorage.getItem('tajweedPage') || '1', 10) || 1; } catch (e) {}
+                        tajweedShow(saved);
+                        if (typeof islShowToast === 'function') islShowToast('تم فتح آخر صفحة مقروءة');
+                        return;
+                    }
+                    if (typeof islShowToast === 'function') islShowToast('هذه الخاصية غير متوفرة في هذا المصحف حالياً');
+                };
+            });
             var back = document.getElementById('tajweed-back');
             if (back) back.onclick = function () {
                 var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen');
@@ -4375,16 +4392,16 @@ var gender = 'male';
                 if (_tajweedWheel) return;
                 _tajweedWheel = true;
                 setTimeout(function () { _tajweedWheel = false; }, 450);
-                tajweedShow(_tajweedPage + (e.deltaY > 0 ? 1 : -1));
+                tajweedShow(_tajweedPage + (e.deltaY > 0 ? 1 : -1));   // defiler vers le bas = page suivante
             }, { passive: true });
             document.addEventListener('keydown', function (e) {
                 if (!document.getElementById('tajweed-screen') || getComputedStyle(document.getElementById('tajweed-screen')).display === 'none') return;
-                if (e.key === 'ArrowRight') tajweedShow(_tajweedPage + 1);
-                if (e.key === 'ArrowLeft') tajweedShow(_tajweedPage - 1);
+                // lecture arabe : on avance vers la gauche
+                if (e.key === 'ArrowLeft') tajweedShow(_tajweedPage + 1);
+                if (e.key === 'ArrowRight') tajweedShow(_tajweedPage - 1);
             });
-            var p = 1;
-            try { p = parseInt(localStorage.getItem('tajweedPage') || '1', 10) || 1; } catch (e) {}
-            tajweedShow(p);
+            // ouverture sur le debut du mushaf (سورة الفاتحة)
+            tajweedShow(1);
         }
         var _tajweedWheel = false;
         function tajweedOpenList(searchMode) {
