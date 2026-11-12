@@ -793,43 +793,14 @@
         .si-tarif-prix{font-size:.92rem;font-weight:800;color:var(--gold);direction:ltr;white-space:nowrap;text-shadow:0 2px 8px rgba(212,175,55,.25);}
         /* ===== vue carte "Autour de moi" ===== */
         .sihatar-mapview{display:flex;flex-direction:column;gap:11px;}
-        .sihatar-cta{display:block;}
-        .sihatar-cta .sihatar-cta-btn.wide{
-            width:100%;justify-content:flex-start;gap:12px;padding:11px 14px;border-radius:16px;
-            background:linear-gradient(120deg,rgba(212,175,55,.18),rgba(60,107,99,.10));
-            border:1px solid rgba(212,175,55,.42);color:var(--text-main);
-            box-shadow:0 6px 18px rgba(212,175,55,.16);
+        /* carte "القريبة مني" : identique aux autres cartes de menu (meme taille) */
+        .sihatar-menu-near{
+            background:linear-gradient(120deg,rgba(212,175,55,.18),rgba(60,107,99,.08));
+            border-color:rgba(212,175,55,.42);
         }
-        .sihatar-cta .sihatar-cta-btn.wide:hover{
-            background:linear-gradient(120deg,rgba(212,175,55,.26),rgba(60,107,99,.14));
-            box-shadow:0 10px 26px rgba(212,175,55,.26);
-        }
-        .sihatar-cta-ico{
-            width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;
-            background:linear-gradient(160deg,rgba(212,175,55,.26),rgba(212,175,55,.06));
-            border:1px solid rgba(212,175,55,.42);border-radius:13px;
-            filter:drop-shadow(0 3px 8px rgba(212,175,55,.28));
-        }
-        .sihatar-cta-txt{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0;text-align:right;}
-        .sihatar-cta-txt b{font-size:.98rem;color:var(--gold-light);font-weight:700;}
-        .sihatar-cta-txt i{font-style:normal;font-size:.72rem;color:var(--text-dim);direction:ltr;text-align:right;}
-        .sihatar-cta-go{
-            flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-            background:linear-gradient(135deg,#ffeeb0,#d4af37);color:#0b132b;font-size:1.05rem;font-weight:900;
-            box-shadow:0 3px 10px rgba(212,175,55,.35);
-        }
-        .sihatar-cta-btn{
-            display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:none;
-            padding:11px 20px;border-radius:24px;cursor:pointer;
-            background:linear-gradient(135deg,#ffeeb0,#d4af37);color:#0b132b;border:none;
-            font-family:var(--font);font-weight:800;font-size:.85rem;white-space:nowrap;
-            box-shadow:0 6px 18px rgba(212,175,55,.3);transition:transform .15s ease,box-shadow .15s ease;
-        }
-        .sihatar-cta-btn:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(212,175,55,.4);}
-        .sihatar-cta-btn:active{transform:translateY(0);}
-        @media (max-width:700px){
-            .sihatar-cta .sihatar-cta-btn.wide{flex-wrap:nowrap;}
-        }
+        .sihatar-menu-near:hover{border-color:rgba(212,175,55,.7);}
+        .sihatar-menu-near .sihatar-mtxt b{color:var(--gold-light);}
+        .sihatar-menu-near .sihatar-ico3d{width:36px;height:36px;}
         .sihatar-mapbar{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:14px;}
         .sihatar-mapbar input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--text-main);font-family:var(--font);font-size:.92rem;}
         .sihatar-mapbar input::placeholder{color:var(--text-dim);}
@@ -1784,6 +1755,23 @@
                             <span class="sihatar-mtxt"><b>الأطباء</b><i>Médecins</i></span>
                             <span class="sihatar-mcount" data-count="medecins">—</span>
                         </button>
+                        <button type="button" class="sihatar-menu glass-btn sihatar-menu-near" id="btn-sihatar-around" title="Autour de moi — Pharmacies de garde">
+                            <span class="sihatar-mico">
+                                <svg class="sihatar-ico3d" viewBox="0 0 38 46" role="img" aria-label="Autour de moi">
+                                    <defs>
+                                        <linearGradient id="sihaCtaPin" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="36" height="44" rx="10" fill="url(#sihaCtaPin)"/>
+                                    <rect x="2.5" y="2.5" width="33" height="41" rx="9" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>
+                                    <path d="M19 7C11.5 7 6 12.8 6 19.8c0 9.4 13 21 13 21s13-11.6 13-21C32 12.8 26.5 7 19 7Z" fill="#0b132b" opacity=".88"/>
+                                    <circle cx="19" cy="19.5" r="4.6" fill="url(#sihaCtaPin)"/>
+                                </svg>
+                            </span>
+                            <span class="sihatar-mtxt"><b>القريبة مني</b><i>Autour de moi</i></span>
+                            <span class="sihatar-mcount">📍</span>
+                        </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="cliniques">
                             <span class="sihatar-mico">🏥</span>
                             <span class="sihatar-mtxt"><b>العيادات</b><i>Cliniques</i></span>
@@ -1798,24 +1786,6 @@
                             <span class="sihatar-mico">💰</span>
                             <span class="sihatar-mtxt"><b>أسعار التحاليل</b><i>Tarifs des analyses</i></span>
                             <span class="sihatar-mcount" data-count="tarifs">—</span>
-                        </button>
-                    </div>
-
-                    <div class="sihatar-cta" id="sihatar-cta">
-                        <button type="button" class="sihatar-cta-btn wide" id="btn-sihatar-around" title="Autour de moi">
-                            <span class="sihatar-cta-ico" aria-hidden="true">
-                                <svg width="26" height="32" viewBox="0 0 38 46">
-                                    <defs>
-                                        <linearGradient id="sihaCtaPin" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/>
-                                        </linearGradient>
-                                    </defs>
-                                    <path d="M19 2C10 2 3 9 3 18c0 12 16 26 16 26s16-14 16-26C35 9 28 2 19 2Z" fill="url(#sihaCtaPin)" stroke="#0b132b" stroke-width="2.5"/>
-                                    <circle cx="19" cy="18" r="6" fill="#0b132b" opacity=".8"/>
-                                </svg>
-                            </span>
-                            <span class="sihatar-cta-txt"><b>القريبة مني</b><i>Autour de moi — Pharmacies de garde</i></span>
-                            <span class="sihatar-cta-go" aria-hidden="true">‹</span>
                         </button>
                     </div>
 
@@ -5627,7 +5597,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const search = document.getElementById('sihatar-search');
             if (search) { search.value = ''; search.disabled = false; }
             document.getElementById('sihatar-menus').style.display = 'none';
-            const cta = document.getElementById('sihatar-cta');
+            const cta = document.getElementById('btn-sihatar-around');
             if (cta) cta.style.display = 'none';
             sihaMapFs(false);
             document.getElementById('sihatar-panel').style.display = 'flex';
@@ -6030,7 +6000,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         async function sihaOpenMapView() {
             sihaMapFs(false);
             document.getElementById('sihatar-menus').style.display = 'none';
-            const cta = document.getElementById('sihatar-cta');
+            const cta = document.getElementById('btn-sihatar-around');
             if (cta) cta.style.display = 'none';
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'flex';
@@ -6130,7 +6100,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             showScreen(sihatarScreen);
             sihaRenderCities();
             document.getElementById('sihatar-menus').style.display = 'grid';
-            const cta0 = document.getElementById('sihatar-cta');
+            const cta0 = document.getElementById('btn-sihatar-around');
             if (cta0) cta0.style.display = '';
             sihaMapFs(false);
             document.getElementById('sihatar-panel').style.display = 'none';
@@ -6146,7 +6116,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.getElementById('sihatar-menus').style.display = 'grid';
             document.getElementById('sihatar-chips').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'none';
-            const cta = document.getElementById('sihatar-cta');
+            const cta = document.getElementById('btn-sihatar-around');
             if (cta) cta.style.display = '';
             const box = document.getElementById('sihatar-search');
             if (box) { box.disabled = false; box.value = ''; }
@@ -6248,7 +6218,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             sihaMapFs(false);
             document.getElementById('sihatar-mapview').style.display = 'none';
             document.getElementById('sihatar-menus').style.display = 'grid';
-            const cta = document.getElementById('sihatar-cta');
+            const cta = document.getElementById('btn-sihatar-around');
             if (cta) cta.style.display = '';
         };
     });
