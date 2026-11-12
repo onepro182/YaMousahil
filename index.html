@@ -1110,6 +1110,17 @@
         /* Texte crème + or homogène dans le Quran Player Modal */
         #asma-screen { display: flex; flex-direction: column; height: 100%; width: 100%; gap: 15px; }
         #asma-screen .header-prayers { display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
+        /* boutons audio / lecture auto (أسماء الله) */
+        .asma-actions{display:flex;gap:8px;align-items:center;}
+        .asma-act-btn{
+            width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+            background:rgba(255,255,255,.06);border:1px solid var(--glass-border);color:var(--gold);
+            font-size:1rem;line-height:1;cursor:pointer;
+            transition:transform .15s ease,border-color .15s ease,background .15s ease;
+        }
+        .asma-act-btn:hover{border-color:var(--gold);background:rgba(212,175,55,.12);transform:translateY(-2px);}
+        .asma-act-btn.off{color:var(--text-dim);opacity:.7;}
+        .asma-act-btn.on{background:rgba(212,175,55,.24);border-color:rgba(212,175,55,.6);}
         #quran-player-modal, #quran-player-modal .setting-title, #quran-player-modal label, #quran-player-modal h2, #quran-player-modal span, #quran-player-modal p, #quran-player-modal div {
             color: var(--cream) !important;
         }
@@ -2163,7 +2174,10 @@
                         <div style="text-align:center;flex:1;min-width:180px;">
                             <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ أسماء الله الحسنى</h1>
                         </div>
-                        <div style="width:80px;"></div>
+                        <div class="asma-actions">
+                            <button type="button" class="asma-act-btn" id="asma-audio-btn" aria-label="تعطيل الصوت" title="تعطيل الصوت">🔊</button>
+                            <button type="button" class="asma-act-btn" id="asma-auto-btn" aria-label="القراءة التلقائية" title="القراءة التلقائية">▶</button>
+                        </div>
                     </div>
                     <div class="asma-verse" style="text-align:center;padding:8px;color:#d4af37;font-family:'Amiri',serif;font-size:1.1rem;background:rgba(212,175,55,0.05);border:2px solid rgba(212,175,55,0.2);border-radius:10px;margin:0 10px 8px;line-height:1.7;">
                       ﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا ۖ وَذَرُوا الَّذِينَ يُلْحِدُونَ فِي أَسْمَائِهِ ۚ سَيُجْزَوْنَ مَا كَانُوا يَعْمَلُونَ﴾ [الأعراف: 180]
@@ -3191,8 +3205,26 @@ var gender = 'male';
                 return true;
             } catch (e) { finish(); return false; }
         };
-        function clearAsmaPlaying() {
-            try {
+        // etat du son + boutons audio / lecture auto
+        var asmaAudioOn = true;
+        try { var _ao = localStorage.getItem('asmaAudioOn'); if (_ao !== null) asmaAudioOn = (_ao === '1'); } catch (e) {}
+        function updateAsmaButtons() {
+            var ab = document.getElementById('asma-audio-btn');
+            if (ab) {
+                ab.textContent = asmaAudioOn ? '\u{1F50A}' : '\u{1F507}';
+                ab.classList.toggle('off', !asmaAudioOn);
+                ab.setAttribute('aria-label', asmaAudioOn ? 'تعطيل الصوت' : 'تفعيل الصوت');
+                ab.title = ab.getAttribute('aria-label');
+            }
+            var tb = document.getElementById('asma-auto-btn');
+            if (tb) {
+                tb.textContent = asmaAuto ? '\u23F8' : '\u25B6';
+                tb.classList.toggle('on', !!asmaAuto);
+                tb.setAttribute('aria-label', asmaAuto ? 'إيقاف القراءة التلقائية' : 'القراءة التلقائية');
+                tb.title = tb.getAttribute('aria-label');
+            }
+        }
+        function clearAsmaPlaying() {            try {
                 var grid = document.getElementById('asma-grid');
                 if (grid) Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('asma-playing'); var sp = c.querySelector('.asma-speaker'); if (sp) sp.textContent = ''; });
             } catch (e) {}
@@ -3217,7 +3249,7 @@ var gender = 'male';
             // lecture du nom + de sa signification (comme l'annonce vocale des prieres)
             var entry = idx >= 0 ? ASMA[idx] : null;
             var toSay = entry ? (entry.ar + (entry.desc ? '. ' + entry.desc : '')) : text;
-            var ok = (typeof window.speakArabicText === 'function') ? window.speakArabicText(toSay) : false;
+            var ok = asmaAudioOn && (typeof window.speakArabicText === 'function') ? window.speakArabicText(toSay) : false;
             if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
         }
 
@@ -3229,6 +3261,7 @@ var gender = 'male';
             if (resetBtn !== false) {
                 var b = document.getElementById('btn-auto-asma');
                 if (b) b.textContent = '▶ Lecture auto';
+                updateAsmaButtons();
                 var grid = document.getElementById('asma-grid');
                 if (grid && asmaHighlightIdx >= 0) { grid.children[asmaHighlightIdx].style.outline = ''; asmaHighlightIdx = -1; }
             }
@@ -3237,7 +3270,7 @@ var gender = 'male';
         function playAsmaAuto(i) {
             if (!asmaAuto) return;
             var grid = document.getElementById('asma-grid');
-            if (i >= ASMA.length) { clearAsmaPlaying(); asmaHighlightIdx = -1; asmaAuto = false; var b=document.getElementById('btn-auto-asma'); if(b) b.textContent='▶ Lecture auto'; return; }
+            if (i >= ASMA.length) { clearAsmaPlaying(); asmaHighlightIdx = -1; asmaAuto = false; var b=document.getElementById('btn-auto-asma'); if(b) b.textContent='▶ Lecture auto'; updateAsmaButtons(); return; }
             if (grid) {
                 asmaHighlightIdx = i;
                 markAsmaPlaying(ASMA[i].ar);
@@ -3254,9 +3287,25 @@ var gender = 'male';
             var b = document.getElementById('btn-auto-asma');
             if (b) b.textContent = '⏸ Arrêter';
             playAsmaAuto(0);
+            updateAsmaButtons();
         };
         // Exposer globalement pour les onclick/onchange inline (sinon ReferenceError)
         window.playAsmaAudio = playAsmaAudio;
+        // boutons audio / lecture auto
+        var _asmaAudioBtn = document.getElementById('asma-audio-btn');
+        if (_asmaAudioBtn) _asmaAudioBtn.addEventListener('click', function () {
+            asmaAudioOn = !asmaAudioOn;
+            try { localStorage.setItem('asmaAudioOn', asmaAudioOn ? '1' : '0'); } catch (e) {}
+            if (!asmaAudioOn) { try { speechSynthesis.cancel(); } catch (e) {} clearAsmaPlaying(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); }
+            updateAsmaButtons();
+        });
+        var _asmaAutoBtn = document.getElementById('asma-auto-btn');
+        if (_asmaAutoBtn) _asmaAutoBtn.addEventListener('click', function () {
+            if (!asmaAudioOn) { asmaAudioOn = true; try { localStorage.setItem('asmaAudioOn', '1'); } catch (e) {} }
+            window.__toggleAsmaAuto();
+            updateAsmaButtons();
+        });
+        updateAsmaButtons();
         window.__setAsmaGender = function(v) { gender = v; };
         function renderAsma() {
             const grid = document.getElementById('asma-grid');
@@ -3595,7 +3644,7 @@ var gender = 'male';
         }
         document.getElementById('card-inheritance').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderInheritance(); showScreen(inheritanceScreen); window.scrollTo(0,0); };
         document.getElementById('btn-back-from-inheritance').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
-        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); window.__toggleAsmaAuto(); });
+        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); updateAsmaButtons(); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
         // ==================================================
@@ -5566,8 +5615,41 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             function updateTasbihSoundBtn() { var b = $("tasbih-sound-btn"); if (!b) return; b.textContent = state.sound ? "🔊" : "🔇"; b.classList.toggle("off", !state.sound); b.setAttribute("aria-label", state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"); b.title = state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"; }
             function updateTasbihVoiceBtn() { var b = document.getElementById("tasbih-voice-btn"); if (!b) return; b.textContent = state.voice ? "🗣️" : "🤐"; b.classList.toggle("off", !state.voice); b.setAttribute("aria-label", state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"); b.title = state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"; }
             function render() { checkDay(); var count = state.session % state.target; var rounds = Math.floor(state.session / state.target); $("countDisplay").textContent = count; $("targetDisplay").textContent = t("outOf") + " " + state.target; $("roundDisplay").textContent = t("round") + " " + (rounds + 1); $("todayDisplay").textContent = state.today; $("roundsDisplay").textContent = rounds; $("totalDisplay").textContent = state.total; $("targetLabel").textContent = t("target") + " " + state.target; $("currentDhikrArabic").textContent = state.selected; $("currentDhikrArabic").title = state.selected; $("undoBtn").disabled = state.session === 0; fitPhrase(); $("progressArc").setAttribute("stroke-dasharray", arcLength); $("progressArc").setAttribute("stroke-dashoffset", arcLength * (1 - count/state.target)); var lit = count === 0 ? 0 : ((count - 1) % 33) + 1; beads.forEach(function (b, i) { b.setAttribute("fill", i < lit ? "url(#jade)" : "url(#ivory)"); }); menuButtons.forEach(function (e) { var sel = e.text === state.selected; e.button.classList.toggle("selected", sel); e.button.setAttribute("aria-pressed", String(sel)); }); updateAutoLabel(); updateTasbihSoundBtn(); updateTasbihVoiceBtn(); }
-            function beep() { if (!state.sound) return; try { var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; if (!audio || audio.state === "closed") audio = new AC(); function tone() { try { if (!state.sound) return; var now = audio.currentTime, o = audio.createOscillator(), g = audio.createGain(); o.type = "sine"; o.frequency.setValueAtTime(720, now); g.gain.setValueAtTime(.0001, now); g.gain.exponentialRampToValueAtTime(.06, now + .008); g.gain.exponentialRampToValueAtTime(.0001, now + .09); o.connect(g); g.connect(audio.destination); o.onended = function () { o.disconnect(); g.disconnect(); }; o.start(now); o.stop(now + .1); } catch (e) {} } if (audio.state === "suspended") audio.resume().then(tone).catch(function(){}); else tone(); } catch (e) {} }
-            var DHIKR_MP3_COUNT = 12;
+            function beep() {
+                if (!state.sound) return;
+                try {
+                    var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+                    if (!audio || audio.state === "closed") audio = new AC();
+                    function clac() {
+                        try {
+                            if (!state.sound) return;
+                            var now = audio.currentTime;
+                            var isLast = (state.target > 0 && state.session % state.target === 0);
+                            // corps : bruit court filtre (le "clac" de la bille)
+                            var dur = 0.05;
+                            var len = Math.max(1, Math.floor(audio.sampleRate * dur));
+                            var buf = audio.createBuffer(1, len, audio.sampleRate);
+                            var data = buf.getChannelData(0);
+                            for (var i = 0; i < len; i++) { data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 4); }
+                            var src = audio.createBufferSource(); src.buffer = buf;
+                            var bp = audio.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = isLast ? 2600 : 1900; bp.Q.value = 1.2;
+                            var ng = audio.createGain(); ng.gain.value = isLast ? 0.22 : 0.16;
+                            src.connect(bp); bp.connect(ng); ng.connect(audio.destination);
+                            // resonance : note courte qui descend (bois)
+                            var o = audio.createOscillator(); o.type = "triangle";
+                            o.frequency.setValueAtTime(isLast ? 1450 : 900, now);
+                            o.frequency.exponentialRampToValueAtTime(isLast ? 820 : 560, now + 0.075);
+                            var og = audio.createGain();
+                            og.gain.setValueAtTime(0.0001, now);
+                            og.gain.exponentialRampToValueAtTime(isLast ? 0.13 : 0.085, now + 0.004);
+                            og.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+                            o.connect(og); og.connect(audio.destination);
+                            src.start(now); o.start(now); o.stop(now + 0.14);
+                        } catch (e) {}
+                    }
+                    if (audio.state === "suspended") audio.resume().then(clac).catch(function () {}); else clac();
+                } catch (e) {}
+            }            var DHIKR_MP3_COUNT = 12;
             var _dhikrAudio = null;
             function speakDhikr() { if (!state.sound || !state.voice) return; var i = builtins.indexOf(state.selected); if (i !== -1 && i < DHIKR_MP3_COUNT) { try { if (_dhikrAudio) { _dhikrAudio.pause(); _dhikrAudio.currentTime = 0; } } catch (e) {} try { _dhikrAudio = new Audio("assets/audio/dhikr-" + i + ".mp3"); _dhikrAudio.volume = 1; _dhikrAudio.play().catch(function(){}); } catch (e) {} return; } try { var a=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q='+encodeURIComponent(state.selected)+'&tl=ar&client=tw-ob'); a.volume=1; a.play().catch(function(){}); } catch(e){} }
             function increment() { checkDay(); state.session++; state.total++; state.today++; history.push(state.day); render(); beep(); speakDhikr(); try { if (state.vibration && navigator.vibrate) navigator.vibrate(state.session % state.target === 0 ? [30,40,30] : 12); } catch (e) {} }
