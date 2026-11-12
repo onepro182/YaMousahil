@@ -4772,9 +4772,36 @@ function notifyPrayer(prayerKey, isTest) {
         document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('isha', 'now'); notifyPrayer('isha', true); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES.isha); else if (typeof speakArabic === 'function') speakArabic('حان الآن موعد صلاة ' + PRAYER_NAMES.isha); } });
         // Test après déploiement: ?testAlert=1
         try{var _ta=new URLSearchParams(location.search); if(_ta.get('testAlert')==='1'||_ta.get('testalert')==='1'||_ta.get('test')==='alert'){setTimeout(function(){if(typeof showAlertOverlay==='function') showAlertOverlay('isha','now');},900);}}catch(e){}
+        // ===== Geolocalisation fournie par l'APK Android =====
+        // Dans l'APK, le WebView recoit la position reelle du telephone et appelle
+        // window.__yaGeoFix(lat, lon, accuracy) : on la renvoie a l'API Geolocation du site
+        // afin que "المساجد القريبة" et "القريبة مني" fonctionnent meme si le navigateur
+        // bloque la geolocalisation (WebView sans permission).
+        window.__yaGeoFix = function (lat, lon, acc) {
+            try {
+                var pos = { lat: Number(lat), lon: Number(lon), acc: Number(acc) || 50 };
+                if (!isFinite(pos.lat) || !isFinite(pos.lon)) return false;
+                window.__yaPos = pos;
+                try { window.dispatchEvent(new CustomEvent('ya:geo', { detail: pos })); } catch (e) {}
+                try {
+                    var g = navigator.geolocation;
+                    if (g) {
+                        g.getCurrentPosition = function (cb, err) {
+                            if (typeof cb === 'function') cb({ coords: { latitude: pos.lat, longitude: pos.lon, accuracy: pos.acc }, timestamp: Date.now() });
+                            if (typeof err === 'function') return;
+                        };
+                        g.watchPosition = function (cb) {
+                            if (typeof cb === 'function') cb({ coords: { latitude: pos.lat, longitude: pos.lon, accuracy: pos.acc }, timestamp: Date.now() });
+                            return 1;
+                        };
+                        g.clearWatch = function () { };
+                    }
+                } catch (e2) {}
+                return true;
+            } catch (e3) { return false; }
+        };
         // "تحديث التطبيق" : purge des caches + rechargement forcé de la dernière version
-        (function initAppUpdate(){
-            var btn = document.getElementById('btn-app-update');
+        (function initAppUpdate(){            var btn = document.getElementById('btn-app-update');
             if (!btn) return;
             btn.onclick = async function () {
                 if (btn.dataset.busy) return;
