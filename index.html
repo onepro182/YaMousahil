@@ -1526,6 +1526,20 @@
             .tajweed-a-verse{font-size:.74rem;}
             .tajweed-a-sel{max-width:120px;font-size:.66rem;}
         }
+        /* ===== selection d'une ayah : zones cliquables (comme qContainer) ===== */
+        .tajweed-hits{position:absolute;left:0;top:0;width:0;height:0;display:none;z-index:3;}
+        .tajweed-hits.on{display:block;}
+        .tajweed-hit{
+            position:absolute;box-sizing:border-box;border-radius:4px;cursor:pointer;
+            -webkit-tap-highlight-color:transparent;
+        }
+        .tajweed-hit:hover{background:rgba(212,175,55,.13);}
+        .tajweed-hit.on{background:rgba(212,175,55,.16);box-shadow:inset 0 0 0 1.5px rgba(212,175,55,.75);}
+        /* ===== plein ecran : la page prend toute la hauteur, la barre s'efface ===== */
+        .tajweed-frame-wrap.fs .tajweed-stage{top:0;}
+        .tajweed-frame-wrap.fs .tajweed-loading{top:0;}
+        .tajweed-frame-wrap.fs .tajweed-topbar{transition:transform .22s ease,opacity .22s ease;}
+        .tajweed-frame-wrap.fs.bar-hidden .tajweed-topbar{transform:translateY(-105%);opacity:0;pointer-events:none;}
         /* telephone : la barre audio reste collee au bas de l'ecran (le lecteur peut depasser de 100dvh) */
         body.is-mobile .tajweed-audio{
             position:fixed;left:0;right:0;bottom:0;
@@ -2564,6 +2578,8 @@
                     <div class="tajweed-stage" id="tajweed-stage">
                         <img id="tajweed-page-img" alt="صفحة من مصحف التجويد" src="">
                         <img id="tajweed-page-img2" class="tw-pg2" alt="" aria-hidden="true">
+                        <div class="tajweed-hits" id="tajweed-hits1" aria-hidden="true"></div>
+                        <div class="tajweed-hits" id="tajweed-hits2" aria-hidden="true"></div>
                     </div>
                     <div class="tajweed-loading" id="tajweed-loading">جارٍ تحميل الصفحة...</div>
                     <div class="tajweed-topbar">
@@ -4723,6 +4739,7 @@ var gender = 'male';
             if (p < 1 || p > TAJWEED_TOTAL) return;
             var im = new Image();
             im.src = tajweedImgUrl(p);
+            twHitsLoad(p);
         }
         // mode « 2 pages » : reserve aux grands ecrans (Windows / desktop)
         var _tajweedSpread = false;
@@ -4802,6 +4819,7 @@ var gender = 'male';
             tajweedSyncBookmark();
             tajweedHighlight();
             twAudioOnPageChange(base);
+            twHitsUpdate();
             return base;
         }
         function tajweedHighlight() {
@@ -4946,11 +4964,20 @@ var gender = 'male';
                 fs.textContent = on ? '⤡' : '⛶';
                 fs.classList.toggle('on', on);
                 fs.setAttribute('aria-label', on ? 'الخروج من ملء الشاشة' : 'ملء الشاشة');
+                // dans l'application Android, le plein ecran natif de la WebView affiche une zone noire :
+                // on garde uniquement le plein ecran CSS (la page remplit la vue)
+                var inApp = /YaMousahilApp|;\s*wv\)/i.test(navigator.userAgent);
+                twFsBar(on);
                 if (on) {
-                    try { document.documentElement.requestFullscreen ? document.documentElement.requestFullscreen().catch(function () {}) : null; } catch (e) {}
+                    if (!inApp) {
+                        try { document.documentElement.requestFullscreen ? document.documentElement.requestFullscreen().catch(function () {}) : null; } catch (e) {}
+                    }
                 } else {
+                    wrap.classList.remove('bar-hidden');
+                    clearTimeout(twFsBar._t);
                     try { if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function () {}); } catch (e) {}
                 }
+                twHitsUpdate();
             };
             var indexBtn = document.getElementById('tajweed-index-btn');
             if (indexBtn) indexBtn.onclick = function () { tajweedOpenSheet(_tajweedTab); };
@@ -4969,6 +4996,7 @@ var gender = 'male';
             window.addEventListener('focus', tajweedSyncBookmark);
             document.addEventListener('visibilitychange', function () { if (!document.hidden) tajweedSyncBookmark(); });
             // تلاوة : barre de lecture + choix du recitateur
+            var stage2 = document.getElementById('tajweed-stage');
             var selR = document.getElementById('tajweed-a-reciter');
             if (selR && !selR.options.length) {
                 for (var ri = 0; ri < TAJWEED_RECITERS.length; ri++) {
@@ -5000,6 +5028,29 @@ var gender = 'male';
             };
             if (aClose) aClose.onclick = function () { twAudioStop(); };
             twAudioUi();
+            // zones cliquables des versets (une par page affichee)
+            ['tajweed-hits1', 'tajweed-hits2'].forEach(function (id) {
+                var ly = document.getElementById(id);
+                if (!ly || ly._twBound) return;
+                ly._twBound = true;
+                ly.addEventListener('click', function (e) {
+                    var t = e.target;
+                    while (t && t !== ly && String(t.className || '').indexOf('tajweed-hit') < 0) t = t.parentElement;
+                    if (!t || t === ly) return;
+                    e.stopPropagation();
+                    twHitsSelect(parseInt(t.getAttribute('data-s'), 10), parseInt(t.getAttribute('data-a'), 10));
+                });
+            });
+            // un appui sur le fond en plein ecran ramene la barre du haut
+            if (stage2 && !stage2._twTap) {
+                stage2._twTap = true;
+                stage2.addEventListener('click', function (e) {
+                    var w = document.getElementById('tajweed-wrap');
+                    if (!w || !w.classList.contains('fs')) return;
+                    if (String((e.target && e.target.className) || '').indexOf('tajweed-hit') >= 0) return;
+                    twFsBar(true);
+                });
+            }
             // lecteur natif : chargement, swipe tactile, clavier, restauration de la page
             var stage = document.getElementById('tajweed-stage');
             var img = document.getElementById('tajweed-page-img');
@@ -5007,7 +5058,7 @@ var gender = 'male';
             var ld = document.getElementById('tajweed-loading');
             [img, img2].forEach(function (el) {
                 if (!el) return;
-                el.onload = function () { if (ld) ld.classList.remove('on'); };
+                el.onload = function () { if (ld) ld.classList.remove('on'); twHitsUpdate(); };
                 el.onerror = function () { if (ld) ld.classList.add('on'); };
             });
             if (stage && !stage._twBound) {
@@ -5045,6 +5096,16 @@ var gender = 'male';
                 var on = tajweedSetSpread(!_tajweedSpread);
                 tajweedToast(on ? '📖 عرض صفحتين' : '📄 عرض صفحة واحدة');
             };
+            if (window.ResizeObserver && !tajweedBind._ro) {
+                tajweedBind._ro = new ResizeObserver(function () {
+                    twHitsPlace(document.getElementById('tajweed-page-img'), document.getElementById('tajweed-hits1'));
+                    twHitsPlace(document.getElementById('tajweed-page-img2'), document.getElementById('tajweed-hits2'));
+                });
+                ['tajweed-page-img', 'tajweed-page-img2'].forEach(function (id) {
+                    var im = document.getElementById(id);
+                    if (im) tajweedBind._ro.observe(im);
+                });
+            }
             if (!tajweedBind._rz) {
                 tajweedBind._rz = true;
                 window.addEventListener('resize', function () {
@@ -5257,6 +5318,122 @@ var gender = 'male';
             }
             if (vs) vs.textContent = _twSura ? twVerseLabel(_twSura, _twAya) : 'تلاوة';
             if (sel && sel.value !== _twRec) sel.value = _twRec;
+            twHitsMark();
+        }
+        // ===== selection d'une ayah (zones .vBtn de QuranFlash) =====
+        var TAJWEED_VERSE_URL = 'https://app.quranflash.com/book/Tajweed/epub/EPUB/xhtml/raw/page';
+        var _twHits = {}, _twHitsReq = {};
+
+        function twHitsParse(html) {
+            var out = [], scale = 1.6200417536534;
+            try {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var sc = doc.querySelector('.btnScaler');
+                if (sc) {
+                    var m = /scale\(([\d.]+)\)/.exec(sc.getAttribute('style') || '');
+                    if (m && parseFloat(m[1]) > 0.2) scale = parseFloat(m[1]);
+                }
+                var boxes = doc.querySelectorAll('.vBtn');
+                for (var i = 0; i < boxes.length; i++) {
+                    var b = boxes[i], id = b.id || '', mm = /^v(\d+)_(\d+)/.exec(id);
+                    if (!mm) continue;
+                    var st = b.getAttribute('style') || '';
+                    var t = /top:\s*(-?[\d.]+)px/.exec(st), l = /left:\s*(-?[\d.]+)px/.exec(st),
+                        w = /width:\s*([\d.]+)px/.exec(st), h = /height:\s*([\d.]+)px/.exec(st);
+                    if (!t || !l || !w || !h) continue;
+                    out.push({
+                        s: parseInt(mm[1], 10), a: parseInt(mm[2], 10),
+                        t: parseFloat(t[1]), l: parseFloat(l[1]),
+                        w: parseFloat(w[1]), h: parseFloat(h[1]), k: scale
+                    });
+                }
+            } catch (e) {}
+            return out;
+        }
+        function twHitsLoad(page, cb) {
+            page = parseInt(page, 10) || 0;
+            if (page < 1) { if (cb) cb(); return; }
+            if (_twHits[page]) { if (cb) cb(); return; }
+            if (_twHitsReq[page]) return;
+            _twHitsReq[page] = 1;
+            var x = new XMLHttpRequest();
+            x.open('GET', TAJWEED_VERSE_URL + page + '.xhtml', true);
+            x.timeout = 15000;
+            x.onload = function () {
+                _twHits[page] = (x.status >= 200 && x.status < 300) ? twHitsParse(x.responseText) : [];
+                _twHitsReq[page] = 0;
+                if (cb) cb();
+            };
+            x.onerror = x.ontimeout = function () { _twHits[page] = []; _twHitsReq[page] = 0; if (cb) cb(); };
+            try { x.send(); } catch (e) { _twHits[page] = []; _twHitsReq[page] = 0; }
+        }
+        function twHitsPlace(img, layer) {
+            if (!img || !layer) return;
+            var stage = document.getElementById('tajweed-stage');
+            if (!stage || !img.offsetWidth) { layer.classList.remove('on'); return; }
+            var sr = stage.getBoundingClientRect(), ir = img.getBoundingClientRect();
+            layer.style.left = (ir.left - sr.left) + 'px';
+            layer.style.top = (ir.top - sr.top) + 'px';
+            layer.style.width = ir.width + 'px';
+            layer.style.height = ir.height + 'px';
+        }
+        function twHitsRender(img, layer, page) {
+            var list = _twHits[page];
+            layer.innerHTML = '';
+            if (!list || !list.length || !img || !img.getAttribute('src')) { layer.classList.remove('on'); return; }
+            var iw = img.naturalWidth || 776, ih = img.naturalHeight || 1053;
+            var frag = document.createDocumentFragment();
+            for (var i = 0; i < list.length; i++) {
+                var b = list[i], d = document.createElement('div');
+                d.className = 'tajweed-hit';
+                d.setAttribute('data-s', b.s);
+                d.setAttribute('data-a', b.a);
+                d.style.left = (b.l * b.k / iw * 100) + '%';
+                d.style.top = (b.t * b.k / ih * 100) + '%';
+                d.style.width = (b.w * b.k / iw * 100) + '%';
+                d.style.height = (b.h * b.k / ih * 100) + '%';
+                frag.appendChild(d);
+            }
+            layer.appendChild(frag);
+            layer.classList.add('on');
+            twHitsMark();
+        }
+        function twHitsUpdate() {
+            var pair = tajweedPair(_tajweedPage);
+            var items = [
+                [document.getElementById('tajweed-page-img'), document.getElementById('tajweed-hits1'), pair[0]],
+                [document.getElementById('tajweed-page-img2'), document.getElementById('tajweed-hits2'), pair.length > 1 ? pair[1] : 0]
+            ];
+            for (var i = 0; i < items.length; i++) {
+                var img = items[i][0], layer = items[i][1], page = items[i][2];
+                if (!img || !layer) continue;
+                if (!page || !img.getAttribute('src')) { layer.classList.remove('on'); continue; }
+                twHitsPlace(img, layer);
+                if (_twHits[page]) twHitsRender(img, layer, page);
+                else { layer.classList.remove('on'); twHitsLoad(page, twHitsUpdate); }
+            }
+        }
+        function twHitsMark() {
+            var on = _twSura ? (_twSura + '_' + _twAya) : '';
+            var hs = document.querySelectorAll('.tajweed-hit');
+            for (var i = 0; i < hs.length; i++) {
+                var h = hs[i];
+                h.classList.toggle('on', on !== '' && (h.getAttribute('data-s') + '_' + h.getAttribute('data-a')) === on);
+            }
+        }
+        function twHitsSelect(sura, aya) {
+            if (!sura || !aya) return;
+            twAudioPlayVerse(sura, aya, true);
+            twAudioUi();
+        }
+        // barre du haut en plein ecran : visible 3 s puis effacee (un appui la ramene)
+        function twFsBar(show) {
+            var w = document.getElementById('tajweed-wrap');
+            if (!w) return;
+            if (!w.classList.contains('fs')) { w.classList.remove('bar-hidden'); clearTimeout(twFsBar._t); return; }
+            clearTimeout(twFsBar._t);
+            w.classList.toggle('bar-hidden', !show);
+            if (show) twFsBar._t = setTimeout(function () { w.classList.add('bar-hidden'); }, 3000);
         }
         // ===== مصحف التجويد (lecteur QuranFlash) =====
         var ct = document.getElementById('card-tajweed');
