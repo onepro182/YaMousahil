@@ -1389,9 +1389,8 @@
             position:absolute;top:51px;right:0;z-index:13;width:270px;height:86px;
             background:linear-gradient(180deg,rgba(9,22,18,.98),rgba(6,17,14,.98));border-left:1px solid rgba(212,175,55,.22);display:block;
         }
-        /* bouton الفهرس (notre index) */
-        .tajweed-index-float{position:absolute;top:51px;left:12px;z-index:13;}
-        .tajweed-index-float .tajweed-back-btn{background:rgba(6,17,14,.9);}
+        /* bouton الفهرس dans la barre du haut */
+        .tajweed-ico.wide{width:auto;padding:0 11px;font-size:.85rem;font-family:var(--font);font-weight:700;}
         .tajweed-ico{
             width:34px;height:34px;flex:none;border-radius:9px;border:1px solid rgba(255,255,255,.10);
             background:rgba(255,255,255,.05);color:#e8e2cf;font-size:1rem;cursor:pointer;line-height:1;
@@ -1427,7 +1426,7 @@
         @media (max-width:520px){ .tajweed-sheet{width:100%;max-width:100%;} }
         /* proxy invisible : le bouton «الفهرس » du lecteur ouvre NOTRE index */
         .tajweed-proxy{
-            position:absolute;right:0;bottom:0;width:96px;height:64px;z-index:13;
+            position:absolute;right:0;bottom:0;width:140px;height:76px;z-index:13;
             background:transparent;border:0;padding:0;cursor:pointer;
         }
         .tajweed-sheet-head{
@@ -2476,11 +2475,9 @@
                 <div class="tajweed-frame-wrap" id="tajweed-wrap">
                     <iframe id="tajweed-frame" src="https://app.quranflash.com/book/Tajweed?ar#/reader/chapter/3" data-src="https://app.quranflash.com/book/Tajweed?ar#/reader/chapter/3" title="مصحف التجويد الملون" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     <div class="tajweed-mask" id="tajweed-mask" aria-hidden="true"></div>
-                    <div class="tajweed-index-float">
-                        <button type="button" class="tajweed-back-btn" id="tajweed-index-btn" aria-label="الفهرس" title="الفهرس">☰ الفهرس</button>
-                    </div>
                     <div class="tajweed-topbar">
                         <button type="button" class="tajweed-back-btn" id="tajweed-back" data-qm-back>‹ العودة</button>
+                        <button type="button" class="tajweed-ico wide" id="tajweed-index-btn" aria-label="الفهرس" title="الفهرس">الفهرس</button>
                         <span class="tajweed-title">مصحف التجويد برواية ورش</span>
                         <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav" id="tajweed-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
@@ -4763,14 +4760,12 @@ var gender = 'male';
                 var h = tbar.offsetHeight || 51;
                 mask.style.top = h + 'px';
                 mask.style.height = Math.max(60, 181 - h) + 'px';
-                var fl = document.querySelector('.tajweed-index-float');
-                if (fl) fl.style.top = h + 'px';
             }
             placeMask();
             window.addEventListener('resize', placeMask);
             // le bouton «الفهرس » du lecteur QuranFlash ouvre notre index (sans «مصاحف أخرى »)
             var proxy = document.getElementById('tajweed-proxy');
-            if (proxy) proxy.onclick = function () { tajweedOpenSheet(_tajweedTab); };
+            if (proxy) proxy.onclick = function (e) { e.preventDefault(); e.stopPropagation(); tajweedOpenSheet(_tajweedTab); };
             var closeS = document.getElementById('tajweed-sheet-close');
             if (closeS) closeS.onclick = function () { tajweedCloseSheet(); };
             if (veil) veil.onclick = function () { tajweedCloseSheet(); };
