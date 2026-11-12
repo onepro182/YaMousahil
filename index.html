@@ -1252,7 +1252,11 @@
             /* تصفح القرآن - mushaf viewer (mp3quran mushaf2) */
         #mushaf-screen{gap:10px;}
         /* مصحف التجويد الملون (archive.org) */
-        #tajweed-screen{display:none;flex-direction:column;height:100%;width:100%;gap:12px;}
+        #tajweed-screen{display:none;flex-direction:column;height:100%;width:100%;gap:12px;overflow:hidden;}
+        /* sur mobile : la fenetre doit rester bornee a la taille de l'ecran */
+        body.is-mobile #tajweed-screen{height:100dvh !important;min-height:100dvh;max-height:100dvh;overflow:hidden;}
+        body.is-mobile .tajweed-viewport{min-height:0;}
+        body.is-mobile #tajweed-stage{min-height:0;overflow:hidden;}
         #tajweed-screen .header-prayers{flex-shrink:0;}
         .tajweed-viewport{
             flex:1;min-height:70vh;height:100%;position:relative;overflow:hidden;
@@ -1277,11 +1281,17 @@
         }
         .tajweed-title{flex:1;text-align:center;font-family:var(--font-quran);font-size:1.05rem;color:#f0e7cd;font-weight:700;}
         .tajweed-bottom-title{flex:1;text-align:center;font-family:var(--font-quran);font-size:.95rem;color:#f0e7cd;}
+        .tajweed-nav{
+            flex:none;width:38px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.10);
+            background:rgba(255,255,255,.05);color:#e8e2cf;font-size:1.35rem;line-height:1;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+        }
+        .tajweed-nav:active{background:rgba(212,175,55,.25);}
         .tajweed-link{
             flex:none;background:none;border:none;color:#f0e7cd;font-family:var(--font);font-size:.95rem;
             font-weight:700;cursor:pointer;padding:4px 6px;
         }
-        .tajweed-stage{flex:1;position:relative;overflow:auto;display:flex;align-items:flex-start;justify-content:center;background:#0d1b17;}
+        .tajweed-stage{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0d1b17;}
         .tajweed-stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;margin:auto;user-select:none;-webkit-user-drag:none;}
         .tajweed-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#d4af37;font-size:1rem;}
         .tajweed-pill{
@@ -1296,9 +1306,10 @@
         .tajweed-drawer{
             position:absolute;top:0;right:0;bottom:0;width:min(78%,320px);z-index:6;
             background:rgba(8,20,16,.99);border-left:1px solid rgba(212,175,55,.25);
-            transform:translateX(100%);transition:transform .25s ease;overflow-y:auto;padding-bottom:14px;
+            opacity:0;visibility:hidden;transition:opacity .2s ease;
+            overflow-y:auto;padding-bottom:14px;
         }
-        .tajweed-drawer.open{transform:translateX(0);}
+        .tajweed-drawer.open{opacity:1;visibility:visible;}
         .tajweed-drawer-head{
             display:flex;align-items:center;justify-content:space-between;padding:12px 14px;
             border-bottom:1px solid rgba(255,255,255,.08);color:#f0e7cd;font-family:var(--font-quran);font-size:1.05rem;
@@ -1311,11 +1322,12 @@
         .tajweed-ditem:hover{background:rgba(255,255,255,.08);}
         .tajweed-ditem.active{background:rgba(212,175,55,.22);color:#ffeeb0;font-weight:700;}
         .tajweed-sheet{
-            position:absolute;left:0;right:0;bottom:0;z-index:7;max-height:70%;
+            position:absolute;left:0;right:0;bottom:0;z-index:7;max-height:78%;
             background:rgba(8,20,16,.99);border-top:1px solid rgba(212,175,55,.3);border-radius:16px 16px 0 0;
-            transform:translateY(102%);transition:transform .25s ease;display:flex;flex-direction:column;
+            opacity:0;visibility:hidden;transition:opacity .2s ease;
+            display:flex;flex-direction:column;
         }
-        .tajweed-sheet.open{transform:translateY(0);}
+        .tajweed-sheet.open{opacity:1;visibility:visible;}
         .tajweed-sheet-head{
             display:flex;align-items:center;justify-content:space-between;padding:12px 14px;
             border-bottom:1px solid rgba(255,255,255,.08);color:#f0e7cd;font-family:var(--font-quran);font-size:1.05rem;
@@ -2183,16 +2195,15 @@
                     <div class="tajweed-bottombar">
                         <button type="button" class="tajweed-link" id="tajweed-list-btn">القائمة</button>
                         <span class="tajweed-bottom-title">المصحف التجويد</span>
+                        <button type="button" class="tajweed-nav" id="tajweed-prev" title="الصفحة السابقة" aria-label="الصفحة السابقة">›</button>
+                        <button type="button" class="tajweed-nav" id="tajweed-next" title="الصفحة التالية" aria-label="الصفحة التالية">‹</button>
                     </div>
                     <aside class="tajweed-drawer" id="tajweed-drawer" aria-hidden="true">
                         <div class="tajweed-drawer-head"><span>القائمة</span><button type="button" class="tajweed-ico" id="tajweed-drawer-close" aria-label="إغلاق">✕</button></div>
                         <button type="button" class="tajweed-ditem active" data-view="mushaf">🕌 <span>المصحف التجويد</span></button>
                         <button type="button" class="tajweed-ditem" data-view="index">📑 <span>الفهرس</span></button>
                         <button type="button" class="tajweed-ditem" data-view="saved">🔖 <span>المحفوظات</span></button>
-                        <button type="button" class="tajweed-ditem" data-view="links">🔗 <span>الروابط الدينية</span></button>
                         <button type="button" class="tajweed-ditem" data-view="tafsir">📖 <span>التفسير</span></button>
-                        <button type="button" class="tajweed-ditem" data-view="fav">★ <span>المفضلة</span></button>
-                        <button type="button" class="tajweed-ditem" data-view="downloads">⬇ <span>التنزيلات</span></button>
                         <button type="button" class="tajweed-ditem" data-view="settings">⚙ <span>الإعدادات</span></button>
                     </aside>
                     <div class="tajweed-sheet" id="tajweed-sheet" aria-hidden="true">
@@ -4377,6 +4388,11 @@ var gender = 'male';
             };
             var search = document.getElementById('tajweed-search');
             if (search) search.onclick = function () { tajweedOpenList(true); };
+            // navigation explicite (sens de lecture arabe : on avance vers la gauche)
+            var bPrev = document.getElementById('tajweed-prev');
+            var bNext = document.getElementById('tajweed-next');
+            if (bPrev) bPrev.onclick = function () { tajweedShow(_tajweedPage - 1); };
+            if (bNext) bNext.onclick = function () { tajweedShow(_tajweedPage + 1); };
             // navigation par glissement
             var sx = 0;
             stage.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
