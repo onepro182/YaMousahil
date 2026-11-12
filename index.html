@@ -1503,7 +1503,7 @@
             box-shadow:0 -10px 24px rgba(0,0,0,.5);
         }
         .tajweed-audio.on{display:flex;}
-        .tajweed-frame-wrap.has-audio .tajweed-stage{bottom:56px;}
+        .tajweed-frame-wrap.has-audio .tajweed-stage{bottom:var(--twbar,56px);}
         .tajweed-a-meta{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:8px;overflow:hidden;}
         .tajweed-a-verse{color:#f0e7cd;font-family:var(--font-quran);font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
         .tajweed-a-sel{
@@ -1531,7 +1531,6 @@
             position:fixed;left:0;right:0;bottom:0;
             padding-bottom:calc(6px + env(safe-area-inset-bottom, 0px));
         }
-        body.is-mobile .tajweed-frame-wrap.has-audio .tajweed-stage{bottom:62px;}
         /* Android : page pleine */
         body.is-mobile #tajweed-screen{height:100dvh !important;min-height:100dvh;max-height:100dvh;overflow:hidden;}
         body.is-mobile .tajweed-frame-wrap{height:100dvh;min-height:100dvh;}
@@ -5246,6 +5245,11 @@ var gender = 'male';
                 bar.setAttribute('aria-hidden', _twShown ? 'false' : 'true');
             }
             if (wrap) wrap.classList.toggle('has-audio', _twShown);
+            if (wrap && bar && _twShown) {
+                // hauteur reelle de la barre (fixe sur telephone) -> la page ne passe pas dessous
+                var gap = wrap.getBoundingClientRect().bottom - bar.getBoundingClientRect().top;
+                if (gap > 0) wrap.style.setProperty('--twbar', Math.round(gap + 4) + 'px');
+            }
             if (play) {
                 play.textContent = playing ? '❚❚' : '▶';
                 play.title = playing ? 'إيقاف مؤقت' : 'تشغيل';
