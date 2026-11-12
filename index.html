@@ -275,6 +275,18 @@
         body.is-mobile .main-layout{flex-direction:column;gap:14px;}
         body.is-mobile .prayer-row{display:flex;flex-wrap:wrap-reverse;flex-direction:row-reverse;direction:ltr;gap:8px;}
         body.is-mobile .time-box{flex:1 1 30%;min-width:0;padding:10px 4px;direction:rtl;}
+        /* Android : les heures de priere dans UN seul encadrement */
+        body.is-mobile #home-prayer-times{
+            background:rgba(255,255,255,.055);border:1px solid var(--glass-border);border-radius:16px;
+            padding:8px 6px;gap:6px;margin-bottom:16px;
+            box-shadow:0 10px 28px rgba(0,0,0,.25);
+            backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+        }
+        body.is-mobile #home-prayer-times .time-box{
+            border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;background:transparent;
+        }
+        body.is-mobile #home-prayer-times .time-box.is-now{background:var(--cream);}
+        body.is-mobile #home-prayer-times .time-box.is-next{background:rgba(212,175,55,.15);}
         .fav-header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
         .fav-next-prayer{display:none;align-items:center;gap:6px;font-family:var(--font);font-size:.82rem;color:var(--text-dim);white-space:nowrap;}
         .fav-next-prayer .fav-next-name{color:var(--gold);font-weight:700;}
