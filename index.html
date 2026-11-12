@@ -999,6 +999,28 @@
         .about-content .contact-info a:hover { text-decoration: underline; }
         /* actions "حول التطبيق" */
         .about-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0 6px;}
+        /* pane "نشر البرنامج" */
+        .share-content{display:flex;flex-direction:column;align-items:center;text-align:center;}
+        .share-logo-wrap{
+            width:104px;height:104px;flex:none;border-radius:26px;padding:8px;margin-bottom:14px;
+            background:linear-gradient(160deg,rgba(212,175,55,.30),rgba(212,175,55,.06));
+            border:1px solid rgba(212,175,55,.45);
+            box-shadow:0 10px 28px rgba(0,0,0,.45);
+        }
+        .share-logo{width:100%;height:100%;object-fit:contain;display:block;}
+        .share-wa-btn{
+            display:inline-flex;align-items:center;gap:12px;padding:10px 18px 10px 14px;border-radius:16px;
+            text-decoration:none;color:#25D366;border:1px solid rgba(37,211,102,.42);
+            background:linear-gradient(120deg,rgba(37,211,102,.16),rgba(37,211,102,.05));
+            box-shadow:0 8px 22px rgba(0,0,0,.35);
+            transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+        }
+        .share-wa-btn:hover{transform:translateY(-2px);border-color:rgba(37,211,102,.8);box-shadow:0 12px 28px rgba(37,211,102,.22);}
+        .share-wa-ico{width:44px;height:44px;flex:none;display:block;}
+        .share-wa-ico .sihatar-ico3d{width:44px;height:44px;}
+        .share-wa-txt{display:flex;flex-direction:column;gap:1px;text-align:right;}
+        .share-wa-txt b{font-size:1rem;font-weight:800;color:#25D366;}
+        .share-wa-txt i{font-style:normal;font-size:.74rem;color:var(--text-dim);direction:ltr;text-align:right;}
         .about-act{
             display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:13px;cursor:pointer;
             background:rgba(255,255,255,.05);border:1px solid var(--glass-border);color:var(--text-main);
@@ -2116,10 +2138,18 @@
                                 <div id="live-admin-list" style="display:flex;flex-direction:column;gap:6px;"></div>
                             </div>
                             <div class="settings-pane" id="pane-share">
-                                <div class="about-content" style="text-align:center;">
+                                <div class="about-content share-content">
+                                    <div class="share-logo-wrap">
+                                        <img class="share-logo" src="assets/img/logo-main.png" alt="شعار تطبيق YaMousahil" onerror="this.style.display='none'">
+                                    </div>
                                     <h2 style="color:var(--gold);margin-bottom:12px;">نشر البرنامج</h2>
-                                    <p style="color:var(--text-dim);line-height:1.9;margin-bottom:18px;">شارك تطبيق YaMousahil مع الأهل والأصدقاء.</p>
-                                    <a class="glass-btn" href="https://wa.me/?text=YaMousahil%20%E2%80%94%20%D9%85%D9%88%D8%A7%D9%82%D9%8A%D8%AA%20%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9%20%D9%88%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86%20%D9%88%D8%A7%D9%84%D8%A3%D8%B0%D9%83%D8%A7%D8%B1%0Ahttps%3A%2F%2Fonepro182.github.io%2FYaMousahil%2F" target="_blank" rel="noopener" title="مشاركة عبر واتساب" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;color:#25D366;text-decoration:none;font-weight:700;font-size:1.05rem;border:1px solid rgba(37,211,102,0.35);">🟢 واتساب</a>
+                                    <p style="color:var(--text-dim);line-height:2;margin-bottom:20px;max-width:520px;margin-inline:auto;">ساهم في نشر الموقع بين الأصحاب والأقارب ليكون لنا جميعا صدقة جارية بإذن الله</p>
+                                    <a class="share-wa-btn" href="https://wa.me/?text=YaMousahil%20%E2%80%94%20%D9%85%D9%88%D8%A7%D9%82%D9%8A%D8%AA%20%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9%20%D9%88%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86%20%D9%88%D8%A7%D9%84%D8%A3%D8%B0%D9%83%D8%A7%D8%B1%0Ahttps%3A%2F%2Fonepro182.github.io%2FYaMousahil%2F" target="_blank" rel="noopener" title="مشاركة عبر واتساب">
+                                        <span class="share-wa-ico" aria-hidden="true">
+                                            <svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="WhatsApp"><use href="#siha-ico-whatsapp"/></svg>
+                                        </span>
+                                        <span class="share-wa-txt"><b>مشاركة عبر واتساب</b><i>WhatsApp</i></span>
+                                    </a>
                                 </div>
                             </div>
                             <div class="settings-pane" id="pane-about">
@@ -6248,6 +6278,22 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 <circle cx="43" cy="45" r="4.4" fill="url(#sihaMedBg)"/>
                 <rect x="41.2" y="39.6" width="3.6" height="10.8" rx="1.4" fill="url(#sihaMedGold)"/>
                 <rect x="37.6" y="43.2" width="10.8" height="3.6" rx="1.4" fill="url(#sihaMedGold)"/>
+            </symbol>
+            <!-- icone 3D WhatsApp -->
+            <linearGradient id="sihaWaBg" x1="0" y1="0" x2="0.35" y2="1">
+                <stop offset="0" stop-color="#5ff0a8"/><stop offset="0.45" stop-color="#25d366"/><stop offset="1" stop-color="#0d6b52"/>
+            </linearGradient>
+            <linearGradient id="sihaWaWhite" x1="0.15" y1="0" x2="0.7" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset="0.6" stop-color="#eafff4"/><stop offset="1" stop-color="#b9f0d4"/>
+            </linearGradient>
+            <symbol id="siha-ico-whatsapp" viewBox="0 0 64 64">
+                <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#sihaWaBg)"/>
+                <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.4"/>
+                <ellipse cx="32" cy="54" rx="16" ry="3.4" fill="#000" opacity=".22"/>
+                <path d="M14 12 h36 a4 4 0 0 1 4 4 v28 a4 4 0 0 1-4 4 H30 l-9 8 v-8 h-7 a4 4 0 0 1-4-4 V16 a4 4 0 0 1 4-4 z" fill="rgba(255,255,255,.16)"/>
+                <g transform="translate(12.2 11.6) scale(1.64)">
+                    <path fill="url(#sihaWaWhite)" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.548 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                </g>
             </symbol>
         </defs>
     </svg>
