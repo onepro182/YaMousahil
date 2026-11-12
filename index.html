@@ -1541,7 +1541,8 @@
                                 <div class="section-title" style="margin-bottom:0;">إسلاميات</div>
                                 <div class="fav-next-prayer" id="fav-next-prayer"><span class="fav-next-label">الصلاة القادمة</span> <span class="fav-next-name" id="fav-next-prayer-name">--</span> <span class="fav-next-time" id="fav-next-countdown">--:--:--</span></div>
                             </div>
-                            <div class="apps-grid fav-grid"><div class="app-card glass-btn" tabindex="0" id="card-quran-menu" title="القرآن الكريم">
+                            <div class="apps-grid fav-grid">
+                                <div class="app-card glass-btn" tabindex="0" id="card-quran-menu" title="القرآن الكريم">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="القرآن الكريم">
                                         <defs>
                                             <linearGradient id="qmBg" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fa37c"/><stop offset="0.5" stop-color="#0e5f45"/><stop offset="1" stop-color="#04291e"/></linearGradient>
@@ -1560,16 +1561,20 @@
                                         <circle cx="34.2" cy="15" r="3.5" fill="#0b132b" opacity=".82"/>
                                     </svg>
                                     <span class="app-name">القرآن الكريم</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-Adhkar">
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-Adhkar">
                                     <img class="app-icon" src="assets/img/Adkar.png" alt="الأذكار">
                                     <span class="app-name">الأذكار</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-tasbih">
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-tasbih">
                                     <img class="app-icon" src="https://msbaha.com/wp-content/uploads/2020/11/main-logo.png" alt="مسبحة إلكترونية">
                                     <span class="app-name">المسبحة الإلكترونية</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-asma">
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-asma">
                                     <img class="app-icon logo3d" src="Logo.png" alt="أسماء الله">
                                     <span class="app-name">✦ أسماء الله الحسنى</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-wird"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="ورد القرآن اليومي">
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-wird"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="ورد القرآن اليومي">
                                     <defs>
                                         <linearGradient id="q3dWirdBg" x1="0" y1="0" x2="0.3" y2="1">
                                             <stop offset="0" stop-color="#218a5f"/><stop offset="0.5" stop-color="#0b4a33"/><stop offset="1" stop-color="#04231a"/>
@@ -1629,7 +1634,22 @@
                                         <path d="M32 44 L52 35"/>
                                     </g>
                                     <path d="M23.5 24.9 L26.9 26.4 L26.5 39.2 L25.1 36.4 L23.8 39.6 Z" fill="url(#q3dWirdRibbon)"/>
-                                </svg><span class="app-name">ورد القرآن اليومي</span></div><div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
+                                </svg><span class="app-name">ورد القرآن اليومي</span></div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">إذاعات وبث مباشر</div>
+                                <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
+                                    <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
+                                    <span class="app-name">إذاعات مغربية</span>
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-live">
+                                    <img class="app-icon" src="https://makkahlive.org/logo.webp" alt="بث مباشر" style="border-radius:8px;">
+                                    <span class="app-name">📺 بث مباشر</span>
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-quran-radio">
+                                    <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
+                                    <span class="app-name">📻 إذاعات القرآن</span>
+                                </div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">خدمات</div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="مواقيت الصلاة">
                                         <defs>
                                             <linearGradient id="q3dPrayBg" x1="0" y1="0" x2="0.32" y2="1">
@@ -1669,22 +1689,12 @@
                                         <path d="M39.5 39.2 A9 9 0 0 1 51 37.8" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".85"/>
                                     </svg>
                                     <span class="app-name">مواقيت الصلاة</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-mosques">
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-mosques">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="المساجد">
                                     <span class="app-name">المساجد القريبة منك</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-inheritance"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" alt="حساب المواريث"><span class="app-name">حساب المواريث</span></div><div class="app-card glass-btn" tabindex="0" id="card-quran-radio">
-                                    <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
-                                    <span class="app-name">📻 إذاعات القرآن</span>
                                 </div>
-                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">إذاعات وبث مباشر</div>
-                                <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
-                                    <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
-                                    <span class="app-name">إذاعات مغربية</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-live">
-                                    <img class="app-icon" src="https://makkahlive.org/logo.webp" alt="بث مباشر" style="border-radius:8px;">
-                                    <span class="app-name">📺 بث مباشر</span>
-                                </div>
-                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">خدمات</div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-inheritance"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" alt="حساب المواريث"><span class="app-name">حساب المواريث</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-sihatar" title="دليل الخدمات الصحية">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="صحتي">
                                         <defs>
@@ -1707,7 +1717,8 @@
                                         <path d="M6 32 h10 l4 -9 l6 18 l4.5 -9 H58" fill="none" stroke="url(#q3dHealthGold)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                     <span class="app-name">صحتي</span>
-                                </div><div class="app-card glass-btn" tabindex="0" id="card-weather">
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-weather">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
                                     <span class="app-name">🌦 Météo</span>
                                 </div>
