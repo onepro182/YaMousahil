@@ -2216,16 +2216,7 @@
                     </div>
                     <main id="asma-grid" class="grid" style="flex:1; overflow-y:auto; display:grid; grid-template-columns:repeat(7,1fr); gap:8px; padding:8px;"></main>
                 </div>
-                <div class="asma-tip" id="asma-tip" role="tooltip"></div>
-                <div class="asma-detail-modal" id="asma-detail-modal" aria-hidden="true">
-                    <div class="asma-detail-card glass-btn" role="dialog" aria-modal="true" aria-labelledby="asma-detail-name">
-                        <button type="button" class="asma-detail-close" id="asma-detail-close" aria-label="إغلاق">✕</button>
-                        <div class="asma-detail-num" id="asma-detail-num">—</div>
-                        <h2 class="asma-detail-name" id="asma-detail-name">—</h2>
-                        <p class="asma-detail-desc" id="asma-detail-desc"></p>
-                        <button type="button" class="asma-detail-play" id="asma-detail-play">🔊 الاستماع</button>
-                    </div>
-                </div>
+
             </div>
 
             <!-- MODAL PARAMÈTRES -->
@@ -2264,7 +2255,8 @@
                                 <div class="setting-row" style="justify-content:center;margin-top:15px;"><button type="button" class="file-btn" id="btn-test-reminder" style="background:var(--glass-bg);backdrop-filter:blur(10px);border:1px solid var(--gold);color:var(--gold);font-weight:bold;width:100%;justify-content:center;">▶ اختبار شاشة التنبيه</button></div>
                             </div>
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
-                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (المغرب)</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div></div>
+                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (توقيت الجهاز)</option>
+                              <option value="ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div></div>
                             <div class="settings-pane" id="pane-live">
                                 <h3 style="margin:0 0 4px;color:var(--gold);">📺 قنوات البث المباشر</h3>
                                 <p style="margin:0 0 10px;font-size:.8rem;color:var(--text-dim);">أضف/عدّل القنوات (الاسم + الرابط) — تظهر تلقائياً في صفحة بث مباشر.</p>
@@ -2560,12 +2552,16 @@
         }
 
         let clockTzPreview = null;   // fuseau en cours de previsualisation dans les reglages
+        // decalage du telephone (en minutes) : ex. -date.getTimezoneOffset() = 60 pour GMT+1
+        function deviceOffsetMinutes(date) { return -date.getTimezoneOffset(); }
         function formatSystemTime(date) {
-            // 'auto' => heure officielle du Maroc (UTC+1, et GMT+0 pendant le Ramadan)
+            // 'auto' => heure locale du telephone | 'ma' => heure officielle du Maroc | sinon GMT fixe
             const tz = effectiveClockTz();
             const auto = (tz === 'auto' || tz === undefined);
             let h, m;
             if (auto) {
+                h = date.getHours(); m = date.getMinutes();
+            } else if (tz === 'ma') {
                 const p = moroccoParts(date);
                 h = p.hour % 24; m = p.minute;
             } else {
@@ -2623,7 +2619,8 @@
         function displayGmtOffset(date) {
             const tz = effectiveClockTz();
             const auto = (tz === 'auto' || tz === undefined);
-            if (auto) return Math.round(moroccoOffsetMinutes(date) / 60);
+            if (auto) return Math.round(deviceOffsetMinutes(date) / 60);
+            if (tz === 'ma') return Math.round(moroccoOffsetMinutes(date) / 60);
             return Number(tz) || 0;
         }
         // heure + libelle pour un fuseau donne (auto ou GMT fixe)
@@ -2631,6 +2628,9 @@
             const auto = (tzValue === 'auto' || tzValue === undefined || tzValue === '');
             let h, m, off;
             if (auto) {
+                h = date.getHours(); m = date.getMinutes();
+                off = Math.round(deviceOffsetMinutes(date) / 60);
+            } else if (tzValue === 'ma') {
                 const p = moroccoParts(date);
                 h = p.hour % 24; m = p.minute;
                 off = Math.round(moroccoOffsetMinutes(date) / 60);
@@ -3331,6 +3331,11 @@ var gender = 'male';
         };
         // Exposer globalement pour les onclick/onchange inline (sinon ReferenceError)
         window.playAsmaAudio = playAsmaAudio;
+        window.renderAsma = renderAsma;
+        window.updateAsmaButtons = updateAsmaButtons;
+        window.asmaAutoStop = asmaAutoStop;
+        window.asmaOpenDetail = asmaOpenDetail;
+        window.asmaCloseDetail = asmaCloseDetail;
         // survol (Windows) : infobulle avec le detail ; clic (Android) : fiche detaillee
         var _asmaTip = null;
         function asmaShowTip(card, ev) {
@@ -3382,10 +3387,15 @@ var gender = 'male';
                 if (card && _asmaTip && _asmaTip.classList.contains('on')) asmaShowTip(card, e);
             });
             grid.addEventListener('mouseleave', function () { asmaHideTip(); });
+            var openOnce = function (card) { if (!card) return; if (card.dataset.opened === '1') return; card.dataset.opened = '1'; setTimeout(function () { card.dataset.opened = '0'; }, 400); setTimeout(function () { asmaOpenDetail(card); }, 40); };
             grid.addEventListener('click', function (e) {
                 var card = e.target.closest ? e.target.closest('.asma-card') : null;
-                if (card) setTimeout(function () { asmaOpenDetail(card); }, 60);
+                if (card) openOnce(card);
             });
+            grid.addEventListener('touchstart', function (e) {
+                var card = e.target.closest ? e.target.closest('.asma-card') : null;
+                if (card) openOnce(card);
+            }, { passive: true });
             var close = document.getElementById('asma-detail-close');
             if (close) close.addEventListener('click', asmaCloseDetail);
             var modal = document.getElementById('asma-detail-modal');
@@ -3748,7 +3758,7 @@ var gender = 'male';
         }
         document.getElementById('card-inheritance').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderInheritance(); showScreen(inheritanceScreen); window.scrollTo(0,0); };
         document.getElementById('btn-back-from-inheritance').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
-        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); renderAsma(); updateAsmaButtons(); });
+        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); try { if (typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) { console.warn('renderAsma', e); } try { if (typeof window.updateAsmaButtons === 'function') window.updateAsmaButtons(); } catch (e) {} setTimeout(function(){ try { var g = document.getElementById('asma-grid'); if (g && !g.children.length && typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) {} }, 120); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
         // ==================================================
@@ -4647,10 +4657,9 @@ var gender = 'male';
             settings.reminderVoice = document.getElementById('set-reminder-voice').checked;
             settings.asr = document.querySelector('#set-asr .group-btn.active').dataset.value;
             settings.clockFormat = parseInt(document.querySelector('#set-clock .group-btn.active').dataset.value);
-            settings.gmtOffset = parseInt(document.getElementById('set-gmt').value, 10) || 0;
             const _tzSel = document.getElementById('set-gmt').value;
-            settings.clockTz = (_tzSel === 'auto') ? 'auto' : (parseInt(_tzSel, 10) || 0);
-            settings.gmtOffset = (settings.clockTz === 'auto') ? 1 : settings.clockTz;
+            settings.clockTz = (_tzSel === 'auto') ? 'auto' : (_tzSel === 'ma' ? 'ma' : (parseInt(_tzSel, 10) || 0));
+            settings.gmtOffset = (settings.clockTz === 'auto') ? Math.round(deviceOffsetMinutes(new Date()) / 60) : (settings.clockTz === 'ma' ? Math.round(moroccoOffsetMinutes(new Date()) / 60) : settings.clockTz);
             clockTzPreview = null;
             try { localStorage.setItem('YaMousahil_settings', JSON.stringify(settings)); } catch (e) {}
             if ((settings.reminderText || settings.reminderVoice) && settings.reminderEnabled && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
@@ -6637,5 +6646,16 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             </symbol>
         </defs>
     </svg>
+<!-- أسماء الله : infobulle + fiche detaillee (au niveau body : jamais masque par le CSS mobile) -->
+    <div class="asma-tip" id="asma-tip" role="tooltip"></div>
+    <div class="asma-detail-modal" id="asma-detail-modal" aria-hidden="true">
+        <div class="asma-detail-card glass-btn" role="dialog" aria-modal="true" aria-labelledby="asma-detail-name">
+            <button type="button" class="asma-detail-close" id="asma-detail-close" aria-label="إغلاق">✕</button>
+            <div class="asma-detail-num" id="asma-detail-num">—</div>
+            <h2 class="asma-detail-name" id="asma-detail-name">—</h2>
+            <p class="asma-detail-desc" id="asma-detail-desc"></p>
+            <button type="button" class="asma-detail-play" id="asma-detail-play">🔊 الاستماع</button>
+        </div>
+    </div>
 </body>
 </html>
