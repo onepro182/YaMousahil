@@ -1267,12 +1267,35 @@
         /* ===== المصحف المحمدي (source fm6oa.org/coran, integrée) ===== */
         #muhammadi-screen{display:none;flex-direction:column;height:100vh;height:100dvh;max-height:100dvh;width:100%;overflow:hidden;gap:0;position:relative;}
         .mhd-wrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;padding:8px 8px 12px;}
+        #muhammadi-screen.mhd-fs .header-prayers{padding:6px 8px;}
+        #muhammadi-screen.mhd-fs .title-prayers{display:none;}
+        #muhammadi-screen.mhd-fs .mhd-wrap{padding:0;}
+        #muhammadi-screen.mhd-fs .mhd-stage{border-radius:0;border:0;}
         .mhd-stage{
             flex:1;min-height:0;position:relative;overflow:auto;border-radius:14px;background:#0b1512;
             border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;
-            -webkit-overflow-scrolling:touch;touch-action:pan-y;
+            -webkit-overflow-scrolling:touch;touch-action:pan-y;perspective:1800px;
         }
-        .mhd-pages{display:flex;align-items:center;justify-content:center;gap:6px;height:100%;width:100%;}
+        /* animation de changement de page (comme le livre numerique) */
+        .mhd-ghost{
+            position:absolute;inset:0;z-index:6;pointer-events:none;
+            display:flex;align-items:center;justify-content:center;background:#0b1512;
+            transform-style:preserve-3d;box-shadow:-14px 0 30px rgba(0,0,0,.5);
+        }
+        .mhd-ghost.turn-next{transform-origin:right center;animation:mhdTurnNext .48s cubic-bezier(.4,.05,.3,1) forwards;}
+        .mhd-ghost.turn-prev{transform-origin:left center;animation:mhdTurnPrev .48s cubic-bezier(.4,.05,.3,1) forwards;}
+        @keyframes mhdTurnNext{
+            0%{transform:rotateY(0deg);opacity:1;}
+            60%{opacity:1;}
+            100%{transform:rotateY(165deg);opacity:.25;}
+        }
+        @keyframes mhdTurnPrev{
+            0%{transform:rotateY(0deg);opacity:1;}
+            60%{opacity:1;}
+            100%{transform:rotateY(-165deg);opacity:.25;}
+        }
+        .mhd-pages{display:flex;align-items:center;justify-content:center;gap:6px;height:100%;width:100%;position:relative;}
+        .mhd-pages img{flex:0 1 auto;min-width:0;}
         .mhd-pages img{
             max-width:100%;max-height:100%;object-fit:contain;display:block;
             box-shadow:0 12px 34px rgba(0,0,0,.6);transition:opacity .18s ease,transform .18s ease;
@@ -1295,6 +1318,7 @@
             display:flex;align-items:center;justify-content:center;
         }
         .mhd-btn:active{background:rgba(212,175,55,.25);}
+        .mhd-btn.wide{width:auto;padding:0 12px;font-size:.82rem;font-family:var(--font);font-weight:700;}
         .mhd-btn.on{background:rgba(212,175,55,.30);border-color:var(--gold);color:#ffeeb0;}
         .mhd-pageno{
             display:flex;align-items:center;gap:6px;color:#f0e7cd;font-size:.9rem;font-family:var(--font);
@@ -1316,7 +1340,7 @@
         }
         .mhd-thumbs{
             display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;
-            padding:10px;overflow-y:auto;align-content:start;
+            padding:10px;overflow-y:auto;align-content:start;direction:rtl;
         }
         .mhd-thumb{
             border:1px solid rgba(255,255,255,.08);border-radius:8px;overflow:hidden;background:#0b1512;
@@ -2130,8 +2154,8 @@
                         <span class="mhd-pageno">صفحة <input type="number" id="mhd-page-input" min="1" max="663" value="1"> <span id="mhd-page-total">/ 663</span></span>
                         <button type="button" class="mhd-btn" id="mhd-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="mhd-btn" id="mhd-grid" title="الصفحات" aria-label="عرض الصفحات">▦</button>
-                        <button type="button" class="mhd-btn" id="mhd-mode" title="صفحة واحدة / صفحتان" aria-label="طريقة العرض">▥</button>
-                        <button type="button" class="mhd-btn" id="mhd-zoom" title="تكبير" aria-label="تكبير">⛶</button>
+                        <button type="button" class="mhd-btn wide" id="mhd-mode" title="صفحة واحدة أو صفحتان" aria-label="طريقة العرض">صفحة</button>
+                        <button type="button" class="mhd-btn" id="mhd-zoom" title="ملء الشاشة" aria-label="ملء الشاشة">⛶</button>
                     </div>
                 </div>
                 <div class="mhd-sheet" id="mhd-sheet" aria-hidden="true">
@@ -5116,8 +5140,25 @@ var MM_THUMB = 'https://fm6oa.org/coran/files/thumb/';
 var mmPage = 1;
 var mmMode = 'single';   // 'single' | 'double'
 function mmStep() { return mmMode === 'double' ? 2 : 1; }
-function mmShow(n) {
-    n = Math.max(1, Math.min(MM_TOTAL, parseInt(n, 10) || 1));
+function mmFlip(dir) {
+    var stage = document.getElementById('mhd-stage');
+    var pages = document.getElementById('mhd-pages');
+    if (!stage || !pages) return;
+    try {
+        var ghost = pages.cloneNode(true);
+        ghost.classList.add('mhd-ghost');
+        ghost.classList.add(dir > 0 ? 'turn-next' : 'turn-prev');
+        ghost.removeAttribute('id');
+        [].slice.call(ghost.querySelectorAll('[id]')).forEach(function (el) { el.removeAttribute('id'); });
+        stage.appendChild(ghost);
+        setTimeout(function () { if (ghost.parentElement) ghost.parentElement.removeChild(ghost); }, 560);
+    } catch (e) {}
+}
+function mmShow(n, animate) {
+    var target = Math.max(1, Math.min(MM_TOTAL, parseInt(n, 10) || 1));
+    var dir = target > mmPage ? 1 : (target < mmPage ? -1 : 0);
+    if (animate !== false && dir !== 0) mmFlip(dir);
+    n = target;
     mmPage = n;
     var img = document.getElementById('mhd-img');
     var imgB = document.getElementById('mhd-img-b');
@@ -5188,8 +5229,8 @@ function mmBuildThumbs() {
     };
     var prev = document.getElementById('mhd-prev');
     var next = document.getElementById('mhd-next');
-    if (prev) prev.onclick = function () { mmShow(mmPage - mmStep()); };
-    if (next) next.onclick = function () { mmShow(mmPage + mmStep()); };
+    if (prev) prev.onclick = function () { mmShow(mmPage - mmStep(), true); };
+    if (next) next.onclick = function () { mmShow(mmPage + mmStep(), true); };
     var inp = document.getElementById('mhd-page-input');
     if (inp) {
         inp.onchange = function () { mmShow(inp.value); };
@@ -5214,17 +5255,38 @@ function mmBuildThumbs() {
     if (modeBtn) modeBtn.onclick = function () {
         mmMode = (mmMode === 'double') ? 'single' : 'double';
         modeBtn.classList.toggle('on', mmMode === 'double');
-        modeBtn.textContent = (mmMode === 'double') ? '▥' : '▦';
-        mmShow(mmPage);
+        modeBtn.textContent = (mmMode === 'double') ? 'صفحتان' : 'صفحة';
+        mmShow(mmPage, false);
     };
     var zoom = document.getElementById('mhd-zoom');
     var stage = document.getElementById('mhd-stage');
+    // plein ecran (comme le bouton du lecteur QuranFlash)
     if (zoom) zoom.onclick = function () {
-        if (!stage) return;
-        var on = stage.classList.toggle('zoomed');
-        zoom.classList.toggle('on', on);
-        zoom.textContent = on ? '↺' : '⛶';
+        var scr = document.getElementById('muhammadi-screen');
+        if (scr) scr.classList.toggle('mhd-fs');
+        try {
+            if (!document.fullscreenElement) {
+                var el = scr || document.documentElement;
+                if (el.requestFullscreen) el.requestFullscreen().catch(function () {});
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen().catch(function () {});
+            }
+        } catch (e) {}
+        setTimeout(function () { try { window.dispatchEvent(new Event('resize')); } catch (e) {} }, 280);
     };
+    // double-tap sur la page = zoom
+    if (stage) {
+        var lastTap = 0;
+        stage.addEventListener('click', function (e) {
+            var now = Date.now();
+            if (now - lastTap < 320) {
+                var on = stage.classList.toggle('zoomed');
+                if (zoom) zoom.classList.toggle('on', on);
+            }
+            lastTap = now;
+        });
+    }
     // gestes : balayage
     if (stage) {
         var sx = 0, sy = 0, st0 = 0;
@@ -5235,14 +5297,14 @@ function mmBuildThumbs() {
             var dx = e.changedTouches[0].clientX - sx;
             var dy = e.changedTouches[0].clientY - sy;
             if (Date.now() - st0 > 700) return;
-            if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) mmShow(mmPage + (dx < 0 ? mmStep() : -mmStep()));
+            if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) mmShow(mmPage + (dx < 0 ? mmStep() : -mmStep()), true);
         }, { passive: true });
     }
     document.addEventListener('keydown', function (e) {
         if (!screen || screen.style.display === 'none') return;
         if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
-        if (e.key === 'ArrowLeft') { mmShow(mmPage + mmStep()); }
-        else if (e.key === 'ArrowRight') { mmShow(mmPage - mmStep()); }
+        if (e.key === 'ArrowLeft') { mmShow(mmPage + mmStep(), true); }
+        else if (e.key === 'ArrowRight') { mmShow(mmPage - mmStep(), true); }
     });
 })();
 
