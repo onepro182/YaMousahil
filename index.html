@@ -151,12 +151,17 @@
         .mihrab-column{width:440px;display:flex;flex-direction:column;flex-shrink:0;gap:15px;}
         
         .mihrab-arch {
-            flex:1; width:100%; background:transparent; border:none; border-radius:0;
-            position:relative; display:flex; align-items:center; justify-content:center;
-            overflow:hidden; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none;
+            flex:1; width:100%; background: radial-gradient(ellipse at top, rgba(17, 66, 49, 0.85) 0%, rgba(6, 31, 21, 0.95) 100%);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 3px solid var(--gold); border-bottom: none;
+            border-radius: 250px 250px 0 0; position: relative; display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 0 50px rgba(212,175,55,0.1), 0 0 20px rgba(0,0,0,0.6);
         }
-        .mihrab-3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+        .mihrab-arch::before {
+            content: ''; position: absolute; inset: 8px; border: 1px solid rgba(212,175,55,0.4);
+            border-bottom: none; border-radius: 242px 242px 0 0; pointer-events: none;
+        }
         .mihrab-content{text-align:center;padding:40px 20px 20px;width:100%;z-index:2;}
+        .mihrab-bottom-border{height:12px;background:rgba(212,175,55,0.15);border-bottom:3px solid var(--gold);border-radius:0 0 20px 20px;}
         .mihrab-bottom-border{height:12px;background:rgba(212,175,55,0.15);border-bottom:3px solid var(--gold);border-radius:0 0 20px 20px;}
         .verse-arabic{font-family:var(--font-quran);font-size:1.8rem;line-height:1.6;color:var(--gold);margin-bottom:5px;font-weight:700;text-shadow:0 2px 10px rgba(0,0,0,0.5);}
         .verse-ref{font-size:1rem;color:var(--text-dim);margin-bottom:25px;direction: ltr;}
@@ -542,6 +547,18 @@
         .adhkar-card .adhkar-text:hover { background: rgba(212,175,55,0.06); }
         .adhkar-card .adhkar-ref { font-size: 0.72rem; color: var(--gold); font-weight: 600; margin: 0 0 2px; line-height: 1.2; }
         .adhkar-card.copied { border-color: rgba(212,175,55,0.7); box-shadow: 0 0 0 1px rgba(212,175,55,0.15) inset; }
+        /* bouton de lecture vocale du dhikr */
+        .adhkar-card .adhkar-speak{
+            position:absolute;top:6px;left:8px;z-index:3;width:32px;height:32px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;font-size:.95rem;line-height:1;cursor:pointer;
+            background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.45);color:var(--gold);
+            transition:transform .15s ease,background .15s ease;
+        }
+        .adhkar-card .adhkar-speak:hover{background:rgba(212,175,55,.32);transform:scale(1.08);}
+        .adhkar-card.speaking{border-color:rgba(212,175,55,.6);}
+        .adhkar-card.speaking .adhkar-speak{background:var(--gold);color:#0b132b;animation:adhkarPulse 1s infinite;}
+        @keyframes adhkarPulse{0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.5);}50%{box-shadow:0 0 0 7px rgba(212,175,55,0);}}
+        body.is-mobile .adhkar-card .adhkar-speak{width:28px;height:28px;font-size:.85rem;top:4px;left:5px;}
         .adhkar-card.copied::after { content: '✓ تم النسخ'; position: absolute; top: 8px; left: 10px; background: rgba(212,175,55,0.18); color: var(--gold); border: 1px solid rgba(212,175,55,0.35); border-radius: 999px; padding: 2px 10px; font-size: .78rem; font-family: var(--font); pointer-events:none; }
 
         .adhkar-sidebar { width: 280px; display: flex; flex-direction: column; gap: 10px; }
@@ -1497,51 +1514,14 @@
 
                     <div class="mihrab-column">
                         <div class="mihrab-arch">
-                            <svg class="mihrab-3d" viewBox="0 0 440 520" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                                <defs>
-                                    <linearGradient id="mih3dGold" x1="0" y1="0" x2="0.35" y2="1">
-                                        <stop offset="0" stop-color="#fff3c8"/><stop offset="0.3" stop-color="#e0cc91"/>
-                                        <stop offset="0.62" stop-color="#a8862c"/><stop offset="1" stop-color="#f0dda6"/>
-                                    </linearGradient>
-                                    <linearGradient id="mih3dStone" x1="0" y1="0" x2="0.4" y2="1">
-                                        <stop offset="0" stop-color="#205c46"/><stop offset="0.45" stop-color="#0d3829"/><stop offset="1" stop-color="#05190f"/>
-                                    </linearGradient>
-                                    <radialGradient id="mih3dNiche" cx="50%" cy="72%" r="88%">
-                                        <stop offset="0" stop-color="#124634"/><stop offset="0.55" stop-color="#08281c"/><stop offset="1" stop-color="#020f09"/>
-                                    </radialGradient>
-                                    <linearGradient id="mih3dShadow" x1="0" y1="0" x2="0.55" y2="1">
-                                        <stop offset="0" stop-color="#000" stop-opacity=".72"/>
-                                        <stop offset="0.4" stop-color="#000" stop-opacity=".22"/>
-                                        <stop offset="1" stop-color="#000" stop-opacity="0"/>
-                                    </linearGradient>
-                                    <radialGradient id="mih3dGlow" cx="50%" cy="50%" r="50%">
-                                        <stop offset="0" stop-color="#ffe6a6" stop-opacity=".34"/>
-                                        <stop offset="0.55" stop-color="#d4af37" stop-opacity=".11"/>
-                                        <stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
-                                    </radialGradient>
-                                    <linearGradient id="mih3dBase" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0" stop-color="#f4e2ac"/><stop offset="0.5" stop-color="#c9a227"/><stop offset="1" stop-color="#7c6118"/>
-                                    </linearGradient>
-                                </defs>
-                                <rect width="440" height="520" fill="url(#mih3dStone)"/>
-                                <!-- niche interieure (enfoncement) -->
-                                <path d="M40 520 L40 212 C40 126 120 52 220 44 C320 52 400 126 400 212 L400 520 Z" fill="url(#mih3dNiche)"/>
-                                <path d="M40 520 L40 212 C40 126 120 52 220 44 C320 52 400 126 400 212 L400 520 Z" fill="url(#mih3dShadow)"/>
-                                <!-- lueur chaude au fond de la niche -->
-                                <ellipse cx="220" cy="330" rx="175" ry="155" fill="url(#mih3dGlow)"/>
-                                <!-- rosette a 8 branches (ornement discret) -->
-                                <g opacity=".2" fill="none" stroke="#e0cc91" stroke-width="1.1">
-                                    <circle cx="220" cy="150" r="34"/>
-                                    <path d="M220 108 L232 132 L258 120 L246 146 L274 152 L246 158 L258 184 L232 172 L220 196 L208 172 L182 184 L194 158 L166 152 L194 146 L182 120 L208 132 Z"/>
-                                </g>
-                                <!-- cadre d'or biseaute -->
-                                <path d="M14 520 L14 204 C14 108 106 26 220 14 C334 26 426 108 426 204 L426 520 Z" fill="none" stroke="url(#mih3dGold)" stroke-width="12"/>
-                                <path d="M20 520 L20 208 C20 116 110 36 220 24 C330 36 420 116 420 208 L420 520" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2"/>
-                                <path d="M50 520 L50 214 C50 134 126 64 220 56 C314 64 390 134 390 214 L390 520" fill="none" stroke="rgba(212,175,55,.5)" stroke-width="2.2"/>
-                                <!-- bandeau de base -->
-                                <rect x="0" y="498" width="440" height="22" fill="url(#mih3dBase)"/>
-                                <rect x="0" y="498" width="440" height="2.5" fill="#fff6d9" opacity=".55"/>
-                            </svg>
+                            <div class="mihrab-content">
+                                <div class="verse-arabic">إِنَّ الصَّلَاةَ كَانَتْ<br>عَلَى الْمُؤْمِنِينَ<br>كِتَابًا مَّوْقُوتًا</div>
+                                <div class="verse-ref">النساء 103</div>
+                                <div class="mihrab-label">الصلاة القادمة</div>
+                                <div class="mihrab-name" id="home-next-prayer-name">الفجر</div>
+                                <div class="mihrab-time" id="home-countdown">00:25:00</div>
+                                <div class="mihrab-adhan" id="home-adhan-info">الأذان 02:38 · طنجة</div>
+                            </div>
                             <div class="mihrab-content">
                                 <div class="verse-arabic">إِنَّ الصَّلَاةَ كَانَتْ<br>عَلَى الْمُؤْمِنِينَ<br>كِتَابًا مَّوْقُوتًا</div>
                                 <div class="verse-ref">النساء 103</div>
@@ -1551,6 +1531,7 @@
                                 <div class="mihrab-adhan" id="home-adhan-info">الأذان 02:38 · طنجة</div>
                             </div>
                         </div>
+                        <div class="mihrab-bottom-border"></div>
                     </div>
                 </main>
             </div>
@@ -2931,8 +2912,17 @@
                 const card = document.createElement('div'); card.className = 'adhkar-card';
                 const ref = (item.ref||'');
                 const txt = (item.text||'');
-                card.innerHTML = (ref ? '<div class="adhkar-ref">'+ref+'</div>' : '') + '<div class="adhkar-text" role="button" tabindex="0" title="انقر للنسخ">'+txt+'</div>';
+                card.innerHTML = (ref ? '<div class="adhkar-ref">'+ref+'</div>' : '') + '<button type="button" class="adhkar-speak" aria-label="قراءة الذِّكر صوتياً" title="قراءة الذِّكر صوتياً">🔊</button>' + '<div class="adhkar-text" role="button" tabindex="0" title="انقر للنسخ">'+txt+'</div>';
                 const txtEl = card.querySelector('.adhkar-text');
+                const spkEl = card.querySelector('.adhkar-speak');
+                if (spkEl) {
+                    spkEl.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        card.classList.add('speaking');
+                        var ok = (typeof window.speakArabicText === 'function') ? window.speakArabicText(txt, function () { card.classList.remove('speaking'); }) : false;
+                        if (!ok) { card.classList.remove('speaking'); if (typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح'); }
+                    });
+                }
                 function doCopy(){
                     var t = txtEl ? txtEl.innerText : txt;
                     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -3176,6 +3166,31 @@ var gender = 'male';
                 a.play().catch(finish);
             } catch (e) { finish(); }
         }
+        // ===== lecture vocale (meme mecanisme que l'annonce "اقترب موعد صلاة ...") =====
+        // Voix arabe native si disponible, sinon repli Google TTS (prononciation correcte)
+        window.speakArabicText = function (text, onDone) {
+            var clean = String(text || '').replace(/[\u064B-\u0652\u0670\u0640]/g, '').replace(/\s+/g, ' ').trim();
+            if (!clean) { if (onDone) onDone(); return false; }
+            var finish = function () { if (onDone) onDone(); };
+            try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+            var voice = ('speechSynthesis' in window) ? pickArabicVoice(gender === 'male') : null;
+            if (voice) {
+                try {
+                    var u = new SpeechSynthesisUtterance(clean);
+                    u.lang = voice.lang; u.voice = voice;
+                    u.rate = 0.88; u.pitch = (gender === 'male') ? 0.72 : 1.05;
+                    u.onend = finish; u.onerror = finish;
+                    window.speechSynthesis.speak(u);
+                    return true;
+                } catch (e) { /* repli ci-dessous */ }
+            }
+            try {
+                var a = new Audio('https://translate.google.com/translate_tts?client=tw-ob&q=' + encodeURIComponent(clean) + '&tl=ar');
+                a.onended = finish; a.onerror = finish;
+                a.play().catch(finish);
+                return true;
+            } catch (e) { finish(); return false; }
+        };
         function clearAsmaPlaying() {
             try {
                 var grid = document.getElementById('asma-grid');
@@ -3199,6 +3214,11 @@ var gender = 'male';
             var idx = ASMA.findIndex(function(s){ return s.ar === text; });
             if (idx >= 0 && grid && grid.children[idx]) grid.children[idx].classList.add('asma-selected');
             markAsmaPlaying(text);
+            // lecture du nom + de sa signification (comme l'annonce vocale des prieres)
+            var entry = idx >= 0 ? ASMA[idx] : null;
+            var toSay = entry ? (entry.ar + (entry.desc ? '. ' + entry.desc : '')) : text;
+            var ok = (typeof window.speakArabicText === 'function') ? window.speakArabicText(toSay) : false;
+            if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
         }
 
         function asmaAutoStop(resetBtn) {
