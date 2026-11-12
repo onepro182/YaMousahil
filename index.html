@@ -1379,14 +1379,33 @@
         #tajweed-screen{display:none;flex-direction:column;height:100%;width:100%;overflow:hidden;gap:0;}
         .tajweed-frame-wrap{position:relative;flex:1;min-height:0;background:#0d1b17;overflow:hidden;}
         .tajweed-frame-wrap.fs{position:fixed;inset:0;z-index:99990;background:#0d1b17;}
-        .tajweed-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;}
+        /* lecteur natif : la page du mushaf est une image (aucune iframe) */
+        .tajweed-stage{
+            position:absolute;left:0;right:0;top:52px;bottom:58px;z-index:2;
+            display:flex;align-items:center;justify-content:center;overflow:hidden;
+            background:#0d1b17;
+        }
+        .tajweed-stage img{
+            display:block;max-width:100%;max-height:100%;width:auto;height:auto;
+            background:#fff;box-shadow:0 14px 38px rgba(0,0,0,.55);
+            user-select:none;-webkit-user-drag:none;
+        }
+        @keyframes twTurnNext{from{opacity:.15;transform:translateX(-13%) rotateY(-11deg);}to{opacity:1;transform:none;}}
+        @keyframes twTurnPrev{from{opacity:.15;transform:translateX(13%) rotateY(11deg);}to{opacity:1;transform:none;}}
+        .tajweed-stage.turn-next img{animation:twTurnNext .3s ease both;}
+        .tajweed-stage.turn-prev img{animation:twTurnPrev .3s ease both;}
+        .tajweed-pg{min-width:58px;text-align:center;color:#d1c48d;font-family:var(--font);font-size:.78rem;direction:ltr;letter-spacing:.3px;}
+        .tajweed-loading{
+            position:absolute;left:0;right:0;top:52px;bottom:58px;z-index:11;display:none;
+            align-items:center;justify-content:center;background:rgba(6,17,14,.7);
+            color:#d1c48d;font-family:var(--font);font-size:.95rem;
+        }
+        .tajweed-loading.on{display:flex;}
+        .tajweed-row.cur{border-color:rgba(212,175,55,.75);background:rgba(212,175,55,.12);}
         .tajweed-topbar{
             position:absolute;left:0;right:0;top:0;z-index:12;display:flex;align-items:center;gap:8px;padding:8px 10px;
             background:#06110e;border-bottom:1px solid rgba(255,255,255,.07);
         }
-        /* masque : cache le bloc du lecteur (titre / autres livres / numero de page) */
-        /* le masque n'est plus utilise : le menu du lecteur n'est jamais ouvert */
-        .tajweed-mask{display:none !important;}
         /* bouton الفهرس dans la barre du haut */
         .tajweed-ico.wide{width:auto;padding:0 11px;font-size:.85rem;font-family:var(--font);font-weight:700;}
         .tajweed-ico{
@@ -1424,10 +1443,7 @@
         }
         .tajweed-sheet.open{transform:none;}
         @media (max-width:520px){ .tajweed-sheet{width:100%;max-width:100%;} }
-        /* l'ancien proxy ne sert plus : c'est la barre du bas qui couvre le pied du lecteur */
-        .tajweed-proxy{display:none !important;}
-        /* barre du bas : recouvre EXACTEMENT la barre d'onglets du lecteur QuranFlash
-           (الفهرس / تفسير / ترجمة / تلاوة / الإعدادات) -> l'index du lecteur ne peut plus s'ouvrir */
+        /* barre du bas : commandes du lecteur natif (l'index maison s'ouvre depuis ici aussi) */
         .tajweed-bottombar{
             position:absolute;left:0;right:0;bottom:0;height:58px;z-index:13;
             display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;
@@ -2499,13 +2515,16 @@
             <!-- MUSHAF TAJWEED (lecteur QuranFlash + barre de controle) -->
             <div id="tajweed-screen">
                 <div class="tajweed-frame-wrap" id="tajweed-wrap">
-                    <iframe id="tajweed-frame" src="https://app.quranflash.com/book/Tajweed?ar#/reader/chapter/3" data-src="https://app.quranflash.com/book/Tajweed?ar#/reader/chapter/3" title="مصحف التجويد الملون" allow="autoplay; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    <div class="tajweed-mask" id="tajweed-mask" aria-hidden="true"></div>
+                    <div class="tajweed-stage" id="tajweed-stage">
+                        <img id="tajweed-page-img" alt="صفحة من مصحف التجويد" src="">
+                    </div>
+                    <div class="tajweed-loading" id="tajweed-loading">جارٍ تحميل الصفحة...</div>
                     <div class="tajweed-topbar">
                         <button type="button" class="tajweed-back-btn" id="tajweed-back" data-qm-back>‹ العودة</button>
                         <button type="button" class="tajweed-ico wide" id="tajweed-index-btn" aria-label="الفهرس" title="الفهرس">الفهرس</button>
                         <button type="button" class="tajweed-ico" id="tajweed-bm" aria-label="علامة مرجعية" title="علامة مرجعية" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg></button>
                         <span class="tajweed-title">مصحف التجويد برواية ورش</span>
+                        <span class="tajweed-pg" id="tajweed-page-lbl">1 / 604</span>
                         <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav" id="tajweed-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
                         <button type="button" class="tajweed-ico" id="tajweed-fs" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
@@ -2533,7 +2552,6 @@
                         <button type="button" class="twb-btn" id="twb-fs" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
                     </div>
                     <div class="tajweed-veil" id="tajweed-veil"></div>
-                    <button type="button" class="tajweed-proxy" id="tajweed-proxy" aria-label="الفهرس" title="الفهرس" hidden></button>
                 </div>
             </div>
 
@@ -4634,7 +4652,7 @@ var gender = 'male';
 
 
         // ===== مصحف التجويد : lecteur QuranFlash + index (السور | الاجزاء | الصفحات | علامات) =====
-        var TAJWEED_BASE_URL = 'https://app.quranflash.com/book/Tajweed?ar#/reader/chapter/';
+        var TAJWEED_IMG_BASE = 'https://app.quranflash.com/book/Tajweed/epub/EPUB/imgs/';
         var TAJWEED_TOTAL = 604;
         var TAJWEED_SURAT_PAGES = [1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249, 255, 262, 267, 282, 293, 305, 312, 322, 332, 342, 350, 359, 367, 377, 385, 396, 404, 411, 415, 418, 428, 434, 440, 446, 453, 458, 467, 477, 483, 489, 496, 499, 502, 507, 511, 515, 518, 520, 523, 526, 528, 531, 534, 537, 542, 545, 549, 551, 553, 554, 556, 558, 560, 562, 564, 566, 568, 570, 572, 574, 575, 577, 578, 580, 582, 583, 585, 586, 587, 587, 589, 590, 591, 591, 592, 593, 594, 595, 595, 596, 596, 597, 597, 598, 598, 599, 599, 600, 600, 601, 601, 601, 602, 602, 602, 603, 603, 603, 604, 604, 604];
         var TAJWEED_JUZ_PAGES = [1, 21, 41, 61, 81, 101, 121, 141, 161, 181, 201, 221, 241, 261, 281, 301, 321, 341, 361, 381, 401, 421, 441, 461, 481, 501, 521, 541, 561, 581];
@@ -4645,35 +4663,63 @@ var gender = 'male';
                 return i >= 0 ? la.charAt(i) : d;
             });
         }
-        function tajweedPage() {
-            try {
-                var fr = document.getElementById('tajweed-frame');
-                var src = (fr && fr.getAttribute('src')) || '';
-                var m = src.match(/chapter\/(\d+)/);
-                if (m) return parseInt(m[1], 10) || 1;
-                m = String(location.hash).match(/chapter\/(\d+)/);
-                if (m) return parseInt(m[1], 10) || 1;
-            } catch (e) {}
-            return 1;
+        var _tajweedPage = 1;
+        function tajweedImgUrl(p) { return TAJWEED_IMG_BASE + ('00' + p).slice(-3) + '.png'; }
+        function tajweedPage() { return _tajweedPage; }
+        function tajweedPreload(p) {
+            if (p < 1 || p > TAJWEED_TOTAL) return;
+            var im = new Image();
+            im.src = tajweedImgUrl(p);
         }
-        // le lecteur QuranFlash attend le numero de CHAPITRE = page de debut de la sourate
-        function tajweedGoto(chapter) {
-            var fr = document.getElementById('tajweed-frame');
-            if (!fr) return;
-            fr.src = TAJWEED_BASE_URL + Math.max(1, Math.min(604, parseInt(chapter, 10) || 1));
-            setTimeout(tajweedSyncBookmark, 400);
+        // affiche une page du mushaf (numero de page 1..604, comme les images du lecteur)
+        function tajweedShowPage(page, dir) {
+            page = Math.max(1, Math.min(TAJWEED_TOTAL, parseInt(page, 10) || 1));
+            var img = document.getElementById('tajweed-page-img');
+            var stage = document.getElementById('tajweed-stage');
+            var ld = document.getElementById('tajweed-loading');
+            var changed = page !== _tajweedPage;
+            _tajweedPage = page;
+            try { localStorage.setItem('tajweedPage', String(page)); } catch (e) {}
+            if (img) {
+                if (changed && ld) ld.classList.add('on');
+                img.src = tajweedImgUrl(page);
+                img.alt = 'صفحة ' + page + ' من مصحف التجويد';
+            }
+            var lbl = document.getElementById('tajweed-page-lbl');
+            if (lbl) lbl.textContent = page + ' / ' + TAJWEED_TOTAL;
+            if (stage && changed) {
+                var cls = dir === 'prev' ? 'turn-prev' : 'turn-next';
+                stage.classList.remove('turn-next', 'turn-prev');
+                void stage.offsetWidth;
+                stage.classList.add(cls);
+                clearTimeout(tajweedShowPage._t);
+                tajweedShowPage._t = setTimeout(function () { stage.classList.remove(cls); }, 340);
+            }
+            tajweedPreload(page + 1);
+            tajweedPreload(page - 1);
+            tajweedSyncBookmark();
+            tajweedHighlight();
+            return page;
+        }
+        function tajweedHighlight() {
+            var rows = document.querySelectorAll('.tajweed-row[data-ch]');
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].classList.toggle('cur', parseInt(rows[i].getAttribute('data-ch'), 10) === _tajweedPage);
+            }
+        }
+        function tajweedGoto(page) {
+            var dir = (parseInt(page, 10) || 1) > _tajweedPage ? 'next' : 'prev';
+            tajweedShowPage(page, dir);
         }
         // aller a la sourate (index 1..114) en passant par sa page de debut
         function tajweedGotoSurat(index) {
             var p = TAJWEED_SURAT_PAGES[Math.max(0, Math.min(113, (parseInt(index, 10) || 1) - 1))];
             tajweedGoto(p || 1);
         }
-        // commande envoyee au lecteur (cross-origin : postMessage)
+        // navigation entre les pages
         function tajweedCmd(cmd) {
-            try {
-                var fr = document.getElementById('tajweed-frame');
-                if (fr && fr.contentWindow) fr.contentWindow.postMessage(cmd, '*');
-            } catch (e) {}
+            if (cmd === 'next') tajweedShowPage(_tajweedPage + 1, 'next');
+            else if (cmd === 'prev') tajweedShowPage(_tajweedPage - 1, 'prev');
         }
         function tajweedSuratDePage(page) {
             var idx = 1;
@@ -4746,6 +4792,7 @@ var gender = 'male';
                     tajweedCloseSheet();
                 };
             });
+            tajweedHighlight();
             var addB = body.querySelector('.tajweed-row.add');
             if (addB) addB.onclick = function () {
                 tajweedToggleMark();
@@ -4771,10 +4818,8 @@ var gender = 'male';
             if (veil) veil.classList.remove('on');
         }
         function tajweedBind() {
-            var fr = document.getElementById('tajweed-frame');
             var wrap = document.getElementById('tajweed-wrap');
             var veil = document.getElementById('tajweed-veil');
-            if (!fr) return;
             var back = document.getElementById('tajweed-back');
             if (back) back.onclick = function () {
                 var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen');
@@ -4794,7 +4839,6 @@ var gender = 'male';
                 } else {
                     try { if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function () {}); } catch (e) {}
                 }
-                setTimeout(function () { try { if (fr.contentWindow) fr.contentWindow.dispatchEvent(new Event('resize')); } catch (e) {} }, 260);
             };
             var indexBtn = document.getElementById('tajweed-index-btn');
             if (indexBtn) indexBtn.onclick = function () { tajweedOpenSheet(_tajweedTab); };
@@ -4812,20 +4856,39 @@ var gender = 'male';
             // mise a jour du signet quand le lecteur change de page (retour au premier plan)
             window.addEventListener('focus', tajweedSyncBookmark);
             document.addEventListener('visibilitychange', function () { if (!document.hidden) tajweedSyncBookmark(); });
-            // le masque doit commencer exactement sous la barre du haut
-            var mask = document.getElementById('tajweed-mask');
-            var tbar = document.querySelector('.tajweed-topbar');
-            function placeMask() {
-                if (!mask || !tbar) return;
-                var h = tbar.offsetHeight || 51;
-                mask.style.top = h + 'px';
-                mask.style.height = Math.max(60, 181 - h) + 'px';
+            // lecteur natif : chargement, swipe tactile, clavier, restauration de la page
+            var stage = document.getElementById('tajweed-stage');
+            var img = document.getElementById('tajweed-page-img');
+            var ld = document.getElementById('tajweed-loading');
+            if (img) {
+                img.onload = function () { if (ld) ld.classList.remove('on'); };
+                img.onerror = function () { if (ld) ld.classList.add('on'); };
             }
-            placeMask();
-            window.addEventListener('resize', placeMask);
-            // le bouton «الفهرس » du lecteur QuranFlash ouvre notre index (sans «مصاحف أخرى »)
-            var proxy = document.getElementById('tajweed-proxy');
-            if (proxy) proxy.onclick = function (e) { e.preventDefault(); e.stopPropagation(); tajweedOpenSheet(_tajweedTab); };
+            if (stage && !stage._twBound) {
+                stage._twBound = true;
+                var sx = 0, sy = 0, swiping = false;
+                stage.addEventListener('touchstart', function (e) {
+                    if (!e.touches || !e.touches.length) return;
+                    sx = e.touches[0].clientX; sy = e.touches[0].clientY; swiping = true;
+                }, { passive: true });
+                stage.addEventListener('touchend', function (e) {
+                    if (!swiping || !e.changedTouches || !e.changedTouches.length) return;
+                    swiping = false;
+                    var dx = e.changedTouches[0].clientX - sx;
+                    var dy = e.changedTouches[0].clientY - sy;
+                    if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+                    if (dx < 0) tajweedCmd('next'); else tajweedCmd('prev');
+                }, { passive: true });
+                document.addEventListener('keydown', function (e) {
+                    var scr = document.getElementById('tajweed-screen');
+                    if (!scr || scr.offsetParent === null) return;
+                    if (e.key === 'ArrowLeft') tajweedCmd('next');
+                    else if (e.key === 'ArrowRight') tajweedCmd('prev');
+                });
+            }
+            var last = 1;
+            try { last = parseInt(localStorage.getItem('tajweedPage'), 10) || 1; } catch (e) { last = 1; }
+            tajweedShowPage(last, null);
             // ---- barre du bas (elle recouvre les onglets du lecteur) ----
             var bIdx = document.getElementById('twb-index');
             if (bIdx) bIdx.onclick = function () { tajweedOpenSheet(_tajweedTab); };
