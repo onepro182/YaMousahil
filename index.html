@@ -1384,6 +1384,7 @@
             position:absolute;left:0;right:0;top:52px;bottom:0;z-index:2;
             display:flex;align-items:center;justify-content:center;overflow:hidden;
             background:#0d1b17;
+            direction:rtl;
         }
         .tajweed-stage img{
             display:block;max-width:100%;max-height:100%;width:auto;height:auto;
@@ -2589,8 +2590,8 @@
                         <button type="button" class="tajweed-ico tajweed-listen-btn" id="tajweed-listen" aria-label="تلاوة" title="تلاوة" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.4l6 3.6-6 3.6z"/></svg><span>تلاوة</span></button>
                         <span class="tajweed-title">مصحف التجويد برواية ورش</span>
                         <span class="tajweed-pg" id="tajweed-page-lbl">1 / 604</span>
-                        <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav" id="tajweed-prev" title="السابق" aria-label="الصفحة السابقة">›</button>
+                        <button type="button" class="tajweed-nav" id="tajweed-next" title="التالي" aria-label="الصفحة التالية">‹</button>
                         <button type="button" class="tajweed-nav spread-btn" id="tajweed-spread" title="عرض صفحتين" aria-label="عرض صفحتين" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/></svg></button>
                         <button type="button" class="tajweed-ico" id="tajweed-fs" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
                     </div>
@@ -5447,9 +5448,11 @@ var gender = 'male';
         };
         var bt = document.getElementById('btn-back-from-tajweed');
         if (bt) bt.onclick = function () {
+            try { twAudioStop(); } catch (e) {}
             if (homeScreen && typeof showScreen === 'function') showScreen(homeScreen);
             if (navHome) navHome.classList.add('active');
         };
+        try { window.twAudioStopTajweed = twAudioStop; } catch (e) {}
 
         // RADIO
         const STATIONS = { mohammed6: { name:'إذاعة محمد السادس', url:'https://radoxo.com/stream/eb/radio_med_VI.m3u8' }, cairo: { name:'إذاعة القرآن - القاهرة', url:'https://stream.radiojar.com/8s5u5tpdtwzuv' } };
@@ -5882,7 +5885,7 @@ var gender = 'male';
         }
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
+        function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
         try { [].slice.call(document.querySelectorAll('[id$="-screen"]')).forEach(function (el) { if (el !== screenToShow) el.style.display = 'none'; }); } catch (e) {} }
 
 
