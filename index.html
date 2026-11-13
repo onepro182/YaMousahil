@@ -7004,17 +7004,44 @@ function notifyPrayer(prayerKey, isTest, mode) {
         function markAlertSent(key) { try { localStorage.setItem(key, '1'); } catch(e) {} }
 
         function runPrayerAlerts() {
-            const now = new Date(); const prayers = ['fajr','dhuhr','asr','maghrib','isha'];
+            if (!settings.reminderEnabled && !settings.adhanEnabled) return;
+            const now = new Date();
+            const prayers = ['fajr','dhuhr','asr','maghrib','isha'];
             prayers.forEach(key => {
-                const target = prayerTimesToday && prayerTimesToday[key]; if (!target) return;
+                const candidates = [];
+                try { if (typeof prayerTimesToday !== 'undefined' && prayerTimesToday && prayerTimesToday[key]) candidates.push(prayerTimesToday[key]); } catch (e) {}
+                try { if (typeof prayerTimesTomorrow !== 'undefined' && prayerTimesTomorrow && prayerTimesTomorrow[key]) candidates.push(prayerTimesTomorrow[key]); } catch (e) {}
+                let target = null;
+                for (let i = 0; i < candidates.length; i++) {
+                    const t = candidates[i]; if (!t) continue;
+                    if (t.getTime() > now.getTime() - 6000) { target = t; break; }
+                }
+                if (!target) {
+                    try { target = (typeof prayerTargetDate === 'function') ? prayerTargetDate(key) : null; } catch (e) { target = null; }
+                }
+                if (!target) return;
+
                 if (settings.reminderEnabled) {
                     const reminderAt = target.getTime() - (Number(settings.reminderMinutes) || 10) * 60000;
                     const reminderKey = prayerAlertKey(target, key, 'reminder');
-                    if (now.getTime() >= reminderAt && now.getTime() < target.getTime() && !alertAlreadySent(reminderKey)) { markAlertSent(reminderKey); showAlertOverlay(key); notifyPrayer(key, false); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES[key]); else speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES[key]); } }
+                    if (now.getTime() >= reminderAt && now.getTime() < target.getTime() && !alertAlreadySent(reminderKey)) {
+                        markAlertSent(reminderKey);
+                        if (settings.reminderText !== false) { try { showAlertOverlay(key, 'reminder'); } catch (e) {} }
+                        try { notifyPrayer(key, false, 'reminder'); } catch (e) {}
+                        if (settings.reminderVoice) {
+                            try {
+                                if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES[key]);
+                                else if (typeof speakArabic === 'function') speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES[key]);
+                            } catch (e) {}
+                        }
+                    }
                 }
                 if (settings.adhanEnabled) {
                     const adhanKey = prayerAlertKey(target, key, 'adhan');
-                    if (now.getTime() >= target.getTime() && now.getTime() < target.getTime() + 5000 && !alertAlreadySent(adhanKey)) { markAlertSent(adhanKey); playAdhan(key, false); }
+                    if (now.getTime() >= target.getTime() && now.getTime() < target.getTime() + 5000 && !alertAlreadySent(adhanKey)) {
+                        markAlertSent(adhanKey);
+                        try { playAdhan(key, false); } catch (e) {}
+                    }
                 }
             });
         }
