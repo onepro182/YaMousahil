@@ -2062,9 +2062,9 @@
                                 <div class="adhkar-cat-list" id="adhkar-cat-list"></div>
                             </div>
                             <div class="adhkar-text-area glass-btn">
-                                <div class="adhkar-text-header">
+                                <div class="adhkar-text-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
                                     <button type="button" id="adhkar-back-to-cats">☰ التصنيفات</button>
-                                    <h1 id="adhkar-title">أدعية القرآن</h1>
+                                    <h1 id="adhkar-title" style="flex:1;text-align:center;margin:0;">أدعية القرآن</h1>
 </div>
                                 <div class="adhkar-text-body" id="adhkar-content-body"></div>
                             </div>
@@ -7175,7 +7175,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const s = document.getElementById('isl-header-sub');
             if (t && s) {
                 if (name === 'quran') { t.textContent = 'قراءة القرآن الكريم'; s.textContent = window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'; }
-                else if (name === 'adhkar') { t.textContent = 'الأذكار'; s.textContent = 'رحلة يومك مع الذكر'; }
+                else if (name === 'adhkar') { t.textContent = 'الأذكار'; s.textContent = 'أذكار المسلم اليومية من الكتاب والسنة'; }
                 else if (name === 'tasbih') { t.textContent = 'المسبحة الإلكترونية'; s.textContent = ''; }
                 else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · الأذكار · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
             }
