@@ -1468,7 +1468,7 @@
         @media (max-width:520px){ .tajweed-sheet{width:100%;max-width:100%;} }
         .tajweed-sheet-head{
             display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
-            min-height:136px;padding:16px 12px 10px;
+            min-height:60px;padding:8px 12px 6px;
             border-bottom:1px solid rgba(255,255,255,.08);color:#d1c48d;font-family:var(--font-quran);font-size:1.15rem;
         }
         .tajweed-drawer-title{color:#d1c48d;font-family:var(--font-quran);font-size:1.15rem;padding-top:4px;}
@@ -1528,6 +1528,8 @@
             .tajweed-a-sel{max-width:120px;font-size:.66rem;}
         }
         /* ===== selection d'une ayah : zones cliquables (comme qContainer) ===== */
+        .tajweed-pagenum{position:absolute;display:none;z-index:4;pointer-events:none;font-family:var(--font);font-size:.72rem;font-weight:700;color:#1a1a1a;background:rgba(255,255,255,.85);padding:1px 6px;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+        .tajweed-pagenum.on{display:block;}
         .tajweed-hits{position:absolute;left:0;top:0;width:0;height:0;display:none;z-index:3;}
         .tajweed-hits.on{display:block;}
         .tajweed-hit{
@@ -2580,6 +2582,8 @@
                         <img id="tajweed-page-img2" class="tw-pg2" alt="" aria-hidden="true">
                         <div class="tajweed-hits" id="tajweed-hits1" aria-hidden="true"></div>
                         <div class="tajweed-hits" id="tajweed-hits2" aria-hidden="true"></div>
+                        <div class="tajweed-pagenum" id="tajweed-pagenum1" aria-hidden="true"></div>
+                        <div class="tajweed-pagenum" id="tajweed-pagenum2" aria-hidden="true"></div>
                     </div>
                     <div class="tajweed-loading" id="tajweed-loading">جارٍ تحميل الصفحة...</div>
                     <div class="tajweed-topbar">
@@ -5388,6 +5392,20 @@ var gender = 'male';
             layer.style.top = (ir.top - sr.top) + 'px';
             layer.style.width = ir.width + 'px';
             layer.style.height = ir.height + 'px';
+            var pnId = layer.id === 'tajweed-hits2' ? 'tajweed-pagenum2' : 'tajweed-pagenum1';
+            var pn = document.getElementById(pnId);
+            if (pn) {
+                var pg = layer.getAttribute('data-page');
+                if (pg) {
+                    pn.textContent = String(pg);
+                    pn.style.left = Math.round(ir.left - sr.left + ir.width / 2) + 'px';
+                    pn.style.top = Math.round(ir.bottom - sr.top - 20) + 'px';
+                    pn.style.transform = 'translateX(-50%)';
+                    pn.classList.add('on');
+                } else {
+                    pn.classList.remove('on');
+                }
+            }
         }
         function twHitsRender(img, layer, page) {
             var list = _twHits[page];
@@ -5418,11 +5436,27 @@ var gender = 'male';
             ];
             for (var i = 0; i < items.length; i++) {
                 var img = items[i][0], layer = items[i][1], page = items[i][2];
-                if (!img || !layer) continue;
-                if (!page || !img.getAttribute('src')) { layer.classList.remove('on'); continue; }
+                var pn = document.getElementById('tajweed-pagenum' + (i + 1));
+                if (!img || !layer) { if (pn) pn.classList.remove('on'); continue; }
+                if (!page || !img.getAttribute('src')) { layer.classList.remove('on'); if (pn) pn.classList.remove('on'); continue; }
+                layer.setAttribute('data-page', page);
                 twHitsPlace(img, layer);
                 if (_twHits[page]) twHitsRender(img, layer, page);
                 else { layer.classList.remove('on'); twHitsLoad(page, twHitsUpdate); }
+                if (pn) {
+                    var _sr = document.getElementById('tajweed-stage').getBoundingClientRect();
+                    var _ir = img.getBoundingClientRect();
+                    pn.textContent = String(page);
+                    pn.style.left = Math.round(_ir.left - _sr.left + _ir.width / 2) + 'px';
+                    pn.style.top = Math.round(_ir.bottom - _sr.top - 20) + 'px';
+                    pn.style.transform = 'translateX(-50%)';
+                    pn.classList.add('on');
+                }
+            }
+            // hide pagenum for non-displayed images
+            if (!pair || pair.length < 2) {
+                var pn2 = document.getElementById('tajweed-pagenum2');
+                if (pn2) pn2.classList.remove('on');
             }
         }
         function twHitsMark() {
