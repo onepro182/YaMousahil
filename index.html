@@ -100,9 +100,9 @@
         .fav-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
         /* Rangée 3 : boutons d'action, tous exactement la même taille que Météo */
         .home-action-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;grid-auto-rows:72px;}
-        .home-action-row .app-card{height:100%;min-height:72px;min-width:0;padding:8px 6px;gap:4px;justify-content:center;align-items:center;border-radius:12px;}
-        .home-action-row .app-icon{width:28px;height:28px;object-fit:contain;}
-        .home-action-row .app-name{font-size:.72rem;line-height:1.25;text-align:center;word-break:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-width:0;}
+        .home-action-row .app-card{height:100%;min-height:72px;min-width:0;padding:8px 10px;gap:8px;flex-direction:row;justify-content:flex-start;align-items:center;text-align:right;direction:ltr;border-radius:12px;}
+        .home-action-row .app-icon{width:28px;height:28px;min-width:28px;object-fit:contain;flex:0 0 auto;}
+        .home-action-row .app-name{flex:1;min-width:0;font-size:.72rem;line-height:1.25;text-align:right;direction:rtl;word-break:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
         @media (max-width:1100px){ .home-action-row{grid-template-columns:repeat(4,minmax(0,1fr));} }
 @media (max-width:700px){ .home-action-row{grid-template-columns:repeat(3,minmax(0,1fr));} }
         @media (max-width:480px){ .home-action-row{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:68px;} }
@@ -112,9 +112,9 @@
         /* ===== ligne المفضلة : boutons a la taille EXACTE des boutons du bas (Meteo) ===== */
         /* lignes auto : les titres de section ne prennent plus une ligne de 72px */
         .fav-grid{grid-auto-rows:auto;}
-        .fav-grid .app-card{height:72px;min-height:72px;min-width:0;padding:8px 6px;gap:4px;justify-content:center;align-items:center;border-radius:12px;}
-        .fav-grid .app-icon{width:28px;height:28px;object-fit:contain;}
-        .fav-grid .app-name{font-size:.72rem;line-height:1.25;text-align:center;word-break:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-width:0;}
+        .fav-grid .app-card{height:72px;min-height:72px;min-width:0;padding:8px 10px;gap:8px;flex-direction:row;justify-content:flex-start;align-items:center;text-align:right;direction:ltr;border-radius:12px;}
+        .fav-grid .app-icon{width:28px;height:28px;min-width:28px;object-fit:contain;flex:0 0 auto;}
+        .fav-grid .app-name{flex:1;min-width:0;font-size:.72rem;line-height:1.25;text-align:right;direction:rtl;word-break:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
         @media (max-width:700px){ .fav-grid .app-card{height:68px;min-height:68px;} }
         @media (max-width:480px){ .fav-grid .app-card{height:68px;min-height:68px;} }
         body.is-mobile .fav-grid .app-icon{width:24px;height:24px;}
@@ -233,16 +233,25 @@
             .app-card{padding:12px 10px; flex-direction:row-reverse; align-items:center; justify-content:flex-start; gap:12px; text-align:right;}
             .app-icon{width:3.2rem;height:3.2rem;}
             .app-name{font-size:1rem;}
-            /* cartes d'accueil : grande icone a gauche, texte a droite */
+            /* cartes d'accueil : icone a gauche, texte a droite */
             .fav-grid .app-card,
-            body.is-mobile .fav-grid .app-card{height:auto;min-height:66px;padding:10px 12px;flex-direction:row-reverse;align-items:center;justify-content:flex-start;gap:10px;text-align:right;}
+            .home-action-row .app-card,
+            body.is-mobile .fav-grid .app-card,
+            body.is-mobile .home-action-row .app-card{height:auto;min-height:66px;padding:10px 12px;flex-direction:row;direction:ltr;align-items:center;justify-content:flex-start;gap:10px;text-align:right;}
             .fav-grid .app-card .app-icon,
             .fav-grid .app-card .app-icon-3d,
+            .home-action-row .app-card .app-icon,
+            .home-action-row .app-card .app-icon-3d,
             body.is-mobile .fav-grid .app-card .app-icon,
-            body.is-mobile .fav-grid .app-card .app-icon-3d{width:2.7rem;height:2.7rem;min-width:2.7rem;object-fit:contain;flex:0 0 auto;}
-            .fav-grid .app-card .app-icon.logo3d{padding:2px;border-radius:14px;}
+            body.is-mobile .fav-grid .app-card .app-icon-3d,
+            body.is-mobile .home-action-row .app-card .app-icon,
+            body.is-mobile .home-action-row .app-card .app-icon-3d{width:2.7rem;height:2.7rem;min-width:2.7rem;object-fit:contain;flex:0 0 auto;}
+            .fav-grid .app-card .app-icon.logo3d,
+            .home-action-row .app-card .app-icon.logo3d{padding:2px;border-radius:14px;}
             .fav-grid .app-card .app-name,
-            body.is-mobile .fav-grid .app-card .app-name{font-size:.82rem;line-height:1.3;white-space:normal;text-align:right;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+            .home-action-row .app-card .app-name,
+            body.is-mobile .fav-grid .app-card .app-name,
+            body.is-mobile .home-action-row .app-card .app-name{flex:1;min-width:0;font-size:.82rem;line-height:1.3;white-space:normal;text-align:right;direction:rtl;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
             .mihrab-column{width:100%;flex-shrink:1;}
             .mihrab-arch{min-height:320px;flex:none;}
             .mihrab-name{font-size:2.6rem;}
@@ -830,6 +839,9 @@
         #quran-menus .sihatar-mtxt b{color:#ffffff;}
         #quran-menus .sihatar-mtxt i{color:#ffffff;}
         #quran-menus .sihatar-mcount{color:#ffffff;}
+        #sihatar-menus .sihatar-mtxt b{color:#ffffff;}
+        #sihatar-menus .sihatar-mtxt i{color:#ffffff;}
+        #sihatar-menus .sihatar-mcount{color:#ffffff;}
         /* ===== المصحف المعلم ===== */
         #muallim-screen{overflow:hidden;}
         #muallim-screen .mm-wrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;padding:0 2px 8px;width:100%;}
@@ -2505,14 +2517,14 @@
                     <div class="sihatar-menus" id="sihatar-menus">
                         <button type="button" class="sihatar-menu glass-btn" data-sec="garde">
                             <span class="sihatar-mico">💊</span>
-                            <span class="sihatar-mtxt"><b>صيدليات الحراسة</b><i>Pharmacies de garde</i></span>
+                            <span class="sihatar-mtxt"><b>صيدليات الحراسة</b></span>
                             <span class="sihatar-mcount" data-count="garde">—</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="medecins">
                             <span class="sihatar-mico">
                                 <svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="Médecins"><use href="#siha-ico-medecin"/></svg>
                             </span>
-                            <span class="sihatar-mtxt"><b>الأطباء</b><i>Médecins</i></span>
+                            <span class="sihatar-mtxt"><b>الأطباء</b></span>
                             <span class="sihatar-mcount" data-count="medecins">—</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn sihatar-menu-near" id="btn-sihatar-around" title="Autour de moi — Pharmacies de garde">
@@ -2529,22 +2541,22 @@
                                     <circle cx="19" cy="19.5" r="4.6" fill="url(#sihaCtaPin)"/>
                                 </svg>
                             </span>
-                            <span class="sihatar-mtxt"><b>القريبة مني</b><i>Autour de moi</i></span>
+                            <span class="sihatar-mtxt"><b>القريبة مني</b></span>
                             <span class="sihatar-mcount">📍</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="cliniques">
                             <span class="sihatar-mico">🏥</span>
-                            <span class="sihatar-mtxt"><b>العيادات</b><i>Cliniques</i></span>
+                            <span class="sihatar-mtxt"><b>العيادات</b></span>
                             <span class="sihatar-mcount" data-count="cliniques">—</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="laboratoires">
                             <span class="sihatar-mico">🔬</span>
-                            <span class="sihatar-mtxt"><b>مختبرات التحاليل</b><i>Laboratoires</i></span>
+                            <span class="sihatar-mtxt"><b>مختبرات التحاليل</b></span>
                             <span class="sihatar-mcount" data-count="laboratoires">—</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-sec="tarifs">
                             <span class="sihatar-mico">💰</span>
-                            <span class="sihatar-mtxt"><b>أسعار التحاليل</b><i>Tarifs des analyses</i></span>
+                            <span class="sihatar-mtxt"><b>أسعار التحاليل</b></span>
                             <span class="sihatar-mcount" data-count="tarifs">—</span>
                         </button>
                     </div>
