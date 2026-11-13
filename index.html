@@ -194,7 +194,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen,#khatma-screen,#tajweed-rules-screen,#tilawah-adab-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -912,6 +912,64 @@
         .mem-card.memorized .mem-check{color:#2fa37c;}
         .mem-source{color:var(--text-dim);font-size:.75rem;margin:0;text-align:center;}
         .mem-loading{display:flex;align-items:center;justify-content:center;min-height:120px;color:var(--gold);grid-column:1/-1;}
+        /* ===== مخطط الختمة الجماعية ===== */
+        .khatma-intro{color:var(--text-dim);font-size:.9rem;margin:0;line-height:1.7;}
+        .khatma-setup{display:flex;flex-direction:column;gap:10px;max-width:640px;}
+        .kh-label{display:flex;flex-direction:column;gap:6px;color:#f4ecd8;font-weight:700;font-size:.88rem;font-family:var(--font);}
+        .kh-input{padding:11px 14px;border-radius:12px;border:1px solid var(--glass-border);background:rgba(255,255,255,.06);color:var(--text-main);outline:none;font-family:var(--font);}
+        .kh-input:focus{border-color:var(--gold);}
+        .kh-member-add{display:flex;gap:8px;}
+        .kh-btn{flex:none;padding:11px 18px;border-radius:12px;border:1px solid rgba(212,175,55,.5);background:rgba(212,175,55,.12);color:var(--gold);cursor:pointer;font-family:var(--font);font-weight:700;}
+        .kh-members{display:flex;gap:8px;flex-wrap:wrap;}
+        .kh-member-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 8px 6px 12px;border-radius:999px;border:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.1);color:var(--gold-light);font-size:.85rem;}
+        .kh-member-del{border:0;background:transparent;color:#e88;cursor:pointer;font-size:.85rem;line-height:1;padding:2px;}
+        .kh-distribute{margin-top:4px;padding:13px 22px;border-radius:14px;border:0;background:linear-gradient(110deg,#0c2e22,#397766 65%,#d4af37);color:#fff;font-family:var(--font);font-weight:800;font-size:1rem;cursor:pointer;}
+        .kh-distribute:hover{filter:brightness(1.1);}
+        .khatma-tracker{display:flex;flex-direction:column;gap:14px;}
+        .khatma-head{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:14px;background:rgba(12,46,34,.55);border:1px solid rgba(212,175,55,.28);}
+        .khatma-grouptitle b{display:block;font-family:var(--font-quran);color:var(--gold);font-size:1.2rem;}
+        .khatma-grouptitle span{color:var(--text-dim);font-size:.82rem;}
+        .khatma-progress{display:flex;flex-direction:column;gap:6px;}
+        .khatma-progress-bar{height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;}
+        .khatma-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#397766,#d4af37);transition:width .25s ease;}
+        .khatma-progress-text{color:var(--text-dim);font-size:.82rem;}
+        .kh-member-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;align-content:start;}
+        .kh-member-card{border:1px solid var(--glass-border);border-radius:14px;background:var(--glass-bg);padding:12px;display:flex;flex-direction:column;gap:8px;}
+        .kh-member-done{border-color:#2fa37c;background:rgba(47,163,124,.12);}
+        .kh-member-head{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#f4ecd8;}
+        .kh-member-head b{font-size:.95rem;}
+        .kh-member-head span{font-size:.8rem;color:var(--text-dim);white-space:nowrap;}
+        .kh-member-done .kh-member-head span{color:#2fa37c;}
+        .kh-juz-grid{display:flex;flex-wrap:wrap;gap:6px;}
+        .kh-juz{padding:6px 10px;border-radius:10px;border:1px solid rgba(212,175,55,.35);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-size:.8rem;}
+        .kh-juz:hover{border-color:var(--gold);}
+        .kh-juz.done{border-color:#2fa37c;background:rgba(47,163,124,.22);color:#7ce0b5;text-decoration:line-through;}
+        /* ===== أحكام التجويد ملوّنة ===== */
+        .tj-h2{font-family:var(--font-quran);color:var(--gold);font-size:1.15rem;margin:0;}
+        .tj-key{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;}
+        .tj-rule{border:1px solid var(--tj,#d4af37);border-radius:12px;background:rgba(12,46,34,.4);padding:8px 10px;}
+        .tj-rule-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+        .tj-dot{width:14px;height:14px;border-radius:50%;background:var(--tj,#d4af37);flex:none;}
+        .tj-rule b{color:#f4ecd8;font-size:.9rem;}
+        .tj-rule p{margin:0 0 4px;font-size:.72rem;color:var(--text-dim);line-height:1.6;}
+        .tj-letters{font-size:.72rem;color:var(--tj,#d4af37);direction:rtl;}
+        .tj-ayahs{display:flex;flex-direction:column;gap:8px;}
+        .tj-verse{font-family:var(--font-quran);font-size:1.25rem;line-height:2.2;color:#f7f1df;background:linear-gradient(180deg,rgba(10,40,28,.92),rgba(4,20,13,.96));border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:10px 14px;text-align:right;direction:rtl;}
+        .tj-num{color:var(--gold);font-size:.8em;margin-inline-end:8px;border:1px solid rgba(212,175,55,.5);border-radius:8px;padding:0 5px;}
+        .tj-madd{color:#c678dd;}
+        .tj-qalqala{color:#61afef;}
+        /* ===== آداب تلاوة القرآن ===== */
+        .adab-intro{color:var(--text-dim);font-size:.88rem;line-height:1.8;margin:0;}
+        .adab-list{display:flex;flex-direction:column;gap:10px;}
+        .adab-card{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--glass-border);border-radius:14px;background:var(--glass-bg);padding:12px;}
+        .adab-num{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(160deg,rgba(212,175,55,.3),rgba(212,175,55,.08));border:1px solid rgba(212,175,55,.45);color:var(--gold);font-family:var(--font-quran);font-weight:700;}
+        .adab-body b{color:#f4ecd8;font-size:.98rem;font-family:var(--font-quran);}
+        .adab-body p{margin:4px 0 0;color:var(--text-dim);font-size:.84rem;line-height:1.8;}
+        .adab-reward{border:1px solid rgba(212,175,55,.4);border-radius:14px;background:rgba(212,175,55,.08);padding:12px 14px;}
+        .adab-reward h3{font-family:var(--font-quran);color:var(--gold);margin:0 0 6px;font-size:1.1rem;}
+        .adab-reward p{color:#f4ecd8;line-height:1.9;font-size:.92rem;margin:0;}
+        .adab-reward p + p{margin-top:6px;}
+        .adab-reward span{color:var(--text-dim);font-size:.82rem;}
         #sihatar-menus .sihatar-mtxt b{color:#ffffff;}
         #sihatar-menus .sihatar-mtxt i{color:#ffffff;}
         #sihatar-menus .sihatar-mcount{color:#ffffff;}
@@ -2379,8 +2437,8 @@
                     <div style="width:80px;"></div>
                 </header>
                 <div class="sihatar-wrap">
-                    <div class="section-title" style="margin:2px 0 0;">أدوات</div>
                     <div class="sihatar-menus" id="quran-menus">
+                        <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">القرآن الكريم</div>
                         <button type="button" class="sihatar-menu glass-btn" data-q="tajweed">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="مصحف التجويد برواية ورش">
                                     <defs>
@@ -2503,6 +2561,7 @@
                             <span class="sihatar-mtxt"><b>دعاء ختم القرآن</b></span>
                             <span class="sihatar-mcount">🤲</span>
                         </button>
+                        <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">أدوات</div>
                         <button type="button" class="sihatar-menu glass-btn" data-q="memorization">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="متتبع الحفظ">
                                     <defs>
@@ -2515,6 +2574,59 @@
                                 </svg></span>
                             <span class="sihatar-mtxt"><b>متتبع الحفظ</b></span>
                             <span class="sihatar-mcount">📗</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="khatma">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="مخطط الختمة الجماعية">
+                                    <defs>
+                                        <linearGradient id="qmKh1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#7a5cc4"/><stop offset="0.5" stop-color="#3c2a72"/><stop offset="1" stop-color="#170f2e"/></linearGradient>
+                                        <linearGradient id="qmKh2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmKh1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <circle cx="32" cy="32" r="16.5" fill="none" stroke="url(#qmKh2)" stroke-width="2.4"/>
+                                    <text x="32" y="37.5" text-anchor="middle" font-size="15" font-weight="800" fill="#ffeeb0" font-family="Alexandria,sans-serif">٣٠</text>
+                                    <circle cx="32" cy="14" r="2.5" fill="url(#qmKh2)"/>
+                                    <circle cx="32" cy="50" r="2.5" fill="url(#qmKh2)"/>
+                                    <circle cx="14" cy="32" r="2.5" fill="url(#qmKh2)"/>
+                                    <circle cx="50" cy="32" r="2.5" fill="url(#qmKh2)"/>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>مخطط الختمة الجماعية</b></span>
+                            <span class="sihatar-mcount">🕌</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="tajweedRules">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="أحكام التجويد ملوّنة">
+                                    <defs>
+                                        <linearGradient id="qmTj1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#3b4a86"/><stop offset="0.5" stop-color="#1b2450"/><stop offset="1" stop-color="#0a0e26"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmTj1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <g stroke-linecap="round" stroke-width="5">
+                                        <path d="M15 44 V25" stroke="#e74c3c"/>
+                                        <path d="M23 44 V20" stroke="#e67e22"/>
+                                        <path d="M31 44 V16" stroke="#f1c40f"/>
+                                        <path d="M39 44 V24" stroke="#2ecc71"/>
+                                        <path d="M47 44 V19" stroke="#3498db"/>
+                                        <path d="M55 44 V28" stroke="#9b59b6"/>
+                                    </g>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>أحكام التجويد ملوّنة</b></span>
+                            <span class="sihatar-mcount">🎨</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="adab">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="آداب تلاوة القرآن">
+                                    <defs>
+                                        <linearGradient id="qmAd1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fa37c"/><stop offset="0.5" stop-color="#0e5f45"/><stop offset="1" stop-color="#04291e"/></linearGradient>
+                                        <linearGradient id="qmAd2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e8dfc6"/></linearGradient>
+                                        <linearGradient id="qmAd3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmAd1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 16 L35 22.5 L43 23.5 L37 29 L38.5 38 L32 34 L25.5 38 L27 29 L21 23.5 L29 22.5 Z" fill="url(#qmAd3)" stroke="#8a6520" stroke-width="1" stroke-linejoin="round"/>
+                                    <path d="M14 46 c5 -2 11 -1.7 16 0 V30 c-5 -1.7 -11 -2 -16 0 z" fill="url(#qmAd2)" stroke="#c9b98a" stroke-width="1"/>
+                                    <path d="M50 46 c-5 -2 -11 -1.7 -16 0 V30 c5 -1.7 11 -2 16 0 z" fill="url(#qmAd2)" stroke="#c9b98a" stroke-width="1"/>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>آداب تلاوة القرآن</b></span>
+                            <span class="sihatar-mcount">📖</span>
                         </button>
                     </div>
                 </div>
@@ -2575,6 +2687,119 @@
                     </div>
                     <div class="memorization-grid" id="memorization-grid"></div>
                     <p class="mem-source">الفكرة مستوحاة من <a href="https://qurancentral.net/ar/more-pages/memorization-and-tajweed.html" target="_blank" rel="noopener" style="color:var(--gold);">متتبع الحفظ — قرآن سنترال</a></p>
+                </div>
+            </div>
+
+            <!-- ================= KHATMA (مخطط الختمة الجماعية) SCREEN ================= -->
+            <div id="khatma-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-khatma">‹ القرآن الكريم</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">مخطط الختمة الجماعية</h1>
+                        <p>نظّم ختمة جماعية — يُحفظ تقدمك بخصوصية على هذا الجهاز</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="sihatar-wrap">
+                    <p class="khatma-intro">نظّم ختمة جماعية للقرآن بتقسيم الأجزاء الثلاثين بين الأعضاء. تابع تقدّم الجميع — تُحفظ خطتك تلقائيًا على هذا المتصفح.</p>
+                    <div class="khatma-setup" id="khatma-setup">
+                        <label class="kh-label">اسم المجموعة
+                            <input type="text" id="kh-group" class="kh-input" placeholder="مثال: ختمة الأهل والأصدقاء" autocomplete="off">
+                        </label>
+                        <label class="kh-label">تاريخ الإنجاز المستهدف
+                            <input type="date" id="kh-date" class="kh-input">
+                        </label>
+                        <div class="kh-label">الأعضاء</div>
+                        <div class="kh-member-add">
+                            <input type="text" id="kh-member" class="kh-input" placeholder="اسم العضو…" aria-label="اسم العضو" autocomplete="off">
+                            <button type="button" class="kh-btn" id="kh-add-member">إضافة</button>
+                        </div>
+                        <div class="kh-members" id="kh-members"></div>
+                        <button type="button" class="kh-distribute" id="kh-distribute">توزيع الأجزاء والبدء</button>
+                    </div>
+                    <div class="khatma-tracker" id="khatma-tracker" hidden>
+                        <div class="khatma-head">
+                            <div class="khatma-grouptitle">
+                                <b id="kh-tracker-group"></b>
+                                <span id="kh-tracker-date"></span>
+                            </div>
+                            <div class="khatma-progress">
+                                <div class="khatma-progress-bar"><div class="khatma-progress-fill" id="kh-progress-fill"></div></div>
+                                <div class="khatma-progress-text"><span id="kh-progress-pct">0%</span> — <span id="kh-progress-count">0/30 جزء</span></div>
+                            </div>
+                        </div>
+                        <div class="kh-member-list" id="kh-member-list"></div>
+                        <button type="button" class="mem-reset" id="kh-reset">إعادة تعيين الخطة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAJWEED RULES (أحكام التجويد ملوّنة) SCREEN ================= -->
+            <div id="tajweed-rules-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-tajweed-rules">‹ القرآن الكريم</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">أحكام التجويد ملوّنة</h1>
+                        <p>مقطع نموذجي — تلوين أبرز أحكام التجويد مع مفتاح يوضّح كل حكم</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="sihatar-wrap tj-wrap">
+                    <h2 class="tj-h2">المفتاح</h2>
+                    <div class="tj-key">
+                        <div class="tj-rule" style="--tj:#e74c3c;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإخفاء</b></div><p>إخفاء النون الساكنة أو التنوين بغُنّة قبل حروف معيّنة.</p><div class="tj-letters">ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك</div></div>
+                        <div class="tj-rule" style="--tj:#e67e22;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإدغام</b></div><p>إدغام النون الساكنة أو التنوين في حروف</p><div class="tj-letters">ي ر م ل و ن</div></div>
+                        <div class="tj-rule" style="--tj:#f1c40f;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإقلاب</b></div><p>قلب النون الساكنة أو التنوين ميمًا قبل الباء.</p><div class="tj-letters">ب</div></div>
+                        <div class="tj-rule" style="--tj:#2ecc71;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإظهار</b></div><p>إظهار النون الساكنة أو التنوين قبل حروف الحلق.</p><div class="tj-letters">ء هـ ع ح غ خ</div></div>
+                        <div class="tj-rule" style="--tj:#3498db;"><div class="tj-rule-head"><span class="tj-dot"></span><b>القلقلة</b></div><p>اضطراب في حروف (قطب جد) عند سكونها.</p><div class="tj-letters">ق ط ب ج د</div></div>
+                        <div class="tj-rule" style="--tj:#9b59b6;"><div class="tj-rule-head"><span class="tj-dot"></span><b>المدّ</b></div><p>إطالة الحركة حركتين فأكثر.</p><div class="tj-letters">ا و ي</div></div>
+                    </div>
+                    <h2 class="tj-h2">سورة الفاتحة</h2>
+                    <div class="tj-ayahs">
+                        <p class="tj-verse"><span class="tj-num">١</span> بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ <span class="tj-madd">ٱلرَّحِيمِ</span></p>
+                        <p class="tj-verse"><span class="tj-num">٢</span> ٱلْحَمْدُ لِلَّهِ <span class="tj-qalqala">رَبِّ</span> <span class="tj-madd">ٱلْعَـٰلَمِينَ</span></p>
+                        <p class="tj-verse"><span class="tj-num">٣</span> <span class="tj-madd">ٱلرَّحْمَـٰنُ</span> <span class="tj-madd">ٱلرَّحِيمُ</span></p>
+                        <p class="tj-verse"><span class="tj-num">٤</span> <span class="tj-madd">مَـٰلِكُ</span> يَوْمِ <span class="tj-qalqala">ٱلدِّينِ</span></p>
+                        <p class="tj-verse"><span class="tj-num">٥</span> <span class="tj-madd">إِيَّاكَ</span> نَعْبُدُ وَ<span class="tj-madd">إِيَّاكَ</span> <span class="tj-madd">نَسْتَعِينُ</span></p>
+                        <p class="tj-verse"><span class="tj-num">٦</span> <span class="tj-madd">ٱهْدِنَا</span> <span class="tj-madd">ٱلصِّرَٰطَ</span> <span class="tj-madd">ٱلْمُسْتَقِيمَ</span></p>
+                        <p class="tj-verse"><span class="tj-num">٧</span> <span class="tj-madd">صِرَٰطَ</span> <span class="tj-madd">ٱلَّذِينَ</span> أَنْعَمْتَ عَلَيْهِمْ <span class="tj-madd">غَيْرِ</span> <span class="tj-madd">ٱلْمَغْضُوبِ</span> عَلَيْهِمْ وَلَا <span class="tj-madd">ٱلضَّآلِّينَ</span></p>
+                    </div>
+                    <h2 class="tj-h2">أول سورة البقرة</h2>
+                    <div class="tj-ayahs">
+                        <p class="tj-verse"><span class="tj-num">١</span> الٓمٓ <span class="tj-madd">ذَٰلِكَ</span> <span class="tj-madd">ٱلْكِتَـٰبُ</span> لَا <span class="tj-madd">رَيْبَ</span> ۛ فِيهِ ۛ <span class="tj-madd">هُدَىٰ</span> لِّلْ<span class="tj-qalqala">مُتَّقِينَ</span></p>
+                    </div>
+                    <p class="mem-source">تلوين تجريبي. تشير الألوان إلى أمثلة تمثيلية لكل حكم.</p>
+                </div>
+            </div>
+
+            <!-- ================= TILAWAH ADAB (آداب تلاوة القرآن) SCREEN ================= -->
+            <div id="tilawah-adab-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-adab">‹ القرآن الكريم</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">آداب تلاوة القرآن</h1>
+                        <p>كيف يُقبل المؤمن على كلام الله ويتلوه ويُعظّمه</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="sihatar-wrap">
+                    <p class="adab-intro">آداب التلاوة — مستقاةً من القرآن والسنة وكلام أهل العلم؛ افتتح الإمام النووي كتابه «التبيان في آداب حملة القرآن» بأن القرآن أشرف الكلام، فاستحقّ أشرف الآداب عند الإقبال عليه. وفيما يلي أهم الآداب، مع دليلها من آية أو حديث.</p>
+                    <div class="adab-list">
+                        <div class="adab-card"><div class="adab-num">١</div><div class="adab-body"><b>الطهارة والوضوء</b><p>يُستحب أن يكون على طهارة (وضوء) وأن يتلو في مكان طاهر، ولا يُمسّ المصحف إلا على طهارة؛ قال الله تعالى: ﴿لَّا يَمَسُّهُ إِلَّا الْمُطَهَّرُونَ﴾ الواقعة ٥٦:٧٩. ويجوز للمؤمن أن يتلو عن ظهر قلب في كل حال إلا الجنابة.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٢</div><div class="adab-body"><b>استقبال القبلة والجلوس بسكينة</b><p>اجلس مستقبلًا القبلة ما أمكن، بقلب حاضر مطمئن خاشع، كأنك في حضرة الله تعالى.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٣</div><div class="adab-body"><b>الاستعاذة والبسملة</b><p>تَعُوذُ بالله من الشيطان الرجيم وتُبَسْمِل عند أوّل كل سورة (غير براءة): ﴿بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ﴾.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٤</div><div class="adab-body"><b>الترتيل والتجويد</b><p>اقرأ ببطء ولا تعجل؛ قال الله تعالى: ﴿وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا﴾ المزمل ٧٣:٤، مع تطبيق أحكام التجويد وقراءة الحروف من مخارجها.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٥</div><div class="adab-body"><b>تدبّر المعاني</b><p>تأمّل فيما تقرأ ولا تقرأه قراءة غفلة؛ قال الله تعالى: ﴿أَفَلَا يَتَدَبَّرُونَ الْقُرْآنَ أَمْ عَلَىٰ قُلُوبٍ أَقْفَالُهَا﴾ محمد ٤٧:٢٤.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٦</div><div class="adab-body"><b>الخشوع وحضور القلب والبكاء</b><p>عَايش القرآن بقلبك؛ قال الله تعالى: ﴿تَرَىٰ أَعْيُنَهُمْ تَفِيضُ مِنَ الدَّمْعِ مِمَّا عَرَفُوا مِنَ الْحَقِّ﴾ المائدة ٥:٨٣.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٧</div><div class="adab-body"><b>سجدة التلاوة</b><p>عند آيات السجدة (في سور: الأعراف، الرعد، النحل، الإسراء، مريم، الحج، الفرقان، النمل، السجدة، ص، فصلت) اسجد لله سجدة التلاوة.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٨</div><div class="adab-body"><b>تعظيم المصحف وحُسن حمله</b><p>امسك المصحف بإكرام واجعله في مكان كريم، ولا تجعله عرضة للهوان أو الأوساخ.</p></div></div>
+                        <div class="adab-card"><div class="adab-num">٩</div><div class="adab-body"><b>عدم القطع لغير حاجة والإنصات</b><p>لا تقطع التلاوة لغير حاجة، وإذا قُرئ القرآن فاستمع وأنصت؛ قال الله تعالى: ﴿وَإِذَا قُرِئَ الْقُرْآنُ فَاسْتَمِعُوا لَهُ وَأَنْصِتُوا لَعَلَّكُمْ تُرْحَمُونَ﴾ الأعراف ٧:٢٠٤.</p></div></div>
+                    </div>
+                    <div class="adab-reward">
+                        <h3>ثواب التالي</h3>
+                        <p>قال النبي ﷺ: «مَن قرأ حرفًا من كتاب الله فله به حسنة، والحسنة بعشر أمثالها، لا أقول الم حرف، ولكن ألف حرف ولام حرف وميم حرف» <span>(الترمذي ٢٩١٠)</span>.</p>
+                        <p>وقال: «الماهر بالقرآن مع السفرة الكرام البررة، والذي يقرأ القرآن ويتتعتع فيه وهو عليه شاقّ له أجران» <span>(البخاري ٤٩٣٧)</span>.</p>
+                    </div>
                 </div>
             </div>
 
@@ -6643,6 +6868,9 @@ var quranMenuScreen = document.getElementById('quran-menu-screen');
 var tajweedScreen = document.getElementById('tajweed-screen');
 var duaKhatmScreen = document.getElementById('dua-khatm-screen');
 var memorizationScreen = document.getElementById('memorization-screen');
+var khatmaScreen = document.getElementById('khatma-screen');
+var tajweedRulesScreen = document.getElementById('tajweed-rules-screen');
+var adabScreen = document.getElementById('tilawah-adab-screen');
 (function () {
     var card = document.getElementById('card-quran-menu');
     if (card && quranMenuScreen) {
@@ -6738,6 +6966,113 @@ var memorizationScreen = document.getElementById('memorization-screen');
     if (memBack) memBack.onclick = function () {
         if (typeof showScreen === 'function') showScreen(quranMenuScreen);
     };
+    // ===== مخطط الختمة الجماعية (khatma collective) =====
+    var KHATMA_KEY = 'YaMousahil_khatma';
+    var khMembers = [];
+    function khatmaLoad() { try { return JSON.parse(localStorage.getItem(KHATMA_KEY) || 'null'); } catch (e) { return null; } }
+    function khatmaSave(state) { try { localStorage.setItem(KHATMA_KEY, JSON.stringify(state)); } catch (e) {} }
+    function khatmaReset() { try { localStorage.removeItem(KHATMA_KEY); } catch (e) {} }
+    function khEscapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function khatmaRenderMembers() {
+        var box = document.getElementById('kh-members'); if (!box) return;
+        box.innerHTML = khMembers.map(function (m, i) {
+            return '<span class="kh-member-chip">' + khEscapeHtml(m) + '<button type="button" class="kh-member-del" data-i="' + i + '" aria-label="حذف ' + khEscapeHtml(m) + '">✕</button></span>';
+        }).join('');
+    }
+    function khatmaRenderTracker(state) {
+        var g = document.getElementById('kh-tracker-group'); if (g) g.textContent = state.group || 'ختمة المجموعة';
+        var d = document.getElementById('kh-tracker-date'); if (d) d.textContent = state.date ? 'موعد الإنجاز المستهدف: ' + state.date : '';
+        var doneCount = 0;
+        state.members.forEach(function (m) { m.done.forEach(function (v) { if (v) doneCount++; }); });
+        var pct = Math.round(doneCount / 30 * 100);
+        var fill = document.getElementById('kh-progress-fill'); if (fill) fill.style.width = pct + '%';
+        var pctEl = document.getElementById('kh-progress-pct'); if (pctEl) pctEl.textContent = pct + '%';
+        var cntEl = document.getElementById('kh-progress-count'); if (cntEl) cntEl.textContent = doneCount + '/30 جزء';
+        var list = document.getElementById('kh-member-list'); if (!list) return;
+        list.innerHTML = '';
+        state.members.forEach(function (m, i) {
+            var mDone = 0; m.done.forEach(function (v) { if (v) mDone++; });
+            var complete = mDone === m.juz.length;
+            var card = document.createElement('div');
+            card.className = 'kh-member-card' + (complete ? ' kh-member-done' : '');
+            card.innerHTML = '<div class="kh-member-head"><b>' + khEscapeHtml(m.name) + '</b><span>' + mDone + '/' + m.juz.length + ' أجزاء' + (complete ? ' ✓' : '') + '</span></div><div class="kh-juz-grid">' + m.juz.map(function (j, ji) {
+                return '<button type="button" class="kh-juz' + (m.done[ji] ? ' done' : '') + '" data-m="' + i + '" data-j="' + ji + '" aria-pressed="' + (m.done[ji] ? 'true' : 'false') + '">الجزء ' + j + '</button>';
+            }).join('') + '</div>';
+            list.appendChild(card);
+        });
+    }
+    function initKhatma() {
+        var setup = document.getElementById('khatma-setup');
+        var tracker = document.getElementById('khatma-tracker');
+        var state = khatmaLoad();
+        if (state && state.members && state.members.length) {
+            if (setup) setup.hidden = true;
+            if (tracker) tracker.hidden = false;
+            khatmaRenderTracker(state);
+            return;
+        }
+        if (setup) setup.hidden = false;
+        if (tracker) tracker.hidden = true;
+        if (khMembers.length) khatmaRenderMembers();
+    }
+    var khAddBtn = document.getElementById('kh-add-member');
+    if (khAddBtn) khAddBtn.onclick = function () {
+        var input = document.getElementById('kh-member');
+        var v = input ? input.value.trim() : '';
+        if (!v) return;
+        khMembers.push(v);
+        if (input) input.value = '';
+        khatmaRenderMembers();
+    };
+    var khMembersBox = document.getElementById('kh-members');
+    if (khMembersBox) khMembersBox.onclick = function (e) {
+        var b = e.target && e.target.closest ? e.target.closest('.kh-member-del') : null;
+        if (!b) return;
+        var i = parseInt(b.getAttribute('data-i'), 10);
+        if (!isNaN(i)) { khMembers.splice(i, 1); khatmaRenderMembers(); }
+    };
+    var khDistribute = document.getElementById('kh-distribute');
+    if (khDistribute) khDistribute.onclick = function () {
+        if (khMembers.length < 1) { window.alert('أضف عضوًا واحدًا على الأقل'); return; }
+        var groupEl = document.getElementById('kh-group');
+        var dateEl = document.getElementById('kh-date');
+        var n = khMembers.length;
+        var state = { group: (groupEl ? groupEl.value.trim() : '') || 'ختمة المجموعة', date: dateEl ? dateEl.value : '', members: [] };
+        for (var i = 0; i < n; i++) {
+            var juz = [];
+            for (var j = i + 1; j <= 30; j += n) juz.push(j);
+            state.members.push({ name: khMembers[i], juz: juz, done: juz.map(function () { return false; }) });
+        }
+        khatmaSave(state);
+        var setup = document.getElementById('khatma-setup'); var tracker = document.getElementById('khatma-tracker');
+        if (setup) setup.hidden = true;
+        if (tracker) tracker.hidden = false;
+        khatmaRenderTracker(state);
+    };
+    var khResetBtn = document.getElementById('kh-reset');
+    if (khResetBtn) khResetBtn.onclick = function () {
+        if (!window.confirm('إعادة تعيين الخطة؟')) return;
+        khatmaReset();
+        khMembers = [];
+        khatmaRenderMembers();
+        var setup = document.getElementById('khatma-setup'); var tracker = document.getElementById('khatma-tracker');
+        if (setup) setup.hidden = false;
+        if (tracker) tracker.hidden = true;
+    };
+    var khMemberList = document.getElementById('kh-member-list');
+    if (khMemberList) khMemberList.onclick = function (e) {
+        var b = e.target && e.target.closest ? e.target.closest('.kh-juz') : null;
+        if (!b) return;
+        var mi = parseInt(b.getAttribute('data-m'), 10); var ji = parseInt(b.getAttribute('data-j'), 10);
+        var st = khatmaLoad(); if (!st || isNaN(mi) || isNaN(ji) || !st.members[mi]) return;
+        st.members[mi].done[ji] = !st.members[mi].done[ji];
+        khatmaSave(st);
+        khatmaRenderTracker(st);
+    };
+    ['btn-back-from-khatma', 'btn-back-from-tajweed-rules', 'btn-back-from-adab'].forEach(function (id) {
+        var b = document.getElementById(id);
+        if (b) b.onclick = function () { if (typeof showScreen === 'function') showScreen(quranMenuScreen); };
+    });
     // ouverture d'un lien externe (nouvel onglet si possible, sinon dans la page)
     function ymOpenExternal(url) {
         try {
@@ -6766,6 +7101,19 @@ var memorizationScreen = document.getElementById('memorization-screen');
             if (k === 'memorization') {
                 try { initMemorization(); } catch (e) {}
                 if (typeof memorizationScreen !== 'undefined' && memorizationScreen && typeof showScreen === 'function') showScreen(memorizationScreen);
+                return;
+            }
+            if (k === 'khatma') {
+                try { initKhatma(); } catch (e) {}
+                if (typeof khatmaScreen !== 'undefined' && khatmaScreen && typeof showScreen === 'function') showScreen(khatmaScreen);
+                return;
+            }
+            if (k === 'tajweedRules') {
+                if (typeof tajweedRulesScreen !== 'undefined' && tajweedRulesScreen && typeof showScreen === 'function') showScreen(tajweedRulesScreen);
+                return;
+            }
+            if (k === 'adab') {
+                if (typeof adabScreen !== 'undefined' && adabScreen && typeof showScreen === 'function') showScreen(adabScreen);
                 return;
             }
             var src = { mushaf: 'card-surah-kahf', tajweed: 'card-tajweed', read: 'card-quran-read' }[k];
