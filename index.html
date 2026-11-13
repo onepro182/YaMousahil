@@ -926,6 +926,7 @@
         .kh-distribute{margin-top:4px;padding:13px 22px;border-radius:14px;border:0;background:linear-gradient(110deg,#0c2e22,#397766 65%,#d4af37);color:#fff;font-family:var(--font);font-weight:800;font-size:1rem;cursor:pointer;}
         .kh-distribute:hover{filter:brightness(1.1);}
         .khatma-tracker{display:flex;flex-direction:column;gap:14px;}
+        .khatma-setup[hidden],.khatma-tracker[hidden]{display:none !important;}
         .khatma-head{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:14px;background:rgba(12,46,34,.55);border:1px solid rgba(212,175,55,.28);}
         .khatma-grouptitle b{display:block;font-family:var(--font-quran);color:var(--gold);font-size:1.2rem;}
         .khatma-grouptitle span{color:var(--text-dim);font-size:.82rem;}
@@ -7079,7 +7080,18 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     });
     var khatmaWa = document.getElementById('khatma-whatsapp');
     if (khatmaWa) khatmaWa.onclick = function () {
-        var msg = '🕌 نظّم ختمة جماعية\nانضموا إلينا في ختمة جماعية للقرآن الكريم — نقسم الأجزاء الثلاثين بين الجميع ونتابع التقدّم معًا على يا مسهّل:\nhttps://onepro182.github.io/YaMousahil/';
+        var state = khatmaLoad();
+        var msg;
+        if (state && state.members && state.members.length) {
+            msg = '🕌 توزيع الأجزاء — مخطط الختمة الجماعية' + (state.group ? ' : ' + state.group : '') + '\n';
+            if (state.date) msg += '📅 موعد الإنجاز المستهدف: ' + state.date + '\n';
+            state.members.forEach(function (m) {
+                msg += '• ' + m.name + ' : الجزء ' + m.juz.join('، ') + '\n';
+            });
+            msg += 'تطبيق يا مسهّل — https://onepro182.github.io/YaMousahil/';
+        } else {
+            msg = '🕌 نظّم ختمة جماعية\nانضموا إلينا في ختمة جماعية للقرآن الكريم — نقسم الأجزاء الثلاثين بين الجميع ونتابع التقدّم معًا على يا مسهّل:\nhttps://onepro182.github.io/YaMousahil/';
+        }
         try { window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener'); } catch (e) { window.location.href = 'https://wa.me/?text=' + encodeURIComponent(msg); }
     };
     // ouverture d'un lien externe (nouvel onglet si possible, sinon dans la page)
