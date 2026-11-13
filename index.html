@@ -1386,6 +1386,7 @@
             background:#0d1b17;
             direction:rtl;
         }
+        html.tw-android .tajweed-stage{ flex-direction: row-reverse; }
         .tajweed-stage img{
             display:block;max-width:100%;max-height:100%;width:auto;height:auto;
             background:#fff;box-shadow:0 14px 38px rgba(0,0,0,.55);
@@ -2977,6 +2978,7 @@
         else document.body.classList.remove('is-mobile');
     }
     window.addEventListener('DOMContentLoaded', applyMobileClass);
+    (function () { try { var ua = navigator.userAgent || ''; if (/Android|YaMousahilApp|;\\s*wv\\)/i.test(ua)) document.documentElement.classList.add('tw-android'); } catch (e) {} })();
     window.addEventListener('resize', applyMobileClass);
     applyMobileClass();
     document.addEventListener('DOMContentLoaded', function () {
