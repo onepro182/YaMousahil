@@ -5930,7 +5930,7 @@ var gender = 'male';
         }
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
+        function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; if (screenToShow === homeScreen && typeof window.checkFridayKahf === 'function') setTimeout(window.checkFridayKahf, 400); prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
         try { [].slice.call(document.querySelectorAll('[id$="-screen"]')).forEach(function (el) { if (el !== screenToShow) el.style.display = 'none'; }); } catch (e) {} }
 
 
@@ -7258,6 +7258,46 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
+        // ===== rappel vendredi : lecture de la sourate Al-Kahf =====
+        (function () {
+            var modal = document.getElementById('friday-kahf-modal');
+            var goBtn = document.getElementById('friday-kahf-go');
+            var cancelBtn = document.getElementById('friday-kahf-cancel');
+            if (!modal) return;
+            function isFriday() { return new Date().getDay() === 5; }
+            function todayKey() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
+            function show() { modal.style.display = 'flex'; }
+            function hide() { modal.style.display = 'none'; }
+            function dismissedToday() { try { return localStorage.getItem('fridayKahfDone') === todayKey(); } catch (e) { return false; } }
+            function snoozed() { try { var t = parseInt(localStorage.getItem('fridayKahfSnooze') || '0', 10); return t > Date.now(); } catch (e) { return false; } }
+            window.checkFridayKahf = function () {
+                if (!isFriday()) return;
+                if (dismissedToday()) return;
+                if (snoozed()) return;
+                // ne pas afficher si on n'est pas sur l'accueil
+                if (homeScreen && homeScreen.style.display === 'none') return;
+                show();
+            };
+            if (goBtn) goBtn.onclick = function () {
+                hide();
+                try { localStorage.setItem('fridayKahfDone', todayKey()); } catch (e) {}
+                try { renderWirdMenu(); } catch (e) {}
+                try { if (typeof showScreen === 'function' && wirdScreen) showScreen(wirdScreen); } catch (e) {}
+                var ws = document.getElementById('wird-split'); if (ws) ws.classList.remove('show-text');
+                window.scrollTo(0, 0);
+                setTimeout(function () {
+                    var item = document.querySelector('.wird-cat-item[data-surah="18"]');
+                    if (item) item.click();
+                }, 400);
+            };
+            if (cancelBtn) cancelBtn.onclick = function () {
+                hide();
+                // rappel apres 2 heures
+                try { localStorage.setItem('fridayKahfSnooze', String(Date.now() + 2 * 60 * 60 * 1000)); } catch (e) {}
+                setTimeout(window.checkFridayKahf, 2 * 60 * 60 * 1000);
+            };
+            setTimeout(window.checkFridayKahf, 600);
+        })();
         refreshPrayerData(); renderUI(); updateClocks();
         let prayerDateStamp = locationDate().toDateString();
         setInterval(() => { const currentStamp = locationDate().toDateString(); if (currentStamp !== prayerDateStamp) { prayerDateStamp = currentStamp; refreshPrayerData(); renderUI(); } updateClocks(); runPrayerAlerts(); }, 1000);
@@ -8360,5 +8400,16 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             <button type="button" class="asma-detail-play" id="asma-detail-play">🔊 الاستماع</button>
         </div>
     </div>
+<div id="friday-kahf-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(2,13,8,.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
+     <div style="max-width:420px;width:100%;background:radial-gradient(ellipse at 50% 0%,rgba(17,66,49,.9),rgba(3,20,12,.98));border:1px solid rgba(212,175,55,.45);border-radius:18px;padding:22px 18px;text-align:center;color:#f4ecd8;font-family:var(--font);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">📖</div>
+        <h2 style="color:#f4d03f;font-family:var(--font-quran);font-size:1.35rem;margin:0 0 8px;">لا تنس قراءة سورة الكهف</h2>
+        <p style="color:#a3c7b5;font-size:.95rem;margin:0 0 16px;line-height:1.7;">اليوم جمعة — احرص على قراءة سورة الكهف.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <button type="button" id="friday-kahf-go" style="padding:10px 18px;border-radius:10px;border:1px solid rgba(212,175,55,.5);background:rgba(212,175,55,.25);color:#f4d03f;font-family:var(--font);font-weight:700;cursor:pointer;">aller au lire</button>
+            <button type="button" id="friday-kahf-cancel" style="padding:10px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#efe9dc;font-family:var(--font);cursor:pointer;">annuler</button>
+        </div>
+     </div>
+ </div>
 </body>
 </html>
