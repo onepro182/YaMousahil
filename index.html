@@ -2978,7 +2978,7 @@
         else document.body.classList.remove('is-mobile');
     }
     window.addEventListener('DOMContentLoaded', applyMobileClass);
-    (function () { try { var ua = navigator.userAgent || ''; if (/Android|YaMousahilApp|;\\s*wv\\)/i.test(ua)) document.documentElement.classList.add('tw-android'); } catch (e) {} })();
+    (function () { try { var ua = navigator.userAgent || ''; if (/Android|YaMousahilApp|;\s*wv\)/i.test(ua)) document.documentElement.classList.add('tw-android'); } catch (e) {} })();
     window.addEventListener('resize', applyMobileClass);
     applyMobileClass();
     document.addEventListener('DOMContentLoaded', function () {
