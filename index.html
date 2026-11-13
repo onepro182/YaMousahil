@@ -248,11 +248,14 @@
             #live-cat-list .adhkar-cat-item .live-empty-tag{padding:1px 4px;font-size:.55rem;}
         }
         @media (max-width: 900px){
-            .live-split-view{flex-direction:column;}
-            .live-player-area{order:2;}
+            .live-split-view{flex-direction:column;flex:1;min-height:0;}
+            .live-player-area{order:2;min-height:0;}
             .adhkar-sidebar{width:100%;order:1;}
+            #live-screen{height:auto;min-height:100dvh;}
             #live-cat-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;overflow:visible;padding:6px;}
             #live-cat-list .adhkar-cat-item{min-width:0;width:100%;padding:6px 4px;}
+            .live-player-area iframe{width:100%;min-height:240px;}
+            .live-player-area video#live-video{width:100%;min-height:240px;}
         }
         /* ===== Mobile (portrait) : mise en page empilée ===== */
         @media (max-width: 900px){
@@ -365,6 +368,12 @@
         body.is-mobile .verse-arabic{font-size:1.5rem;}
         body.is-mobile .quran-split-view,body.is-mobile .adhkar-split-view,body.is-mobile .live-split-view,body.is-mobile .mosques-layout{flex-direction:column;}
         body.is-mobile .quran-sidebar,body.is-mobile .adhkar-sidebar,body.is-mobile .mosques-sidebar{width:100%;}
+        body.is-mobile #live-screen{height:auto;min-height:100dvh;}
+        body.is-mobile .live-split-view{flex:1;min-height:0;}
+        body.is-mobile .live-player-area{order:2;min-height:0;}
+        body.is-mobile .adhkar-sidebar{order:1;}
+        body.is-mobile .live-player-area iframe{width:100%;min-height:240px;}
+        body.is-mobile .live-player-area video#live-video{width:100%;min-height:240px;}
         /* Mobile Quran: liste des sourates d'abord, texte après sélection */
         body.is-mobile .quran-split-view:not(.show-text) .quran-text-area{display:none;}
         body.is-mobile .quran-split-view.show-text .quran-sidebar{display:none;}
