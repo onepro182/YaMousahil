@@ -2829,7 +2829,7 @@
                                 <div class="setting-row"><div class="setting-title">المدينة</div><select id="set-city" class="setting-select"></select></div>
                                 <div class="setting-row"><div class="setting-title">طريقة الحساب</div><select id="set-method" class="setting-select"><option value="Egyptian">الهيئة المصرية</option><option value="Morocco">وزارة الأوقاف المغربية</option><option value="UmmAlQura">أم القرى</option></select></div>
                                 <div class="setting-row"><div class="setting-title">مذهب العصر</div><div class="toggle-group" id="set-asr"><button type="button" class="group-btn active" data-value="Shafi">الشافعي / المالكي</button><button type="button" class="group-btn" data-value="Hanafi">الحنفي</button></div></div>
-                                <div class="setting-row"><div class="setting-title">تعديل التوقيت العام</div><select id="set-global-offset" class="setting-select"><option value="0">بدون تعديل</option><option value="60">+1 ساعة</option><option value="-60" selected>-1 ساعة</option><option value="30">+30 دقيقة</option><option value="-30">-30 دقيقة</option></select></div>
+                                <div class="setting-row"><div class="setting-title">تعديل التوقيت العام</div><select id="set-global-offset" class="setting-select"><option value="0" selected>بدون تعديل</option><option value="60">+1 ساعة</option><option value="-60">-1 ساعة</option><option value="30">+30 دقيقة</option><option value="-30">-30 دقيقة</option></select></div>
                                 <div class="setting-row"><div class="setting-title">مفتاح Geoapify (للمساجد)</div><input type="text" id="set-geoapify-key" class="setting-select" placeholder="أدخل مفتاح API هنا" style="min-width: 200px; direction: ltr; text-align: left;"></div>
                                 <div class="manual-adjustments"><h3>تعديل المواقيت يدوياً (بالدقائق)</h3><div id="adjust-list"></div></div>
                                 <div class="setting-row" style="background:transparent;border:1px dashed rgba(255,255,255,0.1);padding:15px;margin-top:10px;"><div style="display:flex;gap:10px;width:100%;justify-content:center;"><button type="button" class="file-btn" id="btn-export-txt">⬇ تصدير الإعدادات (TXT)</button><label class="file-btn" style="margin:0;">⬆ استيراد الإعدادات (TXT)<input type="file" id="btn-import-txt" accept=".txt" style="display:none;"></label></div></div>
@@ -3014,7 +3014,7 @@
             countryId:'morocco', cityId:'oujda', method:'Morocco', asr:'Shafi', clockFormat:24, gmtOffset:1, clockTz:'auto',
             adhanEnabled:true, adhanVoice:'azan1', reminderEnabled:false, reminderMinutes:10,
             reminderText:true, reminderVoice:true, geoapifyKey: '',
-            globalOffset: -60,
+            globalOffset: 0,
             adjustments: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 }
         };
         
@@ -3027,6 +3027,8 @@
                 // attention : clockTz=0 est une valeur valide -> il faut tester la presence de la cle
                 if (!('clockTz' in parsed)) settings.clockTz = 'auto';
                 if(!settings.adjustments) settings.adjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
+                // ancienne valeur par defaut (-1h) : elle decalait tous les horaires -> retour a l'heure officielle
+                if (Number(settings.globalOffset) === -60) settings.globalOffset = 0;
             }
         } catch (e) { console.warn('localStorage blocked'); }
 
@@ -6444,6 +6446,29 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             'https://raw.githubusercontent.com/meypod/audio_files/main/adhan/masjid_an_nabawi.mp3'
         ];
 
+        function arabicMinutes(n) {
+            n = Math.max(0, Math.round(Number(n) || 0));
+            if (n === 0) return 'أقل من دقيقة';
+            if (n === 1) return 'دقيقة واحدة';
+            if (n === 2) return 'دقيقتان';
+            if (n >= 3 && n <= 10) return n + ' دقائق';
+            return n + ' دقيقة';
+        }
+        function prayerTargetDate(prayerKey) {
+            var now = new Date(), t = null, tm = null;
+            try { t = (typeof prayerTimesToday !== 'undefined' && prayerTimesToday) ? prayerTimesToday[prayerKey] : null; } catch (e) {}
+            try { tm = (typeof prayerTimesTomorrow !== 'undefined' && prayerTimesTomorrow) ? prayerTimesTomorrow[prayerKey] : null; } catch (e) {}
+            if (t && t > now) return t;
+            if (tm && tm > now) return tm;
+            return t || tm || null;
+        }
+        function minutesToPrayer(prayerKey) {
+            var target = prayerTargetDate(prayerKey);
+            if (!target) return null;
+            var ms = target.getTime() - Date.now();
+            if (ms <= 0) return 0;
+            return Math.max(0, Math.ceil(ms / 60000));
+        }
                 function showAlertOverlay(prayerKey, mode) {
             window._lastAlertPrayerKey = prayerKey;
             var overlay = document.getElementById('alert-overlay');
@@ -6455,7 +6480,14 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             var dateRow = document.getElementById('alert-date-row');
             var pname = (typeof PRAYER_NAMES !== 'undefined' && PRAYER_NAMES[prayerKey]) ? PRAYER_NAMES[prayerKey] : (prayerKey || '');
             var isNow = (mode === 'now' || mode === 'adhan' || mode === 'test');
-            if (nameEl) nameEl.textContent = isNow ? ('حان الآن موعد صلاة ' + pname) : ('تذكير قبل صلاة ' + pname);
+            var pTarget = null;
+            try { pTarget = (typeof prayerTimesToday !== 'undefined' && prayerTimesToday) ? prayerTimesToday[prayerKey] : null; } catch (e) {}
+            if (!pTarget) pTarget = prayerTargetDate(prayerKey);
+            var pTimeTxt = '';
+            try { if (pTarget && typeof formatTime === 'function') pTimeTxt = formatTime(pTarget); } catch (e) {}
+            var minsLeft = null;
+            if (pTarget && !isNow) { var _ms = pTarget.getTime() - Date.now(); minsLeft = _ms <= 0 ? 0 : Math.max(0, Math.ceil(_ms / 60000)); }
+            if (nameEl) nameEl.textContent = (isNow ? ('حان الآن موعد صلاة ' + pname) : ('تذكير قبل صلاة ' + pname)) + (pTimeTxt ? ' · ' + pTimeTxt : '');
             var locTxt = '', cityName = '';
             try {
                 var cdb = (typeof CITIES_DB !== 'undefined') ? CITIES_DB : null;
@@ -6466,7 +6498,14 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
                 if (!city && cdb) { var fk = Object.keys(cdb)[0]; city = cdb[fk]; }
                 if (city) { cityName = (city.nameAr || city.name || ''); locTxt = cityName; var cinfo = ctry && city.countryId && ctry[city.countryId] ? ctry[city.countryId] : null; if (cinfo && (cinfo.nameAr||cinfo.name)) locTxt += (locTxt ? '، ' : '') + (cinfo.nameAr||cinfo.name); }
             } catch(e){}
-            if (textEl) textEl.textContent = isNow ? ('حسب توقيت مدينة ' + (cityName || 'المدينة') + ' والنواحي.') : ('باقي ' + (typeof settings !== 'undefined' ? settings.reminderMinutes : 10) + ' دقائق قبل صلاة ' + pname + '.');
+            if (textEl) {
+                if (isNow) {
+                    textEl.textContent = 'حسب توقيت مدينة ' + (cityName || 'المدينة') + ' والنواحي.';
+                } else {
+                    var _m = (minsLeft === null ? (Number(settings.reminderMinutes) || 10) : minsLeft);
+                    textEl.textContent = 'باقي ' + arabicMinutes(_m) + ' قبل صلاة ' + pname + (pTimeTxt ? ' — ' + pTimeTxt : '') + '.';
+                }
+            }
             if (locEl) locEl.textContent = locTxt || 'موقعك الحالي';
             if (locRow) locRow.style.display = '';
             var dateTxt = '';
@@ -6480,13 +6519,41 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             if (dateEl) dateEl.textContent = dateTxt;
             if (dateRow) dateRow.style.display = dateTxt ? '' : 'none';
             if (overlay) overlay.classList.add('active');
+            window._alertMode = mode || 'reminder';
+        }
+        // met a jour un rappel deja affiche (evite un texte perime, ex. "10 دقائق" alors que la priere est arrivee)
+        function updateOpenAlert() {
+            var overlay = document.getElementById('alert-overlay');
+            if (!overlay || !overlay.classList.contains('active')) return;
+            if (window._alertMode && window._alertMode !== 'reminder') return;
+            var key = window._lastAlertPrayerKey; if (!key) return;
+            // toujours l'heure du jour affiche (pas celle de demain) : une fois depassee -> "حان الآن"
+            var target = null;
+            try { target = (typeof prayerTimesToday !== 'undefined' && prayerTimesToday) ? prayerTimesToday[key] : null; } catch (e) {}
+            if (!target) target = prayerTargetDate(key);
+            if (!target) return;
+            var pn = (typeof PRAYER_NAMES !== 'undefined' && PRAYER_NAMES[key]) ? PRAYER_NAMES[key] : key;
+            var tt = ''; try { if (typeof formatTime === 'function') tt = formatTime(target); } catch (e) {}
+            var msLeft = target.getTime() - Date.now();
+            var left = msLeft <= 0 ? 0 : Math.max(0, Math.ceil(msLeft / 60000));
+            var nameEl = document.getElementById('alert-prayer-name');
+            var textEl = document.getElementById('alert-text');
+            if (msLeft <= 0) {
+                if (nameEl) nameEl.textContent = 'حان الآن موعد صلاة ' + pn + (tt ? ' · ' + tt : '');
+                if (textEl && window._alertMode === 'reminder') textEl.textContent = 'حان الآن موعد صلاة ' + pn + (tt ? ' — ' + tt : '') + '.';
+            } else {
+                if (nameEl) nameEl.textContent = 'تذكير قبل صلاة ' + pn + (tt ? ' · ' + tt : '');
+                if (textEl) textEl.textContent = 'باقي ' + arabicMinutes(left) + ' قبل صلاة ' + pn + (tt ? ' — ' + tt : '') + '.';
+            }
         }
 function notifyPrayer(prayerKey, isTest) {
             try {
                 if (!('Notification' in window)) return;
                 if (Notification.permission === 'default' && settings.reminderEnabled) { Notification.requestPermission().then(() => {}).catch(() => {}); }
                 if (Notification.permission === 'granted') {
-                    var n = new Notification(`اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`, { body: `تبقى ${settings.reminderMinutes} دقائق لرفع أذان ${PRAYER_NAMES[prayerKey]} — ${isTest ? 'إشعار تجريبي' : 'تذكير'}`, tag: 'ya-mousahil-' + prayerKey + '-' + Date.now(), icon: 'Logo.png', badge: 'Logo.png' });
+                    var _mt = minutesToPrayer(prayerKey);
+                    var _mtxt = (isTest || _mt === null) ? ((Number(settings.reminderMinutes) || 10) + ' دقائق') : arabicMinutes(_mt);
+                    var n = new Notification(`اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`, { body: `يتبقى ${_mtxt} لصلاة ${PRAYER_NAMES[prayerKey]} — ${isTest ? 'إشعار تجريبي' : 'تذكير'}`, tag: 'ya-mousahil-' + prayerKey + '-' + Date.now(), icon: 'Logo.png', badge: 'Logo.png' });
                     n.onclick = () => { window.focus(); n.close(); };
                 }
             } catch (e) { console.warn('Desktop notification failed:', e); }
@@ -6648,7 +6715,7 @@ function notifyPrayer(prayerKey, isTest) {
                 if (settings.reminderEnabled) {
                     const reminderAt = target.getTime() - (Number(settings.reminderMinutes) || 10) * 60000;
                     const reminderKey = prayerAlertKey(target, key, 'reminder');
-                    if (now.getTime() >= reminderAt && now.getTime() < reminderAt + 60000 && !alertAlreadySent(reminderKey)) { markAlertSent(reminderKey); showAlertOverlay(key); notifyPrayer(key, false); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES[key]); else speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES[key]); } }
+                    if (now.getTime() >= reminderAt && now.getTime() < target.getTime() && !alertAlreadySent(reminderKey)) { markAlertSent(reminderKey); showAlertOverlay(key); notifyPrayer(key, false); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES[key]); else speakArabic('اقترب موعد صلاة ' + PRAYER_NAMES[key]); } }
                 }
                 if (settings.adhanEnabled) {
                     const adhanKey = prayerAlertKey(target, key, 'adhan');
@@ -7388,7 +7455,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         })();
         refreshPrayerData(); renderUI(); updateClocks();
         let prayerDateStamp = locationDate().toDateString();
-        setInterval(() => { const currentStamp = locationDate().toDateString(); if (currentStamp !== prayerDateStamp) { prayerDateStamp = currentStamp; refreshPrayerData(); renderUI(); } updateClocks(); runPrayerAlerts(); }, 1000);
+        setInterval(() => { const currentStamp = locationDate().toDateString(); if (currentStamp !== prayerDateStamp) { prayerDateStamp = currentStamp; refreshPrayerData(); renderUI(); } updateClocks(); runPrayerAlerts(); updateOpenAlert(); }, 1000);
 
         // ===== المصدر: مصحف ورش عن نافع (surahquran.com/warsh) =====
         const QURAN_WARSH_BASE = [
