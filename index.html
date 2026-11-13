@@ -404,7 +404,6 @@
         body.is-mobile .setting-title{width:100%;font-size:.9rem;}
         body.is-mobile .setting-select,.settings-container input.setting-select{width:100%;min-width:0 !important;max-width:100%;}
         body.is-mobile .toggle-group{flex-wrap:wrap;}
-        body.is-mobile #pane-live > div[style*="display:flex"]{flex-direction:column !important;}
         body.is-mobile .settings-header{padding:12px 16px;}
         body.is-mobile .settings-header h2{font-size:1.25rem;}
         body.is-mobile .modal-overlay{align-items:flex-start;padding:12px;}
@@ -2272,7 +2271,7 @@
                     </div>
                 </div>
                 <p style="display:none;text-align:center; font-size:0.7rem; color:var(--text-dim); padding:5px;">
-                    بيانات المساجد بواسطة <a href="https://geoapify.com" target="_blank" style="color:var(--gold);">Geoapify</a> / OpenStreetMap
+                    بيانات المساجد بواسطة OpenStreetMap
                 </p>
             </div>
 
@@ -2541,7 +2540,7 @@
             <!-- ================= SIHATAR (SANTE) SCREEN ================= -->
             <div id="sihatar-screen">
                 <header class="header-prayers">
-                    <button type="button" class="back-btn glass-btn" id="btn-back-from-sihatar">‹ الرئيسية</button>
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-sihatar">‹ القائمة</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">صحتي</h1>
                         <p>دليل الخدمات الصحية : صيدليات الحراسة، العيادات، مختبرات التحاليل، الأطباء وأسعار التحاليل</p>
@@ -2950,7 +2949,6 @@
                             <button type="button" class="nav-btn active" data-target="pane-prayer">مواقيت الصلاة</button>
                             <button type="button" class="nav-btn" data-target="pane-adhan">التنبيهات والأذان</button>
                             <button type="button" class="nav-btn" data-target="pane-display">العرض واللغة</button>
-                            <button type="button" class="nav-btn" data-target="pane-live">📺 بث مباشر</button>
                             <button type="button" class="nav-btn" data-target="pane-share">نشر البرنامج</button>
                             <button type="button" class="nav-btn" data-target="pane-about">حول التطبيق</button>
                         </div>
@@ -2961,7 +2959,6 @@
                                 <div class="setting-row"><div class="setting-title">طريقة الحساب</div><select id="set-method" class="setting-select"><option value="Egyptian">الهيئة المصرية</option><option value="Morocco">وزارة الأوقاف المغربية</option><option value="UmmAlQura">أم القرى</option></select></div>
                                 <div class="setting-row"><div class="setting-title">مذهب العصر</div><div class="toggle-group" id="set-asr"><button type="button" class="group-btn active" data-value="Shafi">الشافعي / المالكي</button><button type="button" class="group-btn" data-value="Hanafi">الحنفي</button></div></div>
                                 <div class="setting-row"><div class="setting-title">تعديل التوقيت العام</div><select id="set-global-offset" class="setting-select"><option value="0" selected>بدون تعديل</option><option value="60">+1 ساعة</option><option value="-60">-1 ساعة</option><option value="30">+30 دقيقة</option><option value="-30">-30 دقيقة</option></select></div>
-                                <div class="setting-row"><div class="setting-title">مفتاح Geoapify (للمساجد)</div><input type="text" id="set-geoapify-key" class="setting-select" placeholder="أدخل مفتاح API هنا" style="min-width: 200px; direction: ltr; text-align: left;"></div>
                                 <div class="manual-adjustments"><h3>تعديل المواقيت يدوياً (بالدقائق)</h3><div id="adjust-list"></div></div>
                                 <div class="setting-row" style="background:transparent;border:1px dashed rgba(255,255,255,0.1);padding:15px;margin-top:10px;"><div style="display:flex;gap:10px;width:100%;justify-content:center;"><button type="button" class="file-btn" id="btn-export-txt">⬇ تصدير الإعدادات (TXT)</button><label class="file-btn" style="margin:0;">⬆ استيراد الإعدادات (TXT)<input type="file" id="btn-import-txt" accept=".txt" style="display:none;"></label></div></div>
                             </div>
@@ -2979,16 +2976,6 @@
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
                             <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (توقيت الجهاز)</option>
                               <option value="ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div></div>
-                            <div class="settings-pane" id="pane-live">
-                                <h3 style="margin:0 0 4px;color:var(--gold);">📺 قنوات البث المباشر</h3>
-                                <p style="margin:0 0 10px;font-size:.8rem;color:var(--text-dim);">أضف/عدّل القنوات (الاسم + الرابط) — تظهر تلقائياً في صفحة بث مباشر.</p>
-                                <div style="display:flex;gap:8px;margin-bottom:10px;">
-                                    <input type="text" id="live-new-name" placeholder="اسم القناة" style="flex:1;background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-main);border-radius:8px;padding:8px 10px;font-family:var(--font);">
-                                    <input type="text" id="live-new-url" placeholder="رابط البث (m3u8 / embed / صفحة)" dir="ltr" style="flex:2;background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-main);border-radius:8px;padding:8px 10px;font-family:var(--font);text-align:left;">
-                                    <button type="button" class="file-btn" id="btn-live-add" style="border:1px solid var(--gold);color:var(--gold);font-weight:bold;">➕ إضافة</button>
-                                </div>
-                                <div id="live-admin-list" style="display:flex;flex-direction:column;gap:6px;"></div>
-                            </div>
                             <div class="settings-pane" id="pane-share">
                                 <div class="about-content share-content">
                                     <div class="share-logo-wrap">
@@ -3144,7 +3131,7 @@
         let settings = {
             countryId:'morocco', cityId:'oujda', method:'Morocco', asr:'Shafi', clockFormat:24, gmtOffset:1, clockTz:'auto',
             adhanEnabled:true, adhanVoice:'azan1', reminderEnabled:false, reminderMinutes:10,
-            reminderText:true, reminderVoice:true, geoapifyKey: '',
+            reminderText:true, reminderVoice:true,
             globalOffset: 0,
             adjustments: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 }
         };
@@ -4769,27 +4756,7 @@ var gender = 'male';
 
             let mosques = [];
 
-            // 1. Essayer Geoapify si une clé est configurée
-            if (settings.geoapifyKey) {
-                const gc = new AbortController(); const gt = setTimeout(() => gc.abort(), 12000);
-                try {
-                    const url = `https://api.geoapify.com/v2/places?categories=religion.mosque&filter=circle:${lon},${lat},${mosqueRadiusKm * 1000}&limit=50&apiKey=${settings.geoapifyKey}`;
-                    const res = await fetch(url, { signal: gc.signal });
-                    clearTimeout(gt);
-                    const data = await res.json();
-                    if (data.features) {
-                        mosques = data.features.map(f => ({
-                            name: f.properties.name || 'مسجد غير مسمى',
-                            address: f.properties.address_line1 || 'العنوان غير متوفر',
-                            distanceNum: f.properties.distance / 1000,
-                            lat: f.geometry.coordinates[1],
-                            lon: f.geometry.coordinates[0]
-                        }));
-                    }
-                } catch (e) { clearTimeout(gt); console.warn('Geoapify failed', e); }
-            }
-
-            // 2. Overpass + Nominatim en parallèle (7s max chacun)
+            // Overpass + Nominatim en parallèle (7s max chacun)
             let networkFailed = false;
             if (mosques.length === 0) {
                 const [elements, nList] = await Promise.all([fetchOverpassMosques(lat, lon), fetchNominatimMosques(lat, lon)]);
@@ -6630,7 +6597,6 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             document.getElementById('set-city').value = settings.cityId;
             document.getElementById('set-method').value = settings.method;
             document.getElementById('set-global-offset').value = settings.globalOffset || 0;
-            document.getElementById('set-geoapify-key').value = settings.geoapifyKey || '';
             document.getElementById('set-adhan-toggle').checked = !!settings.adhanEnabled;
             document.getElementById('set-adhan-voice').value = settings.adhanVoice || 'azan1';
             document.getElementById('set-reminder-toggle').checked = !!settings.reminderEnabled;
@@ -6671,7 +6637,6 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
                 document.querySelectorAll('.settings-pane').forEach(p => p.classList.remove('active'));
                 btn.classList.add('active');
                 document.getElementById(btn.dataset.target).classList.add('active');
-                if (btn.dataset.target === 'pane-live') { try { renderLiveAdmin(); } catch (e) {} }
             });
         });
 
@@ -6680,7 +6645,6 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             settings.cityId = document.getElementById('set-city').value;
             settings.method = document.getElementById('set-method').value;
             settings.globalOffset = parseInt(document.getElementById('set-global-offset').value) || 0;
-            settings.geoapifyKey = document.getElementById('set-geoapify-key').value.trim();
             settings.adhanEnabled = document.getElementById('set-adhan-toggle').checked;
             settings.adhanVoice = document.getElementById('set-adhan-voice').value;
             settings.reminderEnabled = document.getElementById('set-reminder-toggle').checked;
@@ -6694,7 +6658,7 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             settings.gmtOffset = (settings.clockTz === 'auto') ? Math.round(deviceOffsetMinutes(new Date()) / 60) : (settings.clockTz === 'ma' ? Math.round(moroccoOffsetMinutes(new Date()) / 60) : settings.clockTz);
             clockTzPreview = null;
             try { localStorage.setItem('YaMousahil_settings', JSON.stringify(settings)); } catch (e) {}
-            if ((settings.reminderText || settings.reminderVoice) && settings.reminderEnabled && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
+            if ((settings.reminderEnabled || settings.adhanEnabled) && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
             document.getElementById('settings-modal').classList.remove('active');
             try { renderLiveMenu(); } catch (e) {}
             refreshPrayerData(); renderUI(); updateClocks();
@@ -6812,17 +6776,45 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
                 if (textEl) textEl.textContent = 'باقي ' + arabicMinutes(left) + ' قبل صلاة ' + pn + (tt ? ' — ' + tt : '') + '.';
             }
         }
-function notifyPrayer(prayerKey, isTest) {
+function notifyPrayer(prayerKey, isTest, mode) {
             try {
                 if (!('Notification' in window)) return;
-                if (Notification.permission === 'default' && settings.reminderEnabled) { Notification.requestPermission().then(() => {}).catch(() => {}); }
-                if (Notification.permission === 'granted') {
-                    var _mt = minutesToPrayer(prayerKey);
+                var isAdhan = (mode === 'adhan' || mode === 'now');
+                if (Notification.permission === 'default' && (settings.reminderEnabled || settings.adhanEnabled)) { Notification.requestPermission().catch(function(){}); }
+                if (Notification.permission !== 'granted') return;
+                var pname = (PRAYER_NAMES && PRAYER_NAMES[prayerKey]) ? PRAYER_NAMES[prayerKey] : (prayerKey || '');
+                var title, body;
+                if (isAdhan) {
+                    title = 'حان الآن موعد صلاة ' + pname;
+                    body = isTest ? 'تنبيه تجريبي للأذان' : 'حان الآن موعد الصلاة';
+                } else {
+                    var _mt = (typeof minutesToPrayer === 'function') ? minutesToPrayer(prayerKey) : null;
                     var _mtxt = (isTest || _mt === null) ? ((Number(settings.reminderMinutes) || 10) + ' دقائق') : arabicMinutes(_mt);
-                    var n = new Notification(`اقترب موعد صلاة ${PRAYER_NAMES[prayerKey]}`, { body: `يتبقى ${_mtxt} لصلاة ${PRAYER_NAMES[prayerKey]} — ${isTest ? 'إشعار تجريبي' : 'تذكير'}`, tag: 'ya-mousahil-' + prayerKey + '-' + Date.now(), icon: 'Logo.png', badge: 'Logo.png' });
-                    n.onclick = () => { window.focus(); n.close(); };
+                    title = 'اقترب موعد صلاة ' + pname;
+                    body = 'يتبقى ' + _mtxt + ' لصلاة ' + pname + (isTest ? ' — إشعار تجريبي' : ' — تذكير');
                 }
-            } catch (e) { console.warn('Desktop notification failed:', e); }
+                var opts = {
+                    body: body,
+                    tag: 'ya-mousahil-' + (isAdhan ? 'adhan-' : 'reminder-') + (prayerKey || 'x'),
+                    icon: 'Logo.png',
+                    badge: 'Logo.png',
+                    renotify: true,
+                    requireInteraction: !!isAdhan,
+                    silent: false
+                };
+                try { if (navigator.vibrate) navigator.vibrate(isAdhan ? [400,150,400,150,600] : [250,100,250]); } catch(e){}
+                if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                    navigator.serviceWorker.ready.then(function(reg){
+                        if (reg && reg.showNotification) return reg.showNotification(title, opts);
+                        var n = new Notification(title, opts); n.onclick = function(){ try{window.focus();}catch(e){} n.close(); };
+                    }).catch(function(){
+                        try { var n = new Notification(title, opts); n.onclick = function(){ try{window.focus();}catch(e){} n.close(); }; } catch(e){}
+                    });
+                } else {
+                    var n = new Notification(title, opts);
+                    n.onclick = function(){ try{window.focus();}catch(e){} n.close(); };
+                }
+            } catch (e) { console.warn('Notification failed:', e); }
         }
         function showAdhanOverlay(prayerKey) { const overlay = document.getElementById('adhan-overlay'); document.getElementById('adhan-prayer-name').textContent = `صلاة ${PRAYER_NAMES[prayerKey]}`; overlay.classList.add('active'); }
         document.getElementById('btn-close-alert').onclick = () => { document.getElementById('alert-overlay').classList.remove('active'); if ('speechSynthesis' in window) window.speechSynthesis.cancel(); };
@@ -6849,6 +6841,7 @@ function notifyPrayer(prayerKey, isTest) {
             }
             if (played) {
                 if (!isTest) showAdhanOverlay(prayerKey);
+                try { if (prayerKey) notifyPrayer(prayerKey, isTest, 'adhan'); } catch (e) {}
                 status.textContent = isTest ? 'يتم تشغيل الأذان التجريبي.' : 'يتم تشغيل الأذان الآن.';
                 const tb = document.getElementById('btn-test-adhan');
                 if (tb && isTest) tb.textContent = '⏹ إيقاف الاختبار';
@@ -6897,6 +6890,15 @@ function notifyPrayer(prayerKey, isTest) {
                 return true;
             } catch (e3) { return false; }
         };
+        // Service Worker (notifications/alertes en arrière-plan quand possible)
+        (function registerYaSw(){
+            try {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('sw.js').catch(function(){});
+                }
+            } catch (e) {}
+        })();
+
         // "تحديث التطبيق" : purge des caches + rechargement forcé de la dernière version
         (function initAppUpdate(){            var btn = document.getElementById('btn-app-update');
             if (!btn) return;
@@ -7617,20 +7619,25 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
 
 
         document.getElementById('card-live').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderLiveMenu(); showScreen(liveScreen); var first = document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"assadissa\"]') || document.querySelector('#live-cat-list .adhkar-cat-item[data-live=\"haram\"]') || document.querySelector('#live-cat-list .adhkar-cat-item'); var fr = document.getElementById('live-iframe'); if (fr) fr.src = ''; selectLiveChannel(first); };
-        document.getElementById('btn-live-add').onclick = () => {
-            var name = document.getElementById('live-new-name').value.trim();
-            var rawUrl = document.getElementById('live-new-url').value.trim();
-            if (!name || !rawUrl) { alert('الرجاء إدخال اسم القناة والرابط'); return; }
-            var list = getLiveChannels();
-            var c = classifyLiveUrl(rawUrl);
-            list.push({ id: 'custom-' + Date.now(), name, icon: '📺', url: c.url, embed: c.embed, hls: c.hls, fallback: '' });
-            saveLiveChannels(list);
-            document.getElementById('live-new-name').value = '';
-            document.getElementById('live-new-url').value = '';
-            renderLiveAdmin(); renderLiveMenu();
-        };
-        document.getElementById('live-new-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-live-add').click(); } });
-        document.getElementById('live-new-url').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-live-add').click(); } });
+        var _btnLiveAdd = document.getElementById('btn-live-add');
+        if (_btnLiveAdd) {
+            _btnLiveAdd.onclick = () => {
+                var nameEl = document.getElementById('live-new-name');
+                var urlEl = document.getElementById('live-new-url');
+                var name = nameEl ? nameEl.value.trim() : '';
+                var rawUrl = urlEl ? urlEl.value.trim() : '';
+                if (!name || !rawUrl) { alert('الرجاء إدخال اسم القناة والرابط'); return; }
+                var list = getLiveChannels();
+                var c = classifyLiveUrl(rawUrl);
+                list.push({ id: 'ch' + Date.now(), name: name, icon: '📺', url: c.url, embed: c.embed, hls: c.hls, fallback: '' });
+                saveLiveChannels(list);
+                if (nameEl) nameEl.value = '';
+                if (urlEl) urlEl.value = '';
+                try { renderLiveAdmin(); } catch (e) {} try { renderLiveMenu(); } catch (e) {}
+            };
+            var _lnk = document.getElementById('live-new-name'); if (_lnk) _lnk.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); _btnLiveAdd.click(); } });
+            var _luk = document.getElementById('live-new-url'); if (_luk) _luk.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); _btnLiveAdd.click(); } });
+        }
         document.querySelectorAll('#live-cat-list .adhkar-cat-item').forEach(item => { item.onclick = () => selectLiveChannel(item); });
         document.getElementById('btn-back-from-live').onclick = () => { var fr = document.getElementById('live-iframe'); if (fr) fr.src = ''; stopLiveHls(); var lv = document.getElementById('live-video'); if (lv) { lv.pause(); try { lv.removeAttribute('src'); lv.load(); } catch (e) {} } showScreen(homeScreen); navHome.classList.add('active'); };
         function activatePane(name){
