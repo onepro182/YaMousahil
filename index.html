@@ -2092,7 +2092,6 @@
                                     </div>
                                     <section class="counter-area">
                                         <button type="button" class="tasbih-sound-btn" id="tasbih-sound-btn" aria-label="صوت العد" title="صوت العد">🔊</button>
-                                        <button type="button" class="tasbih-voice-btn" id="tasbih-voice-btn" aria-label="قراءة الذِّكر صوتياً" title="قراءة الذِّكر صوتياً">🗣️</button>
                                         <button type="button" class="tasbih-settings-quick" id="tasbih-settings-quick" aria-label="الإعدادات" title="الإعدادات"><span aria-hidden="true">⚙</span><span>الإعدادات</span></button>
                                         <div class="stage">
                                             <svg viewBox="0 0 120 120" role="img" aria-labelledby="svgTitle">
@@ -7464,7 +7463,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             }
             speakDhikrTTS(state.selected);
         }
-            function increment() { checkDay(); state.session++; state.total++; state.today++; history.push(state.day); render(); beep(); speakDhikr(); try { if (state.vibration && navigator.vibrate) navigator.vibrate(state.session % state.target === 0 ? [30,40,30] : 12); } catch (e) {} }
+            function increment() { checkDay(); state.session++; state.total++; state.today++; history.push(state.day); render(); beep(); try { if (state.vibration && navigator.vibrate) navigator.vibrate(state.session % state.target === 0 ? [30,40,30] : 12); } catch (e) {} }
             function stopAutomatic() { clearTimeout(autoTimer); autoTimer = null; running = false; updateAutoLabel(); }
             function scheduleAutomatic() { clearTimeout(autoTimer); if (!running) return; autoTimer = setTimeout(function () { autoTimer = null; if (!running || document.hidden || currentModal) { stopAutomatic(); return; } increment(); scheduleAutomatic(); }, state.delay * 1000); }
             function handleTap() { if (currentModal || document.hidden) return; if (!state.auto) increment(); else if (running) stopAutomatic(); else { running = true; increment(); scheduleAutomatic(); } }
