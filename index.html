@@ -178,7 +178,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -825,6 +825,35 @@
         .sihatar-mcount{
             flex:none;min-width:34px;height:26px;padding:0 8px;border-radius:13px;display:flex;align-items:center;justify-content:center;
             background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.35);color:var(--gold);font-size:.78rem;font-weight:700;
+        }
+        /* menu القرآن الكريم : texte en blanc */
+        #quran-menus .sihatar-mtxt b{color:#ffffff;}
+        #quran-menus .sihatar-mtxt i{color:#ffffff;}
+        #quran-menus .sihatar-mcount{color:#ffffff;}
+        /* ===== المصحف المعلم ===== */
+        #muallim-screen{overflow:hidden;}
+        #muallim-screen .mm-wrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;padding:0 2px 8px;width:100%;}
+        #muallim-screen .mm-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:14px;background:rgba(12,46,34,.55);border:1px solid rgba(212,175,55,.28);}
+        #muallim-screen .mm-top label{display:flex;align-items:center;gap:7px;color:#fff;font-size:.82rem;font-weight:700;white-space:nowrap;}
+        #muallim-screen .mm-top select{min-height:34px;max-width:210px;border:1px solid var(--glass-border);border-radius:10px;background:#0a2419;color:#f4ecd8;font-family:var(--font-quran);font-size:.85rem;padding:5px 8px;cursor:pointer;}
+        #muallim-screen .mm-reciter{color:#fff;font-size:.78rem;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);border-radius:999px;padding:5px 10px;white-space:nowrap;}
+        #muallim-screen .mm-now{margin-inline-start:auto;color:#fff;font-size:.8rem;font-weight:700;white-space:nowrap;}
+        #muallim-screen .mm-text{flex:1;min-height:0;overflow-y:auto;direction:rtl;text-align:justify;font-family:var(--font-quran);font-size:1.55rem;line-height:2.05;color:#f7f1df;background:linear-gradient(180deg,rgba(10,40,28,.92),rgba(4,20,13,.96));border:1px solid rgba(212,175,55,.3);border-radius:16px;padding:18px 20px;scroll-behavior:smooth;}
+        #muallim-screen .mm-ayah{border-radius:8px;padding:2px 4px;transition:background .2s ease,box-shadow .2s ease;cursor:pointer;}
+        #muallim-screen .mm-ayah:hover{background:rgba(244,208,63,.08);}
+        #muallim-screen .mm-ayah.is-playing{background:rgba(244,208,63,.22);box-shadow:inset 0 0 0 1px rgba(244,208,63,.55);color:#fff8dc;}
+        #muallim-screen .mm-num{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;margin:0 4px;border-radius:50%;border:1px solid rgba(212,175,55,.55);color:var(--gold);font-family:var(--font);font-size:.78rem;line-height:1;}
+        #muallim-screen .mm-bismillah{text-align:center;color:var(--gold);font-family:var(--font-quran);font-size:2rem;margin:0 0 14px;}
+        #muallim-screen .mm-loading,#muallim-screen .mm-error{display:flex;align-items:center;justify-content:center;height:100%;min-height:160px;color:var(--gold);font-family:var(--font-quran);font-size:1.3rem;text-align:center;}
+        #muallim-screen .mm-bar{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;}
+        #muallim-screen .mm-bar button{min-height:42px;padding:8px 18px;border:1px solid rgba(212,175,55,.5);border-radius:999px;background:rgba(255,255,255,.06);color:#fff;font-family:var(--font-quran);font-size:.95rem;cursor:pointer;}
+        #muallim-screen .mm-bar button:hover{filter:brightness(1.12);border-color:var(--gold);}
+        #muallim-screen #muallim-play{min-width:150px;background:linear-gradient(110deg,#0c2e22,#397766 65%,#d4af37);color:#fff;font-weight:700;}
+        @media (max-width:900px){
+            #muallim-screen .mm-top{gap:8px;padding:8px 10px;}
+            #muallim-screen .mm-top select{max-width:150px;font-size:.8rem;}
+            #muallim-screen .mm-now{width:100%;margin-inline-start:0;text-align:center;}
+            #muallim-screen .mm-text{font-size:1.25rem;line-height:1.95;padding:12px 14px;}
         }
         .sihatar-panel{display:flex;flex-direction:column;gap:12px;flex:1;min-width:0;}
         .sihatar-panel-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
@@ -2230,7 +2259,7 @@
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-quran-menu">‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">القرآن الكريم</h1>
-                        <p>كل ما يتعلق بالقرآن الكريم : المصحف المصور، مصحف التجويد برواية ورش، المصحف المحمدي، قراءة القرآن الكريم واستماع إليه</p>
+                        <p>كل ما يتعلق بالقرآن الكريم : مصحف التجويد برواية ورش، المصحف المحمدي، قراءة القرآن الكريم، المصحف المصور، استماع إلى القرآن الكريم، المصحف المعلم، ودعاء ختم القرآن</p>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
@@ -2282,7 +2311,7 @@
                                     <g stroke="#c0392b" stroke-width="1.6" stroke-linecap="round"><path d="M37 31h11"/><path d="M37 36h11"/><path d="M37 41h7"/></g>
                                     <path d="M45 12 l2.8 5.7 6.3 .9 -4.6 4.4 1.1 6.3 -5.6 -3 -5.6 3 1.1 -6.3 -4.6 -4.4 6.3 -.9 z" fill="url(#qmD3)"/>
                                 </svg></span>
-                            <span class="sihatar-mtxt"><b>قراءة القرآن الكريم</b><i>Lecture du Coran</i></span>
+                            <span class="sihatar-mtxt"><b>قراءة القرآن الكريم</b></span>
                             <span class="sihatar-mcount">▶</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="mushaf">
@@ -2300,7 +2329,7 @@
                                     <path d="M18 34 l3.2 3.2 L28 27" fill="none" stroke="#0b132b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                                     <g stroke="#8a97a8" stroke-width="1.3" stroke-linecap="round"><path d="M37 29h10"/><path d="M37 34h10"/><path d="M37 39h7"/><path d="M16 41h12"/></g>
                                 </svg></span>
-                            <span class="sihatar-mtxt"><b>المصحف المصور</b><i>Mushaf illustré</i></span>
+                            <span class="sihatar-mtxt"><b>المصحف المصور</b></span>
                             <span class="sihatar-mcount">📖</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="play">
@@ -2319,8 +2348,27 @@
                                     <circle cx="16.5" cy="43" r="3" fill="#f2f5ff" opacity=".6"/>
                                     <circle cx="47.5" cy="43" r="3" fill="#f2f5ff" opacity=".6"/>
                                 </svg></span>
-                            <span class="sihatar-mtxt"><b>استماع إلى القرآن الكريم</b><i>Écoute du Coran</i></span>
+                            <span class="sihatar-mtxt"><b>استماع إلى القرآن الكريم</b></span>
                             <span class="sihatar-mcount">▶</span>
+                        </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="muallim">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="المصحف المعلم">
+                                    <defs>
+                                        <linearGradient id="qmU1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#e0b451"/><stop offset="0.5" stop-color="#a4761c"/><stop offset="1" stop-color="#5a3f08"/></linearGradient>
+                                        <linearGradient id="qmU2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efe5cb"/></linearGradient>
+                                        <linearGradient id="qmU3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fc2a0"/><stop offset="1" stop-color="#0e7460"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmU1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 24 C27 20 20 19 12 20 v24 c8 -1 15 0 20 4 c5 -4 12 -5 20 -4 V20 c-8 -1 -15 0 -20 4 z" fill="url(#qmU2)" stroke="#c9b98a" stroke-width="1"/>
+                                    <path d="M32 24 v24" stroke="#a8862c" stroke-width="1.1"/>
+                                    <g stroke="#8a97a8" stroke-width="1.3" stroke-linecap="round"><path d="M16 27h11"/><path d="M16 32h11"/><path d="M16 37h8"/></g>
+                                    <circle cx="43" cy="31" r="8" fill="url(#qmU3)"/>
+                                    <path d="M40.6 26.8 L48 31 L40.6 35.2 Z" fill="#ffffff"/>
+                                    <g fill="none" stroke="#7a5a12" stroke-width="1.7" stroke-linecap="round"><path d="M35.5 43.5 a7.5 7.5 0 1 0 2.2 -2.2"/><path d="M37.7 41.3 l0.3 4.3 4.2 -0.9"/></g>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>المصحف المعلم</b></span>
+                            <span class="sihatar-mcount">🎧</span>
                         </button>
                         <button type="button" class="sihatar-menu glass-btn" data-q="dua">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="دعاء ختم القرآن">
@@ -2340,6 +2388,39 @@
                             <span class="sihatar-mcount">🤲</span>
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- ================= MUALLIM (المصحف المعلم) SCREEN ================= -->
+            <div id="muallim-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-muallim" data-qm-back>‹ العودة</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">المصحف المعلم</h1>
+                        <p>استمع لكل آية بصوت الشيخ محمود خليل الحصري — مع تكرار الآية</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="mm-wrap">
+                    <div class="mm-top">
+                        <label>السورة <select id="muallim-surah" aria-label="اختيار السورة"></select></label>
+                        <label>التكرار <select id="muallim-repeat" aria-label="عدد مرات تكرار الآية">
+                            <option value="1">مرة واحدة</option>
+                            <option value="2">مرتان</option>
+                            <option value="3" selected>3 مرات</option>
+                            <option value="5">5 مرات</option>
+                            <option value="0">بدون توقف</option>
+                        </select></label>
+                        <span class="mm-reciter">🎙️ الحصري — المصحف المعلم</span>
+                        <span class="mm-now" id="muallim-now">الآية 1</span>
+                    </div>
+                    <div class="mm-text" id="muallim-text"><div class="mm-loading">جاري التحميل...</div></div>
+                    <div class="mm-bar">
+                        <button type="button" id="muallim-prev">⏮ السابقة</button>
+                        <button type="button" id="muallim-play">▶ استماع</button>
+                        <button type="button" id="muallim-next">التالية ⏭</button>
+                    </div>
+                    <audio id="muallim-audio" preload="none"></audio>
                 </div>
             </div>
 
@@ -6015,7 +6096,8 @@ var gender = 'male';
         }
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; if (screenToShow === homeScreen && typeof window.checkFridayKahf === 'function') setTimeout(window.checkFridayKahf, 400); prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
+        function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; if (screenToShow === homeScreen && typeof window.checkFridayKahf === 'function') setTimeout(window.checkFridayKahf, 400); prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof muallimScreen!=='undefined' && muallimScreen) muallimScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); if (screenToShow !== muallimScreen && typeof window._muallimStop === 'function') { try { window._muallimStop(); } catch (e) {} }
+        screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
         try { [].slice.call(document.querySelectorAll('[id$="-screen"]')).forEach(function (el) { if (el !== screenToShow) el.style.display = 'none'; }); } catch (e) {} }
 
 
@@ -6276,7 +6358,7 @@ window._qmMenuShow = function () {
     if (typeof navHome !== 'undefined' && navHome) navHome.classList.remove('active');
 };
 window._qmSyncLabels = function () {
-    var defs = { 'btn-back-from-islamiyat': '‹ العودة', 'btn-back-from-muhammadi': '‹ الرئيسية', 'btn-back-from-mushaf': '‹ الرئيسية', 'tajweed-back': '‹ العودة', 'btn-back-from-quranradio': '‹ الرئيسية' };
+    var defs = { 'btn-back-from-islamiyat': '‹ العودة', 'btn-back-from-muhammadi': '‹ الرئيسية', 'btn-back-from-mushaf': '‹ الرئيسية', 'tajweed-back': '‹ العودة', 'btn-back-from-quranradio': '‹ الرئيسية', 'btn-back-from-muallim': '‹ العودة' };
     for (var id in defs) {
         var b = document.getElementById(id);
         if (b) b.textContent = window._qmFromMenu ? '‹ العودة' : defs[id];
@@ -6292,6 +6374,102 @@ document.addEventListener('click', function (e) {
     window._qmMenuShow();
 }, true);
 
+
+
+// ===== المصحف المعلم (Al-Muallim - Husary) =====
+var muallimScreen = document.getElementById('muallim-screen');
+(function () {
+    var _init = false, _s = 1, _ayahs = [], _idx = 0, _playing = false, _rep = 0;
+    function $id(id){ return document.getElementById(id); }
+    function pad3(n){ n = +n; return (n<10?'00':n<100?'0':'') + n; }
+    function audioUrl(s,a){ return 'https://everyayah.com/data/Husary_Muallim_128kbps/' + pad3(s) + pad3(a) + '.mp3'; }
+    function names(){ try { return (typeof SURAH_NAMES !== 'undefined' && SURAH_NAMES) ? SURAH_NAMES : []; } catch(e){ return []; } }
+    function repeatVal(){ var v = parseInt(($id('muallim-repeat')||{}).value, 10); return isNaN(v) ? 3 : v; }
+    function highlight(i, scroll){
+        var spans = document.querySelectorAll('#muallim-text .mm-ayah');
+        for (var k=0;k<spans.length;k++) spans[k].classList.toggle('is-playing', k === i);
+        var cur = spans[i];
+        var now = $id('muallim-now');
+        if (cur) { if (now) now.textContent = 'الآية ' + (cur.getAttribute('data-ayah') || (i+1)) + ' / ' + spans.length; if (scroll) try { cur.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e){} }
+    }
+    function updatePlayBtn(){ var b = $id('muallim-play'); if (!b) return; b.textContent = _playing ? '⏸ إيقاف مؤقت' : (_idx > 0 || _rep > 0 ? '▶ متابعة' : '▶ استماع'); }
+    function stopAudio(){ var a = $id('muallim-audio'); if (a){ try { a.pause(); a.currentTime = 0; } catch(e){} } _playing = false; updatePlayBtn(); }
+    function playIdx(i){
+        if (i < 0 || i >= _ayahs.length) { stopAudio(); highlight(Math.max(0,_ayahs.length-1), false); if ($id('muallim-now')) $id('muallim-now').textContent = 'تم — ' + _ayahs.length + ' آية'; return; }
+        _idx = i; _rep = 0; highlight(i, true); playCurrent();
+    }
+    function playCurrent(){
+        var a = $id('muallim-audio'); var ay = _ayahs[_idx]; if (!a || !ay) { stopAudio(); return; }
+        _playing = true; updatePlayBtn();
+        a.src = audioUrl(_s, ay.numberInSurah);
+        var pr = a.play();
+        if (pr && pr.catch) pr.catch(function(){ _playing = false; updatePlayBtn(); var box = $id('muallim-text'); if (box) { var e = box.querySelector('.mm-error'); if (!e) { e = document.createElement('div'); e.className = 'mm-error'; box.insertBefore(e, box.firstChild); } e.textContent = 'تعذّر تشغيل الصوت (تحقق من الاتصال بالإنترنت)'; } });
+    }
+    function render(){
+        var box = $id('muallim-text'); if (!box) return;
+        var html = '';
+        if (_s !== 1 && _s !== 9) html += '<div class="mm-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>';
+        for (var i=0;i<_ayahs.length;i++){
+            var a = _ayahs[i];
+            html += '<span class="mm-ayah" data-i="' + i + '" data-ayah="' + a.numberInSurah + '">' + a.text + ' <span class="mm-num">' + a.numberInSurah + '</span></span> ';
+        }
+        box.innerHTML = html;
+        highlight(Math.min(_idx, Math.max(0,_ayahs.length-1)), false);
+    }
+    function loadSurah(n){
+        n = parseInt(n, 10) || 1; _s = n; _idx = 0; _rep = 0; stopAudio();
+        var box = $id('muallim-text'); if (box) box.innerHTML = '<div class="mm-loading">جاري تحميل السورة...</div>';
+        var now = $id('muallim-now'); if (now) now.textContent = 'جاري التحميل...';
+        fetch('https://api.alquran.cloud/v1/surah/' + n + '/quran-uthmani')
+            .then(function(r){ return r.json(); })
+            .then(function(data){
+                if (!data || data.code !== 200 || !data.data || !data.data.ayahs) throw new Error('bad');
+                _ayahs = data.data.ayahs.map(function(a){ return { numberInSurah: a.numberInSurah, text: a.text }; });
+                render();
+            })
+            .catch(function(){ if (box) box.innerHTML = '<div class="mm-error">تعذّر تحميل السورة. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.</div>'; if (now) now.textContent = ''; });
+    }
+    function init(){
+        if (_init) return; _init = true;
+        var sel = $id('muallim-surah');
+        if (sel && sel.options.length === 0){
+            var ns = names();
+            for (var i=0;i<114;i++){ var o = document.createElement('option'); o.value = String(i+1); o.textContent = (i+1) + '. ' + (ns[i] || ('سورة ' + (i+1))); sel.appendChild(o); }
+        }
+        var a = $id('muallim-audio');
+        if (a){
+            a.addEventListener('ended', function(){
+                var rv = repeatVal();
+                if (rv === 0) { _rep++; playCurrent(); return; }
+                _rep++;
+                if (_rep < rv) { playCurrent(); }
+                else { playIdx(_idx + 1); }
+            });
+            a.addEventListener('error', function(){ _playing = false; updatePlayBtn(); });
+        }
+        var playB = $id('muallim-play');
+        if (playB) playB.addEventListener('click', function(){
+            var a = $id('muallim-audio');
+            if (_playing && a && !a.paused) { try { a.pause(); } catch(e){} _playing = false; updatePlayBtn(); }
+            else if (_ayahs.length) { if (a && a.src && a.currentTime > 0 && !a.ended) { _playing = true; a.play().catch(function(){ _playing = false; updatePlayBtn(); }); updatePlayBtn(); } else { playIdx(_idx); } }
+            else { loadSurah(($id('muallim-surah')||{}).value || 1); }
+        });
+        var prev = $id('muallim-prev'); if (prev) prev.addEventListener('click', function(){ if (_ayahs.length) playIdx(Math.max(0, _idx - 1)); });
+        var next = $id('muallim-next'); if (next) next.addEventListener('click', function(){ if (_ayahs.length) playIdx(Math.min(_ayahs.length - 1, _idx + 1)); });
+        if (sel) sel.addEventListener('change', function(){ loadSurah(this.value); });
+        var box = $id('muallim-text');
+        if (box) box.addEventListener('click', function(ev){
+            var t = ev.target; while (t && t !== box && !(t.classList && t.classList.contains('mm-ayah'))) t = t.parentNode;
+            if (t && t.classList && t.classList.contains('mm-ayah')) { var i = parseInt(t.getAttribute('data-i'), 10); if (!isNaN(i)) playIdx(i); }
+        });
+        loadSurah(1);
+    }
+    window._muallimOpen = function(){
+        if (typeof muallimScreen !== 'undefined' && muallimScreen && typeof showScreen === 'function') showScreen(muallimScreen);
+        init();
+    };
+    window._muallimStop = function(){ stopAudio(); };
+})();
 // ===== القرآن الكريم : menu groupe (style صحتي) =====
 var quranMenuScreen = document.getElementById('quran-menu-screen');
 var tajweedScreen = document.getElementById('tajweed-screen');
@@ -6344,7 +6522,8 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
                 if (c) c.click();
                 return;
             }
-            if (k === 'fm6oa') { if (typeof window._mmOpen === 'function') window._mmOpen(); }
+            if (k === 'fm6oa') { if (typeof window._mmOpen === 'function') window._mmOpen(); return; }
+            if (k === 'muallim') { if (typeof window._muallimOpen === 'function') window._muallimOpen(); return; }
         };
     });
 })();
