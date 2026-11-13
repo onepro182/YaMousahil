@@ -214,7 +214,12 @@
         .live-countdown .live-cd-num{font-size:1.6rem;font-weight:800;letter-spacing:1px;text-shadow:0 0 12px rgba(212,175,55,0.4);}
         .adhkar-cat-item.live-empty{opacity:.55;}
         .adhkar-cat-item .live-empty-tag{margin-right:auto;background:rgba(255,255,255,0.12);border:1px solid var(--glass-border);border-radius:20px;padding:1px 8px;font-size:.7rem;color:var(--text-dim);}
-        @media (max-width: 900px){ .live-split-view{flex-direction:column;} .live-player-area{order:-1;} .adhkar-sidebar{width:100%;} .adhkar-cat-list{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;} .adhkar-cat-item{flex-shrink:0;} }
+        /* بث مباشر : boutons plus compacts */
+        #live-cat-list{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;padding:6px;}
+        #live-cat-list .adhkar-cat-item{padding:8px 6px;gap:5px;font-size:.75rem;border-radius:10px;}
+        #live-cat-list .adhkar-cat-item .cat-icon{width:34px;height:34px;font-size:1.25rem;border-radius:9px;}
+        #live-cat-list .adhkar-cat-item .live-empty-tag{padding:1px 6px;font-size:.62rem;}
+        @media (max-width: 900px){ .live-split-view{flex-direction:column;} .live-player-area{order:-1;} .adhkar-sidebar{width:100%;} .adhkar-cat-list{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;} .adhkar-cat-item{flex-shrink:0;} #live-cat-list{display:flex;gap:8px;} #live-cat-list .adhkar-cat-item{min-width:84px;padding:7px 6px;} }
         /* ===== Mobile (portrait) : mise en page empilée ===== */
         @media (max-width: 900px){
             body{height:auto;overflow-y:auto;}
@@ -353,11 +358,18 @@
         body.is-mobile .adhkar-split-view.show-text .adhkar-sidebar{display:none;}
         #adhkar-back-to-cats{display:none;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
         body.is-mobile .adhkar-split-view.show-text #adhkar-back-to-cats{display:inline-block;margin:6px auto 0;}
-        #wird-back-to-list{display:none;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:.85rem;font-weight:700;cursor:pointer;}
+        #wird-back-to-list{display:none;background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:5px 10px;font-family:var(--font-quran);font-size:.8rem;font-weight:700;cursor:pointer;}
+        #wird-choose-surah{background:rgba(212,175,55,0.12);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:8px;padding:5px 10px;font-family:var(--font-quran);font-size:.8rem;font-weight:700;cursor:pointer;display:inline-block;margin:6px auto 0;}
         body.is-mobile .wird-split-view:not(.show-text) .adhkar-text-area{display:none;}
         body.is-mobile .wird-split-view.show-text .adhkar-sidebar{display:none;}
-        body.is-mobile .wird-split-view.show-text #wird-back-to-list{display:inline-block;margin:6px auto 0;}
+        body.is-mobile .wird-split-view.show-text #wird-back-to-list{display:none;}
+        body.is-mobile .wird-split-view.show-text #wird-choose-surah{display:inline-block;}
+        body.is-mobile .wird-split-view:not(.show-text) #wird-choose-surah{display:none;}
         body.is-mobile #wird-show-info{display:inline-block !important;}
+        #wird-cat-list .wird-cat-item{padding:8px 6px;gap:6px;font-size:.8rem;border-radius:10px;}
+        #wird-cat-list .wird-cat-item .cat-icon{width:34px;height:34px;font-size:1.2rem;border-radius:9px;}
+        #wird-show-info{font-size:.8rem !important;padding:5px 10px !important;}
+        #btn-back-from-wird{padding:6px 10px;font-size:.85rem;}
         /* Mobile: lisibilité du contenu des adhkar */
         body.is-mobile .adhkar-text-header{padding:6px 8px 4px;}
         body.is-mobile .adhkar-text-header h1{font-size:1.5rem;margin:0;}
@@ -1704,7 +1716,37 @@
                                     <span class="app-name">الأذكار</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-tasbih">
-                                    <img class="app-icon" src="https://msbaha.com/wp-content/uploads/2020/11/main-logo.png" alt="مسبحة إلكترونية">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="المسبحة الإلكترونية">
+                                        <defs>
+                                            <linearGradient id="misbBg" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fc2a0"/><stop offset="0.5" stop-color="#0e7460"/><stop offset="1" stop-color="#053028"/></linearGradient>
+                                            <radialGradient id="misbBead" cx="30%" cy="28%" r="70%"><stop offset="0" stop-color="#fff3c4"/><stop offset="0.35" stop-color="#e7c76a"/><stop offset="1" stop-color="#8a6520"/></radialGradient>
+                                            <radialGradient id="misbBeadG" cx="30%" cy="28%" r="70%"><stop offset="0" stop-color="#d9fff0"/><stop offset="0.35" stop-color="#5fd3a5"/><stop offset="1" stop-color="#146348"/></radialGradient>
+                                            <linearGradient id="misbCord" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6d39a"/><stop offset="1" stop-color="#9a7a2e"/></linearGradient>
+                                        </defs>
+                                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#misbBg)"/>
+                                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                        <ellipse cx="32" cy="55" rx="14" ry="3.2" fill="#000" opacity=".18"/>
+                                        <path d="M32 11 C19 11 12 20 12 31 c0 8 5 14 12 16" fill="none" stroke="url(#misbCord)" stroke-width="2.2" stroke-linecap="round"/>
+                                        <path d="M32 11 C45 11 52 20 52 31 c0 8 -5 14 -12 16" fill="none" stroke="url(#misbCord)" stroke-width="2.2" stroke-linecap="round"/>
+                                        <g>
+                                            <circle cx="32" cy="12" r="4.6" fill="url(#misbBead)"/>
+                                            <circle cx="22" cy="14.5" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="15.5" cy="21.5" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="13.2" cy="31" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="16.5" cy="40" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="23.5" cy="46" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="42" cy="14.5" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="48.5" cy="21.5" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="50.8" cy="31" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="47.5" cy="40" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="40.5" cy="46" r="4.1" fill="url(#misbBeadG)"/>
+                                            <circle cx="32" cy="49.5" r="4.8" fill="url(#misbBead)"/>
+                                        </g>
+                                        <line x1="32" y1="49.5" x2="32" y2="58" stroke="url(#misbCord)" stroke-width="2.2" stroke-linecap="round"/>
+                                        <circle cx="32" cy="59.5" r="2.6" fill="url(#misbBead)"/>
+                                        <circle cx="30.6" cy="10.6" r="1.5" fill="#fff" opacity=".55"/>
+                                        <circle cx="30.8" cy="48.2" r="1.5" fill="#fff" opacity=".5"/>
+                                    </svg>
                                     <span class="app-name">المسبحة الإلكترونية</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-asma">
@@ -2844,6 +2886,7 @@
                         <div class="adhkar-text-area glass-btn">
                             <div class="adhkar-text-header">
                                 <button type="button" id="wird-back-to-list">☰ القائمة</button>
+                                <button type="button" id="wird-choose-surah">📖 اختر سورة</button>
                                 <h1 id="wird-text-title">ورد القرآن اليومي</h1>
                                 <div class="meta" id="wird-text-meta">اختر سورة من القائمة للقراءة</div>
                             </div>
@@ -4212,6 +4255,7 @@ var gender = 'male';
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
         var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
+        var _wirdChoose = document.getElementById('wird-choose-surah'); if (_wirdChoose) _wirdChoose.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); var list=document.getElementById('wird-cat-list'); if(list && list.scrollIntoView) try{ list.scrollIntoView({behavior:'smooth', block:'nearest'}); }catch(e){} };
 
         // ==================================================
         // حساب المواريث (مستوحى من إسلام ويب — حساب آلي، حالات غير معقدة)
@@ -5795,7 +5839,14 @@ var gender = 'male';
             } else { quranPlayer.src = url; quranPlayer.play().then(onSuccess).catch(onFailure); }
         }
         function toggleQuranPlayPause() { if (!currentQuranStation) return; if (quranPlaying) stopQuranPlayer(); else { quranUrlIndex = 0; tryNextQuranUrl(currentQuranStation); } }
-        function stopQuranPlayer() { if (quranHls) { quranHls.destroy(); quranHls = null; } quranPlayer.pause(); quranPlaying = false; document.getElementById('quran-now-playing-status').textContent = 'متوقف'; document.getElementById('quran-play-pause-btn').textContent = '▶ تشغيل'; }
+        function stopQuranPlayer() {
+            if (quranHls) { try { quranHls.destroy(); } catch (e) {} quranHls = null; }
+            try { quranPlayer.pause(); } catch (e) {}
+            try { quranPlayer.removeAttribute('src'); quranPlayer.load(); } catch (e) {}
+            quranPlaying = false;
+            var st = document.getElementById('quran-now-playing-status'); if (st) st.textContent = 'متوقف';
+            var pb = document.getElementById('quran-play-pause-btn'); if (pb) pb.textContent = '▶ تشغيل';
+        }
 
         // QURAN TEXT
         const SURAH_NAMES = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
@@ -6109,6 +6160,7 @@ var gender = 'male';
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
         function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; if (screenToShow === homeScreen && typeof window.checkFridayKahf === 'function') setTimeout(window.checkFridayKahf, 400); prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof muallimScreen!=='undefined' && muallimScreen) muallimScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); if (screenToShow !== muallimScreen && typeof window._muallimStop === 'function') { try { window._muallimStop(); } catch (e) {} }
+        if (screenToShow !== quranradioScreen && typeof stopQuranPlayer === 'function') { try { stopQuranPlayer(); } catch (e) {} }
         screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
         try { [].slice.call(document.querySelectorAll('[id$="-screen"]')).forEach(function (el) { if (el !== screenToShow) el.style.display = 'none'; }); } catch (e) {} }
 
@@ -6381,6 +6433,9 @@ document.addEventListener('click', function (e) {
     if (!t || !window._qmFromMenu) return;
     e.preventDefault();
     e.stopPropagation();
+    if (t.id === 'btn-back-from-quranradio' || (typeof quranradioScreen !== 'undefined' && quranradioScreen && quranradioScreen.style.display !== 'none')) {
+        try { if (typeof stopQuranPlayer === 'function') stopQuranPlayer(); } catch (err) {}
+    }
     window._qmFromMenu = false;
     window._qmSyncLabels();
     window._qmMenuShow();
