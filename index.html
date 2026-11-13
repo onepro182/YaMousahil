@@ -194,7 +194,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -889,6 +889,29 @@
         #quran-menus .sihatar-mtxt b{text-align:right;width:100%;}
         #quran-menus .sihatar-mico{width:52px;height:52px;}
         #quran-menus .sihatar-mico .sihatar-ico3d{width:44px;height:44px;}
+        /* ===== متتبع الحفظ (memorization tracker) ===== */
+        #memorization-screen{overflow:auto;}
+        .mem-stats{display:flex;gap:10px;flex-wrap:wrap;}
+        .mem-stat{flex:1;min-width:108px;text-align:center;border:1px solid rgba(212,175,55,.35);border-radius:14px;padding:10px 8px;background:rgba(12,46,34,.55);}
+        .mem-stat strong{display:block;font-size:1.6rem;color:var(--gold);font-family:var(--font-quran);line-height:1.2;}
+        .mem-stat span{font-size:.72rem;color:var(--text-dim);}
+        .mem-tools{display:flex;gap:10px;flex-wrap:wrap;}
+        .mem-search{flex:1;min-width:180px;padding:11px 14px;border-radius:12px;border:1px solid var(--glass-border);background:rgba(255,255,255,.06);color:var(--text-main);outline:none;font-family:var(--font);}
+        .mem-search:focus{border-color:var(--gold);}
+        .mem-reset{padding:11px 16px;border-radius:12px;border:1px solid rgba(212,175,55,.5);background:rgba(212,175,55,.12);color:var(--gold);cursor:pointer;font-family:var(--font);white-space:nowrap;}
+        .mem-reset:hover{background:rgba(212,175,55,.22);}
+        .memorization-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-content:start;}
+        @media (min-width:901px){ .memorization-grid{grid-template-columns:repeat(8,minmax(0,1fr));gap:12px;} }
+        .mem-card{border:1px solid var(--glass-border);border-radius:14px;background:var(--glass-bg);padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:border-color .2s,background .2s,transform .15s;font-family:var(--font);color:var(--text-main);text-align:center;}
+        .mem-card:hover{border-color:var(--gold);transform:translateY(-1px);}
+        .mem-card .mem-check{font-size:1.05rem;color:transparent;transition:color .2s;line-height:1;}
+        .mem-card .mem-num{font-size:.68rem;color:var(--text-dim);}
+        .mem-card .mem-name{font-family:var(--font-quran);font-size:.82rem;font-weight:700;line-height:1.35;}
+        .mem-card .mem-info{font-size:.64rem;color:var(--text-dim);}
+        .mem-card.memorized{border-color:#2fa37c;background:rgba(47,163,124,.18);}
+        .mem-card.memorized .mem-check{color:#2fa37c;}
+        .mem-source{color:var(--text-dim);font-size:.75rem;margin:0;text-align:center;}
+        .mem-loading{display:flex;align-items:center;justify-content:center;min-height:120px;color:var(--gold);grid-column:1/-1;}
         #sihatar-menus .sihatar-mtxt b{color:#ffffff;}
         #sihatar-menus .sihatar-mtxt i{color:#ffffff;}
         #sihatar-menus .sihatar-mcount{color:#ffffff;}
@@ -2351,11 +2374,12 @@
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-quran-menu">‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">القرآن الكريم</h1>
-                        <p>كل ما يتعلق بالقرآن الكريم : مصحف التجويد برواية ورش، المصحف المحمدي، قراءة القرآن الكريم، المصحف المصور، استماع إلى القرآن الكريم، المصحف المعلم، ودعاء ختم القرآن</p>
+                        <p>القرآن الكريم : تجربة متكاملة بين القراءة والتجويد والاستماع</p>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
                 <div class="sihatar-wrap">
+                    <div class="section-title" style="margin:2px 0 0;">أدوات</div>
                     <div class="sihatar-menus" id="quran-menus">
                         <button type="button" class="sihatar-menu glass-btn" data-q="tajweed">
                             <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="مصحف التجويد برواية ورش">
@@ -2479,6 +2503,19 @@
                             <span class="sihatar-mtxt"><b>دعاء ختم القرآن</b></span>
                             <span class="sihatar-mcount">🤲</span>
                         </button>
+                        <button type="button" class="sihatar-menu glass-btn" data-q="memorization">
+                            <span class="sihatar-mico"><svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="متتبع الحفظ">
+                                    <defs>
+                                        <linearGradient id="qmMem1" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#2fa37c"/><stop offset="0.5" stop-color="#0e5f45"/><stop offset="1" stop-color="#04291e"/></linearGradient>
+                                        <linearGradient id="qmMem2" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#fffdf5"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#qmMem1)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <path d="M32 13 L39.7 23.7 L52 24.6 L42 35 L45.8 47.8 L32 40.6 L18.2 47.8 L22 35 L12 24.6 L24.3 23.7 Z" fill="url(#qmMem2)" stroke="#8a6520" stroke-width="1.3" stroke-linejoin="round"/>
+                                </svg></span>
+                            <span class="sihatar-mtxt"><b>متتبع الحفظ</b></span>
+                            <span class="sihatar-mcount">📗</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2513,6 +2550,31 @@
                         <button type="button" id="muallim-next">التالية ⏭</button>
                     </div>
                     <audio id="muallim-audio" preload="none"></audio>
+                </div>
+            </div>
+
+            <!-- ================= MEMORIZATION TRACKER (متتبع الحفظ) SCREEN ================= -->
+            <div id="memorization-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-memorization">‹ القرآن الكريم</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">متتبع الحفظ</h1>
+                        <p>تتبع حفظ القرآن الكريم — يُحفظ تقدمك بخصوصية على هذا الجهاز</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+                <div class="sihatar-wrap mem-wrap">
+                    <div class="mem-stats">
+                        <div class="mem-stat"><strong id="mem-progress">0%</strong><span>تقدمك</span></div>
+                        <div class="mem-stat"><strong id="mem-memorized">0</strong><span>السور المحفوظة</span></div>
+                        <div class="mem-stat"><strong id="mem-remaining">114</strong><span>السور المتبقية</span></div>
+                    </div>
+                    <div class="mem-tools">
+                        <input type="search" id="mem-search" class="mem-search" placeholder="ابحث عن سورة…" aria-label="ابحث عن سورة">
+                        <button type="button" class="mem-reset" id="mem-reset">إعادة تعيين التقدم</button>
+                    </div>
+                    <div class="memorization-grid" id="memorization-grid"></div>
+                    <p class="mem-source">الفكرة مستوحاة من <a href="https://qurancentral.net/ar/more-pages/memorization-and-tajweed.html" target="_blank" rel="noopener" style="color:var(--gold);">متتبع الحفظ — قرآن سنترال</a></p>
                 </div>
             </div>
 
@@ -6580,6 +6642,7 @@ var muallimScreen = document.getElementById('muallim-screen');
 var quranMenuScreen = document.getElementById('quran-menu-screen');
 var tajweedScreen = document.getElementById('tajweed-screen');
 var duaKhatmScreen = document.getElementById('dua-khatm-screen');
+var memorizationScreen = document.getElementById('memorization-screen');
 (function () {
     var card = document.getElementById('card-quran-menu');
     if (card && quranMenuScreen) {
@@ -6596,6 +6659,84 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
         var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen');
         if (hs && typeof showScreen === 'function') showScreen(hs);
         if (typeof navHome !== 'undefined' && navHome) navHome.classList.add('active');
+    };
+    // ===== متتبع الحفظ (memorization tracker) =====
+    var MEM_KEY = 'YaMousahil_memorized';
+    var memSurahs = null;
+    function memLoadState() { try { return JSON.parse(localStorage.getItem(MEM_KEY) || '{}'); } catch (e) { return {}; } }
+    function memSaveState(s) { try { localStorage.setItem(MEM_KEY, JSON.stringify(s)); } catch (e) {} }
+    function memRenderProgress() {
+        var grid = document.getElementById('memorization-grid'); if (!grid) return;
+        var total = grid.querySelectorAll('.mem-card').length;
+        var memorized = grid.querySelectorAll('.mem-card.memorized').length;
+        var pct = total ? Math.round(memorized / total * 100) : 0;
+        var ep = document.getElementById('mem-progress'); if (ep) ep.textContent = pct + '%';
+        var em = document.getElementById('mem-memorized'); if (em) em.textContent = String(memorized);
+        var er = document.getElementById('mem-remaining'); if (er) er.textContent = String(Math.max(0, total - memorized));
+    }
+    function memApplyFilter() {
+        var grid = document.getElementById('memorization-grid'); if (!grid) return;
+        var search = document.getElementById('mem-search');
+        var q = search ? String(search.value || '').trim() : '';
+        Array.prototype.forEach.call(grid.querySelectorAll('.mem-card'), function (c) {
+            var nameEl = c.querySelector('.mem-name'); var name = nameEl ? nameEl.textContent : '';
+            var num = c.getAttribute('data-n') || '';
+            var ok = !q || name.indexOf(q) >= 0 || num === q;
+            c.style.display = ok ? '' : 'none';
+        });
+    }
+    function memBuildGrid() {
+        var grid = document.getElementById('memorization-grid'); if (!grid || !memSurahs) return;
+        var st = memLoadState();
+        grid.innerHTML = '';
+        var frag = document.createDocumentFragment();
+        memSurahs.forEach(function (s) {
+            var n = String(s.n);
+            var saved = !!st[n];
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'mem-card' + (saved ? ' memorized' : '');
+            btn.setAttribute('data-n', n);
+            btn.setAttribute('aria-pressed', String(saved));
+            btn.setAttribute('aria-label', 'سورة ' + s.name);
+            btn.innerHTML = '<span class="mem-check">✓</span><span class="mem-num">' + n + '</span><span class="mem-name">' + s.name + '</span><span class="mem-info">' + (s.type || '') + ' · ' + (s.count || 0) + ' آيات</span>';
+            btn.addEventListener('click', function () {
+                var st2 = memLoadState();
+                if (st2[n]) delete st2[n]; else st2[n] = 1;
+                memSaveState(st2);
+                btn.classList.toggle('memorized', !!st2[n]);
+                btn.setAttribute('aria-pressed', String(!!st2[n]));
+                memRenderProgress();
+            });
+            frag.appendChild(btn);
+        });
+        grid.appendChild(frag);
+        var search = document.getElementById('mem-search');
+        if (search) search.oninput = memApplyFilter;
+        var reset = document.getElementById('mem-reset');
+        if (reset) reset.onclick = function () {
+            if (!window.confirm('إعادة تعيين التقدم؟')) return;
+            memSaveState({});
+            Array.prototype.forEach.call(grid.querySelectorAll('.mem-card'), function (c) { c.classList.remove('memorized'); c.setAttribute('aria-pressed', 'false'); });
+            memRenderProgress();
+        };
+        memRenderProgress();
+    }
+    function initMemorization() {
+        var grid = document.getElementById('memorization-grid'); if (!grid) return;
+        if (grid.querySelector('.mem-card')) { memRenderProgress(); return; }
+        if (memSurahs) { memBuildGrid(); return; }
+        grid.innerHTML = '<div class="mem-loading">جاري التحميل…</div>';
+        fetch('assets/data/quran-index.json').then(function (r) { return r.json(); }).then(function (j) {
+            memSurahs = (j && j.surahs) ? j.surahs : [];
+            memBuildGrid();
+        }).catch(function () {
+            grid.innerHTML = '<div class="mem-loading">تعذر تحميل فهرس السور — حاول مرة أخرى</div>';
+        });
+    }
+    var memBack = document.getElementById('btn-back-from-memorization');
+    if (memBack) memBack.onclick = function () {
+        if (typeof showScreen === 'function') showScreen(quranMenuScreen);
     };
     // ouverture d'un lien externe (nouvel onglet si possible, sinon dans la page)
     function ymOpenExternal(url) {
@@ -6620,6 +6761,11 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             if (k === 'dua') {
                 var ds = document.getElementById('dua-khatm-screen');
                 if (ds && typeof showScreen === 'function') showScreen(ds);
+                return;
+            }
+            if (k === 'memorization') {
+                try { initMemorization(); } catch (e) {}
+                if (typeof memorizationScreen !== 'undefined' && memorizationScreen && typeof showScreen === 'function') showScreen(memorizationScreen);
                 return;
             }
             var src = { mushaf: 'card-surah-kahf', tajweed: 'card-tajweed', read: 'card-quran-read' }[k];
