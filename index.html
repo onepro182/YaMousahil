@@ -900,14 +900,14 @@
         .mem-search:focus{border-color:var(--gold);}
         .mem-reset{padding:11px 16px;border-radius:12px;border:1px solid rgba(212,175,55,.5);background:rgba(212,175,55,.12);color:var(--gold);cursor:pointer;font-family:var(--font);white-space:nowrap;}
         .mem-reset:hover{background:rgba(212,175,55,.22);}
-        .memorization-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-content:start;}
-        @media (min-width:901px){ .memorization-grid{grid-template-columns:repeat(8,minmax(0,1fr));gap:12px;} }
-        .mem-card{border:1px solid var(--glass-border);border-radius:14px;background:var(--glass-bg);padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:border-color .2s,background .2s,transform .15s;font-family:var(--font);color:var(--text-main);text-align:center;}
+        .memorization-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-content:start;}
+        @media (min-width:901px){ .memorization-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;} }
+        .mem-card{border:1px solid var(--glass-border);border-radius:14px;background:var(--glass-bg);padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:border-color .2s,background .2s,transform .15s;font-family:var(--font);color:var(--text-main);text-align:center;}
         .mem-card:hover{border-color:var(--gold);transform:translateY(-1px);}
-        .mem-card .mem-check{font-size:1.05rem;color:transparent;transition:color .2s;line-height:1;}
-        .mem-card .mem-num{font-size:.68rem;color:var(--text-dim);}
-        .mem-card .mem-name{font-family:var(--font-quran);font-size:.82rem;font-weight:700;line-height:1.35;}
-        .mem-card .mem-info{font-size:.64rem;color:var(--text-dim);}
+        .mem-card .mem-check{font-size:1.35rem;color:transparent;transition:color .2s;line-height:1;}
+        .mem-card .mem-num{font-size:.8rem;color:var(--text-dim);}
+        .mem-card .mem-name{font-family:var(--font-quran);font-size:1rem;font-weight:700;line-height:1.4;}
+        .mem-card .mem-info{font-size:.72rem;color:var(--text-dim);}
         .mem-card.memorized{border-color:#2fa37c;background:rgba(47,163,124,.18);}
         .mem-card.memorized .mem-check{color:#2fa37c;}
         .mem-source{color:var(--text-dim);font-size:.75rem;margin:0;text-align:center;}
