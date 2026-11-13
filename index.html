@@ -2220,7 +2220,7 @@
                                                     <g id="tasselThreads"></g>
                                                 </g>
                                                 <text id="phraseDisplay" class="counter-phrase" x="60" y="31" text-anchor="middle" font-size="10" direction="rtl">سُبْحَانَ ٱللَّٰهِ</text>
-                                                <text id="countDisplay" class="counter-number" x="60" y="72" text-anchor="middle" font-size="30" direction="ltr">0</text>
+                                                <text id="countDisplay" class="counter-number" x="60" y="72" text-anchor="middle" font-size="11" direction="rtl">انقر للبدأ</text>
                                             </svg>
                                         </div>
                                         <div class="counter-info-box" aria-live="polite">
@@ -4221,14 +4221,17 @@ var gender = 'male';
         }
 
         function openSurahInQuran(n, fromWird) {
-            window._quranReturnTo = fromWird ? 'wird' : null;
+            window._quranReturnTo = null;
             if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
             if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
-            showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran');
-            document.getElementById('tab-surah').click();
+            showScreen(islamiyatScreen); initIslamiyat();
+            if (fromWird && typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(true);
+            else if (!fromWird && typeof window._setQuranWirdMode === 'function' && window._quranWirdOnly) window._setQuranWirdMode(false);
+            activatePane('quran');
+            var ts = document.getElementById('tab-surah'); if (ts && !window._quranWirdOnly) ts.click();
             document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
             var surahItem = document.getElementById('surah-item-' + n);
-            if (surahItem) { surahItem.classList.add('active'); surahItem.click(); if (surahItem.scrollIntoView) surahItem.scrollIntoView({ block: 'center' }); }
+            if (surahItem) { surahItem.classList.add('active'); surahItem.click(); if (surahItem.scrollIntoView) try { surahItem.scrollIntoView({ block: 'center' }); } catch(e){} }
         }
         function renderWirdMenu() {
             var list = document.getElementById('wird-cat-list'); if (!list) return;
@@ -4251,7 +4254,7 @@ var gender = 'male';
                 };
             });
         }
-        document.getElementById('card-wird').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderWirdMenu(); showScreen(wirdScreen); var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); window.scrollTo(0,0); };
+        document.getElementById('card-wird').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); window._quranReturnTo = null; window._quranWarshMode = false; showScreen(islamiyatScreen); initIslamiyat(); if (typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(true); activatePane('quran'); var sv=document.querySelector('.quran-split-view'); if(sv) sv.classList.remove('show-text'); var sl=document.getElementById('isl-surah-list-container'); if(sl) sl.scrollTop = 0; window.scrollTo(0,0); };
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
         var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
@@ -5901,16 +5904,38 @@ var gender = 'male';
             };
         }
         function showAdhkarTextOnMobile() { if (!document.body.classList.contains('is-mobile')) return; const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.add('show-text'); window.scrollTo(0, 0); }
+        window._quranWirdOnly = false;
+        window._quranWirdSurahs = [18, 36, 50, 55, 56, 67];
+        window._setQuranWirdMode = function(on) {
+            window._quranWirdOnly = !!on;
+            var tabJuz = document.getElementById('tab-juz');
+            var tabSurah = document.getElementById('tab-surah');
+            if (tabJuz) tabJuz.style.display = window._quranWirdOnly ? 'none' : '';
+            if (window._quranWirdOnly) {
+                if (tabSurah) tabSurah.classList.add('active');
+                var tabJ = document.getElementById('tab-juz'); if (tabJ) tabJ.classList.remove('active');
+                var juzC = document.getElementById('isl-juz-list-container'); if (juzC) juzC.style.display = 'none';
+                var surC = document.getElementById('isl-surah-list-container'); if (surC) surC.style.display = 'flex';
+            }
+            if (typeof generateSurahGrid === 'function') generateSurahGrid();
+        };
         function generateSurahGrid() {
             const container = document.getElementById('isl-surah-list-container'); if (!container) return; container.innerHTML = '';
+            var list = window._quranWirdOnly ? window._quranWirdSurahs : null;
             SURAH_NAMES.forEach((name, index) => {
-                const num = index + 1; const meta = SURAH_META[index] || { type: "مكية", ayahs: "..." };
+                const num = index + 1;
+                if (list && list.indexOf(num) === -1) return;
+                const meta = SURAH_META[index] || { type: "مكية", ayahs: "..." };
                 const item = document.createElement('div'); item.className = 'surah-item glass-btn'; item.id = `surah-item-${num}`;
                 item.innerHTML = `<div class="surah-num-circle">${num}</div><div class="surah-info"><div class="surah-name-ar">${name}</div><div class="surah-name-en">${SURAH_ENGLISH_NAMES[index] || ''}</div></div><div class="surah-meta-info"><div>آيات ${meta.ayahs}</div><div>${meta.type}</div><div>صفحة ${SURAH_PAGES[index] || ''}</div></div>`;
                 item.onclick = () => { document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active')); item.classList.add('active'); islTargetAyah = null; selectSurah(num, name, meta); showQuranTextOnMobile(); };
                 container.appendChild(item);
             });
-            selectSurah(1, SURAH_NAMES[0], SURAH_META[0]); document.getElementById('surah-item-1').classList.add('active');
+            var firstNum = (list && list.length) ? list[0] : 1;
+            var firstName = SURAH_NAMES[firstNum - 1];
+            selectSurah(firstNum, firstName, SURAH_META[firstNum - 1]);
+            var firstItem = document.getElementById('surah-item-' + firstNum);
+            if (firstItem) firstItem.classList.add('active');
         }
         // صفحات المصحف (المصحف المدني 604 صفحة) - بداية كل سورة
         const SURAH_PAGES = [1,2,50,77,10,106,128,151,177,187,208,221,235,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,555,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,598,599,599,600,600,601,601,601,602,604,604,604,604,604,604,604,604,604];
@@ -6150,7 +6175,7 @@ var gender = 'male';
             renderAdhkarCategories();
             renderAdhkarContent();
             document.getElementById('tab-surah').onclick = () => { document.getElementById('tab-surah').classList.add('active'); document.getElementById('tab-juz').classList.remove('active'); document.getElementById('isl-surah-list-container').style.display = 'flex'; document.getElementById('isl-juz-list-container').style.display = 'none'; };
-            document.getElementById('tab-juz').onclick = () => { document.getElementById('tab-juz').classList.add('active'); document.getElementById('tab-surah').classList.remove('active'); document.getElementById('isl-juz-list-container').style.display = 'grid'; document.getElementById('isl-surah-list-container').style.display = 'none'; };
+            document.getElementById('tab-juz').onclick = () => { if (window._quranWirdOnly) return; document.getElementById('tab-juz').classList.add('active'); document.getElementById('tab-surah').classList.remove('active'); document.getElementById('isl-juz-list-container').style.display = 'grid'; document.getElementById('isl-surah-list-container').style.display = 'none'; };
             document.getElementById('isl-back-to-surahs').onclick = () => { const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); };
             document.getElementById('isl-play-btn').onclick = toggleIslamiyatPlay; fetchRecitersIslamiyat();
             document.getElementById('isl-quran-body').addEventListener('click', function (e) { const sp = e.target.closest('.ayah-span'); if (!sp) return; const m = sp.id && sp.id.match(/^isl-ayah-(\d+)$/); if (!m) return; const ayah = parseInt(m[1]); try { localStorage.setItem('islQuranBookmark', JSON.stringify({ s: islSelectedSurah, a: ayah })); } catch (err) {} document.querySelectorAll('#isl-quran-body .ayah-bookmark').forEach(x => x.classList.remove('ayah-bookmark')); sp.classList.add('ayah-bookmark'); islShowToast('📌 تم حفظ موضع القراءة — سورة ' + (SURAH_NAMES[islSelectedSurah - 1] || '') + ' آية ' + ayah); updateIslResumeBar(); });
@@ -6984,7 +7009,7 @@ function notifyPrayer(prayerKey, isTest) {
         document.getElementById('nav-btn-reminder').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-reminder-toggle').focus(), 100); };
         document.getElementById('nav-btn-adhan').onclick = () => { document.getElementById('btn-settings').click(); document.querySelector('.nav-btn[data-target="pane-adhan"]').click(); setTimeout(() => document.getElementById('set-adhan-toggle').focus(), 100); };
 
-        var _cq = document.getElementById('card-quran'); if (_cq) _cq.onclick = () => { window._quranReturnTo = null; window._quranWarshMode = false; if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('quran'); const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); const sl = document.getElementById('isl-surah-list-container'); if (sl) sl.scrollTop = 0; window.scrollTo(0, 0); updateIslResumeBar(); };
+        var _cq = document.getElementById('card-quran'); if (_cq) _cq.onclick = () => { window._quranReturnTo = null; window._quranWarshMode = false; if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); if (typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(false); activatePane('quran'); const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); const sl = document.getElementById('isl-surah-list-container'); if (sl) sl.scrollTop = 0; window.scrollTo(0, 0); updateIslResumeBar(); };
         document.getElementById('card-Adhkar').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('adhkar'); const svA = document.querySelector('.adhkar-split-view'); if (svA) svA.classList.remove('show-text'); window.scrollTo(0, 0); };
         document.getElementById('card-tasbih').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); showScreen(islamiyatScreen); initIslamiyat(); activatePane('tasbih'); };
         var LIVE_POSTERS = { haram: 'https://makkahlive.org/posters/makkah.webp', nabawi: 'https://makkahlive.org/posters/madinah.webp', aqsa: 'https://makkahlive.org/posters/aqsa.webp', hajj: 'https://makkahlive.org/logo.webp', assadissa: 'https://www.snrt.ma/sites/default/files/2023-04/assadissa.png' };
@@ -7615,7 +7640,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const t = document.getElementById('isl-header-title');
             const s = document.getElementById('isl-header-sub');
             if (t && s) {
-                if (name === 'quran') { t.textContent = 'قراءة القرآن الكريم'; s.textContent = window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'; }
+                if (name === 'quran') { t.textContent = window._quranWirdOnly ? 'ورد القرآن اليومي' : 'قراءة القرآن الكريم'; s.textContent = window._quranWirdOnly ? 'سور ورد القرآن اليومي' : (window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'); }
                 else if (name === 'adhkar') { t.textContent = 'الأذكار'; s.textContent = 'أذكار المسلم اليومية من الكتاب والسنة'; }
                 else if (name === 'tasbih') { t.textContent = 'المسبحة الإلكترونية'; s.textContent = ''; }
                 else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · الأذكار · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
@@ -7640,12 +7665,22 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 window.scrollTo(0, 0);
                 return;
             }
+            if (qPane && qPane.classList.contains('active') && window._quranWirdOnly) {
+                stopIslamiyatAudio();
+                sv && sv.classList.remove('show-text');
+                if (typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(false);
+                window._quranReturnTo = null;
+                showScreen(homeScreen); navHome.classList.add('active');
+                window.scrollTo(0, 0);
+                return;
+            }
             if (qPane && qPane.classList.contains('active')) {
                 const sl = document.getElementById('isl-surah-list-container');
                 if (sl) sl.scrollTop = 0;
                 sv && sv.classList.remove('show-text');
             }
             window._quranReturnTo = null;
+            if (window._quranWirdOnly && typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(false);
             stopIslamiyatAudio(); showScreen(homeScreen); navHome.classList.add('active');
         };
 
@@ -7677,13 +7712,20 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             if (goBtn) goBtn.onclick = function () {
                 hide();
                 try { localStorage.setItem('fridayKahfDone', todayKey()); } catch (e) {}
-                try { renderWirdMenu(); } catch (e) {}
-                try { if (typeof showScreen === 'function' && wirdScreen) showScreen(wirdScreen); } catch (e) {}
-                var ws = document.getElementById('wird-split'); if (ws) ws.classList.remove('show-text');
+                try {
+                    if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio();
+                    if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer();
+                    window._quranReturnTo = null; window._quranWarshMode = false;
+                    showScreen(islamiyatScreen); initIslamiyat();
+                    if (typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(true);
+                    activatePane('quran');
+                    var sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text');
+                } catch (e) {}
                 window.scrollTo(0, 0);
                 setTimeout(function () {
-                    var item = document.querySelector('.wird-cat-item[data-surah="18"]');
-                    if (item) item.click();
+                    var item = document.getElementById('surah-item-18');
+                    if (item) { item.click(); if (item.scrollIntoView) try { item.scrollIntoView({ block: 'center' }); } catch (e) {} }
+                    else if (typeof openSurahInQuran === 'function') openSurahInQuran(18, true);
                 }, 400);
             };
             if (cancelBtn) cancelBtn.onclick = function () {
@@ -7866,7 +7908,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             function fitPhrase() { var n = $("phraseDisplay"); if (!n) return; n.textContent = state.selected; n.style.fontSize = "11px"; try { var w = n.getComputedTextLength(); if (w > 64) { var sz = 11*64/w; if (sz >= 5) n.style.fontSize = sz + "px"; else n.textContent = ""; } } catch (e) {} }
             function updateTasbihSoundBtn() { var b = $("tasbih-sound-btn"); if (!b) return; b.textContent = state.sound ? "🔊" : "🔇"; b.classList.toggle("off", !state.sound); b.setAttribute("aria-label", state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"); b.title = state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"; }
             function updateTasbihVoiceBtn() { var b = document.getElementById("tasbih-voice-btn"); if (!b) return; b.textContent = state.voice ? "🗣️" : "🤐"; b.classList.toggle("off", !state.voice); b.setAttribute("aria-label", state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"); b.title = state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"; }
-            function render() { checkDay(); var count = state.session % state.target; var rounds = Math.floor(state.session / state.target); $("countDisplay").textContent = count; $("targetDisplay").textContent = count + " " + t("outOf") + " " + state.target; $("roundDisplay").textContent = t("round") + " " + (rounds + 1); $("todayDisplay").textContent = state.today; $("roundsDisplay").textContent = rounds; $("totalDisplay").textContent = state.total; $("targetLabel").textContent = t("target") + " " + state.target; $("currentDhikrArabic").textContent = state.selected; $("currentDhikrArabic").title = state.selected; $("undoBtn").disabled = state.session === 0; fitPhrase(); $("progressArc").setAttribute("stroke-dasharray", arcLength); $("progressArc").setAttribute("stroke-dashoffset", arcLength * (1 - count/state.target)); var lit = count === 0 ? 0 : ((count - 1) % 33) + 1; beads.forEach(function (b, i) { b.setAttribute("fill", i < lit ? "url(#jade)" : "url(#ivory)"); }); menuButtons.forEach(function (e) { var sel = e.text === state.selected; e.button.classList.toggle("selected", sel); e.button.setAttribute("aria-pressed", String(sel)); }); updateAutoLabel(); updateTasbihSoundBtn(); updateTasbihVoiceBtn(); }
+            function render() { checkDay(); var count = state.session % state.target; var rounds = Math.floor(state.session / state.target); var cd = $("countDisplay"); if (state.session === 0) { cd.textContent = "انقر للبدأ"; cd.setAttribute("font-size", "11"); cd.setAttribute("direction", "rtl"); } else { cd.textContent = count; cd.setAttribute("font-size", "30"); cd.setAttribute("direction", "ltr"); } $("targetDisplay").textContent = count + " " + t("outOf") + " " + state.target; $("roundDisplay").textContent = t("round") + " " + (rounds + 1); $("todayDisplay").textContent = state.today; $("roundsDisplay").textContent = rounds; $("totalDisplay").textContent = state.total; $("targetLabel").textContent = t("target") + " " + state.target; $("currentDhikrArabic").textContent = state.selected; $("currentDhikrArabic").title = state.selected; $("undoBtn").disabled = state.session === 0; fitPhrase(); $("progressArc").setAttribute("stroke-dasharray", arcLength); $("progressArc").setAttribute("stroke-dashoffset", arcLength * (1 - count/state.target)); var lit = count === 0 ? 0 : ((count - 1) % 33) + 1; beads.forEach(function (b, i) { b.setAttribute("fill", i < lit ? "url(#jade)" : "url(#ivory)"); }); menuButtons.forEach(function (e) { var sel = e.text === state.selected; e.button.classList.toggle("selected", sel); e.button.setAttribute("aria-pressed", String(sel)); }); updateAutoLabel(); updateTasbihSoundBtn(); updateTasbihVoiceBtn(); }
             function beep() {
                 if (!state.sound) return;
                 try {
