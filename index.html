@@ -4885,9 +4885,11 @@ var gender = 'male';
             if (title) title.textContent = libelle[_tajweedTab] || 'الفهرس';
             if (_tajweedTab === 'surat') {
                 if (title) title.textContent = 'السور';
+                html += '<div class="tw-pagesearch" style="display:flex;gap:6px;margin-bottom:8px;"><input type="number" id="tw-page-search" min="1" max="' + TAJWEED_TOTAL + '" placeholder="ابحث برقم الصفحة" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#efe9dc;font-family:var(--font);font-size:.9rem;"><button type="button" id="tw-page-search-btn" style="padding:8px 12px;border-radius:8px;border:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.2);color:#d1c48d;font-family:var(--font);cursor:pointer;">انتقال</button></div>';
                 for (i = 0; i < TAJWEED_SURAT_PAGES.length; i++) {
+                    var _meta = (typeof SURAH_META !== 'undefined' && SURAH_META[i]) ? SURAH_META[i] : { type: '', ayahs: (TAJWEED_AYA_COUNT[i] || 0) };
                     html += '<button type="button" class="tajweed-row" data-ch="' + TAJWEED_SURAT_PAGES[i] + '"><b>' + tajweedAr(i + 1) + '</b><span>' +
-                        (names[i] || '') + '</span><small>ص ' + tajweedAr(TAJWEED_SURAT_PAGES[i]) + '</small></button>';
+                        (names[i] || '') + '</span><small>' + tajweedAr(_meta.ayahs || TAJWEED_AYA_COUNT[i] || 0) + ' آية · ص ' + tajweedAr(TAJWEED_SURAT_PAGES[i]) + ' · ' + (_meta.type || '') + '</small></button>';
                 }
             } else if (_tajweedTab === 'juz') {
                 if (title) title.textContent = 'الأجزاء';
@@ -4922,6 +4924,16 @@ var gender = 'male';
                     tajweedCloseSheet();
                 };
             });
+            (function () {
+                var ps = document.getElementById('tw-page-search');
+                var pb = document.getElementById('tw-page-search-btn');
+                function goPage() {
+                    var v = parseInt(ps && ps.value, 10);
+                    if (v >= 1 && v <= TAJWEED_TOTAL) { tajweedGoto(v); tajweedCloseSheet(); }
+                }
+                if (pb) pb.onclick = goPage;
+                if (ps) ps.onkeydown = function (e) { if (e.key === 'Enter') goPage(); };
+            })();
             tajweedHighlight();
             var addB = body.querySelector('.tajweed-row.add');
             if (addB) addB.onclick = function () {
