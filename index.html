@@ -230,12 +230,19 @@
         .live-countdown .live-cd-num{font-size:1.6rem;font-weight:800;letter-spacing:1px;text-shadow:0 0 12px rgba(212,175,55,0.4);}
         .adhkar-cat-item.live-empty{opacity:.55;}
         .adhkar-cat-item .live-empty-tag{margin-right:auto;background:rgba(255,255,255,0.12);border:1px solid var(--glass-border);border-radius:20px;padding:1px 8px;font-size:.7rem;color:var(--text-dim);}
-        /* بث مباشر : boutons plus compacts */
-        #live-cat-list{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;padding:6px;}
-        #live-cat-list .adhkar-cat-item{padding:8px 6px;gap:5px;font-size:.75rem;border-radius:10px;}
-        #live-cat-list .adhkar-cat-item .cat-icon{width:34px;height:34px;font-size:1.25rem;border-radius:9px;}
-        #live-cat-list .adhkar-cat-item .live-empty-tag{padding:1px 6px;font-size:.62rem;}
-        @media (max-width: 900px){ .live-split-view{flex-direction:column;} .live-player-area{order:-1;} .adhkar-sidebar{width:100%;} .adhkar-cat-list{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;} .adhkar-cat-item{flex-shrink:0;} #live-cat-list{display:flex;gap:8px;} #live-cat-list .adhkar-cat-item{min-width:84px;padding:7px 6px;} }
+        /* بث مباشر : boutons compacts */
+        #live-cat-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:6px;padding:6px;}
+        #live-cat-list .adhkar-cat-item{padding:6px 4px;gap:4px;font-size:.7rem;border-radius:10px;min-width:0;}
+        #live-cat-list .adhkar-cat-item .cat-icon{width:30px;height:30px;font-size:1.1rem;border-radius:8px;}
+        #live-cat-list .adhkar-cat-item .live-empty-tag{padding:1px 5px;font-size:.58rem;margin-right:0;}
+        #live-cat-list .adhkar-cat-item span:not(.cat-icon):not(.live-empty-tag){line-height:1.2;}
+        @media (max-width: 900px){
+            .live-split-view{flex-direction:column;}
+            .live-player-area{order:2;}
+            .adhkar-sidebar{width:100%;order:1;}
+            #live-cat-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;overflow:visible;padding:6px;}
+            #live-cat-list .adhkar-cat-item{min-width:0;width:100%;padding:6px 4px;}
+        }
         /* ===== Mobile (portrait) : mise en page empilée ===== */
         @media (max-width: 900px){
             body{height:auto;overflow-y:auto;}
@@ -862,10 +869,15 @@
             flex:none;min-width:34px;height:26px;padding:0 8px;border-radius:13px;display:flex;align-items:center;justify-content:center;
             background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.35);color:var(--gold);font-size:.78rem;font-weight:700;
         }
-        /* menu القرآن الكريم : texte en blanc */
+        /* menu القرآن الكريم : texte en blanc, grandes icônes à gauche, textes à droite */
         #quran-menus .sihatar-mtxt b{color:#ffffff;}
         #quran-menus .sihatar-mtxt i{color:#ffffff;}
-        #quran-menus .sihatar-mcount{color:#ffffff;}
+        #quran-menus .sihatar-mcount{display:none !important;}
+        #quran-menus .sihatar-menu{flex-direction:row-reverse;justify-content:flex-start;text-align:right;gap:14px;}
+        #quran-menus .sihatar-mtxt{flex:1;text-align:right;align-items:flex-end;}
+        #quran-menus .sihatar-mtxt b{text-align:right;width:100%;}
+        #quran-menus .sihatar-mico{width:52px;height:52px;}
+        #quran-menus .sihatar-mico .sihatar-ico3d{width:44px;height:44px;}
         #sihatar-menus .sihatar-mtxt b{color:#ffffff;}
         #sihatar-menus .sihatar-mtxt i{color:#ffffff;}
         #sihatar-menus .sihatar-mcount{color:#ffffff;}
