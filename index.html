@@ -941,6 +941,10 @@
         .kh-member-head b{font-size:.95rem;}
         .kh-member-head span{font-size:.8rem;color:var(--text-dim);white-space:nowrap;}
         .kh-member-done .kh-member-head span{color:#2fa37c;}
+        .kh-member-side{display:flex;align-items:center;gap:8px;}
+        .kh-wa{flex:none;width:30px;height:30px;border-radius:50%;border:0;background:#25D366;display:grid;place-items:center;cursor:pointer;transition:transform .15s ease;}
+        .kh-wa:hover{transform:scale(1.12);}
+        .mem-reset.armed{border-color:rgba(230,120,120,.8);color:#ff9a9a;background:rgba(230,120,120,.16);}
         .kh-juz-grid{display:flex;flex-wrap:wrap;gap:6px;}
         .kh-juz{padding:6px 10px;border-radius:10px;border:1px solid rgba(212,175,55,.35);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-size:.8rem;}
         .kh-juz:hover{border-color:var(--gold);}
@@ -7000,7 +7004,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             var complete = mDone === m.juz.length;
             var card = document.createElement('div');
             card.className = 'kh-member-card' + (complete ? ' kh-member-done' : '');
-            card.innerHTML = '<div class="kh-member-head"><b>' + khEscapeHtml(m.name) + '</b><span>' + mDone + '/' + m.juz.length + ' أجزاء' + (complete ? ' ✓' : '') + '</span></div><div class="kh-juz-grid">' + m.juz.map(function (j, ji) {
+            card.innerHTML = '<div class="kh-member-head"><b>' + khEscapeHtml(m.name) + '</b><div class="kh-member-side"><span>' + mDone + '/' + m.juz.length + ' أجزاء' + (complete ? ' ✓' : '') + '</span><button type="button" class="kh-wa" data-m="' + i + '" aria-label="إرسال توزيع ' + khEscapeHtml(m.name) + ' عبر واتساب" title="إرسال توزيع ' + khEscapeHtml(m.name) + ' عبر واتساب"><svg viewBox="0 0 24 24" width="15" height="15" fill="#ffffff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div><div class="kh-juz-grid">' + m.juz.map(function (j, ji) {
                 return '<button type="button" class="kh-juz' + (m.done[ji] ? ' done' : '') + '" data-m="' + i + '" data-j="' + ji + '" aria-pressed="' + (m.done[ji] ? 'true' : 'false') + '">الجزء ' + j + '</button>';
             }).join('') + '</div>';
             list.appendChild(card);
@@ -7055,8 +7059,24 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         khatmaRenderTracker(state);
     };
     var khResetBtn = document.getElementById('kh-reset');
+    var khResetArmed = false, khResetTimer = null;
     if (khResetBtn) khResetBtn.onclick = function () {
-        if (!window.confirm('إعادة تعيين الخطة؟')) return;
+        if (!khResetArmed) {
+            khResetArmed = true;
+            khResetBtn.classList.add('armed');
+            khResetBtn.textContent = 'اضغط مرة أخرى للتأكيد';
+            clearTimeout(khResetTimer);
+            khResetTimer = setTimeout(function () {
+                khResetArmed = false;
+                khResetBtn.classList.remove('armed');
+                khResetBtn.textContent = 'إعادة تعيين الخطة';
+            }, 3000);
+            return;
+        }
+        clearTimeout(khResetTimer);
+        khResetArmed = false;
+        khResetBtn.classList.remove('armed');
+        khResetBtn.textContent = 'إعادة تعيين الخطة';
         khatmaReset();
         khMembers = [];
         khatmaRenderMembers();
@@ -7066,6 +7086,19 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     };
     var khMemberList = document.getElementById('kh-member-list');
     if (khMemberList) khMemberList.onclick = function (e) {
+        var wa = e.target && e.target.closest ? e.target.closest('.kh-wa') : null;
+        if (wa) {
+            var wi = parseInt(wa.getAttribute('data-m'), 10);
+            var wst = khatmaLoad();
+            if (wst && wst.members && wst.members[wi]) {
+                var wm = wst.members[wi];
+                var wmsg = '🕌 ' + wm.name + ' — نصيبك من الختمة الجماعية' + (wst.group ? ' : ' + wst.group : '') + '\n'
+                    + 'الجزء ' + wm.juz.join('، ') + '\n'
+                    + 'تطبيق يا مسهّل — https://onepro182.github.io/YaMousahil/';
+                try { window.open('https://wa.me/?text=' + encodeURIComponent(wmsg), '_blank', 'noopener'); } catch (e2) {}
+            }
+            return;
+        }
         var b = e.target && e.target.closest ? e.target.closest('.kh-juz') : null;
         if (!b) return;
         var mi = parseInt(b.getAttribute('data-m'), 10); var ji = parseInt(b.getAttribute('data-j'), 10);
