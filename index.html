@@ -31,6 +31,22 @@
             --glass-blur: blur(12px);
             --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
+        /* Theme: Bleu professionnel */
+        body.theme-blue {
+            --bg-dark: #071422;
+            --bg-screen: #0a1929;
+            --bg-card: rgba(19, 47, 76, 0.45);
+            --bg-card-hover: rgba(30, 70, 110, 0.6);
+            --gold: #4fc3f7;
+            --gold-light: #81d4fa;
+            --cream: #e3f2fd;
+            --text-main: #ffffff;
+            --text-dim: #90b8d8;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(144, 202, 249, 0.22);
+            --glass-blur: blur(12px);
+            --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+        }
         ::-webkit-scrollbar{display:none;}
         *{scrollbar-width:none;-ms-overflow-style:none;margin:0;padding:0;box-sizing:border-box;}
         body{background-color:var(--bg-screen);color:var(--text-main);font-family:var(--font);height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;user-select:none;}
@@ -2540,7 +2556,7 @@
             <!-- ================= SIHATAR (SANTE) SCREEN ================= -->
             <div id="sihatar-screen">
                 <header class="header-prayers">
-                    <button type="button" class="back-btn glass-btn" id="btn-back-from-sihatar">‹ القائمة</button>
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-sihatar">‹ الرئيسية</button>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);">صحتي</h1>
                         <p>دليل الخدمات الصحية : صيدليات الحراسة، العيادات، مختبرات التحاليل، الأطباء وأسعار التحاليل</p>
@@ -2975,7 +2991,7 @@
                             </div>
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
                             <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (توقيت الجهاز)</option>
-                              <option value="ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div></div>
+                              <option value="ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div><div class="setting-row"><div class="setting-title">المظهر (السمة)</div><select id="set-theme" class="setting-select"><option value="default">الافتراضي (أخضر وذهبي)</option><option value="blue">أزرق احترافي</option></select></div></div>
                             <div class="settings-pane" id="pane-share">
                                 <div class="about-content share-content">
                                     <div class="share-logo-wrap">
@@ -3131,11 +3147,18 @@
         let settings = {
             countryId:'morocco', cityId:'oujda', method:'Morocco', asr:'Shafi', clockFormat:24, gmtOffset:1, clockTz:'auto',
             adhanEnabled:true, adhanVoice:'azan1', reminderEnabled:false, reminderMinutes:10,
-            reminderText:true, reminderVoice:true,
+            reminderText:true, reminderVoice:true, theme:'default',
             globalOffset: 0,
             adjustments: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 }
         };
         
+        function applyTheme(name) {
+            try {
+                document.body.classList.remove('theme-blue');
+                if (name === 'blue') document.body.classList.add('theme-blue');
+            } catch (e) {}
+        }
+        window.applyTheme = applyTheme;
         try {
             const saved = localStorage.getItem('YaMousahil_settings');
             if (saved) {
@@ -3149,6 +3172,7 @@
                 if (Number(settings.globalOffset) === -60) settings.globalOffset = 0;
             }
         } catch (e) { console.warn('localStorage blocked'); }
+        try { applyTheme(settings.theme || 'default'); } catch (e) {}
 
         const COUNTRIES_DB = {
             morocco:{nameAr:'المغرب',cities:[['casablanca','الدار البيضاء',33.5731,-7.5898],['rabat','الرباط',34.0209,-6.8416],['fes','فاس',34.0181,-5.0078],['marrakech','مراكش',31.6295,-7.9811],['oujda','وجدة',34.6814,-1.9086],['tangier','طنجة',35.7595,-5.8340],['agadir','أكادير',30.4278,-9.5981],['meknes','مكناس',33.8935,-5.5473]]},
@@ -6606,6 +6630,7 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             document.querySelectorAll('#set-asr .group-btn').forEach(b => b.classList.toggle('active', b.dataset.value === settings.asr));
             document.querySelectorAll('#set-clock .group-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.value) === settings.clockFormat));
             document.getElementById('set-gmt').value = (settings.clockTz === 'auto' || settings.clockTz === undefined) ? 'auto' : String(settings.clockTz);
+            var _th = document.getElementById('set-theme'); if (_th) _th.value = settings.theme || 'default';
             updateGmtHint();
             renderAdjustmentsUI();
             document.getElementById('settings-modal').classList.add('active');
@@ -6655,9 +6680,11 @@ var duaKhatmScreen = document.getElementById('dua-khatm-screen');
             settings.clockFormat = parseInt(document.querySelector('#set-clock .group-btn.active').dataset.value);
             const _tzSel = document.getElementById('set-gmt').value;
             settings.clockTz = (_tzSel === 'auto') ? 'auto' : (_tzSel === 'ma' ? 'ma' : (parseInt(_tzSel, 10) || 0));
+            var _thEl = document.getElementById('set-theme'); if (_thEl) settings.theme = _thEl.value || 'default';
             settings.gmtOffset = (settings.clockTz === 'auto') ? Math.round(deviceOffsetMinutes(new Date()) / 60) : (settings.clockTz === 'ma' ? Math.round(moroccoOffsetMinutes(new Date()) / 60) : settings.clockTz);
             clockTzPreview = null;
             try { localStorage.setItem('YaMousahil_settings', JSON.stringify(settings)); } catch (e) {}
+            try { if (typeof applyTheme==='function') applyTheme(settings.theme||'default'); } catch(e){}
             if ((settings.reminderEnabled || settings.adhanEnabled) && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
             document.getElementById('settings-modal').classList.remove('active');
             try { renderLiveMenu(); } catch (e) {}
@@ -8141,6 +8168,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 sihaState.section = null;
                 document.getElementById('sihatar-panel').style.display = 'none';
                 document.getElementById('sihatar-menus').style.display = 'grid';
+                document.getElementById('sihatar-mapview').style.display = 'none';
+                var _hb = document.getElementById('btn-back-from-sihatar'); if (_hb) _hb.style.display = '';
                 sihaLoadCounts();
             };
         }
@@ -8172,6 +8201,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.getElementById('sihatar-menus').style.display = 'none';
             const cta = document.getElementById('btn-sihatar-around');
             if (cta) cta.style.display = 'none';
+            var _hb = document.getElementById('btn-back-from-sihatar'); if (_hb) _hb.style.display = 'none';
             sihaMapFs(false);
             document.getElementById('sihatar-panel').style.display = 'flex';
             document.getElementById('sihatar-mapview').style.display = 'none';
@@ -8575,6 +8605,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.getElementById('sihatar-menus').style.display = 'none';
             const cta = document.getElementById('btn-sihatar-around');
             if (cta) cta.style.display = 'none';
+            var _hb = document.getElementById('btn-back-from-sihatar'); if (_hb) _hb.style.display = 'none';
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'flex';
             const list = document.getElementById('sihatar-maplist');
@@ -8638,6 +8669,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         async function sihaNearby() {
             const list = document.getElementById('sihatar-list');
             document.getElementById('sihatar-menus').style.display = 'none';
+            var _hb = document.getElementById('btn-back-from-sihatar'); if (_hb) _hb.style.display = 'none';
             document.getElementById('sihatar-panel').style.display = 'flex';
             document.getElementById('sihatar-panel-title').textContent = 'القريبة مني — Pharmacies de garde à proximité';
             document.getElementById('sihatar-chips').style.display = 'none';
@@ -8673,6 +8705,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             showScreen(sihatarScreen);
             sihaRenderCities();
             document.getElementById('sihatar-menus').style.display = 'grid';
+            var _hbsh = document.getElementById('btn-back-from-sihatar'); if (_hbsh) _hbsh.style.display = '';
             const cta0 = document.getElementById('btn-sihatar-around');
             if (cta0) cta0.style.display = '';
             sihaMapFs(false);
@@ -8687,6 +8720,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             sihaMapFs(false);
             document.getElementById('sihatar-panel').style.display = 'none';
             document.getElementById('sihatar-menus').style.display = 'grid';
+            var _hb = document.getElementById('btn-back-from-sihatar'); if (_hb) _hb.style.display = '';
             document.getElementById('sihatar-chips').style.display = 'none';
             document.getElementById('sihatar-mapview').style.display = 'none';
             const cta = document.getElementById('btn-sihatar-around');
@@ -8791,6 +8825,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             sihaMapFs(false);
             document.getElementById('sihatar-mapview').style.display = 'none';
             document.getElementById('sihatar-menus').style.display = 'grid';
+            var _hb = document.getElementById('btn-back-from-sihatar'); if (_hb) _hb.style.display = '';
             const cta = document.getElementById('btn-sihatar-around');
             if (cta) cta.style.display = '';
         };
