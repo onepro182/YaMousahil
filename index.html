@@ -5446,7 +5446,7 @@ var gender = 'male';
             try { tajweedBind(); } catch (e) { console.warn('tajweed', e); }
             if (navHome) navHome.classList.remove('active');
         };
-        var bt = document.getElementById('btn-back-from-tajweed');
+        var bt = document.getElementById('tajweed-back');
         if (bt) bt.onclick = function () {
             try { twAudioStop(); } catch (e) {}
             if (homeScreen && typeof showScreen === 'function') showScreen(homeScreen);
