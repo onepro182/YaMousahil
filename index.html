@@ -1751,7 +1751,7 @@
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-asma">
                                     <img class="app-icon logo3d" src="Logo.png" alt="أسماء الله">
-                                    <span class="app-name">✦ أسماء الله الحسنى</span>
+                                    <span class="app-name">أسماء الله الحسنى</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-wird"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="ورد القرآن اليومي">
                                     <defs>
@@ -1821,7 +1821,7 @@
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-live">
                                     <img class="app-icon" src="https://makkahlive.org/logo.webp" alt="بث مباشر" style="border-radius:8px;">
-                                    <span class="app-name">📺 بث مباشر</span>
+                                    <span class="app-name">بث مباشر</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran-radio">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
@@ -1899,7 +1899,7 @@
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-weather">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
-                                    <span class="app-name">🌦 Météo</span>
+                                    <span class="app-name">Météo</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-surah-kahf" style="display:none;">
                                     <img class="app-icon" src="https://s.cafebazaar.ir/images/icons/com.alquransharifmp3-38c31d1d-cc94-4b82-af78-1941aa9abed3_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize" alt="المصحف المصور">
@@ -7872,34 +7872,33 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 try {
                     var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
                     if (!audio || audio.state === "closed") audio = new AC();
-                    function clac() {
+                    function soft() {
                         try {
                             if (!state.sound) return;
                             var now = audio.currentTime;
                             var isLast = (state.target > 0 && state.session % state.target === 0);
-                            // corps : bruit court filtre (le "clac" de la bille)
-                            var dur = 0.05;
-                            var len = Math.max(1, Math.floor(audio.sampleRate * dur));
-                            var buf = audio.createBuffer(1, len, audio.sampleRate);
-                            var data = buf.getChannelData(0);
-                            for (var i = 0; i < len; i++) { data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 4); }
-                            var src = audio.createBufferSource(); src.buffer = buf;
-                            var bp = audio.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = isLast ? 2600 : 1900; bp.Q.value = 1.2;
-                            var ng = audio.createGain(); ng.gain.value = isLast ? 0.22 : 0.16;
-                            src.connect(bp); bp.connect(ng); ng.connect(audio.destination);
-                            // resonance : note courte qui descend (bois)
-                            var o = audio.createOscillator(); o.type = "triangle";
-                            o.frequency.setValueAtTime(isLast ? 1450 : 900, now);
-                            o.frequency.exponentialRampToValueAtTime(isLast ? 820 : 560, now + 0.075);
-                            var og = audio.createGain();
-                            og.gain.setValueAtTime(0.0001, now);
-                            og.gain.exponentialRampToValueAtTime(isLast ? 0.13 : 0.085, now + 0.004);
-                            og.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
-                            o.connect(og); og.connect(audio.destination);
-                            src.start(now); o.start(now); o.stop(now + 0.14);
+                            // son doux et professionnel (sine), confortable pour les personnes agees
+                            var o = audio.createOscillator();
+                            var g = audio.createGain();
+                            o.type = "sine";
+                            o.frequency.setValueAtTime(isLast ? 660 : 523.25, now);
+                            g.gain.setValueAtTime(0.0001, now);
+                            g.gain.linearRampToValueAtTime(isLast ? 0.045 : 0.035, now + 0.03);
+                            g.gain.exponentialRampToValueAtTime(0.0001, now + (isLast ? 0.32 : 0.22));
+                            o.connect(g); g.connect(audio.destination);
+                            o.start(now); o.stop(now + (isLast ? 0.34 : 0.24));
+                            if (isLast) {
+                                var o2 = audio.createOscillator(), g2 = audio.createGain();
+                                o2.type = "sine"; o2.frequency.setValueAtTime(880, now + 0.14);
+                                g2.gain.setValueAtTime(0.0001, now + 0.14);
+                                g2.gain.linearRampToValueAtTime(0.04, now + 0.17);
+                                g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+                                o2.connect(g2); g2.connect(audio.destination);
+                                o2.start(now + 0.14); o2.stop(now + 0.44);
+                            }
                         } catch (e) {}
                     }
-                    if (audio.state === "suspended") audio.resume().then(clac).catch(function () {}); else clac();
+                    if (audio.state === "suspended") audio.resume().then(soft).catch(function () {}); else soft();
                 } catch (e) {}
             }
             var DHIKR_MP3_COUNT = 12;
