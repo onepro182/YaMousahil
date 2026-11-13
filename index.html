@@ -922,6 +922,7 @@
         .mem-source{color:var(--text-dim);font-size:.75rem;margin:0;text-align:center;}
         .mem-loading{display:flex;align-items:center;justify-content:center;min-height:120px;color:var(--gold);grid-column:1/-1;}
         /* ===== مخطط الختمة الجماعية ===== */
+        .khatma-error{border:1px solid rgba(230,120,120,.5);background:rgba(230,120,120,.12);color:#ffb3b3;border-radius:12px;padding:10px 14px;font-size:.85rem;line-height:1.6;}
         .khatma-intro{color:var(--text-dim);font-size:.9rem;margin:0;line-height:1.7;}
         .khatma-setup{display:flex;flex-direction:column;gap:10px;max-width:640px;}
         .kh-label{display:flex;flex-direction:column;gap:6px;color:#f4ecd8;font-weight:700;font-size:.88rem;font-family:var(--font);}
@@ -2720,6 +2721,7 @@
                 </header>
                 <div class="sihatar-wrap">
                     <p class="khatma-intro">نظّم ختمة جماعية للقرآن بتقسيم الأجزاء الثلاثين بين الأعضاء. تابع تقدّم الجميع — تُحفظ خطتك تلقائيًا على هذا المتصفح.</p>
+                    <div class="khatma-error" id="khatma-error" role="alert" style="display:none;"></div>
                     <div class="khatma-setup" id="khatma-setup">
                         <label class="kh-label">اسم المجموعة
                             <input type="text" id="kh-group" class="kh-input" placeholder="مثال: ختمة الأهل والأصدقاء" autocomplete="off">
@@ -6986,10 +6988,41 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     };
     // ===== مخطط الختمة الجماعية (khatma collective) =====
     var KHATMA_KEY = 'YaMousahil_khatma';
+    var KHATMA_SETUP_KEY = 'YaMousahil_khatma_setup';
     var khMembers = [];
-    function khatmaLoad() { try { return JSON.parse(localStorage.getItem(KHATMA_KEY) || 'null'); } catch (e) { return null; } }
-    function khatmaSave(state) { try { localStorage.setItem(KHATMA_KEY, JSON.stringify(state)); } catch (e) {} }
-    function khatmaReset() { try { localStorage.removeItem(KHATMA_KEY); } catch (e) {} }
+    function khGet(key) {
+        try { return window.localStorage.getItem(key); } catch (e) { return null; }
+    }
+    function khSet(key, value) {
+        try { window.localStorage.setItem(key, value); return true; } catch (e) {
+            var err = document.getElementById('khatma-error');
+            if (err) { err.textContent = '⚠️ تعذر الحفظ على هذا الجهاز — تحقق من إعدادات المتصفح (التخزين)'; err.style.display = 'block'; }
+            return false;
+        }
+    }
+    function khRemove(key) {
+        try { window.localStorage.removeItem(key); } catch (e) {}
+    }
+    function khatmaLoad() { try { var v = khGet(KHATMA_KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+    function khatmaSave(state) { khSet(KHATMA_KEY, JSON.stringify(state)); }
+    function khatmaReset() { khRemove(KHATMA_KEY); khRemove(KHATMA_SETUP_KEY); }
+    function khSetupLoad() { try { var v = khGet(KHATMA_SETUP_KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+    function khSetupSave(value) { khSet(KHATMA_SETUP_KEY, JSON.stringify(value)); }
+    function khSetupCommit() {
+        var g = document.getElementById('kh-group');
+        var d = document.getElementById('kh-date');
+        khSetupSave({ group: g ? g.value : '', date: d ? d.value : '', members: khMembers.slice() });
+    }
+    function khSetupRestore() {
+        var saved = khSetupLoad();
+        if (!saved) { khMembers = []; khatmaRenderMembers(); return; }
+        var g = document.getElementById('kh-group');
+        var d = document.getElementById('kh-date');
+        if (g && saved.group) g.value = saved.group;
+        if (d && saved.date) d.value = saved.date;
+        khMembers = (saved.members && saved.members.length) ? saved.members.slice() : [];
+        khatmaRenderMembers();
+    }
     function khEscapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function khatmaRenderMembers() {
         var box = document.getElementById('kh-members'); if (!box) return;
@@ -7031,8 +7064,12 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         }
         if (setup) setup.hidden = false;
         if (tracker) tracker.hidden = true;
-        if (khMembers.length) khatmaRenderMembers();
+        khSetupRestore();
     }
+    var khGroup = document.getElementById('kh-group');
+    if (khGroup) khGroup.addEventListener('input', khSetupCommit);
+    var khDate = document.getElementById('kh-date');
+    if (khDate) { khDate.addEventListener('input', khSetupCommit); khDate.addEventListener('change', khSetupCommit); }
     var khAddBtn = document.getElementById('kh-add-member');
     if (khAddBtn) khAddBtn.onclick = function () {
         var input = document.getElementById('kh-member');
@@ -7041,13 +7078,14 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         khMembers.push(v);
         if (input) input.value = '';
         khatmaRenderMembers();
+        khSetupCommit();
     };
     var khMembersBox = document.getElementById('kh-members');
     if (khMembersBox) khMembersBox.onclick = function (e) {
         var b = e.target && e.target.closest ? e.target.closest('.kh-member-del') : null;
         if (!b) return;
         var i = parseInt(b.getAttribute('data-i'), 10);
-        if (!isNaN(i)) { khMembers.splice(i, 1); khatmaRenderMembers(); }
+        if (!isNaN(i)) { khMembers.splice(i, 1); khatmaRenderMembers(); khSetupCommit(); }
     };
     var khDistribute = document.getElementById('kh-distribute');
     if (khDistribute) khDistribute.onclick = function () {
@@ -7088,6 +7126,9 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         khResetBtn.textContent = 'إعادة تعيين الخطة';
         khatmaReset();
         khMembers = [];
+        var g = document.getElementById('kh-group'); var d = document.getElementById('kh-date');
+        if (g) g.value = ''; if (d) d.value = '';
+        var err = document.getElementById('khatma-error'); if (err) err.style.display = 'none';
         khatmaRenderMembers();
         var setup = document.getElementById('khatma-setup'); var tracker = document.getElementById('khatma-tracker');
         if (setup) setup.hidden = false;
