@@ -663,6 +663,23 @@
         .adhkar-search-box input { flex: 1; background: transparent; border: none; color: var(--text-main); font-family: var(--font); font-size: 0.9rem; outline: none; }
         .adhkar-search-box input::placeholder { color: var(--text-dim); }
         .adhkar-search-box button { background: var(--gold); border: none; border-radius: 6px; padding: 5px 12px; color: #0b132b; font-weight: 700; cursor: pointer; }
+        /* ===== الأذكار : عرض واحد واحد (Android) ===== */
+        .adhkar-pager{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;padding:10px;background:radial-gradient(120% 90% at 50% 0%, rgba(46,131,90,.4) 0%, rgba(4,26,16,.92) 100%);border:1px solid rgba(212,175,55,.3);border-radius:16px;overflow:hidden;}
+        .adhkar-pager-main{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;text-align:center;border:1.5px solid rgba(212,175,55,.5);border-radius:14px;background:linear-gradient(165deg,rgba(17,66,39,.55),rgba(5,22,14,.92));padding:18px 16px;position:relative;overflow:auto;}
+        .adhkar-badge{position:absolute;top:10px;right:12px;background:var(--gold);color:#0b132b;border-radius:10px 4px 10px 4px;padding:3px 12px;font-size:.74rem;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.4);}
+        .adhkar-speak-p{position:absolute;top:10px;left:12px;width:36px;height:36px;border-radius:10px;border:1px solid rgba(212,175,55,.5);background:rgba(212,175,55,.18);color:var(--gold);font-size:1.05rem;cursor:pointer;display:grid;place-items:center;}
+        .adhkar-speak-p:hover{background:rgba(212,175,55,.35);}
+        .adhkar-pager-text{font-family:var(--font-quran);font-size:1.45rem;line-height:2.25;color:#f7f1df;cursor:pointer;max-width:100%;}
+        .adhkar-pager-text:focus{outline:2px solid var(--gold);outline-offset:4px;border-radius:8px;}
+        .adhkar-pager-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:4px;}
+        .adhkar-pager-ref{color:var(--gold);font-size:.85rem;font-weight:700;}
+        .adhkar-pager-count{background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.5);color:var(--gold);border-radius:999px;padding:3px 13px;font-size:.78rem;font-weight:700;white-space:nowrap;direction:ltr;}
+        .adhkar-pager-nav{flex:none;display:flex;gap:8px;}
+        .adhkar-pager-nav button{flex:1;min-height:46px;border-radius:12px;border:1px solid rgba(212,175,55,.45);background:rgba(255,255,255,.07);color:var(--gold-light);font-family:var(--font);font-weight:700;font-size:.92rem;cursor:pointer;transition:background .2s,transform .15s;}
+        .adhkar-pager-nav button:active{background:rgba(212,175,55,.3);transform:scale(.97);}
+        .adhkar-pager-nav button:disabled{opacity:.35;cursor:default;}
+        .adhkar-pager-nav #adhkar-next{background:linear-gradient(110deg,#d4af37,#b8860b);color:#0b132b;border-color:var(--gold);}
+        .adhkar-pager-nav #adhkar-list{flex:.9;}
 
         /* Tasbih */
         .tasbih-embedded{--tsb-green:#f4d03f;--tsb-text:#f4ecd8;--tsb-muted:#a3c7b5;--tsb-border:rgba(212,175,55,0.35);--tsb-surface:rgba(12,46,34,0.85);flex:1 1 auto;min-height:0;width:100%;padding:12px;color:var(--tsb-text);font-family:var(--font-quran);background:radial-gradient(ellipse at 50% 0%,rgba(17,66,49,0.85),rgba(3,20,12,0.95));border:1px solid rgba(212,175,55,0.3);border-radius:12px;overflow-y:auto;display:flex;flex-direction:column;user-select:text;}
@@ -4066,6 +4083,7 @@
 
         let currentAdhkarCategory = 'quran';
         let currentAdhkarSearch = '';
+        let currentAdhkarIndex = 0;
 
         function renderAdhkarCategories() {
             const container = document.getElementById('adhkar-cat-list'); container.innerHTML = '';
@@ -4076,7 +4094,7 @@
                 const _badge = _isNow ? '<span style="position:absolute;top:6px;right:6px;background:rgba(212,175,55,.9);color:#0b132b;font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:8px;">وقتها الآن</span>' : '';
                 item.style.position = 'relative';
                 item.innerHTML = _badge + `<span class="cat-icon logo3d">${cat.icon}</span><span>${cat.name}</span>`;
-                item.onclick = () => { currentAdhkarCategory = cat.id; currentAdhkarSearch = ''; document.getElementById('adhkar-search-input').value = ''; renderAdhkarCategories(); renderAdhkarContent(); showAdhkarTextOnMobile(); };
+                item.onclick = () => { currentAdhkarCategory = cat.id; currentAdhkarSearch = ''; currentAdhkarIndex = 0; document.getElementById('adhkar-search-input').value = ''; renderAdhkarCategories(); renderAdhkarContent(); showAdhkarTextOnMobile(); };
                 container.appendChild(item);
             });
         }
@@ -4092,6 +4110,7 @@
             document.getElementById('adhkar-title').textContent = cat ? cat.name : 'الأذكار';
             container.innerHTML = '';
             if (items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-dim);">لا توجد نتائج مطابقة.</div>'; return; }
+            if (document.body.classList.contains('is-mobile')) { renderAdhkarPager(container, items); return; }
             items.forEach(item => {
                 const card = document.createElement('div'); card.className = 'adhkar-card';
                 const ref = (item.ref||'');
@@ -4119,8 +4138,55 @@
                 container.appendChild(card);
             });
         }
-document.getElementById('adhkar-search-btn').onclick = () => { currentAdhkarSearch = document.getElementById('adhkar-search-input').value; renderAdhkarContent(); showAdhkarTextOnMobile(); };
-        document.getElementById('adhkar-search-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { currentAdhkarSearch = document.getElementById('adhkar-search-input').value; renderAdhkarContent(); showAdhkarTextOnMobile(); } });
+        function toArabicDigits(n) { return String(n).replace(/[0-9]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'[+d]; }); }
+        function renderAdhkarPager(container, items) {
+            if (!items.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-dim);">لا توجد نتائج مطابقة.</div>'; return; }
+            currentAdhkarIndex = Math.max(0, Math.min(currentAdhkarIndex, items.length - 1));
+            const i = currentAdhkarIndex;
+            const item = items[i];
+            const ref = (item.ref || '');
+            const txt = (item.text || '');
+            const badge = (/(سورة|آية)/.test(ref) ? 'آية' : 'ذِكر');
+            container.innerHTML = '<div class="adhkar-pager">'
+                + '<div class="adhkar-pager-main">'
+                + '<span class="adhkar-badge">' + badge + '</span>'
+                + '<button type="button" class="adhkar-speak-p" id="adhkar-pager-speak" aria-label="قراءة الذِّكر صوتياً" title="قراءة الذِّكر صوتياً">🔊</button>'
+                + '<div class="adhkar-pager-text" role="button" tabindex="0" title="انقر للنسخ">' + txt + '</div>'
+                + '<div class="adhkar-pager-foot"><span class="adhkar-pager-ref">' + ref + '</span><span class="adhkar-pager-count">' + toArabicDigits(i + 1) + ' / ' + toArabicDigits(items.length) + '</span></div>'
+                + '</div>'
+                + '<div class="adhkar-pager-nav">'
+                + '<button type="button" id="adhkar-prev"' + (i === 0 ? ' disabled' : '') + '>‹ السابق</button>'
+                + '<button type="button" id="adhkar-list">القائمة</button>'
+                + '<button type="button" id="adhkar-next"' + (i === items.length - 1 ? ' disabled' : '') + '>التالي ›</button>'
+                + '</div>'
+                + '</div>';
+            const spk = document.getElementById('adhkar-pager-speak');
+            if (spk) spk.addEventListener('click', function () {
+                var ok = (typeof window.speakArabicText === 'function') ? window.speakArabicText(txt, function () {}) : false;
+                if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
+            });
+            const txtEl = container.querySelector('.adhkar-pager-text');
+            if (txtEl) {
+                const doCopy = function () {
+                    var t = txtEl.innerText;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(t).then(function () { if (typeof islShowToast === 'function') islShowToast('تم النسخ'); }).catch(function () {});
+                    } else {
+                        try { var ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); if (typeof islShowToast === 'function') islShowToast('تم النسخ'); } catch (e) {}
+                    }
+                };
+                txtEl.addEventListener('click', doCopy);
+                txtEl.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doCopy(); } });
+            }
+            const prevBtn = document.getElementById('adhkar-prev');
+            const nextBtn = document.getElementById('adhkar-next');
+            const listBtn = document.getElementById('adhkar-list');
+            if (prevBtn) prevBtn.addEventListener('click', function () { if (currentAdhkarIndex > 0) { currentAdhkarIndex--; renderAdhkarContent(); } });
+            if (nextBtn) nextBtn.addEventListener('click', function () { if (currentAdhkarIndex < items.length - 1) { currentAdhkarIndex++; renderAdhkarContent(); } });
+            if (listBtn) listBtn.addEventListener('click', function () { const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.remove('show-text'); window.scrollTo(0, 0); });
+        }
+document.getElementById('adhkar-search-btn').onclick = () => { currentAdhkarSearch = document.getElementById('adhkar-search-input').value; currentAdhkarIndex = 0; renderAdhkarContent(); showAdhkarTextOnMobile(); };
+        document.getElementById('adhkar-search-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { currentAdhkarSearch = document.getElementById('adhkar-search-input').value; currentAdhkarIndex = 0; renderAdhkarContent(); showAdhkarTextOnMobile(); } });
 
         // ==================================================
         // QURAN PLAYER
