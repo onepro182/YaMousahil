@@ -8045,7 +8045,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
                 return '<div class="kh-juz-item' + (_done ? ' done' : '') + '">'
                     + '<span class="kh-juz-num">الجزء ' + j + '</span>'
                     + '<span class="kh-juz-actions">'
-                    + '<button type="button" class="kh-juz-act kh-toread' + (!_done ? ' active' : '') + '" data-m="' + i + '" data-j="' + ji + '" data-act="toread" aria-pressed="' + (!_done) + '">لقراءة</button>'
+                    + '<button type="button" class="kh-juz-act kh-toread' + (!_done ? ' active' : '') + '" data-m="' + i + '" data-j="' + ji + '" data-act="toread" aria-pressed="' + (!_done) + '">القراءة</button>'
                     + '<button type="button" class="kh-juz-act kh-done' + (_done ? ' active' : '') + '" data-m="' + i + '" data-j="' + ji + '" data-act="done" aria-pressed="' + _done + '">تمت القراءة</button>'
                     + '</span></div>';
             }).join('') + '</div>';
@@ -8147,7 +8147,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         }).join('');
         khrList.innerHTML = m.juz.map(function (j, ji) {
             var done = !!m.done[ji];
-            return '<button type="button" class="khr-juz' + (done ? ' done' : '') + '" data-j="' + j + '" data-ji="' + ji + '"><span class="khr-num">الجزء ' + j + '</span><span class="khr-state">' + (done ? '✓ تمت القراءة' : 'لقراءة') + '</span></button>';
+            return '<button type="button" class="khr-juz' + (done ? ' done' : '') + '" data-j="' + j + '" data-ji="' + ji + '"><span class="khr-num">الجزء ' + j + '</span><span class="khr-state">' + (done ? '✓ تمت القراءة' : 'القراءة') + '</span></button>';
         }).join('');
         if (khrTitle) khrTitle.textContent = 'الختمة الجماعية';
         if (khrMeta) khrMeta.textContent = 'نصيب ' + m.name + ' — ' + khrDoneCount(m) + '/' + m.juz.length + ' أجزاء مكتملة';
