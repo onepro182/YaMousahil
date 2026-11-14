@@ -1336,6 +1336,11 @@
         body.is-mobile #quran-menu-screen .title-prayers h1{ font-size:1.9rem !important; gap:10px !important; white-space:nowrap !important; overflow:hidden !important; line-height:1.3 !important; }
         body.is-mobile #quran-menu-screen .title-prayers h1::before, body.is-mobile #quran-menu-screen .title-prayers h1::after{ width:30px !important; height:1px !important; opacity:.9; }
         body.is-mobile #quran-menu-screen .title-prayers p{ font-size:.86rem !important; }
+        /* فانوسا العنوان الذهبي — يتأرجحان برفق على جانبي « القرآن الكريم » */
+        .huj-lantern{width:36px;height:58px;flex:none;transform-origin:50% 0;animation:hujLanternSway 3.6s ease-in-out infinite alternate;filter:drop-shadow(0 3px 4px rgba(0,0,0,.55));}
+        .huj-lantern:last-child{animation-delay:-1.8s;}
+        @keyframes hujLanternSway{from{transform:rotate(-6.5deg);}to{transform:rotate(6.5deg);}}
+        body.is-mobile .huj-lantern{width:26px;height:42px;}
         body.is-mobile #quran-menus .sihatar-menu{ padding:16px 12px !important; gap:12px !important; }
         body.is-mobile #quran-menus .sihatar-mico{ width:54px !important; height:54px !important; border-radius:14px !important; }
         body.is-mobile #quran-menus .sihatar-mico .sihatar-ico3d{ width:50px !important; height:50px !important; }
@@ -2444,6 +2449,30 @@
 </head>
 <body>
     <audio id="adhan-audio" preload="none"></audio>
+    <svg style="display:none;" aria-hidden="true" width="0" height="0">
+        <symbol id="huj-lantern" viewBox="0 0 48 78">
+            <defs>
+                <linearGradient id="hujLantChain" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3b8"/><stop offset="0.5" stop-color="#d4af37"/><stop offset="1" stop-color="#8f6b12"/></linearGradient>
+                <radialGradient id="hujLantBody" cx="0.5" cy="0.42" r="0.62"><stop offset="0" stop-color="#ffe27a"/><stop offset="0.55" stop-color="#e3b64a"/><stop offset="1" stop-color="#7a5510"/></radialGradient>
+                <radialGradient id="hujLantGlow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffd76a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd76a" stop-opacity="0"/></radialGradient>
+                <linearGradient id="hujLantDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#caa13a"/><stop offset="1" stop-color="#6b4e0d"/></linearGradient>
+            </defs>
+            <line x1="24" y1="0" x2="24" y2="9" stroke="url(#hujLantChain)" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="24" cy="2.4" r="1.9" fill="#ffeeb0" stroke="#8f6b12" stroke-width="0.7"/>
+            <path d="M24 10 l2.5 5.1 5.7 .8 -4.1 4 .97 5.7 -5.07 -2.7 -5.07 2.7 .97 -5.7 -4.1 -4 5.7 -.8 Z" fill="url(#hujLantChain)" stroke="#5c430a" stroke-width="0.7" stroke-linejoin="round"/>
+            <path d="M14.5 30.5 L33.5 30.5 L29.5 24.5 L18.5 24.5 Z" fill="url(#hujLantDark)" stroke="#3f2d08" stroke-width="0.8" stroke-linejoin="round"/>
+            <circle cx="24" cy="27.4" r="1.15" fill="#ffeeb0"/>
+            <circle cx="24" cy="44.5" r="15.5" fill="url(#hujLantGlow)"/>
+            <path d="M15 44.5 C15 35.8 18.3 32.7 24 32.7 C29.7 32.7 33 35.8 33 44.5 C33 52.6 29.7 56.2 24 56.2 C18.3 56.2 15 52.6 15 44.5 Z" fill="url(#hujLantBody)" stroke="#3f2d08" stroke-width="1"/>
+            <path d="M24 36.6 l1.75 3.55 3.9 .55 -2.8 2.75 .65 3.9 -3.5 -1.85 -3.5 1.85 .65 -3.9 -2.8 -2.75 3.9 -.55 Z" fill="#3f2d08" opacity=".92"/>
+            <path d="M24 38.9 l1.05 2.13 2.34 .33 -1.68 1.65 .39 2.34 -2.1 -1.11 -2.1 1.11 .39 -2.34 -1.68 -1.65 2.34 -.33 Z" fill="#ffe27a" opacity=".95"/>
+            <line x1="15" y1="44.5" x2="33" y2="44.5" stroke="#3f2d08" stroke-width="0.9" opacity=".8"/>
+            <path d="M17.5 56.2 L30.5 56.2 L27.5 63 L20.5 63 Z" fill="url(#hujLantDark)" stroke="#3f2d08" stroke-width="0.8" stroke-linejoin="round"/>
+            <path d="M24 63 v6.2" stroke="url(#hujLantChain)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="24" cy="72.4" r="2" fill="url(#hujLantChain)" stroke="#5c430a" stroke-width="0.7"/>
+            <ellipse cx="20.4" cy="40.5" rx="1.35" ry="3.1" fill="#fff8d6" opacity=".65"/>
+        </symbol>
+    </svg>
     <div class="tv-screen">
         <div class="tv-inner">
 
@@ -3188,7 +3217,7 @@
                 <header class="header-prayers">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-quran-menu">‹ الرئيسية</button>
                     <div class="title-prayers">
-                        <h1 style="font-family:var(--font-quran);">القرآن الكريم</h1>
+                        <h1 style="font-family:var(--font-quran);"><svg class="huj-lantern" viewBox="0 0 48 78" role="img" aria-label="فانوس ذهبي"><use href="#huj-lantern"/></svg><span>القرآن الكريم</span><svg class="huj-lantern" viewBox="0 0 48 78" role="img" aria-label="فانوس ذهبي"><use href="#huj-lantern"/></svg></h1>
                         <p>القرآن الكريم : تجربة متكاملة بين القراءة والتجويد والاستماع</p>
                     </div>
                     <div style="width:80px;"></div>
