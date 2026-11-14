@@ -1453,12 +1453,17 @@
         .kh-wa{flex:none;width:30px;height:30px;border-radius:50%;border:0;background:#25D366;display:grid;place-items:center;cursor:pointer;transition:transform .15s ease;}
         .kh-wa:hover{transform:scale(1.12);}
         .mem-reset.armed{border-color:rgba(230,120,120,.8);color:#ff9a9a;background:rgba(230,120,120,.16);}
-        .kh-juz-grid{display:flex;flex-wrap:wrap;gap:6px;}
-        .kh-juz{padding:8px 10px;border-radius:12px;border:1px solid rgba(212,175,55,.35);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-size:.78rem;transition:all .2s ease;white-space:nowrap;}
-        .kh-juz:hover{border-color:var(--gold);color:#ffee9e;}
-        .kh-juz:active{transform:scale(.97);}
-        .kh-juz.done{border-color:#2fa37c;background:radial-gradient(150% 160% at 50% -40%,rgba(46,170,90,.4) 0%,rgba(26,90,60,.35) 50%,rgba(8,40,22,.4) 100%);color:#9effc0;text-decoration:none;font-weight:700;box-shadow:inset 0 1px 1px rgba(255,255,255,.15),0 3px 8px rgba(0,0,0,.4);}
-        .kh-juz.done .kh-check{display:inline-grid;place-items:center;width:18px;height:18px;background:#2fa37c;color:#062015;border-radius:50%;font-size:.7rem;margin-inline-end:5px;vertical-align:middle;}
+        .kh-juz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;}
+        .kh-juz-item{display:flex;flex-direction:column;gap:6px;padding:8px 8px 9px;border-radius:12px;border:1px solid rgba(212,175,55,.32);background:rgba(255,255,255,.04);box-shadow:inset 0 1px 1px rgba(255,255,255,.08);transition:all .2s ease;}
+        .kh-juz-item.done{border-color:rgba(46,170,90,.55);background:radial-gradient(150% 160% at 50% -40%,rgba(46,170,90,.38) 0%,rgba(26,90,60,.32) 50%,rgba(8,40,22,.4) 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.12),0 3px 8px rgba(0,0,0,.4);}
+        .kh-juz-num{font-family:var(--font-quran);font-weight:700;color:var(--gold-light);font-size:.92rem;text-align:center;letter-spacing:.01em;}
+        .kh-juz-item.done .kh-juz-num{color:#9effc0;}
+        .kh-juz-actions{display:flex;gap:5px;}
+        .kh-juz-act{flex:1 1 0;padding:7px 2px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-dim);font-family:var(--font);font-size:.7rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:all .15s ease;}
+        .kh-juz-act:hover{color:var(--gold-light);border-color:rgba(212,175,55,.4);}
+        .kh-juz-act:active{transform:scale(.96);}
+        .kh-juz-act.kh-toread.active{border-color:var(--gold);color:#ffee9e;background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 3px 8px rgba(212,175,55,.18);text-shadow:0 1px 2px rgba(0,0,0,.6);}
+        .kh-juz-act.kh-done.active{border-color:#2fa37c;color:#062015;background:linear-gradient(160deg,#3ddc84 0%,#1d8a52 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.45),0 3px 8px rgba(46,170,90,.35);text-shadow:none;}
         .wa-btn{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:#25D366;display:grid;place-items:center;cursor:pointer;transition:transform .15s ease,filter .15s ease;}
         .wa-btn:hover{filter:brightness(1.08);transform:scale(1.08);}
         .wa-btn:active{transform:scale(.96);}
@@ -3389,7 +3394,7 @@
                                     <button type="button" class="kh-btn kh-import-btn" id="kh-import-btn">استيراد</button>
                                     <button type="button" class="kh-btn kh-import-clear" id="kh-import-clear">مسح</button>
                                 </div>
-                                <p class="kh-import-note">قائمة فارغة تستورد قائمة الكنترة التي أمامك (الأسماء الموجودة تُضاف)</p>
+                                <p class="kh-import-note">تقبل الأرقام العربية المنسّقة (١٢٣) واللاتينية (123). الأسماء بدون أجزاء توزَّع عليها الأجزاء المتبقية بالتساوي.</p>
                             </div>
                         </details>
                         <div class="kh-member-add">
@@ -7936,7 +7941,13 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             var card = document.createElement('div');
             card.className = 'kh-member-card' + (complete ? ' kh-member-done' : '');
             card.innerHTML = '<div class="kh-member-head"><b>' + khEscapeHtml(m.name) + '</b><div class="kh-member-side"><span>' + mDone + '/' + m.juz.length + ' أجزاء' + (complete ? ' ✓' : '') + '</span><button type="button" class="kh-wa" data-m="' + i + '" aria-label="إرسال توزيع ' + khEscapeHtml(m.name) + ' عبر واتساب" title="إرسال توزيع ' + khEscapeHtml(m.name) + ' عبر واتساب"><svg viewBox="0 0 24 24" width="15" height="15" fill="#ffffff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button></div></div><div class="kh-juz-grid">' + m.juz.map(function (j, ji) {
-                return '<button type="button" class="kh-juz' + (m.done[ji] ? ' done' : '') + '" data-m="' + i + '" data-j="' + ji + '" aria-pressed="' + (m.done[ji] ? 'true' : 'false') + '">' + (m.done[ji] ? '<span class="kh-check" aria-hidden="true">✓</span> الجزء ' + j + ' — تمت القراءة' : 'الجزء ' + j) + '</button>';
+                var _done = !!m.done[ji];
+                return '<div class="kh-juz-item' + (_done ? ' done' : '') + '">'
+                    + '<span class="kh-juz-num">الجزء ' + j + '</span>'
+                    + '<span class="kh-juz-actions">'
+                    + '<button type="button" class="kh-juz-act kh-toread' + (!_done ? ' active' : '') + '" data-m="' + i + '" data-j="' + ji + '" data-act="toread" aria-pressed="' + (!_done) + '">لقراءة</button>'
+                    + '<button type="button" class="kh-juz-act kh-done' + (_done ? ' active' : '') + '" data-m="' + i + '" data-j="' + ji + '" data-act="done" aria-pressed="' + _done + '">تمت القراءة</button>'
+                    + '</span></div>';
             }).join('') + '</div>';
             list.appendChild(card);
         });
@@ -7955,6 +7966,44 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         if (tracker) tracker.hidden = true;
         khSetupRestore();
     }
+    // استيراد مباشر من رابط واتساب (?wa-khatma=1&g=&d=&n=&j=1,3,5) :
+    // يدمج نصيب العضو (الاسم + الأجزاء + الموعد + المجموعة) في خطة هذا الجهاز ثم يعرضها
+    function importKhatmaFromLink(data) {
+        try {
+            if (!data || !data.name) return false;
+            var juz = (data.juz || []).filter(function (n) { return !isNaN(n) && n >= 1 && n <= 30; });
+            var seen = {}, newJuz = [];
+            juz.forEach(function (j) { if (!seen[j]) { seen[j] = 1; newJuz.push(j); } });
+            newJuz.sort(function (a, b) { return a - b; });
+            if (!newJuz.length) return false;
+            var st = khatmaLoad();
+            if (!st || !st.members) st = { group: '', date: '', members: [] };
+            if (data.group && !st.group) st.group = data.group;
+            if (data.date) st.date = data.date; // الموعد القادم عبر الدعوة هو المعتمد
+            var idx = -1;
+            st.members.forEach(function (m, i) { if (m && m.name === data.name) idx = i; });
+            if (idx >= 0) {
+                var old = st.members[idx];
+                var oldMap = {};
+                (old.juz || []).forEach(function (j, i) { oldMap[j] = !!(old.done && old.done[i]); });
+                st.members[idx] = { name: data.name, juz: newJuz, done: newJuz.map(function (j) { return !!oldMap[j]; }) };
+            } else {
+                st.members.push({ name: data.name, juz: newJuz, done: newJuz.map(function () { return false; }) });
+            }
+            khatmaSave(st);
+            // مزامنة نموذج الإعداد حتى يعكس ما استُورد عند العودة إليه
+            khMembers = st.members.map(function (m) { return m.name; });
+            var g = document.getElementById('kh-group'); if (g && st.group) g.value = st.group;
+            var d = document.getElementById('kh-date'); if (d && st.date) d.value = st.date;
+            if (typeof khSetupCommit === 'function') khSetupCommit();
+            if (typeof updateKhDaysLeft === 'function') updateKhDaysLeft();
+            if (typeof khatmaRenderMembers === 'function') khatmaRenderMembers();
+            return true;
+        } catch (e) { return false; }
+    }
+    window.importKhatmaFromLink = importKhatmaFromLink;
+    window.initKhatma = initKhatma;
+    window.khatmaLoad = khatmaLoad;
     var khGroup = document.getElementById('kh-group');
     if (khGroup) khGroup.addEventListener('input', khSetupCommit);
     var khDate = document.getElementById('kh-date');
@@ -8008,6 +8057,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         khatmaRenderTracker(state);
     };
     function parseKhImport(text) {
+        text = String(text || '').replace(/[٠-٩]/g, function (d) { return String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)); }); // طابع رقمي عربي → لاتيني
         var members = [];
         var unassignedIdx = []; // members without explicit parts
         var assigned = {};
@@ -8016,7 +8066,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             var m = line.match(/^([^:،,]+)\s*[:：]\s*([\d\s،,]+)\s*$/);
             if (m) {
                 var name = m[1].trim(); if (!name) return;
-                var partsStr = m[2].replace(/[٠-٩]/g, function (d) { return String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)); });
+                var partsStr = m[2];
                 var parts = partsStr.split(/[،,+\s]+/).map(function (n) { return parseInt(n, 10); }).filter(function (n) { return !isNaN(n) && n >= 1 && n <= 30; });
                 // dedupe
                 var seen = {}, unique = [];
@@ -8128,20 +8178,22 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
                     }
                     var daysSuffix = '';
                     if (daysLeft !== null) { if (daysLeft < 0) daysSuffix = ' — مضى الموعد'; else if (daysLeft === 0) daysSuffix = ' — اليوم هو آخر موعد'; else daysSuffix = ' — بقي ' + daysLeft + ' يوما'; }
+                var wLink = 'https://onepro182.github.io/YaMousahil/?wa-khatma=1&g=' + encodeURIComponent(wst.group || '') + '&d=' + encodeURIComponent(dTxt) + '&n=' + encodeURIComponent(wm.name) + '&j=' + partsCsv;
                 var wmsg = '🕌 ' + wm.name + ' — نصيبك من الختمة الجماعية' + (wst.group ? ' : ' + wst.group : '') + '\n'
                     + 'الجزء ' + partsArabic + '\n'
                     + (dTxt ? 'موعد الإنجاز المستهدف: ' + dTxt + daysSuffix + '\n' : '')
-                    + 'تطبيق يا مسهّل — قراءة القرآن الكريم (فهرس الأجزاء):\n'
-                    + 'https://onepro182.github.io/YaMousahil/?khatmaParts=' + partsCsv;
+                    + 'افتح الرابط — سيُفتح تطبيق يا مسهّل ويُستورد نصيبك تلقائيًا (الاسم والأجزاء والموعد):\n'
+                    + wLink;
                 try { window.open('https://wa.me/?text=' + encodeURIComponent(wmsg), '_blank', 'noopener'); } catch (e2) {}
             }
             return;
         }
-        var b = e.target && e.target.closest ? e.target.closest('.kh-juz') : null;
+        var b = e.target && e.target.closest ? e.target.closest('.kh-juz-act') : null;
         if (!b) return;
         var mi = parseInt(b.getAttribute('data-m'), 10); var ji = parseInt(b.getAttribute('data-j'), 10);
+        var act = b.getAttribute('data-act');
         var st = khatmaLoad(); if (!st || isNaN(mi) || isNaN(ji) || !st.members[mi]) return;
-        st.members[mi].done[ji] = !st.members[mi].done[ji];
+        st.members[mi].done[ji] = (act === 'done');
         khatmaSave(st);
         khatmaRenderTracker(st);
     };
@@ -8515,6 +8567,34 @@ function notifyPrayer(prayerKey, isTest, mode) {
         });
         // Test après déploiement: ?testAlert=1
         try{var _ta=new URLSearchParams(location.search); if(_ta.get('testAlert')==='1'||_ta.get('testalert')==='1'||_ta.get('test')==='alert'){setTimeout(function(){if(typeof showAlertOverlay==='function') showAlertOverlay('isha','now');},900);}}catch(e){}
+        // Un lien WhatsApp : ?wa-khatma=1&g=مجموعة&d=YYYY-MM-DD&n=الاسم&j=1,3,5 → افتح مخطط الختمة واستورد نصيب العضو مباشرة
+        try {
+            var _wq = new URLSearchParams(location.search);
+            if (_wq.get('wa-khatma')) {
+                var _wName = (_wq.get('n') || '').trim();
+                var _wJuz = String(_wq.get('j') || '').split(',').map(function (s) { return parseInt(s.trim(), 10); }).filter(function (n) { return !isNaN(n) && n >= 1 && n <= 30; });
+                var _wGroup = (_wq.get('g') || '').trim();
+                var _wDate = (_wq.get('d') || '').trim();
+                if (_wName && _wJuz.length && typeof importKhatmaFromLink === 'function') {
+                    importKhatmaFromLink({ group: _wGroup, date: _wDate, name: _wName, juz: _wJuz });
+                    var _wPartsTxt = _wJuz.join('، ');
+                    var _wOpen = function () {
+                        try {
+                            if (typeof initKhatma === 'function') initKhatma();
+                            else if (typeof khatmaRenderTracker === 'function') { var _st = khatmaLoad(); if (_st) khatmaRenderTracker(_st); }
+                            if (typeof khatmaScreen !== 'undefined' && khatmaScreen && typeof showScreen === 'function') showScreen(khatmaScreen); else { var _kEl = document.getElementById('khatma-screen'); if (_kEl && typeof showScreen === 'function') showScreen(_kEl); }
+                            if (typeof islShowToast === 'function') islShowToast('📱 تم استيراد نصيبك من واتساب — ' + _wName + ' : الأجزاء ' + _wPartsTxt);
+                            else if (typeof showNotice === 'function') showNotice('تم استيراد نصيبك: الأجزاء ' + _wPartsTxt);
+                            return true;
+                        } catch (e3) { return false; }
+                    };
+                    var _tries2 = 0;
+                    var _int2 = setInterval(function () { _tries2++; if (_wOpen() || _tries2 > 20) clearInterval(_int2); }, 200);
+                    // تنظيف الرابط حتى لا تُعاد الكتابة عند كل تحديث
+                    try { history.replaceState(null, '', location.pathname); } catch (e4) {}
+                }
+            }
+        } catch (e) {}
         // Un lien profond : ?khatmaParts=1,3,5,... افتح قراءة القرآن الكريم > الأجزاء مع تمييز الأجزاء المعنية
         try {
             var _kp = new URLSearchParams(location.search).get('khatmaParts');
