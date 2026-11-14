@@ -629,39 +629,20 @@
         .ayah-reading{background-color:rgba(212,175,55,0.25);border-radius:10px;padding:0 8px;box-shadow:0 0 10px rgba(212,175,55,0.2);display:inline-block;}
         .ayah-num-circle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background-color:rgba(17, 66, 49, 0.8);color:var(--cream);border:1px solid var(--glass-border);border-radius:50%;font-size:1rem;font-family:var(--font);margin:0 8px;vertical-align:middle;font-weight:700;}
         
-        .quran-sidebar{width:320px;display:flex;flex-direction:column;gap:10px;direction:rtl;}
-        .sidebar-tabs{display:flex;gap:6px;}
-        .sidebar-tab{flex:1;text-align:center;padding:12px 4px;border-radius:8px;color:var(--text-dim);font-family:var(--font);font-size:.95rem;font-weight:600;cursor:pointer;transition:all 0.2s;min-width:0;}
-        #isl-sheet-close{flex:0.55;}
+        /* فهرس قراءة القرآن الكريم : نفس مظهر فهرس مصحف التجويد بالضبط */
+        .quran-sidebar{width:330px;background:#221d23;border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:0;direction:rtl;align-self:stretch;}
+        .sidebar-tabs{display:flex;background:#221d23;border-bottom:1px solid rgba(255,255,255,.08);gap:0;padding:0;}
+        .sidebar-tab{flex:1;text-align:center;padding:11px 2px;border:none;background:transparent;color:#efe9dc;font-family:var(--font);font-size:1rem;font-weight:400;cursor:pointer;border-radius:0;min-width:0;transition:background .15s;}
+        .sidebar-tab.active{background:#907028;color:#fff;}
+        .sidebar-tab:hover{border-color:transparent;}
+        .tajweed-row.current{background:rgba(212,175,55,.14);border-color:rgba(212,175,55,.4);}
         #isl-mark-btn{width:34px;height:34px;flex:none;border-radius:9px;background:rgba(255,255,255,.05);color:#d4af37;border:1px solid rgba(212,175,55,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;}
         #isl-mark-btn svg{width:17px;height:17px;}
         #isl-mark-btn.on{background:rgba(212,175,55,.25);color:#ffeeb0;}
         /* sidebar compacte optionnelle (bouton ✕) */
         .quran-split-view.sidebar-hidden .quran-sidebar{display:none !important;}
         .quran-split-view.sidebar-hidden .quran-text-area{flex:1;}
-        .sidebar-tab:hover{border-color:var(--gold);}
-        .sidebar-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,0.15);}
-        .surah-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-left:5px;}
-        /* الأجزاء (Juz) - grid style */
-        #isl-juz-list-container.juz-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;padding:6px 2px 10px;overflow-y:auto;align-content:start;}
-        .juz-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 10px;border-radius:14px;border:1px solid var(--glass-border);background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(212,175,55,0.03)),var(--glass-bg);color:var(--text-main);cursor:pointer;text-align:center;transition:all .22s;min-height:108px;}
-        .juz-card:hover{border-color:rgba(212,175,55,0.55);background:linear-gradient(180deg,rgba(212,175,55,0.1),rgba(212,175,55,0.04)),var(--glass-bg);transform:translateY(-1px);}
-        .juz-card.active{border-color:var(--gold);background:linear-gradient(180deg,rgba(212,175,55,0.18),rgba(212,175,55,0.06)),var(--glass-bg);box-shadow:0 0 0 1px rgba(212,175,55,0.12) inset;}
-        .juz-num{font-family:var(--font-quran);font-size:2rem;line-height:1;color:var(--gold);font-weight:700;text-shadow:0 2px 14px rgba(212,175,55,0.18);}
-        .juz-label{font-family:var(--font-quran);font-size:1rem;color:var(--cream);font-weight:700;line-height:1.3;}
-        .juz-start{font-size:.78rem;color:var(--text-dim);line-height:1.35;margin-top:2px;}
-        @media (max-width:560px){ #isl-juz-list-container.juz-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;} .juz-card{min-height:96px;padding:12px 8px;} .juz-num{font-size:1.75rem;} }
-        
-        .surah-item {border-radius:8px;padding:8px 12px;cursor:pointer;transition:all 0.2s;height:60px;display:flex;align-items:center;}
-        .surah-item:hover{border-color:var(--gold);background:rgba(212,175,55,0.15);}
-        .surah-item.active{border:2px solid var(--gold);background:rgba(212,175,55,0.15);}
-        
-        .surah-num-circle{width:34px;height:34px;border-radius:50%;background-color:rgba(17, 66, 49, 0.8);color:var(--text-dim);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;margin-left:12px;flex-shrink:0;border:1px solid var(--glass-border);}
-        .surah-item.active .surah-num-circle{background-color:var(--gold);color:#061f15;}
-        .surah-info{flex:1;display:flex;flex-direction:column;justify-content:center;}
-        .surah-name-ar{font-family:var(--font-quran);font-size:1.3rem;font-weight:700;color:var(--cream);line-height:1.2;}
-        .surah-name-en{font-size:0.8rem;color:var(--text-main);font-weight:600;}
-        .surah-meta-info{text-align:left;font-size:0.7rem;color:var(--text-dim);line-height:1.4;direction:rtl;}
+        /* فهارس قراءة القرآن الكريم : صفوف مصحف التجويد (tajweed-row) */
         
         /* ADHKAR SECTION */
         .adhkar-split-view { display: flex; gap: 15px; height: 100%; flex-direction: row; } 
@@ -2354,17 +2335,20 @@
                             </div>
                             <div class="quran-sidebar">
                                 <div id="isl-resume-bar"></div>
-                                <div class="sidebar-tabs">
-                                    <button type="button" class="sidebar-tab glass-btn" id="isl-sheet-close" aria-label="إغلاق الفهرس" title="إغلاق الفهرس">✕</button>
-                                    <div class="sidebar-tab glass-btn active" id="tab-surah">السور</div>
-                                    <div class="sidebar-tab glass-btn" id="tab-juz">الأجزاء</div>
-                                    <div class="sidebar-tab glass-btn" id="tab-pages">الصفحات</div>
-                                    <div class="sidebar-tab glass-btn" id="tab-marks">علامات</div>
+                                <div class="tajweed-sheet-head">
+                                    <span class="tajweed-drawer-title">قراءة القرآن الكريم</span>
+                                    <button type="button" class="tajweed-ico" id="isl-sheet-close" aria-label="إغلاق الفهرس" title="إغلاق الفهرس">✕</button>
                                 </div>
-                                <div class="surah-list" id="isl-surah-list-container"></div>
-                                <div class="surah-list juz-grid" id="isl-juz-list-container" style="display:none;"></div>
-                                <div class="surah-list pages-list" id="isl-pages-list-container" style="display:none;"></div>
-                                <div class="surah-list marks-list" id="isl-marks-list-container" style="display:none;"></div>
+                                <div class="sidebar-tabs" id="isl-sidebar-tabs">
+                                    <button type="button" class="sidebar-tab active" id="tab-surah">السور</button>
+                                    <button type="button" class="sidebar-tab" id="tab-juz">الأجزاء</button>
+                                    <button type="button" class="sidebar-tab" id="tab-pages">الصفحات</button>
+                                    <button type="button" class="sidebar-tab" id="tab-marks">علامات</button>
+                                </div>
+                                <div class="tajweed-sheet-body" id="isl-surah-list-container"></div>
+                                <div class="tajweed-sheet-body" id="isl-juz-list-container" style="display:none;"></div>
+                                <div class="tajweed-sheet-body" id="isl-pages-list-container" style="display:none;"></div>
+                                <div class="tajweed-sheet-body" id="isl-marks-list-container" style="display:none;"></div>
                             </div>
                         </div>
                     </div>
@@ -4788,9 +4772,9 @@ var gender = 'male';
             else if (!fromWird && typeof window._setQuranWirdMode === 'function' && window._quranWirdOnly) window._setQuranWirdMode(false);
             activatePane('quran');
             var ts = document.getElementById('tab-surah'); if (ts && !window._quranWirdOnly) ts.click();
-            document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#isl-surah-list-container .tajweed-row').forEach(el => el.classList.remove('current'));
             var surahItem = document.getElementById('surah-item-' + n);
-            if (surahItem) { surahItem.classList.add('active'); surahItem.click(); if (surahItem.scrollIntoView) try { surahItem.scrollIntoView({ block: 'center' }); } catch(e){} }
+            if (surahItem) { surahItem.classList.add('current'); surahItem.click(); if (surahItem.scrollIntoView) try { surahItem.scrollIntoView({ block: 'center' }); } catch(e){} }
         }
         function renderWirdMenu() {
             var list = document.getElementById('wird-cat-list'); if (!list) return;
@@ -6450,27 +6434,28 @@ var gender = 'male';
             b.classList.toggle('on', !!found);
             b.setAttribute('aria-pressed', found ? 'true' : 'false');
         }
+        function islJumpToPage(p) {
+            var names = (typeof SURAH_NAMES !== 'undefined') ? SURAH_NAMES : [];
+            var entry = TAJWEED_PAGE_VERSE[p - 1] || 5001;
+            var sura = Math.floor(entry / 1000); if (sura < 1 || sura > 114) sura = 1;
+            var aya = entry % 1000; if (aya < 1) aya = 1;
+            var meta = (typeof SURAH_META !== 'undefined' && SURAH_META[sura - 1]) || { type: '', ayahs: '...' };
+            islTargetAyah = aya;
+            selectSurah(sura, names[sura - 1] || ('سورة ' + sura), meta);
+            showQuranTextOnMobile();
+        }
         function islRenderPages() {
             var box = document.getElementById('isl-pages-list-container'); if (!box) return;
-            var html = '';
             var names = (typeof SURAH_NAMES !== 'undefined') ? SURAH_NAMES : [];
+            var html = '';
             for (var p = 1; p <= TAJWEED_TOTAL; p++) {
                 var entry = TAJWEED_PAGE_VERSE[p - 1] || 5001;
                 var sura = Math.floor(entry / 1000); if (sura < 1 || sura > 114) sura = 1;
-                html += '<div class="surah-item glass-btn" data-page="' + p + '"><div class="surah-num-circle">' + p + '</div><div class="surah-info"><div class="surah-name-ar">الصفحة ' + p + '</div><div class="surah-name-en">' + (names[sura - 1] || '') + '</div></div></div>';
+                html += '<button type="button" class="tajweed-row" data-page="' + p + '"><b>' + p + '</b><span>الصفحة ' + p + '</span><small>' + (names[sura - 1] || '') + '</small></button>';
             }
             box.innerHTML = html;
-            box.querySelectorAll('.surah-item').forEach(function (el) {
-                el.onclick = function () {
-                    var p = parseInt(el.getAttribute('data-page'), 10);
-                    var entry = TAJWEED_PAGE_VERSE[p - 1] || 5001;
-                    var sura = Math.floor(entry / 1000); if (sura < 1 || sura > 114) sura = 1;
-                    var aya = entry % 1000; if (aya < 1) aya = 1;
-                    var meta = (typeof SURAH_META !== 'undefined' && SURAH_META[sura - 1]) || { type: '', ayahs: '...' };
-                    islTargetAyah = aya;
-                    selectSurah(sura, names[sura - 1] || ('سورة ' + sura), meta);
-                    showQuranTextOnMobile();
-                };
+            box.querySelectorAll('.tajweed-row').forEach(function (el) {
+                el.onclick = function () { islJumpToPage(parseInt(el.getAttribute('data-page'), 10)); };
             });
         }
         function islRenderMarks() {
@@ -6481,10 +6466,10 @@ var gender = 'male';
             arr.sort(function (a, b) { return (a.s - b.s) || (a.a - b.a); });
             var html = '';
             arr.forEach(function (m) {
-                html += '<div class="surah-item glass-btn" data-s="' + m.s + '" data-a="' + m.a + '"><div class="surah-num-circle">★</div><div class="surah-info"><div class="surah-name-ar">سورة ' + (names[m.s - 1] || m.s) + ' · آية ' + m.a + '</div><div class="surah-name-en">اضغط للانتقال</div></div></div>';
+                html += '<button type="button" class="tajweed-row mark" data-s="' + m.s + '" data-a="' + m.a + '"><b>★</b><span>سورة ' + (names[m.s - 1] || m.s) + ' · آية ' + m.a + '</span><small>اضغط للانتقال</small></button>';
             });
             box.innerHTML = html;
-            box.querySelectorAll('.surah-item').forEach(function (el) {
+            box.querySelectorAll('.tajweed-row').forEach(function (el) {
                 el.onclick = function () {
                     var s = parseInt(el.getAttribute('data-s'), 10); var a = parseInt(el.getAttribute('data-a'), 10);
                     var meta = (typeof SURAH_META !== 'undefined' && SURAH_META[s - 1]) || { type: '', ayahs: '...' };
@@ -6504,9 +6489,7 @@ var gender = 'male';
                 if (t) { t.classList.toggle('active', k === tab); }
                 var c = document.getElementById(containers[k]);
                 if (c) {
-                    if (k === 'pages') { c.style.display = (k === tab) ? 'flex' : 'none'; }
-                    else if (k === 'juz') { c.style.display = (k === tab) ? 'grid' : 'none'; }
-                    else { c.style.display = (k === tab) ? 'flex' : 'none'; }
+                    c.style.display = (k === tab) ? 'flex' : 'none';
                 }
             });
             if (tab === 'pages') islRenderPages();
@@ -6526,8 +6509,8 @@ var gender = 'male';
             bar.onclick = (e) => {
                 if (e.target && e.target.id === 'isl-resume-clear') { try { localStorage.removeItem('islQuranBookmark'); } catch (err) {} bar.classList.remove('show'); document.querySelectorAll('#isl-quran-body .ayah-bookmark').forEach(x => x.classList.remove('ayah-bookmark')); return; }
                 document.getElementById('tab-surah').click();
-                document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
-                const si = document.getElementById('surah-item-' + bm.s); if (si) si.classList.add('active');
+                document.querySelectorAll('#isl-surah-list-container .tajweed-row').forEach(el => el.classList.remove('current'));
+                const si = document.getElementById('surah-item-' + bm.s); if (si) si.classList.add('current');
                 islTargetAyah = bm.a; selectSurah(bm.s, SURAH_NAMES[bm.s - 1], SURAH_META[bm.s - 1]); showQuranTextOnMobile();
             };
         }
@@ -6550,20 +6533,34 @@ var gender = 'male';
         function generateSurahGrid() {
             const container = document.getElementById('isl-surah-list-container'); if (!container) return; container.innerHTML = '';
             var list = window._quranWirdOnly ? window._quranWirdSurahs : null;
+            // مربع « ابحث برقم الصفحة » — نفس مربع تبويب السور في فهرس مصحف التجويد
+            var searchHtml = '<div class="tw-pagesearch" style="display:flex;gap:6px;margin-bottom:8px;"><input type="number" id="isl-page-search" min="1" max="604" placeholder="ابحث برقم الصفحة" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#efe9dc;font-family:var(--font);font-size:.9rem;"><button type="button" id="isl-page-search-btn" style="padding:8px 12px;border-radius:8px;border:1px solid rgba(212,175,55,.4);background:rgba(212,175,55,.2);color:#d1c48d;font-family:var(--font);cursor:pointer;">انتقال</button></div>';
+            container.innerHTML = searchHtml;
+            const gotoPage = function (inp) {
+                var p = parseInt(inp && inp.value, 10);
+                if (!p || p < 1 || p > 604) { islShowToast('⚠ صفحة بين 1 و 604'); return; }
+                islJumpToPage(p);
+            };
+            var pageSearch = document.getElementById('isl-page-search');
+            var pageSearchBtn = document.getElementById('isl-page-search-btn');
+            if (pageSearchBtn) pageSearchBtn.onclick = function () { gotoPage(pageSearch); };
+            if (pageSearch) pageSearch.addEventListener('keydown', function (e) { if (e.key === 'Enter') gotoPage(pageSearch); });
             SURAH_NAMES.forEach((name, index) => {
                 const num = index + 1;
                 if (list && list.indexOf(num) === -1) return;
                 const meta = SURAH_META[index] || { type: "مكية", ayahs: "..." };
-                const item = document.createElement('div'); item.className = 'surah-item glass-btn'; item.id = `surah-item-${num}`;
-                item.innerHTML = `<div class="surah-num-circle">${num}</div><div class="surah-info"><div class="surah-name-ar">${name}</div><div class="surah-name-en">${SURAH_ENGLISH_NAMES[index] || ''}</div></div><div class="surah-meta-info"><div>آيات ${meta.ayahs}</div><div>${meta.type}</div><div>صفحة ${SURAH_PAGES[index] || ''}</div></div>`;
-                item.onclick = () => { document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active')); item.classList.add('active'); islTargetAyah = null; selectSurah(num, name, meta); showQuranTextOnMobile(); };
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'tajweed-row'; item.id = `surah-item-${num}`;
+                item.innerHTML = `<b>${num}</b><span>${name}</span><small>${meta.ayahs} آية · ص ${SURAH_PAGES[index] || ''} · ${meta.type}</small>`;
+                item.onclick = () => { document.querySelectorAll('#isl-surah-list-container .tajweed-row').forEach(el => el.classList.remove('current')); item.classList.add('current'); islTargetAyah = null; selectSurah(num, name, meta); showQuranTextOnMobile(); };
                 container.appendChild(item);
             });
             var firstNum = (list && list.length) ? list[0] : 1;
             var firstName = SURAH_NAMES[firstNum - 1];
             selectSurah(firstNum, firstName, SURAH_META[firstNum - 1]);
             var firstItem = document.getElementById('surah-item-' + firstNum);
-            if (firstItem) firstItem.classList.add('active');
+            if (firstItem) firstItem.classList.add('current');
         }
         // صفحات المصحف (المصحف المدني 604 صفحة) - بداية كل سورة
         const SURAH_PAGES = [1,2,50,77,10,106,128,151,177,187,208,221,235,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,555,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,598,599,599,600,600,601,601,601,602,604,604,604,604,604,604,604,604,604];
@@ -6572,26 +6569,22 @@ var gender = 'male';
                 function generateJuzGrid() {
             const container = document.getElementById('isl-juz-list-container'); if (!container) return;
             container.innerHTML = '';
-            container.classList.add('juz-grid');
-            var juzNames = ['','الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر','الحادي عشر','الثاني عشر','الثالث عشر','الرابع عشر','الخامس عشر','السادس عشر','السابع عشر','الثامن عشر','التاسع عشر','العشرون','الحادي والعشرون','الثاني والعشرون','الثالث والعشرون','الرابع والعشرون','الخامس والعشرون','السادس والعشرون','السابع والعشرون','الثامن والعشرون','التاسع والعشرون','الثلاثون'];
             for (let i = 0; i < 30; i++) {
                 const juzNum = i + 1; const start = JUZ_STARTS[i]; const surahIndex = start[0] - 1; const ayahNum = start[1];
                 const item = document.createElement('button');
                 item.type = 'button';
-                item.className = 'juz-card glass-btn';
+                item.className = 'tajweed-row';
                 var sName = (typeof SURAH_NAMES !== 'undefined' && SURAH_NAMES[surahIndex]) ? SURAH_NAMES[surahIndex] : '';
-                item.innerHTML = '<span class="juz-num">' + juzNum + '</span>'
-                    + '<span class="juz-label">الجزء ' + (juzNames[juzNum]||juzNum) + '</span>'
-                    + '<span class="juz-start">سورة ' + sName + ' • الآية ' + ayahNum + ' • صفحة ' + (JUZ_PAGES[i]||'') + '</span>';
+                item.innerHTML = '<b>' + juzNum + '</b><span>الجزء ' + juzNum + '</span><small>ص ' + (JUZ_PAGES[i]||'') + ' · ' + sName + ' ' + ayahNum + '</small>';
                 item.onclick = () => {
-                    container.querySelectorAll('.juz-card').forEach(el => el.classList.remove('active'));
-                    item.classList.add('active');
+                    container.querySelectorAll('.tajweed-row').forEach(el => el.classList.remove('current'));
+                    item.classList.add('current');
                     document.getElementById('tab-surah').click();
                     islTargetAyah = ayahNum;
                     selectSurah(start[0], SURAH_NAMES[surahIndex], SURAH_META[surahIndex]);
-                    document.querySelectorAll('#isl-surah-list-container .surah-item').forEach(el => el.classList.remove('active'));
+                    document.querySelectorAll('#isl-surah-list-container .tajweed-row').forEach(el => el.classList.remove('current'));
                     const surahItem = document.getElementById('surah-item-' + start[0]);
-                    if (surahItem) surahItem.classList.add('active');
+                    if (surahItem) surahItem.classList.add('current');
                     showQuranTextOnMobile();
                 };
                 container.appendChild(item);
