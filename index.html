@@ -679,10 +679,38 @@
         .adhkar-pager-ref{color:var(--gold);font-size:.85rem;font-weight:700;}
         .adhkar-pager-count{background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.5);color:var(--gold);border-radius:999px;padding:3px 13px;font-size:.78rem;font-weight:700;white-space:nowrap;direction:ltr;}
         .adhkar-pager-nav{flex:none;display:flex;gap:8px;}
-        .adhkar-pager-nav button{flex:1;min-height:46px;border-radius:12px;border:1px solid rgba(212,175,55,.45);background:rgba(255,255,255,.07);color:var(--gold-light);font-family:var(--font);font-weight:700;font-size:.92rem;cursor:pointer;transition:background .2s,transform .15s;}
-        .adhkar-pager-nav button:active{background:rgba(212,175,55,.3);transform:scale(.97);}
+        /* أزرار حصن المسلم بأسلوب 3D مطابق لأزرار المسبحة (العد التلقائي) */
+        .adhkar-pager-nav button,
+        #adhkar-back-to-cats,
+        .adhkar-search-box button,
+        .adhkar-speak-p{
+            border:1px solid rgba(255,255,255,.16);
+            border-radius:12px;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:#cdbf8a;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            transition:all .2s ease;
+        }
+        .adhkar-pager-nav button{flex:1;min-height:40px;padding:7px 6px;font-family:var(--font-quran);font-weight:700;font-size:.9rem;cursor:pointer;white-space:nowrap;}
+        #adhkar-back-to-cats{min-height:44px;padding:0 16px;font-family:var(--font-quran);font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+        .adhkar-search-box button{width:44px;min-height:44px;flex:none;display:grid;place-items:center;font-size:1.1rem;cursor:pointer;}
+        .adhkar-pager-nav button:hover,
+        #adhkar-back-to-cats:hover,
+        .adhkar-search-box button:hover,
+        .adhkar-speak-p:hover{border-color:var(--gold);color:#ffe9a8;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);}
+        .adhkar-pager-nav button:active,
+        #adhkar-back-to-cats:active,
+        .adhkar-search-box button:active,
+        .adhkar-speak-p:active{transform:scale(.97);}
         .adhkar-pager-nav button:disabled{opacity:.35;cursor:default;}
-        .adhkar-pager-nav #adhkar-next{background:linear-gradient(110deg,#d4af37,#b8860b);color:#0b132b;border-color:var(--gold);}
+        .adhkar-pager-nav button:disabled:hover{border-color:rgba(255,255,255,.16);color:#cdbf8a;transform:none;}
+        .adhkar-pager-nav #adhkar-next{
+            border-color:var(--gold);
+            color:#ffee9e;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -3px 6px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+        }
         .adhkar-pager-nav #adhkar-list{flex:.9;}
 
         /* Tasbih */
