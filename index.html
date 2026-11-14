@@ -1286,6 +1286,10 @@
         #radio-toggle{display:flex;align-items:center;justify-content:center;gap:8px;}
         .about-content { text-align: center; padding: 20px; }
         .about-content h2 { color: var(--gold); margin-bottom: 15px; font-family: var(--font-quran); font-size: 2rem; }
+        .about-tagline{color:var(--gold);font-family:var(--font-quran);font-size:1.15rem;font-weight:700;margin:0 0 10px;}
+        .about-desc{color:var(--text-dim);font-size:.88rem;line-height:2;margin:0 0 16px;max-width:520px;margin-inline:auto;}
+        .about-credit{margin:0 0 6px !important;font-size:1.05rem;}
+        .about-dua{margin:0 !important;color:var(--gold) !important;font-family:var(--font-quran);font-size:.95rem;}
         .about-content .contact-info { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; display: inline-block; text-align: right; }
         .about-content .contact-info p { margin-bottom: 10px; color: var(--text-main); }
         .about-content .contact-info a { color: var(--gold); text-decoration: none; }
@@ -3360,7 +3364,9 @@
                                         <img class="share-logo logo3d" src="Logo.png" alt="شعار تطبيق YaMousahil" onerror="this.style.display='none'">
                                     </div>
                                     <h2>حول التطبيق</h2>
-                                    <div class="contact-info"><p><strong>تطوير:</strong> فريق YaMousahil</p><p><strong>البريد:</strong> <a href="mailto:onepro182@gmail.com"> onepro182@gmail.com </a></p><p><strong>الموقع:</strong> <a href="https://yamousahil.com" target="_blank" rel="noopener">yamousahil.com</a></p></div>
+                                    <p class="about-tagline">رفيقك الرقمي للقرآن الكريم والعبادة والخدمات اليومية</p>
+                                    <p class="about-desc">اكتشف YaMousahil، التطبيق الذي يجمع بين روحانية القرآن الكريم وسهولة الوصول إلى الخدمات الإيمانية والصحية واليومية، في تجربة رقمية متكاملة صُممت لتكون قريبة منك أينما كنت.</p>
+                                    <div class="contact-info"><p class="about-credit">مع تحياتي: <strong>مهندس/ جمال ـ ح ـ</strong></p><p class="about-dua">نسألكم الدعاء 🤲</p></div>
                                     <div class="about-actions">
                                         <button type="button" class="about-act" id="btn-app-update">⟳ تحديث التطبيق</button>
                                         <a class="about-act" href="mailto:onepro182@gmail.com?subject=YaMousahil%20-%20message%20du%20developpeur" title="مراسلة المطور">📧 مراسلة المطور</a>
@@ -3460,7 +3466,7 @@
                                 <label for="qp-surah" style="color:var(--text-dim);font-weight:600;white-space:nowrap;">السورة</label>
                                 <select id="qp-surah" class="qp-surah-select" style="flex:1;min-width:140px;max-width:260px;"><option value="">-- اختر السورة --</option></select>
                                 <button type="button" class="qp-pbtn" id="qp-play-btn">▶ تشغيل</button>
-                                <button type="button" class="qp-sbtn" id="qp-stop-btn">⏹ إيقاف</button>
+                                <button type="button" class="qp-sbtn" id="qp-stop-btn">⏸ Pause</button>
                             </div>
                             <select id="qp-reciter" style="display:none;"><option value="">-- اختر القارئ --</option></select>
                         </div>
@@ -5066,10 +5072,19 @@ var gender = 'male';
             const c = (typeof CITIES_DB!=='undefined') ? CITIES_DB[this.value] : null;
             if (c) { pharmacyLastPos = {lat:c.lat, lon:c.lng}; searchPharmacies(c.lat, c.lng); }
         };
+        var qpCurrent = null; // identifiant « lecteur|سورة » pour savoir si on peut reprendre là où on a pausé
         document.getElementById('qp-play-btn').onclick = async () => {
             const surah = document.getElementById('qp-surah').value;
             if (!qpSelected || !surah) { alert('الرجاء اختيار القارئ والسورة'); return; }
             qpAudio.style.display = 'inline-block';
+            const selId = (qpSelected.mq ? 'mq' + qpSelected.mq : 'ed' + qpSelected.ed) + '|' + surah;
+            if (qpCurrent === selId && qpAudio.src && qpAudio.paused && qpAudio.currentTime > 0) {
+                // Reprendre la lecture là où elle s'est arrêtée
+                qpAudio.style.display = 'inline-block';
+                qpAudio.play();
+                return;
+            }
+            qpCurrent = selId; // mémoriser la sélection en cours pour pouvoir reprendre à la pause
             try {
                 if (qpSelected.mq) {
                     // Sourate complète (fichier unique) via mp3quran.net
@@ -5093,7 +5108,7 @@ var gender = 'male';
                 }
             } catch (e) { alert('خطأ في جلب الصوت'); }
         };
-        document.getElementById('qp-stop-btn').onclick = () => { qpAudio.pause(); qpAudio.currentTime = 0; qpAudio.onended = null; qpAudio.onerror = null; };
+        document.getElementById('qp-stop-btn').onclick = () => { qpAudio.pause(); }; // Pause : garde la position pour reprendre ensuite
 
         // ==================================================
         // MOSQUES FINDER (SOLUTION FINALE: GEOAPIFY + OVERPASS FALLBACK)
