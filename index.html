@@ -1756,7 +1756,7 @@
             opacity:.8;
         }
         #asma-screen .asma-verse{
-            text-align:center; padding:10px 12px; color:#d4af37;
+            text-align:center; padding:10px 12px; color:#fff;
             font-family:var(--font-quran); font-size:1.05rem; line-height:1.9;
             background:#221d23; border:1px solid rgba(212,175,55,.35); border-radius:14px;
             box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
@@ -1827,6 +1827,21 @@
             box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
         }
         .asma-detail-close:hover{ border-color:var(--gold); color:#ffe9a8; }
+        /* أزرار « الاسم السابق / الاسم التالي » — 3D زمرد */
+        .asma-detail-nav{
+            position:absolute; top:50%; transform:translateY(-50%);
+            width:38px; height:46px; border-radius:12px;
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream); font-size:1.3rem; font-weight:700; cursor:pointer; line-height:1;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            transition:all .2s ease;
+        }
+        .asma-detail-nav:hover{ border-color:var(--gold); color:#ffe9a8; }
+        .asma-detail-nav:active{ transform:translateY(-50%) scale(.93); }
+        .asma-detail-prev{ right:6px; }
+        .asma-detail-next{ left:6px; }
+        .asma-detail-card h2,.asma-detail-card p{ padding:0 34px; }
         .asma-detail-num{font-size:.8rem;color:var(--gold);opacity:.85;}
         .asma-detail-name{font-family:var(--font-quran);font-size:2.4rem;color:#f4d03f;margin:6px 0 12px;line-height:1.5;}
         .asma-detail-desc{font-size:1rem;line-height:2.1;color:var(--cream);margin:0 0 18px;text-align:center;}
@@ -5082,19 +5097,29 @@ var gender = 'male';
         }
         function asmaHideTip() { if (_asmaTip) _asmaTip.classList.remove('on'); }
         var _asmaCurrent = null;
-        function asmaOpenDetail(card) {
-            if (!card) return;
+        var _asmaCurrentIdx = 0;
+        function applyAsmaDetailByIdx(i) {
+            if (i < 0 || i >= ASMA.length) return;
+            var s = ASMA[i];
             var modal = document.getElementById('asma-detail-modal');
             if (!modal) return;
             var nEl = document.getElementById('asma-detail-num');
             var nameEl = document.getElementById('asma-detail-name');
             var descEl = document.getElementById('asma-detail-desc');
-            if (nEl) nEl.textContent = 'الاسم ' + (card.getAttribute('data-num') || '') + ' من 99';
-            if (nameEl) nameEl.textContent = card.getAttribute('data-ar') || '';
-            if (descEl) descEl.textContent = card.getAttribute('data-desc') || '';
-            _asmaCurrent = card.getAttribute('data-ar') || '';
+            if (nEl) nEl.textContent = 'الاسم ' + s.num + ' من 99';
+            if (nameEl) nameEl.textContent = s.ar;
+            if (descEl) descEl.textContent = s.desc || '';
+            _asmaCurrent = s.ar;
+            _asmaCurrentIdx = i;
             modal.classList.add('on');
             modal.setAttribute('aria-hidden', 'false');
+        }
+        function asmaOpenDetail(card) {
+            if (!card) return;
+            var ar = card.getAttribute('data-ar') || '';
+            var idx = -1;
+            for (var i = 0; i < ASMA.length; i++) { if (ASMA[i].ar === ar) { idx = i; break; } }
+            applyAsmaDetailByIdx(idx < 0 ? 0 : idx);
         }
         function asmaCloseDetail() {
             var modal = document.getElementById('asma-detail-modal');
@@ -5129,13 +5154,18 @@ var gender = 'male';
             if (play) play.addEventListener('click', function () {
                 if (_asmaCurrent && typeof window.speakArabicText === 'function') window.speakArabicText(_asmaCurrent);
             });
+            // « ‹ » = suivant · « › » = precedent (وراثة العربية)
+            var prev = document.getElementById('asma-detail-prev');
+            if (prev) prev.addEventListener('click', function () { if (_asmaCurrentIdx > 0) applyAsmaDetailByIdx(_asmaCurrentIdx - 1); });
+            var next = document.getElementById('asma-detail-next');
+            if (next) next.addEventListener('click', function () { if (_asmaCurrentIdx < ASMA.length - 1) applyAsmaDetailByIdx(_asmaCurrentIdx + 1); });
         })();
         window.__setAsmaGender = function(v) { gender = v; };
         function renderAsma() {
             const grid = document.getElementById('asma-grid');
             if (!grid) return;
             grid.innerHTML = ASMA.map(s => `
-                <div class="asma-card" data-ar="${s.ar.replace(/"/g, '&quot;')}" data-num="${s.num}" data-desc="${String(s.desc).replace(/"/g, '&quot;')}" onclick="playAsmaAudio('${s.ar}')">
+                <div class="asma-card" data-ar="${s.ar.replace(/"/g, '&quot;')}" data-num="${s.num}" data-desc="${String(s.desc).replace(/"/g, '&quot;')}">
                     <div class="asma-speaker" style="font-size:.8rem;color:var(--gold);min-height:1rem;"></div>
                     <div class="asma-name" style="font-family:var(--font-quran); font-size:1.3rem; color:#f4ecd8; line-height:1.4;">${s.ar}</div>
                     <div class="asma-num">${s.num}</div>
@@ -10253,6 +10283,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
     <div class="asma-detail-modal" id="asma-detail-modal" aria-hidden="true">
         <div class="asma-detail-card glass-btn" role="dialog" aria-modal="true" aria-labelledby="asma-detail-name">
             <button type="button" class="asma-detail-close" id="asma-detail-close" aria-label="إغلاق">✕</button>
+            <button type="button" class="asma-detail-nav asma-detail-prev" id="asma-detail-prev" aria-label="الاسم السابق" title="الاسم السابق">›</button>
+            <button type="button" class="asma-detail-nav asma-detail-next" id="asma-detail-next" aria-label="الاسم التالي" title="الاسم التالي">‹</button>
             <div class="asma-detail-num" id="asma-detail-num">—</div>
             <h2 class="asma-detail-name" id="asma-detail-name">—</h2>
             <p class="asma-detail-desc" id="asma-detail-desc"></p>
