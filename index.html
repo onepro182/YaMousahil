@@ -630,8 +630,15 @@
         .ayah-num-circle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background-color:rgba(17, 66, 49, 0.8);color:var(--cream);border:1px solid var(--glass-border);border-radius:50%;font-size:1rem;font-family:var(--font);margin:0 8px;vertical-align:middle;font-weight:700;}
         
         .quran-sidebar{width:320px;display:flex;flex-direction:column;gap:10px;direction:rtl;}
-        .sidebar-tabs{display:flex;gap:10px;}
-        .sidebar-tab{flex:1;text-align:center;padding:12px;border-radius:8px;color:var(--text-dim);font-family:var(--font);font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+        .sidebar-tabs{display:flex;gap:6px;}
+        .sidebar-tab{flex:1;text-align:center;padding:12px 4px;border-radius:8px;color:var(--text-dim);font-family:var(--font);font-size:.95rem;font-weight:600;cursor:pointer;transition:all 0.2s;min-width:0;}
+        #isl-sheet-close{flex:0.55;}
+        #isl-mark-btn{width:34px;height:34px;flex:none;border-radius:9px;background:rgba(255,255,255,.05);color:#d4af37;border:1px solid rgba(212,175,55,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+        #isl-mark-btn svg{width:17px;height:17px;}
+        #isl-mark-btn.on{background:rgba(212,175,55,.25);color:#ffeeb0;}
+        /* sidebar compacte optionnelle (bouton ✕) */
+        .quran-split-view.sidebar-hidden .quran-sidebar{display:none !important;}
+        .quran-split-view.sidebar-hidden .quran-text-area{flex:1;}
         .sidebar-tab:hover{border-color:var(--gold);}
         .sidebar-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,0.15);}
         .surah-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-left:5px;}
@@ -2324,7 +2331,10 @@
                         <div class="quran-split-view">
                             <div class="quran-text-area glass-btn">
                                 <div class="quran-text-header">
-                                    <button type="button" id="isl-back-to-surahs">☰ السور</button>
+                                    <div style="display:flex;gap:8px;align-items:center;flex:none;">
+                                        <button type="button" id="isl-back-to-surahs">☰ السور</button>
+                                        <button type="button" class="tajweed-ico" id="isl-mark-btn" aria-pressed="false" aria-label="علامة مرجعية" title="علامة مرجعية"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg></button>
+                                    </div>
                                     <div class="qtf-frame">
                                         <span class="qtf-rose qtf-tl"></span>
                                         <span class="qtf-rose qtf-tr"></span>
@@ -2345,11 +2355,16 @@
                             <div class="quran-sidebar">
                                 <div id="isl-resume-bar"></div>
                                 <div class="sidebar-tabs">
+                                    <button type="button" class="sidebar-tab glass-btn" id="isl-sheet-close" aria-label="إغلاق الفهرس" title="إغلاق الفهرس">✕</button>
                                     <div class="sidebar-tab glass-btn active" id="tab-surah">السور</div>
                                     <div class="sidebar-tab glass-btn" id="tab-juz">الأجزاء</div>
+                                    <div class="sidebar-tab glass-btn" id="tab-pages">الصفحات</div>
+                                    <div class="sidebar-tab glass-btn" id="tab-marks">علامات</div>
                                 </div>
                                 <div class="surah-list" id="isl-surah-list-container"></div>
                                 <div class="surah-list juz-grid" id="isl-juz-list-container" style="display:none;"></div>
+                                <div class="surah-list pages-list" id="isl-pages-list-container" style="display:none;"></div>
+                                <div class="surah-list marks-list" id="isl-marks-list-container" style="display:none;"></div>
                             </div>
                         </div>
                     </div>
@@ -6382,7 +6397,87 @@ var gender = 'male';
             const btn = document.getElementById('isl-play-btn');
             if (btn) btn.textContent = '▶ استماع';
         }
-        function highlightAyah(num) { document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); const el = document.getElementById('isl-ayah-' + num); if (el) { el.classList.add('ayah-reading'); const body = document.getElementById('isl-quran-body'); if (body && body.scrollHeight > body.clientHeight + 4) { const r = el.getBoundingClientRect(), br = body.getBoundingClientRect(); body.scrollTop += (r.top - br.top) - (br.height / 2 - r.height / 2); } else { try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} } } }
+        function highlightAyah(num) { document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); const el = document.getElementById('isl-ayah-' + num); if (el) { el.classList.add('ayah-reading'); islLastAyah = { s: islSelectedSurah, a: num }; islUpdateMarkBtn(); const body = document.getElementById('isl-quran-body'); if (body && body.scrollHeight > body.clientHeight + 4) { const r = el.getBoundingClientRect(), br = body.getBoundingClientRect(); body.scrollTop += (r.top - br.top) - (br.height / 2 - r.height / 2); } else { try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} } } }
+        var islLastAyah = null;
+        var ISL_MARKS_KEY = 'islQuranMarks';
+        function islMarks() { try { return JSON.parse(localStorage.getItem(ISL_MARKS_KEY) || '[]'); } catch (e) { return []; } }
+        function islSaveMarks(arr) { try { localStorage.setItem(ISL_MARKS_KEY, JSON.stringify(arr)); } catch (e) {} }
+        function islToggleMark(sura, aya) {
+            var arr = islMarks();
+            for (var j = 0; j < arr.length; j++) {
+                if (arr[j].s === sura && arr[j].a === aya) { arr.splice(j, 1); islSaveMarks(arr); return false; }
+            }
+            arr.push({ s: sura, a: aya }); islSaveMarks(arr); return true;
+        }
+        function islUpdateMarkBtn() {
+            var b = document.getElementById('isl-mark-btn'); if (!b) return;
+            var arr = islMarks();
+            var found = islLastAyah && arr.some(function (m) { return m.s === islLastAyah.s && m.a === islLastAyah.a; });
+            b.classList.toggle('on', !!found);
+            b.setAttribute('aria-pressed', found ? 'true' : 'false');
+        }
+        function islRenderPages() {
+            var box = document.getElementById('isl-pages-list-container'); if (!box) return;
+            var html = '';
+            var names = (typeof SURAH_NAMES !== 'undefined') ? SURAH_NAMES : [];
+            for (var p = 1; p <= TAJWEED_TOTAL; p++) {
+                var entry = TAJWEED_PAGE_VERSE[p - 1] || 5001;
+                var sura = Math.floor(entry / 1000); if (sura < 1 || sura > 114) sura = 1;
+                html += '<div class="surah-item glass-btn" data-page="' + p + '"><div class="surah-num-circle">' + p + '</div><div class="surah-info"><div class="surah-name-ar">الصفحة ' + p + '</div><div class="surah-name-en">' + (names[sura - 1] || '') + '</div></div></div>';
+            }
+            box.innerHTML = html;
+            box.querySelectorAll('.surah-item').forEach(function (el) {
+                el.onclick = function () {
+                    var p = parseInt(el.getAttribute('data-page'), 10);
+                    var entry = TAJWEED_PAGE_VERSE[p - 1] || 5001;
+                    var sura = Math.floor(entry / 1000); if (sura < 1 || sura > 114) sura = 1;
+                    var aya = entry % 1000; if (aya < 1) aya = 1;
+                    var meta = (typeof SURAH_META !== 'undefined' && SURAH_META[sura - 1]) || { type: '', ayahs: '...' };
+                    islTargetAyah = aya;
+                    selectSurah(sura, names[sura - 1] || ('سورة ' + sura), meta);
+                    showQuranTextOnMobile();
+                };
+            });
+        }
+        function islRenderMarks() {
+            var box = document.getElementById('isl-marks-list-container'); if (!box) return;
+            var arr = islMarks();
+            var names = (typeof SURAH_NAMES !== 'undefined') ? SURAH_NAMES : [];
+            if (!arr.length) { box.innerHTML = '<div class="tajweed-empty">لا توجد علامات بعد.<br>اضغط زر « علامة مرجعية » ★ أعلى النص لحفظ موضع قراءتك.</div>'; return; }
+            arr.sort(function (a, b) { return (a.s - b.s) || (a.a - b.a); });
+            var html = '';
+            arr.forEach(function (m) {
+                html += '<div class="surah-item glass-btn" data-s="' + m.s + '" data-a="' + m.a + '"><div class="surah-num-circle">★</div><div class="surah-info"><div class="surah-name-ar">سورة ' + (names[m.s - 1] || m.s) + ' · آية ' + m.a + '</div><div class="surah-name-en">اضغط للانتقال</div></div></div>';
+            });
+            box.innerHTML = html;
+            box.querySelectorAll('.surah-item').forEach(function (el) {
+                el.onclick = function () {
+                    var s = parseInt(el.getAttribute('data-s'), 10); var a = parseInt(el.getAttribute('data-a'), 10);
+                    var meta = (typeof SURAH_META !== 'undefined' && SURAH_META[s - 1]) || { type: '', ayahs: '...' };
+                    islTargetAyah = a;
+                    selectSurah(s, names[s - 1] || ('سورة ' + s), meta);
+                    showQuranTextOnMobile();
+                };
+            });
+        }
+        var _islTab = 'surah';
+        function islSetTab(tab) {
+            _islTab = tab;
+            var ids = { surah: 'tab-surah', juz: 'tab-juz', pages: 'tab-pages', marks: 'tab-marks' };
+            var containers = { surah: 'isl-surah-list-container', juz: 'isl-juz-list-container', pages: 'isl-pages-list-container', marks: 'isl-marks-list-container' };
+            ['surah', 'juz', 'pages', 'marks'].forEach(function (k) {
+                var t = document.getElementById(ids[k]);
+                if (t) { t.classList.toggle('active', k === tab); }
+                var c = document.getElementById(containers[k]);
+                if (c) {
+                    if (k === 'pages') { c.style.display = (k === tab) ? 'flex' : 'none'; }
+                    else if (k === 'juz') { c.style.display = (k === tab) ? 'grid' : 'none'; }
+                    else { c.style.display = (k === tab) ? 'flex' : 'none'; }
+                }
+            });
+            if (tab === 'pages') islRenderPages();
+            if (tab === 'marks') islRenderMarks();
+        }
         
         function showQuranTextOnMobile() { if (!document.body.classList.contains('is-mobile')) return; const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.add('show-text'); const b = document.getElementById('isl-quran-body'); if (b) b.scrollTop = 0; window.scrollTo(0, 0); }
         function islShowToast(msg) { let t = document.getElementById('isl-toast'); if (!t) { t = document.createElement('div'); t.id = 'isl-toast'; document.body.appendChild(t); } t.textContent = msg; t.classList.add('show'); clearTimeout(t._tm); t._tm = setTimeout(() => t.classList.remove('show'), 2500); }
@@ -6468,7 +6563,7 @@ var gender = 'male';
                 container.appendChild(item);
             }
         }
-        function selectSurah(num, name, meta) { islSelectedSurah = parseInt(num); try { localStorage.setItem('islLastSurahNum', num); localStorage.setItem('islLastSurahName', name); } catch (e) {} stopIslamiyatAudio(); loadSurahIslamiyat(num, name, meta); }
+        function selectSurah(num, name, meta) { islSelectedSurah = parseInt(num); islLastAyah = null; islUpdateMarkBtn(); try { localStorage.setItem('islLastSurahNum', num); localStorage.setItem('islLastSurahName', name); } catch (e) {} stopIslamiyatAudio(); loadSurahIslamiyat(num, name, meta); }
         async function loadSurahIslamiyat(num, name, meta) {
             const textContainer = document.getElementById('isl-quran-body'); const titleEl = document.getElementById('current-surah-title'); const metaEl = document.getElementById('current-surah-meta');
             titleEl.textContent = name; metaEl.innerHTML = `<span class="meta-badge">${meta.type}</span> · <span>السورة ${num}</span> · <span>آيات ${meta.ayahs}</span>`;
@@ -6485,7 +6580,7 @@ var gender = 'male';
                 if (parseInt(num) !== 1 && parseInt(num) !== 9) html += '<div style="font-size:2.5rem; color:var(--gold); margin-bottom:20px;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>';
                 verses.forEach((a) => { let spanClass = "ayah-span"; if (num === 1 && a.numberInSurah === 2) spanClass += " ayah-highlight"; if (bm && bm.s === parseInt(num) && bm.a === a.numberInSurah) spanClass += " ayah-bookmark"; html += `<span class="${spanClass}" id="isl-ayah-${a.numberInSurah}">${a.text} <span class="ayah-num-circle">${a.numberInSurah}</span></span> `; });
                 textContainer.innerHTML = html;
-                if (islTargetAyah) { setTimeout(() => { const el = document.getElementById('isl-ayah-' + islTargetAyah); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('ayah-reading'); setTimeout(() => el.classList.remove('ayah-reading'), 2000); } }, 500); } else textContainer.scrollTop = 0;
+                if (islTargetAyah) { islLastAyah = { s: parseInt(num), a: islTargetAyah }; islUpdateMarkBtn(); setTimeout(() => { const el = document.getElementById('isl-ayah-' + islTargetAyah); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('ayah-reading'); setTimeout(() => el.classList.remove('ayah-reading'), 2000); } }, 500); } else textContainer.scrollTop = 0;
             } catch (err) { textContainer.innerHTML = '<div style="color:#f88; text-align:center;">⚠️ خطأ في تحميل السورة</div>'; }
         }
         let islSelectedReciter = null;
@@ -6686,11 +6781,26 @@ var gender = 'male';
             generateSurahGrid(); generateJuzGrid();
             renderAdhkarCategories();
             renderAdhkarContent();
-            document.getElementById('tab-surah').onclick = () => { document.getElementById('tab-surah').classList.add('active'); document.getElementById('tab-juz').classList.remove('active'); document.getElementById('isl-surah-list-container').style.display = 'flex'; document.getElementById('isl-juz-list-container').style.display = 'none'; };
-            document.getElementById('tab-juz').onclick = () => { if (window._quranWirdOnly) return; document.getElementById('tab-juz').classList.add('active'); document.getElementById('tab-surah').classList.remove('active'); document.getElementById('isl-juz-list-container').style.display = 'grid'; document.getElementById('isl-surah-list-container').style.display = 'none'; };
-            document.getElementById('isl-back-to-surahs').onclick = () => { const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.remove('show-text'); };
+            document.getElementById('tab-surah').onclick = () => islSetTab('surah');
+            document.getElementById('tab-juz').onclick = () => { if (window._quranWirdOnly) return; islSetTab('juz'); };
+            var _tPages = document.getElementById('tab-pages');
+            if (_tPages) _tPages.onclick = () => islSetTab('pages');
+            var _tMarks = document.getElementById('tab-marks');
+            if (_tMarks) _tMarks.onclick = () => islSetTab('marks');
+            var _tClose = document.getElementById('isl-sheet-close');
+            if (_tClose) _tClose.onclick = () => { const sv = document.querySelector('.quran-split-view'); if (!sv) return; if (document.body.classList.contains('is-mobile')) { sv.classList.add('show-text'); } else { sv.classList.add('sidebar-hidden'); } };
+            document.getElementById('isl-back-to-surahs').onclick = () => { const sv = document.querySelector('.quran-split-view'); if (sv) { sv.classList.remove('show-text'); sv.classList.remove('sidebar-hidden'); } };
+            var _markBtn = document.getElementById('isl-mark-btn');
+            if (_markBtn) _markBtn.onclick = () => {
+                if (!islLastAyah) { islShowToast('⚠ اختر آية من النص أولاً'); return; }
+                var added = islToggleMark(islLastAyah.s, islLastAyah.a);
+                islUpdateMarkBtn();
+                if (_islTab === 'marks') islRenderMarks();
+                islShowToast(added ? '★ تمت إضافة العلامة المرجعية' : 'تمت إزالة العلامة المرجعية');
+            };
+            islUpdateMarkBtn();
             document.getElementById('isl-play-btn').onclick = toggleIslamiyatPlay; fetchRecitersIslamiyat();
-            document.getElementById('isl-quran-body').addEventListener('click', function (e) { const sp = e.target.closest('.ayah-span'); if (!sp) return; const m = sp.id && sp.id.match(/^isl-ayah-(\d+)$/); if (!m) return; const ayah = parseInt(m[1]); try { localStorage.setItem('islQuranBookmark', JSON.stringify({ s: islSelectedSurah, a: ayah })); } catch (err) {} document.querySelectorAll('#isl-quran-body .ayah-bookmark').forEach(x => x.classList.remove('ayah-bookmark')); sp.classList.add('ayah-bookmark'); islShowToast('📌 تم حفظ موضع القراءة — سورة ' + (SURAH_NAMES[islSelectedSurah - 1] || '') + ' آية ' + ayah); updateIslResumeBar(); });
+            document.getElementById('isl-quran-body').addEventListener('click', function (e) { const sp = e.target.closest('.ayah-span'); if (!sp) return; const m = sp.id && sp.id.match(/^isl-ayah-(\d+)$/); if (!m) return; const ayah = parseInt(m[1]); islLastAyah = { s: islSelectedSurah, a: ayah }; islUpdateMarkBtn(); try { localStorage.setItem('islQuranBookmark', JSON.stringify({ s: islSelectedSurah, a: ayah })); } catch (err) {} document.querySelectorAll('#isl-quran-body .ayah-bookmark').forEach(x => x.classList.remove('ayah-bookmark')); sp.classList.add('ayah-bookmark'); islShowToast('📌 تم حفظ موضع القراءة — سورة ' + (SURAH_NAMES[islSelectedSurah - 1] || '') + ' آية ' + ayah); updateIslResumeBar(); });
             updateIslResumeBar();
             document.getElementById('adhkar-back-to-cats').onclick = () => { const sv = document.querySelector('.adhkar-split-view'); if (sv) sv.classList.remove('show-text'); window.scrollTo(0, 0); };
         }
