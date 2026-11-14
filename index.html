@@ -498,7 +498,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#khatma-read-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen,#khatma-screen,#tajweed-rules-screen,#tilawah-adab-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#khatma-read-screen,#hajj-umrah-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen,#khatma-screen,#tajweed-rules-screen,#tilawah-adab-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -1479,6 +1479,23 @@
         .khr-finish-btn.done{background:linear-gradient(160deg,#3ddc84 0%,#1d8a52 100%);border-color:#2fa37c;color:#062015;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),0 5px 14px rgba(46,170,90,.35);}
         .khr-finish-btn.pulse{animation:khrPulse 1.05s ease-in-out infinite;}
         @keyframes khrPulse{0%,100%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 5px 14px rgba(0,0,0,.5);}50%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 0 22px rgba(61,220,132,.65);}}
+        /* صفحة « الحج و العمرة » */
+        #hajj-umrah-screen .huj-tabs{display:flex;gap:10px;justify-content:center;padding:0 4px;}
+        .huj-tab{flex:1;max-width:340px;padding:12px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-weight:800;font-size:.92rem;white-space:nowrap;box-shadow:inset 0 1px 1px rgba(255,255,255,.08);transition:all .18s ease;}
+        .huj-tab:hover{border-color:var(--gold);color:#ffee9e;}
+        .huj-tab.active{border-color:var(--gold);color:#ffee9e;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),inset 0 -3px 6px rgba(0,0,0,.4),0 5px 12px rgba(0,0,0,.4);text-shadow:0 1px 2px rgba(0,0,0,.6);}
+        .huj-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:4px 2px 14px;min-height:0;}
+        .huj-panel{display:flex;flex-direction:column;gap:12px;max-width:760px;margin:0 auto;}
+        .huj-panel[hidden]{display:none !important;}
+        .huj-item{border:1px solid rgba(212,175,55,.28);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));padding:12px 14px;box-shadow:inset 0 1px 1px rgba(255,255,255,.06),0 3px 8px rgba(0,0,0,.3);}
+        .huj-head{display:flex;align-items:center;gap:10px;font-family:var(--font);font-weight:800;color:#ffee9e;font-size:.95rem;border-bottom:1px solid rgba(212,175,55,.3);padding-bottom:8px;margin-bottom:4px;}
+        .huj-num{flex:none;display:grid;place-items:center;min-width:28px;height:28px;padding:0 6px;border-radius:8px;background:linear-gradient(160deg,#3d644a 0%,#16371f 100%);border:1px solid rgba(212,175,55,.5);color:#ffee9e;font-size:.88rem;font-weight:800;box-shadow:inset 0 1px 1px rgba(255,255,255,.3);}
+        .huj-note{color:#efe9dc;font-size:.87rem;line-height:1.9;margin:8px 0 2px;}
+        .huj-note.dim{color:var(--text-dim);font-size:.78rem;margin-top:8px;}
+        .huj-dua{font-family:var(--font-quran);font-size:1.15rem;line-height:2.15;color:#ffefd0;text-align:center;padding:8px 12px;margin:6px 0 4px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);text-shadow:0 1px 2px rgba(0,0,0,.55);}
+        .huj-dua.small{font-size:1rem;}
+        .huj-shared-title{font-family:var(--font);font-weight:800;color:var(--gold);font-size:.95rem;border-bottom:2px solid rgba(212,175,55,.4);padding:2px 2px 8px;}
+        .huj-foot{font-size:.8rem;color:var(--text-dim);line-height:1.9;border:1px dashed rgba(212,175,55,.3);border-radius:10px;padding:10px 13px;text-align:center;}
         .kh-juz-actions{display:flex;gap:5px;}
         .kh-juz-act{flex:1 1 0;padding:7px 2px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-dim);font-family:var(--font);font-size:.7rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:all .15s ease;}
         .kh-juz-act:hover{color:var(--gold-light);border-color:rgba(212,175,55,.4);}
@@ -2624,6 +2641,29 @@
                                     <circle cx="47.5" cy="14.5" r="9.2" fill="url(#q3dKhGold)" stroke="#0a4b33" stroke-width="1.4"/>
                                     <text x="47.5" y="18.6" text-anchor="middle" font-size="10.5" font-weight="800" fill="#3a2a06" font-family="var(--font-quran),Amiri,serif">٣٠</text>
                                 </svg><span class="app-name">الختمة الجماعية</span></div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-hajj-umrah"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="الحج و العمرة">
+                                    <defs>
+                                        <linearGradient id="q3dHuBg" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#234a33"/><stop offset="0.5" stop-color="#10281a"/><stop offset="1" stop-color="#04140c"/></linearGradient>
+                                        <linearGradient id="q3dHuTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2b36"/><stop offset="1" stop-color="#1a1a24"/></linearGradient>
+                                        <linearGradient id="q3dHuGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="0.5" stop-color="#e3c05c"/><stop offset="1" stop-color="#a8791e"/></linearGradient>
+                                        <linearGradient id="q3dHuStripe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7d264"/><stop offset="1" stop-color="#c9a13b"/></linearGradient>
+                                        <radialGradient id="q3dHuGlow" cx="0.5" cy="0.3" r="0.55"><stop offset="0" stop-color="#7ee2a8" stop-opacity=".45"/><stop offset="1" stop-color="#7ee2a8" stop-opacity="0"/></radialGradient>
+                                        <linearGradient id="q3dHuFaceL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#12121b"/><stop offset="1" stop-color="#1c1c28"/></linearGradient>
+                                        <linearGradient id="q3dHuFaceR" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#242433"/><stop offset="1" stop-color="#171724"/></linearGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#q3dHuBg)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.24)" stroke-width="1.4"/>
+                                    <circle cx="32" cy="28" r="22" fill="url(#q3dHuGlow)"/>
+                                    <g stroke="#e8ddba" stroke-width="1.1" stroke-linecap="round" opacity=".9"><path d="M14 8.5v3.4"/><path d="M19.5 6.5l-1.6 3.4"/><path d="M8.5 6.5l1.6 3.4"/></g>
+                                    <circle cx="14" cy="8.6" r="2.6" fill="url(#q3dHuGold)"/>
+                                    <path d="M17 54h30" stroke="rgba(0,0,0,.35)" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M13.5 27 L32 17.5 L50.5 27 L32 36.5 Z" fill="url(#q3dHuTop)" stroke="url(#q3dHuGold)" stroke-width="1.2"/>
+                                    <path d="M13.5 27 L32 36.5 L32 54.5 L13.5 45 Z" fill="url(#q3dHuFaceL)" stroke="rgba(255,255,255,.14)" stroke-width=".8"/>
+                                    <path d="M32 36.5 L50.5 27 L50.5 45 L32 54.5 Z" fill="url(#q3dHuFaceR)" stroke="rgba(255,255,255,.14)" stroke-width=".8"/>
+                                    <path d="M13.5 33 L32 42.5 L32 47 L13.5 37.5 Z" fill="url(#q3dHuStripe)" opacity=".95"/>
+                                    <path d="M32 42.5 L50.5 33 L50.5 37.5 L32 47 Z" fill="url(#q3dHuStripe)" opacity=".95"/>
+                                    <path d="M40.5 39.5 L45 37.2 L45 48.2 L40.5 50.5 Z" fill="url(#q3dHuGold)" stroke="#7a5a12" stroke-width=".7"/>
+                                </svg><span class="app-name">الحج و العمرة</span></div>
                                 <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-i18n="sec_radios">إذاعات وبث مباشر</div>
                                 <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
                                     <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
@@ -3988,6 +4028,155 @@
                                 <button type="button" class="khr-finish-btn" id="khr-finish">✓ أتممت القراءة</button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= HAJJ & UMRAH (الحج و العمرة) SCREEN ================= -->
+            <div id="hajj-umrah-screen" style="display:none;flex-direction:column;height:100%;width:100%;gap:12px;">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-hajj-umrah">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">الحج و العمرة</h1>
+                        <p>الأدعية والأذكار الواردة في السنة فقط</p>
+                    </div>
+                    <div class="isl-header-spacer" style="width:80px;"></div>
+                </header>
+                <div class="huj-tabs" role="tablist" aria-label="النسك">
+                    <button type="button" class="huj-tab active" id="huj-tab-umrah" data-huj-tab="umrah" role="tab">🕋 أداء مناسك العمرة</button>
+                    <button type="button" class="huj-tab" id="huj-tab-hajj" data-huj-tab="hajj" role="tab">🕋 أداء مناسك الحج</button>
+                </div>
+                <div class="huj-scroll">
+                    <!-- ========== UMRAH (من الصورة) ========== -->
+                    <div class="huj-panel" id="huj-panel-umrah" role="tabpanel">
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">1</span> نية الإحرام</div>
+                            <p class="huj-note">تقول عند نية الإحرام:</p>
+                            <div class="huj-dua">لبيك عمرة</div>
+                            <p class="huj-note dim">وإن خافت ما تقول:</p>
+                            <div class="huj-dua small">فإن حبسني حابس فمحلي حيث حبستني</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">2</span> التلبية</div>
+                            <p class="huj-note">تقال من الإحرام حتى بدء الطواف:</p>
+                            <div class="huj-dua">لبيك اللهم لبيك، لبيك لا شريك لك لبيك،<br>إن الحمد والنعمة لك والملك، لا شريك لك</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">3</span> دخول المسجد الحرام</div>
+                            <p class="huj-note">عند دخول المسجد الحرام تقول:</p>
+                            <div class="huj-dua">بسم الله،<br>والصلاة والسلام على رسول الله،<br>اللهم اغفر لي ذنوبي<br>وافتح لي أبواب رحمتك</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">4</span> عند الحجر الأسود</div>
+                            <p class="huj-note">عند بداية كل شوط عند الحجر الأسود تقول:</p>
+                            <div class="huj-dua">بسم الله، الله أكبر</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">5</span> بين الركن اليماني والحجر الأسود</div>
+                            <p class="huj-note">بين الركن اليماني والحجر الأسود تقول:</p>
+                            <div class="huj-dua">ربنا آتنا في الدنيا حسنة،<br>وفي الآخرة حسنة،<br>وقنا عذاب النار</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">6</span> عند الصفا و المروة</div>
+                            <p class="huj-note">عند الصفا أولاً تقرأ:</p>
+                            <div class="huj-dua">﴿إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ ۖ فَمَنْ حَجَّ الْبَيْتَ أَوِ اعْتَمَرَ فَلَا جُنَاحَ عَلَيْهِ أَن يَطَّوَّفَ بِهِمَا ۚ وَمَن تَطَوَّعَ خَيْرًا فَإِنَّ اللَّهَ شَاكِرٌ عَلِيمٌ﴾</div>
+                            <p class="huj-note dim">[البقرة: 158] ثم تقول:</p>
+                            <div class="huj-dua small">أبدأ بما بدأ الله به</div>
+                            <p class="huj-note">ثم، تستقبل القبلة وتقول (3 مرات):</p>
+                            <div class="huj-dua">الله أكبر، الله أكبر، الله أكبر،<br>لا إله إلا الله وحده لا شريك له،<br>له الملك وله الحمد وهو على كل شيء قدير،<br>لا إله إلا الله وحده، أنجز وعده،<br>ونصر عبده، وهزم الأحزاب وحده،</div>
+                            <p class="huj-note dim">ثم تدعوا بما شئت</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">7</span> بعد شرب ماء زمزم</div>
+                            <p class="huj-note">تقول بعد شرب ماء زمزم:</p>
+                            <div class="huj-dua">اللهم إني أسألك علمًا نافعًا،<br>ورزقًا واسعًا، وشفاءً من كل داء</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">8</span> عند التحلل</div>
+                            <p class="huj-note">لا يوجد دعاء ثابت<br>مخصوص عند التحلل</p>
+                        </div>
+                        <div class="huj-shared-title">أدعية مشتركة</div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">✈</span> دعاء السفر (عند ركوب الطائرة)</div>
+                            <p class="huj-note">عن ابن عباس رضي الله عنهما أن النبي ﷺ كان إذا استوى على راحلته (وفي رواية: في مقعده قال):</p>
+                            <div class="huj-dua">﴿سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ * وَإِنَّا إِلَىٰ رَبِّنَا مُنقَلِبُونَ﴾</div>
+                            <p class="huj-note dim">(أخرجه مسلم)</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">ﷺ</span> دعاء زيارة قبر الرسول ﷺ</div>
+                            <p class="huj-note">عند زيارة قبر النبي ﷺ في المدينة المنورة تقول:</p>
+                            <div class="huj-dua">السلام عليك أيها النبي ورحمة الله وبركاته،<br>السلام علينا وعلى عباد الله الصالحين،<br>أشهد أن لا إله إلا الله وأنك رسول الله</div>
+                            <p class="huj-note dim">(متفق عليه)</p>
+                        </div>
+                        <div class="huj-foot"><b>تنبيه مهم :</b> الأصل في الدعاء الإخلاص وحضور القلب، ويُشرع الإكثار من الدعاء في جميع أوقات العمرة وفي الأماكن الفاضلة.</div>
+                    </div>
+                    <!-- ========== HAJJ ========== -->
+                    <div class="huj-panel" id="huj-panel-hajj" role="tabpanel" hidden>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">1</span> نية الإحرام</div>
+                            <p class="huj-note">تقول عند نية الإحرام:</p>
+                            <div class="huj-dua">لبيك اللهم حجًا</div>
+                            <p class="huj-note dim">وإن خافت ما تقول (كما في العمرة):</p>
+                            <div class="huj-dua small">فإن حبسني حابس فمحلي حيث حبستني</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">2</span> التلبية</div>
+                            <p class="huj-note">تقال من الإحرام حتى رمي جمرة العقبة يوم النحر:</p>
+                            <div class="huj-dua">لبيك اللهم لبيك، لبيك لا شريك لك لبيك،<br>إن الحمد والنعمة لك والملك، لا شريك لك</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">3</span> دخول المسجد الحرام</div>
+                            <p class="huj-note">عند دخول المسجد الحرام تقول:</p>
+                            <div class="huj-dua">بسم الله،<br>والصلاة والسلام على رسول الله،<br>اللهم اغفر لي ذنوبي<br>وافتح لي أبواب رحمتك</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">4</span> عند الحجر الأسود</div>
+                            <p class="huj-note">عند بداية كل شوط عند الحجر الأسود تقول:</p>
+                            <div class="huj-dua">بسم الله، الله أكبر</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">5</span> بين الركن اليماني والحجر الأسود</div>
+                            <p class="huj-note">بين الركن اليماني والحجر الأسود تقول:</p>
+                            <div class="huj-dua">ربنا آتنا في الدنيا حسنة،<br>وفي الآخرة حسنة،<br>وقنا عذاب النار</div>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">6</span> الوقوف بعرفة (يوم عرفة)</div>
+                            <p class="huj-note">قال النبي ﷺ: « أفضل الدعاء دعاء يوم عرفة، وأفضل ما قلت أنا والنبيون من قبلي »:</p>
+                            <div class="huj-dua">لا إله إلا الله وحده لا شريك له،<br>له الملك وله الحمد<br>وهو على كل شيء قدير</div>
+                            <p class="huj-note dim">كما يُستحبّ الإكثار من:</p>
+                            <div class="huj-dua small">لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، يُحيي ويُميت، بيده الخير وهو على كل شيء قدير</div>
+                            <p class="huj-note dim">ويُكثر من الدعاء والتلبية والاجتهاد في الدعاء، وتحديداً بعد الصلاة — وهي أفضل الأوقات لذلك.</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">7</span> رمي الجمار</div>
+                            <p class="huj-note">يُكبّر مع كل حصاة عند رمي الجمرة:</p>
+                            <div class="huj-dua">الله أكبر</div>
+                            <p class="huj-note dim">(يرمي كل جمرة بسبع حصيات، ويُكبّر مع كل حصاة — وكان عبد الله بن عمر رضي الله عنهما يقول: الله أكبر)</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">8</span> عند الصفا و المروة</div>
+                            <p class="huj-note">عند الصفا أولاً تقرأ:</p>
+                            <div class="huj-dua">﴿إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ ۖ فَمَنْ حَجَّ الْبَيْتَ أَوِ اعْتَمَرَ فَلَا جُنَاحَ عَلَيْهِ أَن يَطَّوَّفَ بِهِمَا ۚ وَمَن تَطَوَّعَ خَيْرًا فَإِنَّ اللَّهَ شَاكِرٌ عَلِيمٌ﴾</div>
+                            <p class="huj-note dim">[البقرة: 158] ثم تقول:</p>
+                            <div class="huj-dua small">أبدأ بما بدأ الله به</div>
+                            <p class="huj-note">ثم، تستقبل القبلة وتقول (3 مرات):</p>
+                            <div class="huj-dua">الله أكبر، الله أكبر، الله أكبر،<br>لا إله إلا الله وحده لا شريك له،<br>له الملك وله الحمد وهو على كل شيء قدير،<br>لا إله إلا الله وحده، أنجز وعده،<br>ونصر عبده، وهزم الأحزاب وحده،</div>
+                            <p class="huj-note dim">ثم تدعوا بما شئت</p>
+                        </div>
+                        <div class="huj-shared-title">أدعية مشتركة</div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">✈</span> دعاء السفر (عند ركوب الطائرة)</div>
+                            <p class="huj-note">عن ابن عباس رضي الله عنهما أن النبي ﷺ كان إذا استوى على راحلته (وفي رواية: في مقعده قال):</p>
+                            <div class="huj-dua">﴿سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ * وَإِنَّا إِلَىٰ رَبِّنَا مُنقَلِبُونَ﴾</div>
+                            <p class="huj-note dim">(أخرجه مسلم)</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">ﷺ</span> دعاء زيارة قبر الرسول ﷺ</div>
+                            <p class="huj-note">عند زيارة قبر النبي ﷺ في المدينة المنورة تقول:</p>
+                            <div class="huj-dua">السلام عليك أيها النبي ورحمة الله وبركاته،<br>السلام علينا وعلى عباد الله الصالحين،<br>أشهد أن لا إله إلا الله وأنك رسول الله</div>
+                            <p class="huj-note dim">(متفق عليه)</p>
+                        </div>
+                        <div class="huj-foot"><b>تنبيه مهم :</b> الأصل في الدعاء الإخلاص وحضور القلب، ويُشرع الإكثار من الدعاء في جميع أركان الحج وأوقاته وفي الأماكن الفاضلة.</div>
                     </div>
                 </div>
             </div>
@@ -5432,6 +5621,22 @@ var gender = 'male';
         document.getElementById('card-wird').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); window._quranReturnTo = null; window._quranWarshMode = false; showScreen(islamiyatScreen); initIslamiyat(); if (typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(true); activatePane('quran'); var sv=document.querySelector('.quran-split-view'); if(sv) sv.classList.remove('show-text'); var sl=document.getElementById('isl-surah-list-container'); if(sl) sl.scrollTop = 0; window.scrollTo(0,0); };
         var _khReadCard = document.getElementById('card-khatma-read');
         if (_khReadCard) _khReadCard.onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var _kEl = document.getElementById('khatma-read-screen'); try { if (typeof window.renderKhatmaReadMenu === 'function') window.renderKhatmaReadMenu(); } catch (e) {} if (_kEl && typeof showScreen === 'function') showScreen(_kEl); window.scrollTo(0,0); };
+        try { if (typeof window.syncKhatmaReadCard === 'function') window.syncKhatmaReadCard(); } catch (e) {}
+        var _huCard = document.getElementById('card-hajj-umrah');
+        if (_huCard) _huCard.onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var _hEl = document.getElementById('hajj-umrah-screen'); if (_hEl && typeof showScreen === 'function') showScreen(_hEl); window.scrollTo(0,0); };
+        var _huBack = document.getElementById('btn-back-from-hajj-umrah');
+        if (_huBack) _huBack.onclick = () => { var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen'); if (hs && typeof showScreen === 'function') showScreen(hs); if (typeof navHome !== 'undefined' && navHome) navHome.classList.add('active'); };
+        ['huj-tab-umrah', 'huj-tab-hajj'].forEach(function (id) {
+            var t = document.getElementById(id);
+            if (!t) return;
+            t.addEventListener('click', function () {
+                var which = t.getAttribute('data-huj-tab');
+                ['huj-tab-umrah', 'huj-tab-hajj'].forEach(function (x) { var xx = document.getElementById(x); if (xx) xx.classList.toggle('active', x === id); });
+                var pa = document.getElementById('huj-panel-umrah'); var ph = document.getElementById('huj-panel-hajj');
+                if (pa) pa.hidden = (which !== 'umrah');
+                if (ph) ph.hidden = (which !== 'hajj');
+            });
+        });
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
         var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
@@ -7985,8 +8190,8 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         try { window.localStorage.removeItem(key); } catch (e) {}
     }
     function khatmaLoad() { try { var v = khGet(KHATMA_KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
-    function khatmaSave(state) { khSet(KHATMA_KEY, JSON.stringify(state)); }
-    function khatmaReset() { khRemove(KHATMA_KEY); khRemove(KHATMA_SETUP_KEY); }
+    function khatmaSave(state) { khSet(KHATMA_KEY, JSON.stringify(state)); if (typeof window.syncKhatmaReadCard === 'function') window.syncKhatmaReadCard(); }
+    function khatmaReset() { khRemove(KHATMA_KEY); khRemove(KHATMA_SETUP_KEY); if (typeof window.syncKhatmaReadCard === 'function') window.syncKhatmaReadCard(); }
     function khSetupLoad() { try { var v = khGet(KHATMA_SETUP_KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
     function khSetupSave(value) { khSet(KHATMA_SETUP_KEY, JSON.stringify(value)); }
     function khSetupCommit() {
@@ -8105,6 +8310,17 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     window.initKhatma = initKhatma;
     window.khatmaLoad = khatmaLoad;
     window.khatmaRenderTracker = khatmaRenderTracker;
+    // بطاقة « الختمة الجماعية » بالصفحة الرئيسية : لا تظهر إلا بعد استيراد/إنشاء بيانات الخطة
+    window.syncKhatmaReadCard = function () {
+        try {
+            var st = khatmaLoad();
+            var has = !!(st && st.members && st.members.length);
+            var c = document.getElementById('card-khatma-read');
+            if (c) c.style.display = has ? '' : 'none';
+        } catch (e) {}
+    };
+    // تشغيل المزامنة فورًا (تظهر البطاقة فقط عند وجود بيانات)
+    try { window.syncKhatmaReadCard(); } catch (e) {}
     // ===== صفحة « الختمة الجماعية » (قراءة الأجزاء المسندة وإتمامها) — على غرار ورد القرآن اليومي =====
     var khatmaReadScreen = document.getElementById('khatma-read-screen');
     var khatmaReadSplit = document.getElementById('khatma-read-split');
@@ -9716,7 +9932,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-khatma-read' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-khatma-read' || card.id === 'card-hajj-umrah' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
