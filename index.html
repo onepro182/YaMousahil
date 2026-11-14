@@ -695,7 +695,7 @@
         .adhkar-search-box input { flex: 1; background: transparent; border: none; color: var(--text-main); font-family: var(--font); font-size: 0.9rem; outline: none; }
         .adhkar-search-box input::placeholder { color: var(--text-dim); }
         .adhkar-search-box button { background: var(--gold); border: none; border-radius: 6px; padding: 5px 12px; color: #0b132b; font-weight: 700; cursor: pointer; }
-        /* ===== الأذكار : عرض واحد واحد (Android) ===== */
+        /* ===== حصن المسلم : عرض واحد واحد (Android) ===== */
         .adhkar-pager{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;padding:10px;background:radial-gradient(120% 90% at 50% 0%, rgba(46,131,90,.4) 0%, rgba(4,26,16,.92) 100%);border:1px solid rgba(212,175,55,.3);border-radius:16px;overflow:hidden;}
         .adhkar-pager-main{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;text-align:center;border:1.5px solid rgba(212,175,55,.5);border-radius:14px;background:linear-gradient(165deg,rgba(17,66,39,.55),rgba(5,22,14,.92));padding:18px 16px;position:relative;overflow:auto;}
         .adhkar-badge{position:absolute;top:10px;right:12px;background:var(--gold);color:#0b132b;border-radius:10px 4px 10px 4px;padding:3px 12px;font-size:.74rem;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.4);}
@@ -1902,8 +1902,19 @@
                                     <span class="app-name" data-i18n="card_quran">القرآن الكريم</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-Adhkar">
-                                    <img class="app-icon" src="assets/img/Adkar.png" alt="الأذكار">
-                                    <span class="app-name" data-i18n="card_adhkar">الأذكار</span>
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="حصن المسلم">
+                                        <defs>
+                                            <radialGradient id="hisnBg" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#2b6f4c"/><stop offset="0.55" stop-color="#15492c"/><stop offset="1" stop-color="#051f11"/></radialGradient>
+                                            <linearGradient id="hisnGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c4"/><stop offset="0.5" stop-color="#e6c654"/><stop offset="1" stop-color="#9a711a"/></linearGradient>
+                                        </defs>
+                                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#hisnBg)"/>
+                                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                        <path d="M32 8 L34.6 14.6 L32 13.3 L29.4 14.6 Z" fill="url(#hisnGold)"/>
+                                        <text x="32" y="29" text-anchor="middle" font-size="15" font-weight="800" fill="url(#hisnGold)" font-family="Amiri, serif" stroke="#2a1a05" stroke-width=".3">حِصْنُ</text>
+                                        <text x="32" y="45" text-anchor="middle" font-size="16.5" font-weight="800" fill="url(#hisnGold)" font-family="Amiri, serif" stroke="#2a1a05" stroke-width=".3">الْمُسْلِم</text>
+                                        <text x="32" y="57" text-anchor="middle" font-size="6.6" fill="#ffffff" opacity=".92" font-family="Amiri, serif">أذكار المسلم اليومية</text>
+                                    </svg>
+                                    <span class="app-name" data-i18n="card_adhkar">حصن المسلم</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-tasbih">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="المسبحة الإلكترونية">
@@ -2285,13 +2296,13 @@
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat" data-qm-back>‹ العودة</button>
                     <div style="text-align:center;flex:1;">
                         <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
-                        <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · الأذكار · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
+                        <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · حصن المسلم · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
                     </div>
                     <div class="isl-header-spacer" style="width:80px;"></div>
                 </header>
 
                 <!-- liens vers les 3 contenus (masqués) -->
-                <div style="display:none;gap:12px;justify-content:center;margin-bottom:8px;flex-shrink:0;" aria-hidden="true"><a href="#isl-pane-quran" onclick="window.scrollTo({top:document.getElementById('isl-pane-quran').offsetTop,behavior:'smooth'}); return false;">📖 القرآن الكريم</a><a href="#isl-pane-adhkar" onclick="window.scrollTo({top:document.getElementById('isl-pane-adhkar').offsetTop,behavior:'smooth'}); return false;">🤲 الأذكار</a><a href="#isl-pane-tasbih" onclick="window.scrollTo({top:document.getElementById('isl-pane-tasbih').offsetTop,behavior:'smooth'}); return false;">مسبحة إلكترونية</a></div>
+                <div style="display:none;gap:12px;justify-content:center;margin-bottom:8px;flex-shrink:0;" aria-hidden="true"><a href="#isl-pane-quran" onclick="window.scrollTo({top:document.getElementById('isl-pane-quran').offsetTop,behavior:'smooth'}); return false;">📖 القرآن الكريم</a><a href="#isl-pane-adhkar" onclick="window.scrollTo({top:document.getElementById('isl-pane-adhkar').offsetTop,behavior:'smooth'}); return false;">🤲 حصن المسلم</a><a href="#isl-pane-tasbih" onclick="window.scrollTo({top:document.getElementById('isl-pane-tasbih').offsetTop,behavior:'smooth'}); return false;">مسبحة إلكترونية</a></div>
 
                 <!-- conteneur commun : tout le contenu visible -->
 
@@ -2348,7 +2359,7 @@
                         <div class="adhkar-split-view">
                             <div class="adhkar-sidebar">
                                 <div class="adhkar-search-box">
-                                    <input type="text" id="adhkar-search-input" placeholder="ابحث في الأذكار...">
+                                    <input type="text" id="adhkar-search-input" placeholder="ابحث في حصن المسلم...">
                                     <button type="button" id="adhkar-search-btn">🔍</button>
                                 </div>
                                 <div class="adhkar-cat-list" id="adhkar-cat-list"></div>
@@ -3533,7 +3544,7 @@
             ar: {
                 nav_home:'الرئيسية', nav_prayers:'مواقيت اليوم والقبلة', nav_reminder:'تذكير قبل الصلاة', nav_adhan:'الأذان', nav_title:'القائمة',
                 sec_islamiyat:'إسلاميات', sec_radios:'إذاعات وبث مباشر', sec_services:'خدمات',
-                card_quran:'القرآن الكريم', card_adhkar:'الأذكار', card_tasbih:'المسبحة الإلكترونية', card_asma:'أسماء الله الحسنى', card_wird:'ورد القرآن اليومي',
+                card_quran:'القرآن الكريم', card_adhkar:'حِصْنُ الْمُسْلِم', card_tasbih:'المسبحة الإلكترونية', card_asma:'أسماء الله الحسنى', card_wird:'ورد القرآن اليومي',
                 card_radioMaroc:'إذاعات مغربية', card_live:'بث مباشر', card_quranRadio:'📻 إذاعات القرآن', card_fm6oa:'مواقيت الصلاة',
                 card_mosques:'المساجد القريبة منك', card_inheritance:'حساب المواريث', card_sihatar:'صحتي',
                 set_nav_prayer:'مواقيت الصلاة', set_nav_adhan:'التنبيهات والأذان', set_nav_display:'العرض واللغة', set_nav_about:'حول التطبيق',
@@ -3550,7 +3561,7 @@
             fr: {
                 nav_home:'Accueil', nav_prayers:'Horaires du 5 prières & la Qibla', nav_reminder:'Rappel de prière', nav_adhan:'Adhan', nav_title:'Menu',
                 sec_islamiyat:'Islam', sec_radios:'Radios & Direct', sec_services:'Services',
-                card_quran:'Coran', card_adhkar:'Invocations', card_tasbih:'Tasbih numérique', card_asma:'Les 99 Noms d’Allah', card_wird:'Wird quotidien',
+                card_quran:'Coran', card_adhkar:'Hisn al-Muslim', card_tasbih:'Tasbih numérique', card_asma:'Les 99 Noms d’Allah', card_wird:'Wird quotidien',
                 card_radioMaroc:'Radios marocaines', card_live:'Direct', card_quranRadio:'📻 Radios du Coran', card_fm6oa:'Horaires de prière',
                 card_mosques:'Mosquées près de vous', card_inheritance:'Héritages', card_sihatar:'Ma santé',
                 set_nav_prayer:'Horaires de prière', set_nav_adhan:'Rappels & Adhan', set_nav_display:'Affichage & langue', set_nav_about:'À propos',
@@ -4200,7 +4211,7 @@
                 const searchTerm = currentAdhkarSearch.trim();
                 items = items.filter(item => item.text.includes(searchTerm) || item.ref.includes(searchTerm));
             }
-            document.getElementById('adhkar-title').textContent = cat ? cat.name : 'الأذكار';
+            document.getElementById('adhkar-title').textContent = cat ? cat.name : 'حِصْنُ الْمُسْلِم';
             container.innerHTML = '';
             if (items.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-dim);">لا توجد نتائج مطابقة.</div>'; return; }
             if (document.body.classList.contains('is-mobile')) { renderAdhkarPager(container, items); return; }
@@ -8511,9 +8522,9 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             const s = document.getElementById('isl-header-sub');
             if (t && s) {
                 if (name === 'quran') { t.textContent = window._quranWirdOnly ? 'ورد القرآن اليومي' : 'قراءة القرآن الكريم'; s.textContent = window._quranWirdOnly ? 'سور ورد القرآن اليومي' : (window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'); }
-                else if (name === 'adhkar') { t.textContent = 'الأذكار'; s.textContent = 'أذكار المسلم اليومية من الكتاب والسنة'; }
+                else if (name === 'adhkar') { t.textContent = 'حِصْنُ الْمُسْلِم'; s.textContent = 'أذكار المسلم اليومية من الكتاب والسنة'; }
                 else if (name === 'tasbih') { t.textContent = 'المسبحة الإلكترونية'; s.textContent = ''; }
-                else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · الأذكار · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
+                else { t.textContent = '✦ إسلاميات'; s.innerHTML = 'القرآن · حصن المسلم · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;">'; }
             }
         }
         document.getElementById('btn-back-from-islamiyat').onclick = () => {
