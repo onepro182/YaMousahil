@@ -47,6 +47,38 @@
             --glass-blur: blur(12px);
             --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
         }
+        /* Theme: ذهبي ملكي */
+        body.theme-gold {
+            --bg-dark: #1a120a;
+            --bg-screen: #211710;
+            --bg-card: rgba(74, 51, 25, 0.5);
+            --bg-card-hover: rgba(96, 68, 35, 0.65);
+            --gold: #ffc94d;
+            --gold-light: #ffe08a;
+            --cream: #f8ead0;
+            --text-main: #ffffff;
+            --text-dim: #d4b48a;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 201, 77, 0.28);
+            --glass-blur: blur(12px);
+            --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        /* Theme: وردي عصري */
+        body.theme-rose {
+            --bg-dark: #1c0d14;
+            --bg-screen: #24101c;
+            --bg-card: rgba(84, 32, 55, 0.45);
+            --bg-card-hover: rgba(110, 46, 73, 0.6);
+            --gold: #f472b6;
+            --gold-light: #f9a8d4;
+            --cream: #fce7f3;
+            --text-main: #ffffff;
+            --text-dim: #d8a4bd;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(244, 114, 182, 0.28);
+            --glass-blur: blur(12px);
+            --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
         ::-webkit-scrollbar{display:none;}
         *{scrollbar-width:none;-ms-overflow-style:none;margin:0;padding:0;box-sizing:border-box;}
         body{background-color:var(--bg-screen);color:var(--text-main);font-family:var(--font);height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;user-select:none;}
@@ -1832,12 +1864,12 @@
                     </div>
                 </header>
                 <div class="screen-nav-container">
-                    <div class="screen-nav-title">القائمة</div>
+                    <div class="screen-nav-title" data-i18n="nav_title">القائمة</div>
                     <div class="screen-nav-bar">
-                        <button type="button" class="nav-pill glass-btn active" id="nav-btn-home">الرئيسية</button>
-                        <button type="button" class="nav-pill glass-btn" id="nav-btn-prayers">مواقيت اليوم والقبلة</button>
-                        <button type="button" class="nav-pill glass-btn" id="nav-btn-reminder">تذكير قبل الصلاة</button>
-                        <button type="button" class="nav-pill glass-btn" id="nav-btn-adhan">الأذان</button>
+                        <button type="button" class="nav-pill glass-btn active" id="nav-btn-home" data-i18n="nav_home">الرئيسية</button>
+                        <button type="button" class="nav-pill glass-btn" id="nav-btn-prayers" data-i18n="nav_prayers">مواقيت اليوم والقبلة</button>
+                        <button type="button" class="nav-pill glass-btn" id="nav-btn-reminder" data-i18n="nav_reminder">تذكير قبل الصلاة</button>
+                        <button type="button" class="nav-pill glass-btn" id="nav-btn-adhan" data-i18n="nav_adhan">الأذان</button>
                     </div>
                 </div>
                 <main class="main-layout">
@@ -1845,7 +1877,7 @@
                         <div class="prayer-row" id="home-prayer-times"></div>
                         <div class="apps-scroll-area">
                             <div class="fav-header-row">
-                                <div class="section-title" style="margin-bottom:0;">إسلاميات</div>
+                                <div class="section-title" style="margin-bottom:0;" data-i18n="sec_islamiyat">إسلاميات</div>
                                 <div class="fav-next-prayer" id="fav-next-prayer"><span class="fav-next-label">الصلاة القادمة</span> <span class="fav-next-name" id="fav-next-prayer-name">--</span> <span class="fav-next-time" id="fav-next-countdown">--:--:--</span></div>
                             </div>
                             <div class="apps-grid fav-grid">
@@ -1867,11 +1899,11 @@
                                         <circle cx="32" cy="16" r="4.4" fill="url(#qmGold)"/>
                                         <circle cx="34.2" cy="15" r="3.5" fill="#0b132b" opacity=".82"/>
                                     </svg>
-                                    <span class="app-name">القرآن الكريم</span>
+                                    <span class="app-name" data-i18n="card_quran">القرآن الكريم</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-Adhkar">
                                     <img class="app-icon" src="assets/img/Adkar.png" alt="الأذكار">
-                                    <span class="app-name">الأذكار</span>
+                                    <span class="app-name" data-i18n="card_adhkar">الأذكار</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-tasbih">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="المسبحة الإلكترونية">
@@ -1905,11 +1937,11 @@
                                         <circle cx="30.6" cy="10.6" r="1.5" fill="#fff" opacity=".55"/>
                                         <circle cx="30.8" cy="48.2" r="1.5" fill="#fff" opacity=".5"/>
                                     </svg>
-                                    <span class="app-name">المسبحة الإلكترونية</span>
+                                    <span class="app-name" data-i18n="card_tasbih">المسبحة الإلكترونية</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-asma">
                                     <img class="app-icon logo3d" src="Logo.png" alt="أسماء الله">
-                                    <span class="app-name">أسماء الله الحسنى</span>
+                                    <span class="app-name" data-i18n="card_asma">أسماء الله الحسنى</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-wird"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="ورد القرآن اليومي">
                                     <defs>
@@ -1971,21 +2003,21 @@
                                         <path d="M32 44 L52 35"/>
                                     </g>
                                     <path d="M23.5 24.9 L26.9 26.4 L26.5 39.2 L25.1 36.4 L23.8 39.6 Z" fill="url(#q3dWirdRibbon)"/>
-                                </svg><span class="app-name">ورد القرآن اليومي</span></div>
-                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">إذاعات وبث مباشر</div>
+                                </svg><span class="app-name" data-i18n="card_wird">ورد القرآن اليومي</span></div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-i18n="sec_radios">إذاعات وبث مباشر</div>
                                 <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
                                     <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
-                                    <span class="app-name">إذاعات مغربية</span>
+                                    <span class="app-name" data-i18n="card_radioMaroc">إذاعات مغربية</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-live">
                                     <img class="app-icon" src="https://makkahlive.org/logo.webp" alt="بث مباشر" style="border-radius:8px;">
-                                    <span class="app-name">بث مباشر</span>
+                                    <span class="app-name" data-i18n="card_live">بث مباشر</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran-radio">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
-                                    <span class="app-name">📻 إذاعات القرآن</span>
+                                    <span class="app-name" data-i18n="card_quranRadio">📻 إذاعات القرآن</span>
                                 </div>
-                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;">خدمات</div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-i18n="sec_services">خدمات</div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="مواقيت الصلاة">
                                         <defs>
@@ -2025,13 +2057,13 @@
                                         <circle cx="46" cy="45" r="1.8" fill="#b5892a"/>
                                         <path d="M39.5 39.2 A9 9 0 0 1 51 37.8" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".85"/>
                                     </svg>
-                                    <span class="app-name">مواقيت الصلاة</span>
+                                    <span class="app-name" data-i18n="card_fm6oa">مواقيت الصلاة</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-mosques">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="المساجد">
-                                    <span class="app-name">المساجد القريبة منك</span>
+                                    <span class="app-name" data-i18n="card_mosques">المساجد القريبة منك</span>
                                 </div>
-                                <div class="app-card glass-btn" tabindex="0" id="card-inheritance"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" alt="حساب المواريث"><span class="app-name">حساب المواريث</span></div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-inheritance"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" alt="حساب المواريث"><span class="app-name" data-i18n="card_inheritance">حساب المواريث</span></div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-sihatar" title="دليل الخدمات الصحية">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="صحتي">
                                         <defs>
@@ -2053,7 +2085,7 @@
                                         <path d="M28 11 h8 a4.5 4.5 0 0 1 4.5 4.5 v6 h-17 v-6 a4.5 4.5 0 0 1 4.5 -4.5 z" fill="#ffffff" opacity=".55"/>
                                         <path d="M6 32 h10 l4 -9 l6 18 l4.5 -9 H58" fill="none" stroke="url(#q3dHealthGold)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-                                    <span class="app-name">صحتي</span>
+                                    <span class="app-name" data-i18n="card_sihatar">صحتي</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-weather">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
@@ -3313,10 +3345,10 @@
                     <div class="settings-header"><h2>⌂ الإعدادات</h2></div>
                     <div class="settings-body">
                         <div class="settings-sidebar">
-                            <button type="button" class="nav-btn active" data-target="pane-prayer">مواقيت الصلاة</button>
-                            <button type="button" class="nav-btn" data-target="pane-adhan">التنبيهات والأذان</button>
-                            <button type="button" class="nav-btn" data-target="pane-display">العرض واللغة</button>
-                            <button type="button" class="nav-btn" data-target="pane-about">حول التطبيق</button>
+                            <button type="button" class="nav-btn active" data-target="pane-prayer" data-i18n="set_nav_prayer">مواقيت الصلاة</button>
+                            <button type="button" class="nav-btn" data-target="pane-adhan" data-i18n="set_nav_adhan">التنبيهات والأذان</button>
+                            <button type="button" class="nav-btn" data-target="pane-display" data-i18n="set_nav_display">العرض واللغة</button>
+                            <button type="button" class="nav-btn" data-target="pane-about" data-i18n="set_nav_about">حول التطبيق</button>
                         </div>
                         <div class="settings-content">
                             <div class="settings-pane active" id="pane-prayer">
@@ -3340,35 +3372,35 @@
                                 <div class="setting-row" style="justify-content:center;margin-top:15px;"><button type="button" class="file-btn" id="btn-test-reminder" style="background:var(--glass-bg);backdrop-filter:blur(10px);border:1px solid var(--gold);color:var(--gold);font-weight:bold;width:100%;justify-content:center;">▶ اختبار شاشة التنبيه</button></div>
                             </div>
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
-                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (توقيت الجهاز)</option>
-                              <option value="ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div><div class="setting-row"><div class="setting-title">المظهر (السمة)</div><select id="set-theme" class="setting-select"><option value="default">الافتراضي (أخضر وذهبي)</option><option value="blue">أزرق احترافي</option></select></div></div>
+                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title" data-i18n="set_clock">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 <span data-i18n="hour_suffix">س</span></button><button type="button" class="group-btn active" data-value="24">24 <span data-i18n="hour_suffix">س</span></button></div></div><div class="setting-row"><div class="setting-title" data-i18n="set_seconds">إظهار الثواني</div><label class="switch"><input type="checkbox" id="set-seconds"><span class="slider"></span></label></div><div class="setting-row"><div class="setting-title" data-i18n="set_gmt">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected data-i18n="gmt_auto">تلقائي (توقيت الجهاز)</option>
+                              <option value="ma" data-i18n="gmt_ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div><div class="setting-row"><div class="setting-title" data-i18n="set_theme">المظهر (السمة)</div><select id="set-theme" class="setting-select"><option value="default" data-i18n="theme_default">الافتراضي (أخضر وذهبي)</option><option value="blue" data-i18n="theme_blue">أزرق احترافي</option><option value="gold" data-i18n="theme_gold">ذهبي ملكي</option><option value="rose" data-i18n="theme_rose">وردي عصري</option></select></div><div class="setting-row"><div class="setting-title" data-i18n="set_lang">اللغة</div><div class="toggle-group" id="set-lang"><button type="button" class="group-btn active" data-value="ar">العربية</button><button type="button" class="group-btn" data-value="fr">Français</button></div></div><div class="setting-row"><div class="setting-title" data-i18n="set_gregorian">عرض التاريخ الميلادي</div><label class="switch"><input type="checkbox" id="set-gregorian" checked><span class="slider"></span></label></div></div>
                             <div class="settings-pane" id="pane-about">
                                 <div class="about-content about-about">
                                     <div class="share-logo-wrap">
                                         <img class="share-logo logo3d" src="Logo.png" alt="شعار تطبيق YaMousahil" onerror="this.style.display='none'">
                                     </div>
-                                    <h2>حول التطبيق</h2>
-                                    <p class="about-tagline">رفيقك الرقمي للقرآن الكريم والعبادة والخدمات اليومية</p>
-                                    <p class="about-desc">اكتشف YaMousahil، التطبيق الذي يجمع بين روحانية القرآن الكريم وسهولة الوصول إلى الخدمات الإيمانية والصحية واليومية، في تجربة رقمية متكاملة صُممت لتكون قريبة منك أينما كنت.</p>
+                                    <h2 data-i18n="about_title">حول التطبيق</h2>
+                                    <p class="about-tagline" data-i18n="about_tagline">رفيقك الرقمي للقرآن الكريم والعبادة والخدمات اليومية</p>
+                                    <p class="about-desc" data-i18n="about_desc">اكتشف YaMousahil، التطبيق الذي يجمع بين روحانية القرآن الكريم وسهولة الوصول إلى الخدمات الإيمانية والصحية واليومية، في تجربة رقمية متكاملة صُممت لتكون قريبة منك أينما كنت.</p>
                                     <div class="contact-info"><p class="about-credit">مع تحياتي: <strong>مهندس/ جمال ـ ح ـ</strong></p><p class="about-dua">نسألكم الدعاء 🤲</p></div>
                                     <div class="about-actions">
                                         <a class="share-wa-btn" href="https://wa.me/?text=YaMousahil%20%E2%80%94%20%D9%85%D9%88%D8%A7%D9%82%D9%8A%D8%AA%20%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9%20%D9%88%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86%20%D9%88%D8%A7%D9%84%D8%A3%D8%B0%D9%83%D8%A7%D8%B1%0Ahttps%3A%2F%2Fonepro182.github.io%2FYaMousahil%2F" target="_blank" rel="noopener" title="مشاركة عبر واتساب">
                                             <span class="share-wa-ico" aria-hidden="true">
                                                 <svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="WhatsApp"><use href="#siha-ico-whatsapp"/></svg>
                                             </span>
-                                            <span class="share-wa-txt"><b>مشاركة عبر واتساب</b><i>WhatsApp</i></span>
+                                            <span class="share-wa-txt"><b data-i18n="about_whatsapp">مشاركة عبر واتساب</b><i>WhatsApp</i></span>
                                         </a>
-                                        <a class="about-act" href="mailto:onepro182@gmail.com?subject=YaMousahil%20-%20message%20du%20developpeur" title="مراسلة المطور">📧 مراسلة المطور</a>
-                                        <a class="about-act" href="https://github.com/onepro182/YaMousahil/issues" target="_blank" rel="noopener" title="الإبلاغ عن مشكلة">💻 الإبلاغ عن مشكلة</a>
+                                        <a class="about-act" href="mailto:onepro182@gmail.com?subject=YaMousahil%20-%20message%20du%20developpeur" title="مراسلة المطور" data-i18n="about_contact">📧 مراسلة المطور</a>
+                                        <a class="about-act" href="https://github.com/onepro182/YaMousahil/issues" target="_blank" rel="noopener" title="الإبلاغ عن مشكلة" data-i18n="about_report">💻 الإبلاغ عن مشكلة</a>
                                     </div>
                                     <div class="about-qr">
                                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=https%3A%2F%2Fonepro182.github.io%2FYaMousahil%2F" alt="رمز استجابة سريعة للتطبيق" width="180" height="180" loading="lazy" onerror="this.onerror=null;this.src='https://quickchart.io/qr?size=220&text='+encodeURIComponent('https://onepro182.github.io/YaMousahil/');this.onerror=function(){this.style.display='none';this.parentNode.classList.add('qr-fallback');};">
-                                        <span class="about-qr-cap">امسح الرمز لفتح التطبيق — Code à barre</span>
+                                        <span class="about-qr-cap" data-i18n="about_qr_cap">امسح الرمز لفتح التطبيق — Code à barre</span>
                                         <a class="about-qr-link" href="https://onepro182.github.io/YaMousahil/" target="_blank" rel="noopener">onepro182.github.io/YaMousahil</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-buttons"><button type="button" class="btn-cancel" id="btn-close-settings">إلغاء</button><button type="button" class="btn-save" id="btn-save-settings">حفظ</button></div>
+                            <div class="modal-buttons"><button type="button" class="btn-cancel" id="btn-close-settings" data-i18n="footer_cancel">إلغاء</button><button type="button" class="btn-save" id="btn-save-settings" data-i18n="footer_save">حفظ</button></div>
                         </div>
                     </div>
                 </div>
@@ -3490,14 +3522,66 @@
             countryId:'morocco', cityId:'oujda', method:'Morocco', asr:'Shafi', clockFormat:24, gmtOffset:1, clockTz:'auto',
             adhanEnabled:true, adhanVoice:'azan1', reminderEnabled:false, reminderMinutes:10,
             reminderText:true, reminderVoice:true, theme:'default',
+            language:'ar',
+            showSeconds:false,
+            showGregorian:true,
             globalOffset: 0,
             adjustments: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 }
         };
         
+        var APP_I18N = {
+            ar: {
+                nav_home:'الرئيسية', nav_prayers:'مواقيت اليوم والقبلة', nav_reminder:'تذكير قبل الصلاة', nav_adhan:'الأذان', nav_title:'القائمة',
+                sec_islamiyat:'إسلاميات', sec_radios:'إذاعات وبث مباشر', sec_services:'خدمات',
+                card_quran:'القرآن الكريم', card_adhkar:'الأذكار', card_tasbih:'المسبحة الإلكترونية', card_asma:'أسماء الله الحسنى', card_wird:'ورد القرآن اليومي',
+                card_radioMaroc:'إذاعات مغربية', card_live:'بث مباشر', card_quranRadio:'📻 إذاعات القرآن', card_fm6oa:'مواقيت الصلاة',
+                card_mosques:'المساجد القريبة منك', card_inheritance:'حساب المواريث', card_sihatar:'صحتي',
+                set_nav_prayer:'مواقيت الصلاة', set_nav_adhan:'التنبيهات والأذان', set_nav_display:'العرض واللغة', set_nav_about:'حول التطبيق',
+                set_clock:'الساعة', hour_suffix:'س', set_seconds:'إظهار الثواني',
+                set_gmt:'المنطقة الزمنية (GMT)', gmt_auto:'تلقائي (توقيت الجهاز)', gmt_ma:'توقيت المغرب الرسمي',
+                set_theme:'المظهر (السمة)', theme_default:'الافتراضي (أخضر وذهبي)', theme_blue:'أزرق احترافي', theme_gold:'ذهبي ملكي', theme_rose:'وردي عصري',
+                set_lang:'اللغة', set_gregorian:'عرض التاريخ الميلادي',
+                footer_cancel:'إلغاء', footer_save:'حفظ',
+                about_title:'حول التطبيق',
+                about_tagline:'رفيقك الرقمي للقرآن الكريم والعبادة والخدمات اليومية',
+                about_desc:'اكتشف YaMousahil، التطبيق الذي يجمع بين روحانية القرآن الكريم وسهولة الوصول إلى الخدمات الإيمانية والصحية واليومية، في تجربة رقمية متكاملة صُممت لتكون قريبة منك أينما كنت.',
+                about_whatsapp:'مشاركة عبر واتساب', about_contact:'📧 مراسلة المطور', about_report:'💻 الإبلاغ عن مشكلة', about_qr_cap:'امسح الرمز لفتح التطبيق — Code à barre'
+            },
+            fr: {
+                nav_home:'Accueil', nav_prayers:'Horaires du 5 prières & la Qibla', nav_reminder:'Rappel de prière', nav_adhan:'Adhan', nav_title:'Menu',
+                sec_islamiyat:'Islam', sec_radios:'Radios & Direct', sec_services:'Services',
+                card_quran:'Coran', card_adhkar:'Invocations', card_tasbih:'Tasbih numérique', card_asma:'Les 99 Noms d’Allah', card_wird:'Wird quotidien',
+                card_radioMaroc:'Radios marocaines', card_live:'Direct', card_quranRadio:'📻 Radios du Coran', card_fm6oa:'Horaires de prière',
+                card_mosques:'Mosquées près de vous', card_inheritance:'Héritages', card_sihatar:'Ma santé',
+                set_nav_prayer:'Horaires de prière', set_nav_adhan:'Rappels & Adhan', set_nav_display:'Affichage & langue', set_nav_about:'À propos',
+                set_clock:'Heure', hour_suffix:'h', set_seconds:'Afficher les secondes',
+                set_gmt:'Fuseau horaire (GMT)', gmt_auto:'Automatique (heure de l’appareil)', gmt_ma:'Heure officielle du Maroc',
+                set_theme:'Apparence (thème)', theme_default:'Défaut (vert & or)', theme_blue:'Bleu professionnel', theme_gold:'Doré royal', theme_rose:'Rose moderne',
+                set_lang:'Langue', set_gregorian:'Afficher la date grégorienne',
+                footer_cancel:'Annuler', footer_save:'Enregistrer',
+                about_title:'À propos de l’application',
+                about_tagline:'Votre compagnon numérique pour le Coran, le culte et les services quotidiens',
+                about_desc:'Découvrez YaMousahil, l’application qui allie la spiritualité du Coran et l’accès simple aux services religieux, de santé et du quotidien, dans une expérience numérique intégrée, conçue pour être à portée de main, où que vous soyez.',
+                about_whatsapp:'Partager via WhatsApp', about_contact:'📧 Contacter le développeur', about_report:'💻 Signaler un problème', about_qr_cap:'Scannez le code pour ouvrir l’application — Code-barres'
+            }
+        };
+        window.APP_I18N = APP_I18N;
+        function applyAppLanguage(lang) {
+            var active = (lang === 'fr') ? 'fr' : 'ar';
+            try { document.documentElement.lang = active; } catch (e) {}
+            var dict = APP_I18N[active] || APP_I18N.ar;
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                var k = el.getAttribute('data-i18n');
+                if (k && dict[k]) el.textContent = dict[k];
+            });
+        }
+        window.applyAppLanguage = applyAppLanguage;
         function applyTheme(name) {
             try {
-                document.body.classList.remove('theme-blue');
-                if (name === 'blue') document.body.classList.add('theme-blue');
+                const names = ['blue', 'gold', 'rose'];
+                if (names.indexOf(name) === -1) name = 'default';
+                document.body.classList.remove('theme-blue', 'theme-gold', 'theme-rose');
+                if (name !== 'default') document.body.classList.add('theme-' + name);
             } catch (e) {}
         }
         window.applyTheme = applyTheme;
@@ -3515,6 +3599,7 @@
             }
         } catch (e) { console.warn('localStorage blocked'); }
         try { applyTheme(settings.theme || 'default'); } catch (e) {}
+        try { applyAppLanguage(settings.language || 'ar'); } catch (e) {}
 
         const COUNTRIES_DB = {
             morocco:{nameAr:'المغرب',cities:[['casablanca','الدار البيضاء',33.5731,-7.5898],['rabat','الرباط',34.0209,-6.8416],['fes','فاس',34.0181,-5.0078],['marrakech','مراكش',31.6295,-7.9811],['oujda','وجدة',34.6814,-1.9086],['tangier','طنجة',35.7595,-5.8340],['agadir','أكادير',30.4278,-9.5981],['meknes','مكناس',33.8935,-5.5473]]},
@@ -3636,17 +3721,21 @@
             // 'auto' => heure locale du telephone | 'ma' => heure officielle du Maroc | sinon GMT fixe
             const tz = effectiveClockTz();
             const auto = (tz === 'auto' || tz === undefined);
-            let h, m;
+            let h, m, sec;
             if (auto) {
-                h = date.getHours(); m = date.getMinutes();
+                h = date.getHours(); m = date.getMinutes(); sec = date.getSeconds();
             } else if (tz === 'ma') {
                 const p = moroccoParts(date);
-                h = p.hour % 24; m = p.minute;
+                h = p.hour % 24; m = p.minute; sec = p.second;
             } else {
                 const offset = Number(tz) || 0;
                 const utcMs = date.getTime() + (date.getTimezoneOffset() * 60000);
                 const target = new Date(utcMs + (offset * 3600000));
-                h = target.getUTCHours(); m = target.getUTCMinutes();
+                h = target.getUTCHours(); m = target.getUTCMinutes(); sec = target.getUTCSeconds();
+            }
+            if (settings.showSeconds) {
+                if (settings.clockFormat === 12) { const ampm = h >= 12 ? ' PM' : ' AM'; let hh = h % 12 || 12; return `${pad(hh)}:${pad(m)}:${pad(sec)}${ampm}`; }
+                return `${pad(h)}:${pad(m)}:${pad(sec)}`;
             }
             if (settings.clockFormat === 12) { const ampm = h >= 12 ? ' PM' : ' AM'; let hh = h % 12 || 12; return `${pad(hh)}:${pad(m)}${ampm}`; }
             return `${pad(h)}:${pad(m)}`;
@@ -3782,8 +3871,17 @@
                 gmtEl.textContent = 'GMT' + (off === 0 ? '' : (off > 0 ? '+' + off : String(off)));
             }
             updateGmtHint();
-            const greg = moroccoNow(now).toLocaleDateString('ar-EG-u-nu-latn-ca-gregory', { timeZone:'UTC', weekday:'long', day:'numeric', month:'long', year:'numeric' });
-            document.getElementById('gregorian-date').textContent = greg;
+            const gregEl = document.getElementById('gregorian-date');
+            const showGregorian = settings.showGregorian !== false;
+            if (gregEl) {
+                if (showGregorian) {
+                    const greg = moroccoNow(now).toLocaleDateString('ar-EG-u-nu-latn-ca-gregory', { timeZone:'UTC', weekday:'long', day:'numeric', month:'long', year:'numeric' });
+                    gregEl.textContent = greg;
+                    gregEl.style.display = '';
+                } else {
+                    gregEl.style.display = 'none';
+                }
+            }
 
             let tempNextKey = null;
             for (const k of ['fajr','dhuhr','asr','maghrib','isha']) {
@@ -6273,7 +6371,14 @@ var gender = 'male';
             return weights.map(w => { acc += w; return acc / total; });
         }
 
-        function stopIslamiyatAudio() { islQuranAudio.pause(); islQuranAudio.src = ''; islQuranPlaying = false; islQuranQueue = []; islQuranIndex = 0; const btn = document.getElementById('isl-play-btn'); if (btn) btn.textContent = '▶ استماع'; document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); }
+        function stopIslamiyatAudio() { islQuranAudio.pause(); islQuranAudio.src = ''; islQuranPlaying = false; islQuranQueue = []; islQuranIndex = 0; islCurrentAyah = 0; const btn = document.getElementById('isl-play-btn'); if (btn) btn.textContent = '▶ استماع'; document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); }
+        // pause légère : garde la position (src/file/index) pour reprendre là où on s'est arrêté
+        function pauseIslamiyatAudio() {
+            try { islQuranAudio.pause(); } catch (e) {}
+            islQuranPlaying = false;
+            const btn = document.getElementById('isl-play-btn');
+            if (btn) btn.textContent = '▶ استماع';
+        }
         function highlightAyah(num) { document.querySelectorAll('.ayah-reading').forEach(el => el.classList.remove('ayah-reading')); const el = document.getElementById('isl-ayah-' + num); if (el) { el.classList.add('ayah-reading'); const body = document.getElementById('isl-quran-body'); if (body && body.scrollHeight > body.clientHeight + 4) { const r = el.getBoundingClientRect(), br = body.getBoundingClientRect(); body.scrollTop += (r.top - br.top) - (br.height / 2 - r.height / 2); } else { try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} } } }
         
         function showQuranTextOnMobile() { if (!document.body.classList.contains('is-mobile')) return; const sv = document.querySelector('.quran-split-view'); if (sv) sv.classList.add('show-text'); const b = document.getElementById('isl-quran-body'); if (b) b.scrollTop = 0; window.scrollTo(0, 0); }
@@ -6443,7 +6548,7 @@ var gender = 'male';
             const pr = islQuranAudio.play();
             if (pr && pr.then) pr.then(function () {
                 islQuranPlaying = true;
-                const b = document.getElementById('isl-play-btn'); if (b) b.textContent = '⏹ إيقاف';
+                const b = document.getElementById('isl-play-btn'); if (b) b.textContent = '⏸ Pause';
                 const v = (islQuranAyahs || [])[0]; if (v) highlightAyah(v.numberInSurah);
             }).catch(function () { const b = document.getElementById('isl-play-btn'); if (b) b.textContent = '⚠️ خطأ'; islQuranPlaying = false; });
         }
@@ -6475,7 +6580,7 @@ var gender = 'male';
             if (menu) menu.querySelectorAll('.isl-reciter-opt').forEach(o => o.classList.toggle('active', o.getAttribute('data-key') === islReciterKey(r)));
             closeIslReciterMenu();
             // lecture automatique du récitant choisi
-            if (islSelectedSurah && !islQuranPlaying) { unlockIslAudio(); const pb = document.getElementById('isl-play-btn'); if (pb) pb.textContent = '⏳ تحميل'; islAutoStart(); }
+            if (islSelectedSurah && !islQuranPlaying) { stopIslamiyatAudio(); unlockIslAudio(); const pb = document.getElementById('isl-play-btn'); if (pb) pb.textContent = '⏳ تحميل'; islAutoStart(); }
         }
         function buildIslReciterGrid() {
             const menu = document.getElementById('isl-reciter-menu'); if (!menu || typeof QP_RECITERS === 'undefined') return;
@@ -6515,7 +6620,20 @@ var gender = 'male';
         })();
         async function toggleIslamiyatPlay() {
             const btn = document.getElementById('isl-play-btn');
-            if (islQuranPlaying) { stopIslamiyatAudio(); return; }
+            if (islQuranPlaying) { pauseIslamiyatAudio(); return; }
+            // reprendre là où on s'est arrêté (audio en pause, fichier/liste conservée)
+            if (islQuranQueue.length > 0 && islQuranAudio.src && islQuranAudio.paused && islQuranAudio.currentTime > 0) {
+                btn.textContent = '⏳ تحميل';
+                try {
+                    await islQuranAudio.play();
+                    islQuranPlaying = true;
+                    if (btn) btn.textContent = '⏸ Pause';
+                    const currentAyah = islAudioAyahs[islQuranIndex];
+                    if (currentAyah) highlightAyah(currentAyah.numberInSurah);
+                    else if (islCurrentAyah) highlightAyah(islCurrentAyah);
+                    return;
+                } catch (e) { /* recharge fresh en cas d'échec */ }
+            }
             if (!islSelectedSurah) { alert('اختر سورة أولاً'); return; }
             const reciterId = document.getElementById('isl-reciter').value; if (!reciterId) { alert('اختر قارئاً'); return; }
             btn.textContent = '⏳ تحميل';
@@ -6549,7 +6667,7 @@ var gender = 'male';
             islQuranAudio.src = islQuranQueue[islQuranIndex];
             islQuranAudio.onended = () => { islQuranIndex++; playIslamiyatQueue(); };
             islQuranAudio.onerror = () => { document.getElementById('isl-play-btn').textContent = '⚠️ خطأ'; };
-            islQuranAudio.play().then(() => { islQuranPlaying = true; document.getElementById('isl-play-btn').textContent = '⏹ إيقاف'; const currentAyah = islAudioAyahs[islQuranIndex]; if (currentAyah) highlightAyah(currentAyah.numberInSurah); }).catch(() => { document.getElementById('isl-play-btn').textContent = '⚠️ خطأ'; islQuranPlaying = false; });
+            islQuranAudio.play().then(() => { islQuranPlaying = true; document.getElementById('isl-play-btn').textContent = '⏸ Pause'; const currentAyah = islAudioAyahs[islQuranIndex]; if (currentAyah) highlightAyah(currentAyah.numberInSurah); }).catch(() => { document.getElementById('isl-play-btn').textContent = '⚠️ خطأ'; islQuranPlaying = false; });
         }
         
         function initIslamiyat() {
@@ -7322,6 +7440,9 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             document.querySelectorAll('#set-clock .group-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.value) === settings.clockFormat));
             document.getElementById('set-gmt').value = (settings.clockTz === 'auto' || settings.clockTz === undefined) ? 'auto' : String(settings.clockTz);
             var _th = document.getElementById('set-theme'); if (_th) _th.value = settings.theme || 'default';
+            var _ss = document.getElementById('set-seconds'); if (_ss) _ss.checked = !!settings.showSeconds;
+            var _gr = document.getElementById('set-gregorian'); if (_gr) _gr.checked = settings.showGregorian !== false;
+            document.querySelectorAll('#set-lang .group-btn').forEach(b => b.classList.toggle('active', (b.dataset.value || 'ar') === (settings.language || 'ar')));
             updateGmtHint();
             renderAdjustmentsUI();
             document.getElementById('settings-modal').classList.add('active');
@@ -7346,6 +7467,21 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
                 });
             });
         });
+        // aperçu en direct : secondes dans l'horloge + date grégorienne + langue (ar/fr)
+        (function(){
+            var s = document.getElementById('set-seconds');
+            if (s) s.addEventListener('change', function(){ settings.showSeconds = s.checked; updateClocks(); });
+            var g = document.getElementById('set-gregorian');
+            if (g) g.addEventListener('change', function(){ settings.showGregorian = g.checked; updateClocks(); });
+            var lang = document.getElementById('set-lang');
+            if (lang) lang.addEventListener('click', function(e){
+                var b = e.target && e.target.closest ? e.target.closest('.group-btn') : null;
+                if (!b) return;
+                var v = (b.dataset.value === 'fr') ? 'fr' : 'ar';
+                settings.language = v;
+                try { if (typeof applyAppLanguage === 'function') applyAppLanguage(v); } catch (e2) {}
+            });
+        })();
 
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -7371,11 +7507,15 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             settings.clockFormat = parseInt(document.querySelector('#set-clock .group-btn.active').dataset.value);
             const _tzSel = document.getElementById('set-gmt').value;
             settings.clockTz = (_tzSel === 'auto') ? 'auto' : (_tzSel === 'ma' ? 'ma' : (parseInt(_tzSel, 10) || 0));
+            var _ssEl = document.getElementById('set-seconds'); if (_ssEl) settings.showSeconds = _ssEl.checked;
+            var _grEl = document.getElementById('set-gregorian'); if (_grEl) settings.showGregorian = _grEl.checked;
+            var _langEl = document.querySelector('#set-lang .group-btn.active'); if (_langEl) settings.language = _langEl.dataset.value || 'ar';
             var _thEl = document.getElementById('set-theme'); if (_thEl) settings.theme = _thEl.value || 'default';
             settings.gmtOffset = (settings.clockTz === 'auto') ? Math.round(deviceOffsetMinutes(new Date()) / 60) : (settings.clockTz === 'ma' ? Math.round(moroccoOffsetMinutes(new Date()) / 60) : settings.clockTz);
             clockTzPreview = null;
             try { localStorage.setItem('YaMousahil_settings', JSON.stringify(settings)); } catch (e) {}
             try { if (typeof applyTheme==='function') applyTheme(settings.theme||'default'); } catch(e){}
+            try { if (typeof applyAppLanguage==='function') applyAppLanguage(settings.language || 'ar'); } catch(e){}
             if ((settings.reminderEnabled || settings.adhanEnabled) && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
             document.getElementById('settings-modal').classList.remove('active');
             try { renderLiveMenu(); } catch (e) {}
