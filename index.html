@@ -997,6 +997,11 @@
         /* sidebar compacte optionnelle (bouton ✕) */
         .quran-split-view.sidebar-hidden .quran-sidebar{display:none !important;}
         .quran-split-view.sidebar-hidden .quran-text-area{flex:1;}
+        /* Android : sidebar « قراءة القرآن الكريم » تملأ الارتفاع المتاح كاملاً بدل نصف الصفحة */
+        body.is-mobile #isl-pane-quran.active{min-height:calc(100dvh - 158px);}
+        body.is-mobile #isl-pane-quran .quran-split-view{flex:0 0 auto !important;height:calc(100dvh - 158px) !important;min-height:0 !important;}
+        body.is-mobile #isl-pane-quran .quran-sidebar{flex:0 0 auto !important;width:100% !important;height:100% !important;min-height:0 !important;}
+        body.is-mobile #isl-pane-quran .tajweed-sheet-body{flex:1 1 0 !important;min-height:0 !important;height:100% !important;overflow-y:auto !important;}
         /* فهارس قراءة القرآن الكريم : صفوف مصحف التجويد (tajweed-row) */
         
         /* ADHKAR SECTION */
