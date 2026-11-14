@@ -41,9 +41,31 @@ $order    = @('Fajr','Dhuhr','Asr','Maghrib','Isha')
 
 function Ensure-Dir { param([string]$Path) if (-not (Test-Path $Path)) { New-Item -ItemType Directory -Force -Path $Path | Out-Null } }
 
+# Heure locale Maroc independante du fuseau Windows (Windows affiche souvent GMT sur cette machine,
+# alors que les horaires aladhan sont en heure du Maroc).
+# Regle officielle Maroc (comme l'app) : UTC+1 toute l'annee, SAUF pendant le Ramadan -> UTC+0.
+function Get-MoroccoOffsetMinutes {
+    param([datetime]$Date)
+    $y = $Date.Year
+    $day = $Date.Date
+    $lastSunday = {
+        param([int]$month)   # month 0-based (1 = fevrier, 2 = mars)
+        $d = [datetime]::new($y, $month + 1, 1)
+        $d = $d.AddMonths(1).AddDays(-1)          # dernier jour du mois
+        while ($d.DayOfWeek -ne 'Sunday') { $d = $d.AddDays(-1) }
+        return $d
+    }
+    $start = & $lastSunday 1   # dernier dimanche de fevrier : passage a GMT+0
+    $end   = & $lastSunday 2   # dernier dimanche de mars    : retour a GMT+1
+    if ($day -ge $start -and $day -lt $end) { return 0 }
+    return 60
+}
+
+function Get-NowMorocco { (Get-Date).ToUniversalTime().AddMinutes((Get-MoroccoOffsetMinutes (Get-Date))) }
+
 function Get-CachePath {
     param([string]$Prefix)
-    $d = (Get-Date).ToString('yyyy-MM-dd')
+    $d = (Get-NowMorocco).ToString('yyyy-MM-dd')
     Join-Path $CacheDir "$Prefix-$d.json"
 }
 
@@ -66,12 +88,12 @@ function Get-PrayerTimes {
             $raw = [string]$t.$k
             $times[$k] = $raw.Substring(0, [Math]::Min(5, $raw.Length))  # "HH:mm"
         }
-        $obj = [PSCustomObject]@{ City=$City; Method=$Method; Date=(Get-Date).ToString('yyyy-MM-dd'); Times=[PSCustomObject]$times }
+        $obj = [PSCustomObject]@{ City=$City; Method=$Method; Date=(Get-NowMorocco).ToString('yyyy-MM-dd'); Times=[PSCustomObject]$times }
         $obj | ConvertTo-Json -Compress | Out-File -FilePath $cache -Encoding ascii
         return $obj
     } catch {
         # Hors ligne : retomber sur le cache d'hier s'il existe
-        $yesterday = (Get-Date).AddDays(-1).ToString('yyyy-MM-dd')
+        $yesterday = (Get-NowMorocco).AddDays(-1).ToString('yyyy-MM-dd')
         $old = Join-Path $CacheDir "timings-$yesterday.json"
         if (Test-Path $old) {
             Write-Host "Hors ligne — reutilisation des horaires d'hier ($old)"
@@ -85,7 +107,7 @@ function Get-PrayerDateTime {
     param([PSCustomObject]$Times, [string]$Key)
     $hm = $Times.$Key
     $parts = $hm.Split(':')
-    $dt = (Get-Date).Date
+    $dt = (Get-NowMorocco).Date
     return $dt.AddHours([int]$parts[0]).AddMinutes([int]$parts[1])
 }
 
@@ -139,8 +161,8 @@ function Invoke-Check {
     param([switch]$WhatIf)
     $data = Get-PrayerTimes
     $sent = @(Load-Sent)
-    $now  = Get-Date
-    Write-Host "Verification $(Get-Date -Format 'HH:mm:ss') — $City (methode $Method)"
+    $now  = Get-NowMorocco
+    Write-Host "Verification $(Get-Date -Format 'HH:mm:ss') — heure Maroc $($now.ToString('HH:mm:ss')) — $City (methode $Method)"
     foreach ($p in $order) {
         $at = Get-PrayerDateTime -Times $data.Times -Key $p
         $nameAr = $prayerAr[$p]; $nameFr = $prayerFr[$p]
@@ -174,6 +196,7 @@ switch ($Action) {
     'ShowTimes' {
         $data = Get-PrayerTimes
         Write-Host "Horaires du $($data.Date) — $($data.City) (methode $($data.Method)) :"
+        Write-Host "Maintenant (heure du Maroc) : $((Get-NowMorocco).ToString('HH:mm:ss'))"
         foreach ($p in $order) {
             $at = Get-PrayerDateTime -Times $data.Times -Key $p
             Write-Host ("  {0,-8} {1}   ({2})" -f $prayerFr[$p], $data.Times.$p, $prayerAr[$p])
@@ -187,11 +210,57 @@ switch ($Action) {
     'Install' {
         $scriptPath = $MyInvocation.MyCommand.Path
         $psExe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
-        $tr = "`"$psExe`" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$scriptPath`" -Action Check -City `"$City`" -Country `"$Country`" -Method $Method -ReminderMinutes $ReminderMinutes"
-        & schtasks.exe /create /tn $TaskName /sc minute /mo 1 /tr $tr /f | Out-Null
-        if ($LASTEXITCODE -ne 0) { throw "schtasks a echoue (code $LASTEXITCODE)" }
+        $start = (Get-Date).AddMinutes(1).ToString('yyyy-MM-ddTHH:mm:sszzz')
+        # Tache creee via XML : TOURNE SUR BATTERIE (sinon Windows ne lance jamais la tache)
+        $args = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File &quot;$scriptPath&quot; -Action Check -City $City -Country $Country -Method $Method -ReminderMinutes $ReminderMinutes"
+        $user = "$env:USERNAME"
+        $xml = @"
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Description>YaMousahil - alerte adhan chaque minute (toast + adhan, sans navigateur)</Description>
+    <URI>\$TaskName</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <TimeTrigger>
+      <StartBoundary>$start</StartBoundary>
+      <Repetition><Interval>PT1M</Interval><StopAtDurationEnd>false</StopAtDurationEnd></Repetition>
+      <ExecutionTimeLimit>PT5M</ExecutionTimeLimit>
+      <Enabled>true</Enabled>
+    </TimeTrigger>
+  </Triggers>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <ExecutionTimeLimit>PT10M</ExecutionTimeLimit>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+  </Settings>
+  <Principals>
+    <Principal id="Author">
+      <UserId>$user</UserId>
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Actions Context="Author">
+    <Exec>
+      <Command>$psExe</Command>
+      <Arguments>$args</Arguments>
+    </Exec>
+  </Actions>
+</Task>
+"@
+        $xmlFile = Join-Path $env:TEMP ("yaMousahil-adhan-" + [guid]::NewGuid().ToString('N') + '.xml')
+        [IO.File]::WriteAllText($xmlFile, $xml, (New-Object Text.UnicodeEncoding($false, $true)))
+        & schtasks.exe /create /tn $TaskName /xml $xmlFile /f | Out-Null
+        $code = $LASTEXITCODE
+        Remove-Item $xmlFile -Force -ErrorAction SilentlyContinue
+        if ($code -ne 0) { throw "schtasks a echoue (code $code)" }
         Ensure-Dir $CacheDir
-        Write-Host "Tache '$TaskName' enregistree (execution toutes les minutes, session utilisateur)."
+        Write-Host "Tache '$TaskName' enregistree via XML (toutes les minutes, session ouverte, batterie OK)."
         Write-Host "Test immediate : -Action Test"
         # Pre-charge le cache pour aujourd'hui
         try { $null = Get-PrayerTimes; Write-Host "Horaires du jour charges en cache." } catch { Write-Warning $_ }
