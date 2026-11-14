@@ -155,6 +155,20 @@
         #home-screen .section-title::before{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 22%,var(--gold) 50%,rgba(212,175,55,.35) 78%,transparent);}
         #home-screen .section-title::after{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 22%,var(--gold) 50%,rgba(212,175,55,.35) 78%,transparent);}
 
+        /* ===== إسلاميات : 3D للعودة وزخرفة حول العنوان الرئيسي ===== */
+        #islamiyat-screen .back-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            border-radius:12px;min-height:40px;padding:6px 16px;font-family:var(--font);font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s ease;
+        }
+        #islamiyat-screen .back-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        #islamiyat-screen .back-btn:active{transform:scale(.97);}
+        #islamiyat-screen .header-prayers{border-bottom:1.5px solid rgba(212,175,55,.35) !important;}
+        #isl-header-title{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--gold) !important;text-shadow:0 2px 6px rgba(0,0,0,.7);}
+        #isl-header-title::before,#isl-header-title::after{content:"";flex:0 0 auto;width:60px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 20%,var(--gold) 50%,rgba(212,175,55,.45) 80%,transparent);}
+        #isl-header-title::after{transform:scaleX(-1);}
+
         .main-layout{display:flex;flex:1;gap:25px;min-height:0;}
         .apps-column{flex:1;display:flex;flex-direction:column;min-height:0;}
         .prayer-row{display:flex;gap:8px;margin-bottom:20px;justify-content:flex-start;flex-direction:row-reverse;flex-shrink:0;}
