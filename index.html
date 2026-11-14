@@ -860,8 +860,27 @@
         .tasbih-modal .custom-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px;}
         .tasbih-modal .char-count{margin-inline-end:auto;direction:rtl;color:#a3c7b5;font-size:12px;}
         .tasbih-modal .primary-btn,.tasbih-modal .secondary-btn,.tasbih-modal .delete-btn{min-height:34px;padding:6px 12px;border-radius:10px;font-size:13px;line-height:1.5;cursor:pointer;}
-        .tasbih-modal .primary-btn{border:1px solid #f4d03f;background:#f4d03f;color:#0b132b;}
-        .tasbih-modal .secondary-btn{border:1px solid rgba(212,175,55,0.4);background:rgba(255,255,255,0.06);color:#f4d03f;}
+        .tasbih-modal .primary-btn{
+            border:1px solid var(--gold);
+            border-radius:12px;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            color:#ffee9e;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.32);
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+            font-weight:700;
+            transition:all .2s ease;
+        }
+        .tasbih-modal .primary-btn:hover{color:#fff6c0;transform:translateY(-1px);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.38),inset 0 -4px 7px rgba(0,0,0,.45),0 8px 18px rgba(212,175,55,.4);}
+        .tasbih-modal .primary-btn:active{transform:scale(.97);}
+        .tasbih-modal .secondary-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:#cdbf8a;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            transition:all .2s ease;
+        }
+        .tasbih-modal .secondary-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        .tasbih-modal .secondary-btn:active{transform:scale(.97);}
         .tasbih-modal .delete-btn{border:1px solid rgba(212,175,55,0.4);background:rgba(255,255,255,0.06);color:#f0a080;}
         .tasbih-modal .save-settings{position:sticky;bottom:-18px;width:100%;min-height:48px;margin-top:18px;font-size:16px;font-weight:700;z-index:2;}
         .tasbih-modal .custom-message{min-height:18px;margin-top:8px;font-size:12px;line-height:1.5;color:#f4d03f;}
