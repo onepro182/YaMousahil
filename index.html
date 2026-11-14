@@ -548,7 +548,7 @@
         body.is-mobile .quran-text-area{min-height:auto;overflow:visible;}
         
         .quran-split-view{display:flex;gap:15px;flex:1;min-height:0;height:auto;direction:ltr;}
-        .quran-text-area{flex:1;display:flex;flex-direction:column;border-radius:12px;overflow:hidden;direction:rtl;position:relative;min-height:0;}
+        .quran-text-area{flex:1;min-width:0;display:flex;flex-direction:column;border-radius:12px;overflow:hidden;direction:rtl;position:relative;min-height:0;}
         .quran-text-header{text-align:center;padding:15px 10px 5px;}
         .quran-text-header h1{color:var(--gold);font-family:var(--font-quran);font-size:2.8rem;font-weight:700;margin-bottom:5px;}
         .quran-text-header .meta{color:var(--text-dim);font-size:0.85rem;display:flex;justify-content:center;gap:10px;align-items:center;}
@@ -630,7 +630,7 @@
         .ayah-num-circle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background-color:rgba(17, 66, 49, 0.8);color:var(--cream);border:1px solid var(--glass-border);border-radius:50%;font-size:1rem;font-family:var(--font);margin:0 8px;vertical-align:middle;font-weight:700;}
         
         /* فهرس قراءة القرآن الكريم : نفس مظهر فهرس مصحف التجويد بالضبط */
-        .quran-sidebar{width:330px;background:#221d23;border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:0;direction:rtl;align-self:stretch;}
+        .quran-sidebar{width:330px;flex:0 0 330px;align-self:stretch;background:#221d23;border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:0;direction:rtl;}
         .sidebar-tabs{display:flex;background:#221d23;border-bottom:1px solid rgba(255,255,255,.08);gap:0;padding:0;}
         .sidebar-tab{flex:1;text-align:center;padding:11px 2px;border:none;background:transparent;color:#efe9dc;font-family:var(--font);font-size:1rem;font-weight:400;cursor:pointer;border-radius:0;min-width:0;transition:background .15s;}
         .sidebar-tab.active{background:#907028;color:#fff;}
@@ -6489,7 +6489,7 @@ var gender = 'male';
                 if (t) { t.classList.toggle('active', k === tab); }
                 var c = document.getElementById(containers[k]);
                 if (c) {
-                    c.style.display = (k === tab) ? 'flex' : 'none';
+                    c.style.display = (k === tab) ? 'block' : 'none';
                 }
             });
             if (tab === 'pages') islRenderPages();
@@ -6526,7 +6526,7 @@ var gender = 'male';
                 if (tabSurah) tabSurah.classList.add('active');
                 var tabJ = document.getElementById('tab-juz'); if (tabJ) tabJ.classList.remove('active');
                 var juzC = document.getElementById('isl-juz-list-container'); if (juzC) juzC.style.display = 'none';
-                var surC = document.getElementById('isl-surah-list-container'); if (surC) surC.style.display = 'flex';
+                var surC = document.getElementById('isl-surah-list-container'); if (surC) surC.style.display = 'block';
             }
             if (typeof generateSurahGrid === 'function') generateSurahGrid();
         };
