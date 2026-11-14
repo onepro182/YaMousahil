@@ -122,6 +122,39 @@
         .pill-btn { color:var(--text-main); border-radius:20px; padding:8px 16px; font-family:var(--font); font-size:.9rem; display:flex; align-items:center; gap:6px; cursor:pointer; }
         .pill-btn.active-radio{border-color:var(--gold);background:rgba(212,175,55,0.25);}
         
+        /* ===== الصفحة الرئيسية : أزرار وقوائم بأسلوب 3D (العد التلقائي) ===== */
+        #home-screen .app-card{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            transition:all .2s ease;border-radius:12px;
+        }
+        #home-screen .app-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+        #home-screen .app-card:active{transform:scale(.97);}
+        #home-screen .app-name{color:var(--cream);}
+        #home-screen .nav-pill,
+        #home-screen .circle-btn,
+        #home-screen .pill-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            transition:all .2s ease;
+        }
+        #home-screen .nav-pill.active{
+            border-color:var(--gold);
+            color:#ffee9e;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+        }
+        #home-screen .nav-pill:hover,#home-screen .circle-btn:hover,#home-screen .pill-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        #home-screen .nav-pill:active,#home-screen .circle-btn:active,#home-screen .pill-btn:active{transform:scale(.97);}
+        /* خطوط زخرفية على جانبي عناوين المقاطع */
+        #home-screen .section-title{display:flex;align-items:center;gap:12px;font-family:var(--font-quran);font-size:.9rem;font-weight:700;color:var(--gold);letter-spacing:.02em;text-shadow:0 1px 3px rgba(0,0,0,.6);padding:4px 2px;}
+        #home-screen .section-title::before{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 22%,var(--gold) 50%,rgba(212,175,55,.35) 78%,transparent);}
+        #home-screen .section-title::after{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 22%,var(--gold) 50%,rgba(212,175,55,.35) 78%,transparent);}
+
         .main-layout{display:flex;flex:1;gap:25px;min-height:0;}
         .apps-column{flex:1;display:flex;flex-direction:column;min-height:0;}
         .prayer-row{display:flex;gap:8px;margin-bottom:20px;justify-content:flex-start;flex-direction:row-reverse;flex-shrink:0;}
