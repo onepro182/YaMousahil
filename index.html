@@ -665,6 +665,27 @@
         body.is-mobile #pharmacy-screen h1,
         body.is-mobile #mushaf-screen h1,
         body.is-mobile #radiomaroc-screen h1{ font-size: 1.4rem !important; }
+        /* Android : ‹ الرئيسية / ‹ العودة → أيقونة SVG ثلاثية الأبعاد فقط (بلا نص) */
+        body.is-mobile .back-btn,
+        body.is-mobile .back-btn.glass-btn {
+            font-size:0 !important; padding:0 !important;
+            width:40px !important; height:40px !important; min-width:40px !important; min-height:40px !important;
+            border-radius:11px !important; gap:0 !important;
+            display:inline-flex !important; align-items:center !important; justify-content:center !important;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%) !important;
+            border:1px solid rgba(255,255,255,.16) !important;
+            color:var(--cream) !important;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -4px 7px rgba(0,0,0,.45),0 5px 14px rgba(0,0,0,.5) !important;
+            cursor:pointer !important; transition:all .2s ease !important;
+        }
+        body.is-mobile .back-btn::before,
+        body.is-mobile .back-btn.glass-btn::before{
+            content:''; display:block; width:19px; height:19px;
+            background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f4ecd8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 18l-6-6 6-6'/%3E%3C/svg%3E");
+            background-repeat:no-repeat; background-position:center; background-size:100%;
+        }
+        body.is-mobile .back-btn:active,
+        body.is-mobile .back-btn.glass-btn:active{ transform:scale(.94) !important; }
         /* ===== body.is-mobile (détection JS) : layout mobile dédié ===== */
         body.is-mobile{overflow-y:auto;}
         body.is-mobile .tv-screen{width:100%;max-width:100%;height:auto;max-height:none;min-height:100dvh;overflow:visible;}
