@@ -1660,11 +1660,49 @@
         .manual-adjustments { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 12px 14px; margin-bottom: 15px; border: 1px dashed rgba(212,175,55,0.3); }
         .manual-adjustments h3{ font-size: .82rem; font-weight: 700; color: #cdbf8a; font-family: var(--font); line-height: 1.2; margin: 0 0 12px; text-align: right; }
         .adjust-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--glass-border); }
-        body.is-mobile .adjust-row { flex-wrap: wrap; gap: 6px; padding: 8px 10px; margin-bottom: 6px; }
-        body.is-mobile .adjust-label { flex: 0 1 100%; gap: 6px; align-items: center; }
-        body.is-mobile .adjust-label span:first-child { font-size: .85rem; font-weight: 700; color: #cdbf8a; font-family: var(--font); }
-        body.is-mobile .adjust-current-time { font-size: .85rem; }
-        body.is-mobile .adjust-controls { margin-inline-start: auto; }
+        body.is-mobile .adjust-row {
+            display: grid !important;
+            grid-template-columns: auto auto 1fr auto auto auto;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px !important;
+            margin-bottom: 6px !important;
+            flex-wrap: nowrap !important;
+        }
+        body.is-mobile .adjust-label,
+        body.is-mobile .adjust-controls {
+            display: contents !important;
+        }
+        body.is-mobile .adjust-label span:first-child {
+            font-size: .85rem !important;
+            font-weight: 700 !important;
+            color: #cdbf8a !important;
+            font-family: var(--font) !important;
+            line-height: 1.2 !important;
+            direction: rtl !important;
+            justify-self: start !important;
+            white-space: nowrap !important;
+        }
+        body.is-mobile .adjust-current-time {
+            padding: 3px 9px !important;
+            font-size: .82rem !important;
+            font-family: var(--font) !important;
+            direction: ltr !important;
+            justify-self: center !important;
+        }
+        body.is-mobile .adjust-btn {
+            width: 26px !important;
+            height: 26px !important;
+            font-size: 1rem !important;
+            justify-self: end !important;
+        }
+        body.is-mobile .adjust-value {
+            min-width: 30px !important;
+            font-size: .95rem !important;
+            font-family: var(--font) !important;
+            direction: ltr !important;
+            justify-self: center !important;
+        }
         .adjust-label { display: flex; align-items: center; gap: 15px; font-family: var(--font); font-weight: 600; color: var(--text-main); font-size: .95rem; flex: 1; text-align: right; }
         .adjust-current-time { background: rgba(212,175,55,0.2); color: var(--gold); padding: 4px 12px; border-radius: 12px; font-size: 1rem; font-family: monospace; direction: ltr; border: 1px solid rgba(212,175,55,0.3);}
         .adjust-controls { display: flex; align-items: center; gap: 15px; }
