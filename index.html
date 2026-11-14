@@ -1368,6 +1368,9 @@
         .mem-loading{display:flex;align-items:center;justify-content:center;min-height:120px;color:var(--gold);grid-column:1/-1;}
         /* ===== مخطط الختمة الجماعية ===== */
         .khatma-error{border:1px solid rgba(230,120,120,.5);background:rgba(230,120,120,.12);color:#ffb3b3;border-radius:12px;padding:10px 14px;font-size:.85rem;line-height:1.6;}
+        .kh-days-left{display:flex;align-items:center;gap:8px;border:1px dashed rgba(212,175,55,.35);padding:8px 14px;border-radius:12px;font-family:var(--font);font-size:.88rem;color:var(--gold);background:rgba(212,175,55,.06);}
+        .kh-days-left b{color:#ffeeb0;font-size:1.05rem;}
+        .kh-days-left.passed{color:#ffb3b3;border-color:rgba(230,120,120,.4);background:rgba(230,120,120,.08);}
         .khatma-intro{color:var(--text-dim);font-size:.9rem;margin:0;line-height:1.7;}
         .khatma-setup{display:flex;flex-direction:column;gap:10px;max-width:640px;}
         .kh-label{display:flex;flex-direction:column;gap:6px;color:#f4ecd8;font-weight:700;font-size:.88rem;font-family:var(--font);}
@@ -2255,6 +2258,8 @@
         .tajweed-row b{color:#f4d03f;font-family:var(--font-quran);font-size:1rem;min-width:34px;}
         .tajweed-row small{margin-right:auto;color:var(--text-dim);font-size:.72rem;}
         .tajweed-row.mark{background:rgba(212,175,55,.14);border-color:rgba(212,175,55,.4);}
+        .tajweed-row.khatma-on{background:rgba(46,170,90,.18);border-color:rgba(120,220,150,.55);box-shadow:inset 0 0 0 1px rgba(150,240,180,.4);}
+        .tajweed-row.khatma-on b{color:#9effc0;}
         .tajweed-empty{text-align:center;padding:22px;color:var(--text-dim);font-size:.9rem;line-height:1.9;}
         /* ===== تلاوة : barre du lecteur audio ===== */
         .tajweed-listen-btn{width:auto;padding:0 10px;gap:6px;display:flex;align-items:center;font-family:var(--font);font-size:.82rem;font-weight:700;}
@@ -3310,9 +3315,7 @@
                         <h1 style="font-family:var(--font-quran);">مخطط الختمة الجماعية</h1>
                         <p>نظّم ختمة جماعية — يُحفظ تقدمك بخصوصية على هذا الجهاز</p>
                     </div>
-                    <button type="button" class="wa-btn" id="khatma-whatsapp" aria-label="مشاركة عبر واتساب" title="مشاركة عبر واتساب">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                    </button>
+                    <div class="isl-header-spacer" style="width:80px;"></div>
                 </header>
                 <div class="sihatar-wrap">
                     <p class="khatma-intro">نظّم ختمة جماعية للقرآن بتقسيم الأجزاء الثلاثين بين الأعضاء. تابع تقدّم الجميع — تُحفظ خطتك تلقائيًا على هذا المتصفح.</p>
@@ -3324,6 +3327,7 @@
                         <label class="kh-label">تاريخ الإنجاز المستهدف
                             <input type="date" id="kh-date" class="kh-input">
                         </label>
+                        <div class="kh-days-left" id="kh-days-left" aria-live="polite"></div>
                         <div class="kh-label">الأعضاء</div>
                         <div class="kh-member-add">
                             <input type="text" id="kh-member" class="kh-input" placeholder="اسم العضو…" aria-label="اسم العضو" autocomplete="off">
@@ -7831,6 +7835,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         if (d && saved.date) d.value = saved.date;
         khMembers = (saved.members && saved.members.length) ? saved.members.slice() : [];
         khatmaRenderMembers();
+        if (typeof updateKhDaysLeft === 'function') updateKhDaysLeft();
     }
     function khEscapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function khatmaRenderMembers() {
@@ -7841,7 +7846,19 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     }
     function khatmaRenderTracker(state) {
         var g = document.getElementById('kh-tracker-group'); if (g) g.textContent = state.group || 'ختمة المجموعة';
-        var d = document.getElementById('kh-tracker-date'); if (d) d.textContent = state.date ? 'موعد الإنجاز المستهدف: ' + state.date : '';
+        var d = document.getElementById('kh-tracker-date');
+        if (d) {
+            var txt = state.date ? 'موعد الإنجاز المستهدف: ' + state.date : '';
+            if (state.date && typeof khDaysLeft === 'function') {
+                var n = khDaysLeft(state.date);
+                if (n !== null) {
+                    if (n < 0) txt += ' — مضى الموعد';
+                    else if (n === 0) txt += ' — اليوم آخر موعد';
+                    else txt += ' — بقي ' + n + ' يوما';
+                }
+            }
+            d.textContent = txt;
+        }
         var doneCount = 0;
         state.members.forEach(function (m) { m.done.forEach(function (v) { if (v) doneCount++; }); });
         var pct = Math.round(doneCount / 30 * 100);
@@ -7878,7 +7895,37 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     var khGroup = document.getElementById('kh-group');
     if (khGroup) khGroup.addEventListener('input', khSetupCommit);
     var khDate = document.getElementById('kh-date');
-    if (khDate) { khDate.addEventListener('input', khSetupCommit); khDate.addEventListener('change', khSetupCommit); }
+    // حساب الأيام المتبقية حتى الموعد المستهدف (يُحدّث الزر ويعرض المستحيل)
+    function khDaysLeft(dateStr) {
+        if (!dateStr) return null;
+        var today = new Date(); today.setHours(0,0,0,0);
+        var target = new Date(dateStr); target.setHours(0,0,0,0);
+        if (isNaN(target.getTime())) return null;
+        return Math.round((target - today) / 86400000);
+    }
+    function updateKhDaysLeft() {
+        var el = document.getElementById('kh-date');
+        var box = document.getElementById('kh-days-left');
+        if (!el || !box) return;
+        var n = khDaysLeft(el.value);
+        if (n === null) { box.style.display = 'none'; box.textContent = ''; return; }
+        box.style.display = 'flex';
+        if (n < 0) {
+            box.classList.add('passed');
+            box.innerHTML = '⏰ موعد الإنجاز المستهدف <b>' + el.value + '</b> — مضى عليه <b>' + Math.abs(n) + ' يوم</b> دون إتمام';
+        } else if (n === 0) {
+            box.classList.remove('passed');
+            box.innerHTML = '⏰ <b>اليوم هو الموعد المستهدف</b> — أتمّ الأجزاء';
+        } else {
+            box.classList.remove('passed');
+            box.innerHTML = '⏰ موعد الإنجاز المستهدف: <b>' + el.value + '</b> — <b>بقي ' + n + ' يوم' + (n > 1 ? 'ا' : '') + '</b>';
+        }
+    }
+    if (khDate) {
+        khDate.addEventListener('input', function () { khSetupCommit(); updateKhDaysLeft(); });
+        khDate.addEventListener('change', function () { khSetupCommit(); updateKhDaysLeft(); });
+        updateKhDaysLeft();
+    }
     var khAddBtn = document.getElementById('kh-add-member');
     if (khAddBtn) khAddBtn.onclick = function () {
         var input = document.getElementById('kh-member');
@@ -7951,9 +7998,22 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             var wst = khatmaLoad();
             if (wst && wst.members && wst.members[wi]) {
                 var wm = wst.members[wi];
+                var partsCsv = wm.juz.join(',');
+                var partsArabic = wm.juz.join('، ');
+                var dTxt = wst.date || '';
+                    var daysLeft = null;
+                    if (dTxt) {
+                        var _today = new Date(); _today.setHours(0,0,0,0);
+                        var _tg = new Date(dTxt); _tg.setHours(0,0,0,0);
+                        if (!isNaN(_tg.getTime())) daysLeft = Math.round((_tg - _today) / 86400000);
+                    }
+                    var daysSuffix = '';
+                    if (daysLeft !== null) { if (daysLeft < 0) daysSuffix = ' — مضى الموعد'; else if (daysLeft === 0) daysSuffix = ' — اليوم هو آخر موعد'; else daysSuffix = ' — بقي ' + daysLeft + ' يوما'; }
                 var wmsg = '🕌 ' + wm.name + ' — نصيبك من الختمة الجماعية' + (wst.group ? ' : ' + wst.group : '') + '\n'
-                    + 'الجزء ' + wm.juz.join('، ') + '\n'
-                    + 'تطبيق يا مسهّل — https://onepro182.github.io/YaMousahil/';
+                    + 'الجزء ' + partsArabic + '\n'
+                    + (dTxt ? 'موعد الإنجاز المستهدف: ' + dTxt + daysSuffix + '\n' : '')
+                    + 'تطبيق يا مسهّل — قراءة القرآن الكريم (فهرس الأجزاء):\n'
+                    + 'https://onepro182.github.io/YaMousahil/?khatmaParts=' + partsCsv;
                 try { window.open('https://wa.me/?text=' + encodeURIComponent(wmsg), '_blank', 'noopener'); } catch (e2) {}
             }
             return;
@@ -7970,22 +8030,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         var b = document.getElementById(id);
         if (b) b.onclick = function () { if (typeof showScreen === 'function') showScreen(quranMenuScreen); };
     });
-    var khatmaWa = document.getElementById('khatma-whatsapp');
-    if (khatmaWa) khatmaWa.onclick = function () {
-        var state = khatmaLoad();
-        var msg;
-        if (state && state.members && state.members.length) {
-            msg = '🕌 توزيع الأجزاء — مخطط الختمة الجماعية' + (state.group ? ' : ' + state.group : '') + '\n';
-            if (state.date) msg += '📅 موعد الإنجاز المستهدف: ' + state.date + '\n';
-            state.members.forEach(function (m) {
-                msg += '• ' + m.name + ' : الجزء ' + m.juz.join('، ') + '\n';
-            });
-            msg += 'تطبيق يا مسهّل — https://onepro182.github.io/YaMousahil/';
-        } else {
-            msg = '🕌 نظّم ختمة جماعية\nانضموا إلينا في ختمة جماعية للقرآن الكريم — نقسم الأجزاء الثلاثين بين الجميع ونتابع التقدّم معًا على يا مسهّل:\nhttps://onepro182.github.io/YaMousahil/';
-        }
-        try { window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener'); } catch (e) { window.location.href = 'https://wa.me/?text=' + encodeURIComponent(msg); }
-    };
+    // -khatma هنا زر "تحت": محذوف (كان : مشاركة التوزيع الكامل للمجموعة عبر واتساب)
     // ouverture d'un lien externe (nouvel onglet si possible, sinon dans la page)
     function ymOpenExternal(url) {
         try {
@@ -8351,6 +8396,43 @@ function notifyPrayer(prayerKey, isTest, mode) {
         });
         // Test après déploiement: ?testAlert=1
         try{var _ta=new URLSearchParams(location.search); if(_ta.get('testAlert')==='1'||_ta.get('testalert')==='1'||_ta.get('test')==='alert'){setTimeout(function(){if(typeof showAlertOverlay==='function') showAlertOverlay('isha','now');},900);}}catch(e){}
+        // Un lien profond : ?khatmaParts=1,3,5,... افتح قراءة القرآن الكريم > الأجزاء مع تمييز الأجزاء المعنية
+        try {
+            var _kp = new URLSearchParams(location.search).get('khatmaParts');
+            if (_kp) {
+                var _kParts = _kp.split(',').map(function (s) { return parseInt(s.trim(), 10); }).filter(function (n) { return !isNaN(n) && n >= 1 && n <= 30; });
+                if (_kParts.length) {
+                    window.__khatmaHighlighted = _kParts;
+                    var _tryMark = function () {
+                        var islamiyat = document.getElementById('islamiyat-screen');
+                        if (!islamiyat || typeof showScreen !== 'function') return false;
+                        if (typeof initIslamiyat === 'function') initIslamiyat();
+                        showScreen(islamiyat);
+                        if (typeof activatePane === 'function') activatePane('quran');
+                        var islHeader = document.getElementById('isl-header-title');
+                        if (islHeader) islHeader.textContent = 'قراءة القرآن الكريم';
+                        if (typeof islSetTab === 'function') islSetTab('juz');
+                        // ميّز الصفوف المعنية
+                        var box = document.getElementById('isl-juz-list-container');
+                        if (box) {
+                            var rows = box.querySelectorAll('.tajweed-row');
+                            rows.forEach(function (row, idx) {
+                                var n = idx + 1;
+                                row.classList.toggle('khatma-on', _kParts.indexOf(n) !== -1);
+                            });
+                        }
+                        if (typeof islShowToast === 'function') {
+                            islShowToast('📱 ختمة جماعية: الأجزاء المطلوبة: ' + _kParts.join('، '));
+                        } else if (typeof showNotice === 'function') {
+                            showNotice('الأجزاء المطلوبة للختمة: ' + _kParts.join('، '));
+                        }
+                        return true;
+                    };
+                    var _tries = 0;
+                    var _int = setInterval(function () { _tries++; var ok = _tryMark(); if (ok || _tries > 20) clearInterval(_int); }, 200);
+                }
+            }
+        } catch (e) {}
         // ===== Geolocalisation fournie par l'APK Android =====
         // Dans l'APK, le WebView recoit la position reelle du telephone et appelle
         // window.__yaGeoFix(lat, lon, accuracy) : on la renvoie a l'API Geolocation du site
