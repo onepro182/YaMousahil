@@ -3316,7 +3316,6 @@
                             <button type="button" class="nav-btn active" data-target="pane-prayer">مواقيت الصلاة</button>
                             <button type="button" class="nav-btn" data-target="pane-adhan">التنبيهات والأذان</button>
                             <button type="button" class="nav-btn" data-target="pane-display">العرض واللغة</button>
-                            <button type="button" class="nav-btn" data-target="pane-share">نشر البرنامج</button>
                             <button type="button" class="nav-btn" data-target="pane-about">حول التطبيق</button>
                         </div>
                         <div class="settings-content">
@@ -3343,21 +3342,6 @@
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
                             <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 س</button><button type="button" class="group-btn active" data-value="24">24 س</button></div></div><div class="setting-row"><div class="setting-title">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected>تلقائي (توقيت الجهاز)</option>
                               <option value="ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></div><div class="setting-row"><div class="setting-title">المظهر (السمة)</div><select id="set-theme" class="setting-select"><option value="default">الافتراضي (أخضر وذهبي)</option><option value="blue">أزرق احترافي</option></select></div></div>
-                            <div class="settings-pane" id="pane-share">
-                                <div class="about-content share-content">
-                                    <div class="share-logo-wrap">
-                                        <img class="share-logo logo3d" src="Logo.png" alt="شعار تطبيق YaMousahil" onerror="this.style.display='none'">
-                                    </div>
-                                    <h2 style="color:var(--gold);margin-bottom:12px;">نشر البرنامج</h2>
-                                    <p style="color:var(--text-dim);line-height:2;margin-bottom:20px;max-width:520px;margin-inline:auto;">ساهم في نشر الموقع بين الأصحاب والأقارب ليكون لنا جميعا صدقة جارية بإذن الله</p>
-                                    <a class="share-wa-btn" href="https://wa.me/?text=YaMousahil%20%E2%80%94%20%D9%85%D9%88%D8%A7%D9%82%D9%8A%D8%AA%20%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9%20%D9%88%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86%20%D9%88%D8%A7%D9%84%D8%A3%D8%B0%D9%83%D8%A7%D8%B1%0Ahttps%3A%2F%2Fonepro182.github.io%2FYaMousahil%2F" target="_blank" rel="noopener" title="مشاركة عبر واتساب">
-                                        <span class="share-wa-ico" aria-hidden="true">
-                                            <svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="WhatsApp"><use href="#siha-ico-whatsapp"/></svg>
-                                        </span>
-                                        <span class="share-wa-txt"><b>مشاركة عبر واتساب</b><i>WhatsApp</i></span>
-                                    </a>
-                                </div>
-                            </div>
                             <div class="settings-pane" id="pane-about">
                                 <div class="about-content about-about">
                                     <div class="share-logo-wrap">
@@ -3368,7 +3352,12 @@
                                     <p class="about-desc">اكتشف YaMousahil، التطبيق الذي يجمع بين روحانية القرآن الكريم وسهولة الوصول إلى الخدمات الإيمانية والصحية واليومية، في تجربة رقمية متكاملة صُممت لتكون قريبة منك أينما كنت.</p>
                                     <div class="contact-info"><p class="about-credit">مع تحياتي: <strong>مهندس/ جمال ـ ح ـ</strong></p><p class="about-dua">نسألكم الدعاء 🤲</p></div>
                                     <div class="about-actions">
-                                        <button type="button" class="about-act" id="btn-app-update">⟳ تحديث التطبيق</button>
+                                        <a class="share-wa-btn" href="https://wa.me/?text=YaMousahil%20%E2%80%94%20%D9%85%D9%88%D8%A7%D9%82%D9%8A%D8%AA%20%D8%A7%D9%84%D8%B5%D9%84%D8%A7%D8%A9%20%D9%88%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86%20%D9%88%D8%A7%D9%84%D8%A3%D8%B0%D9%83%D8%A7%D8%B1%0Ahttps%3A%2F%2Fonepro182.github.io%2FYaMousahil%2F" target="_blank" rel="noopener" title="مشاركة عبر واتساب">
+                                            <span class="share-wa-ico" aria-hidden="true">
+                                                <svg class="sihatar-ico3d" viewBox="0 0 64 64" role="img" aria-label="WhatsApp"><use href="#siha-ico-whatsapp"/></svg>
+                                            </span>
+                                            <span class="share-wa-txt"><b>مشاركة عبر واتساب</b><i>WhatsApp</i></span>
+                                        </a>
                                         <a class="about-act" href="mailto:onepro182@gmail.com?subject=YaMousahil%20-%20message%20du%20developpeur" title="مراسلة المطور">📧 مراسلة المطور</a>
                                         <a class="about-act" href="https://github.com/onepro182/YaMousahil/issues" target="_blank" rel="noopener" title="الإبلاغ عن مشكلة">💻 الإبلاغ عن مشكلة</a>
                                     </div>
@@ -7628,23 +7617,7 @@ function notifyPrayer(prayerKey, isTest, mode) {
             } catch (e) {}
         })();
 
-        // "تحديث التطبيق" : purge des caches + rechargement forcé de la dernière version
-        (function initAppUpdate(){            var btn = document.getElementById('btn-app-update');
-            if (!btn) return;
-            btn.onclick = async function () {
-                if (btn.dataset.busy) return;
-                btn.dataset.busy = '1';
-                btn.textContent = '⏳ جارٍ التحديث...';
-                try { if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) { const rs = await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map(r => r.unregister())); } } catch (e) {}
-                try { if ('caches' in window) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch (e) {}
-                try { localStorage.removeItem('siha-pos'); } catch (e) {}
-                setTimeout(function () {
-                    var base = location.pathname || '/';
-                    location.replace(base + '?cb=' + Date.now());
-                }, 350);
-            };
-        })();
-
+        // (ancien bouton « تحديث التطبيق » supprimé — remplacé par un partage WhatsApp)
         function speakArabic(message) {
             if (!('speechSynthesis' in window)) return false;
             try {
