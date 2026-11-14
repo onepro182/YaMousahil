@@ -979,15 +979,41 @@
             flex:none;min-width:34px;height:26px;padding:0 8px;border-radius:13px;display:flex;align-items:center;justify-content:center;
             background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.35);color:var(--gold);font-size:.78rem;font-weight:700;
         }
+        /* ===== القرآن الكريم (قائمة الأقسام) : أزرار بأسلوب 3D (العد التلقائي) ===== */
+        #quran-menu-screen .back-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:#cdbf8a;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            border-radius:12px;min-height:44px;padding:0 18px;font-family:var(--font);font-weight:700;transition:all .2s ease;cursor:pointer;
+        }
+        #quran-menu-screen .back-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        #quran-menu-screen .back-btn:active{transform:scale(.97);}
+        #quran-menu-screen .sihatar-menu{
+            display:flex;align-items:center;text-align:right;padding:14px;border-radius:14px;
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            transition:all .2s ease;cursor:pointer;
+        }
+        #quran-menu-screen .sihatar-menu:hover{border-color:var(--gold);transform:translateY(-2px);}
+        #quran-menu-screen .sihatar-menu:active{transform:translateY(0) scale(.98);}
+        #quran-menu-screen .sihatar-mico{
+            width:56px;height:56px;flex:none;display:flex;align-items:center;justify-content:center;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            border:1px solid var(--gold);border-radius:13px;
+            box-shadow:0 6px 16px rgba(0,0,0,.45),inset 0 1.5px 1px rgba(255,255,255,.3);
+        }
+        #quran-menus .sihatar-mico .sihatar-ico3d{width:48px;height:48px;}
+        #quran-menu-screen .sihatar-mtxt b{color:#ffee9e;font-size:1rem;text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);}
         /* menu القرآن الكريم : texte en blanc, grandes icônes à gauche, textes à droite */
-        #quran-menus .sihatar-mtxt b{color:#ffffff;}
+        #quran-menus .sihatar-mtxt b{color:#ffee9e;}
         #quran-menus .sihatar-mtxt i{color:#ffffff;}
         #quran-menus .sihatar-mcount{display:none !important;}
         #quran-menus .sihatar-menu{flex-direction:row-reverse;justify-content:flex-start;text-align:right;gap:14px;}
         #quran-menus .sihatar-mtxt{flex:1;text-align:right;align-items:flex-end;}
         #quran-menus .sihatar-mtxt b{text-align:right;width:100%;}
-        #quran-menus .sihatar-mico{width:52px;height:52px;}
-        #quran-menus .sihatar-mico .sihatar-ico3d{width:44px;height:44px;}
+        #quran-menus .sihatar-mico{width:56px;height:56px;}
+        #quran-menus .sihatar-mico .sihatar-ico3d{width:48px;height:48px;}
         /* ===== متتبع الحفظ (memorization tracker) ===== */
         #memorization-screen{overflow:auto;}
         .mem-stats{display:flex;gap:10px;flex-wrap:wrap;}
