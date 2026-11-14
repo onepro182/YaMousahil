@@ -5702,6 +5702,8 @@ var gender = 'male';
                 // on garde uniquement le plein ecran CSS (la page remplit la vue)
                 var inApp = /YaMousahilApp|;\s*wv\)/i.test(navigator.userAgent);
                 twFsBar(on);
+                // demander à l'APK d'activer le mode immersif (cache la navbar Android, garde le status bar)
+                try { if (window.AndroidFullscreen && typeof window.AndroidFullscreen.immersive === 'function') window.AndroidFullscreen.immersive(on); } catch (e) {}
                 if (on) {
                     if (!inApp) {
                         try { document.documentElement.requestFullscreen ? document.documentElement.requestFullscreen().catch(function () {}) : null; } catch (e) {}
@@ -6190,14 +6192,11 @@ var gender = 'male';
             twAudioPlayVerse(sura, aya, true);
             twAudioUi();
         }
-        // barre du haut en plein ecran : visible 3 s puis effacee (un appui la ramene)
+        // barre du haut toujours visible en plein ecran (le user veut aussi la barre du bas recitant visible)
         function twFsBar(show) {
             var w = document.getElementById('tajweed-wrap');
             if (!w) return;
-            if (!w.classList.contains('fs')) { w.classList.remove('bar-hidden'); clearTimeout(twFsBar._t); return; }
-            clearTimeout(twFsBar._t);
-            w.classList.toggle('bar-hidden', !show);
-            if (show) twFsBar._t = setTimeout(function () { w.classList.add('bar-hidden'); }, 3000);
+            w.classList.remove('bar-hidden');
         }
         // ===== مصحف التجويد (lecteur QuranFlash) =====
         var ct = document.getElementById('card-tajweed');
