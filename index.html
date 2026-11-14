@@ -498,7 +498,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen,#khatma-screen,#tajweed-rules-screen,#tilawah-adab-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#khatma-read-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen,#khatma-screen,#tajweed-rules-screen,#tilawah-adab-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -1457,7 +1457,28 @@
         .kh-juz-item{display:flex;flex-direction:column;gap:6px;padding:8px 8px 9px;border-radius:12px;border:1px solid rgba(212,175,55,.32);background:rgba(255,255,255,.04);box-shadow:inset 0 1px 1px rgba(255,255,255,.08);transition:all .2s ease;}
         .kh-juz-item.done{border-color:rgba(46,170,90,.55);background:radial-gradient(150% 160% at 50% -40%,rgba(46,170,90,.38) 0%,rgba(26,90,60,.32) 50%,rgba(8,40,22,.4) 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.12),0 3px 8px rgba(0,0,0,.4);}
         .kh-juz-num{font-family:var(--font-quran);font-weight:700;color:var(--gold-light);font-size:.92rem;text-align:center;letter-spacing:.01em;}
-        .kh-juz-item.done .kh-juz-num{color:#9effc0;}
+        .kh-juz-item.done .kh-juz-num{color:#9effc0;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:rgba(158,255,192,.8);}
+        /* صفحة « الختمة الجماعية » (مثل ورد القرآن اليومي لكن لأجزاء الخطة) */
+        #khatma-read-screen .khr-member-chips{display:flex;flex-wrap:wrap;gap:6px;padding:2px 2px 10px;border-bottom:1px solid rgba(255,255,255,.09);margin-bottom:8px;}
+        .khr-chip{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--cream);cursor:pointer;font-family:var(--font);font-size:.78rem;font-weight:700;transition:all .15s ease;}
+        .khr-chip small{font-size:.68rem;opacity:.75;font-weight:400;}
+        .khr-chip.active{border-color:var(--gold);color:#ffee9e;background:rgba(212,175,55,.17);box-shadow:0 2px 8px rgba(212,175,55,.22);}
+        .khr-juz{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1px solid rgba(212,175,55,.28);background:rgba(255,255,255,.04);cursor:pointer;width:100%;text-align:right;font-family:var(--font);color:var(--text-main);font-size:.82rem;transition:all .15s ease;}
+        .khr-juz:hover{border-color:var(--gold);color:#ffee9e;}
+        .khr-juz.current{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 3px 10px rgba(212,175,55,.22);color:#ffee9e;}
+        .khr-juz .khr-state{margin-inline-start:auto;font-size:.74rem;font-weight:700;color:var(--text-dim);white-space:nowrap;}
+        .khr-juz.done{border-color:rgba(46,170,90,.5);background:radial-gradient(150% 160% at 50% -40%,rgba(46,170,90,.35) 0%,rgba(26,90,60,.3) 50%,rgba(8,40,22,.4) 100%);}
+        .khr-juz.done .khr-num{text-decoration:line-through;text-decoration-thickness:2px;color:#9effc0;}
+        .khr-juz.done .khr-state{color:#9effc0;}
+        .khr-empty{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;color:var(--text-dim);padding:24px 14px;line-height:1.8;font-size:.85rem;}
+        .khr-empty-btn{padding:10px 18px;border-radius:11px;border:1px solid var(--gold);background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);color:#f4ecd8;font-family:var(--font);font-weight:700;cursor:pointer;white-space:nowrap;}
+        .isl-juz-surah-h{font-family:var(--font-quran);font-size:1.35rem;color:var(--gold);border-bottom:1px solid rgba(212,175,55,.35);padding:10px 4px 6px;margin:20px 0 12px;text-shadow:0 1px 4px rgba(0,0,0,.6);}
+        .khr-finish-bar{padding:10px;border-top:1px solid rgba(212,175,55,.22);display:flex;justify-content:center;}
+        .khr-finish-btn{min-width:260px;padding:12px 22px;border-radius:13px;border:1px solid rgba(255,255,255,.22);background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);color:#ffee9e;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),inset 0 -3px 7px rgba(0,0,0,.45),0 5px 14px rgba(0,0,0,.5);font-family:var(--font);font-weight:800;font-size:.95rem;cursor:pointer;transition:all .2s ease;}
+        .khr-finish-btn:hover{color:#fff6c0;transform:translateY(-1px);}
+        .khr-finish-btn.done{background:linear-gradient(160deg,#3ddc84 0%,#1d8a52 100%);border-color:#2fa37c;color:#062015;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),0 5px 14px rgba(46,170,90,.35);}
+        .khr-finish-btn.pulse{animation:khrPulse 1.05s ease-in-out infinite;}
+        @keyframes khrPulse{0%,100%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 5px 14px rgba(0,0,0,.5);}50%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 0 22px rgba(61,220,132,.65);}}
         .kh-juz-actions{display:flex;gap:5px;}
         .kh-juz-act{flex:1 1 0;padding:7px 2px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-dim);font-family:var(--font);font-size:.7rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:all .15s ease;}
         .kh-juz-act:hover{color:var(--gold-light);border-color:rgba(212,175,55,.4);}
@@ -2582,6 +2603,27 @@
                                     </g>
                                     <path d="M23.5 24.9 L26.9 26.4 L26.5 39.2 L25.1 36.4 L23.8 39.6 Z" fill="url(#q3dWirdRibbon)"/>
                                 </svg><span class="app-name" data-i18n="card_wird">ورد القرآن اليومي</span></div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-khatma-read"><svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="الختمة الجماعية">
+                                    <defs>
+                                        <linearGradient id="q3dKhBg" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#2fa37c"/><stop offset="0.5" stop-color="#0e5f45"/><stop offset="1" stop-color="#04291e"/></linearGradient>
+                                        <linearGradient id="q3dKhCover" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#35b57d"/><stop offset="0.5" stop-color="#167450"/><stop offset="1" stop-color="#0a4b33"/></linearGradient>
+                                        <linearGradient id="q3dKhPage" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#fffdf4"/><stop offset="1" stop-color="#d9cdae"/></linearGradient>
+                                        <linearGradient id="q3dKhGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="0.5" stop-color="#e3c05c"/><stop offset="1" stop-color="#b5892a"/></linearGradient>
+                                        <radialGradient id="q3dKhGlow" cx="0.5" cy="0.38" r="0.55"><stop offset="0" stop-color="#4ade80" stop-opacity=".4"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient>
+                                    </defs>
+                                    <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#q3dKhBg)"/>
+                                    <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                    <circle cx="32" cy="40" r="24" fill="url(#q3dKhGlow)"/>
+                                    <ellipse cx="32" cy="55.5" rx="19" ry="4" fill="#000000" opacity=".3"/>
+                                    <path d="M12 22 L32 31 L32 52 L12 43 Z" fill="url(#q3dKhPage)"/>
+                                    <path d="M32 31 L52 22 L52 43 L32 52 Z" fill="url(#q3dKhCover)"/>
+                                    <path d="M32 13 L52 22 L32 31 L12 22 Z" fill="url(#q3dKhCover)"/>
+                                    <path d="M32 16.6 L47.4 22.4 L32 28.2 L16.6 22.4 Z" fill="none" stroke="url(#q3dKhGold)" stroke-width="1.4" opacity=".92"/>
+                                    <g stroke="#b3a37c" stroke-width=".8" opacity=".9" stroke-linecap="round"><path d="M12 27 L32 36"/><path d="M12 31 L32 40"/><path d="M12 35 L32 44"/><path d="M12 39 L32 48"/></g>
+                                    <g stroke="url(#q3dKhGold)" stroke-width="1.6" opacity=".9" stroke-linecap="round"><path d="M32 34 L52 25"/><path d="M32 39 L52 30"/><path d="M32 44 L52 35"/></g>
+                                    <circle cx="47.5" cy="14.5" r="9.2" fill="url(#q3dKhGold)" stroke="#0a4b33" stroke-width="1.4"/>
+                                    <text x="47.5" y="18.6" text-anchor="middle" font-size="10.5" font-weight="800" fill="#3a2a06" font-family="var(--font-quran),Amiri,serif">٣٠</text>
+                                </svg><span class="app-name">الختمة الجماعية</span></div>
                                 <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-i18n="sec_radios">إذاعات وبث مباشر</div>
                                 <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
                                     <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
@@ -3416,6 +3458,7 @@
                             </div>
                         </div>
                         <div class="kh-member-list" id="kh-member-list"></div>
+                        <button type="button" class="kh-btn" id="kh-open-read" style="width:100%;padding:12px;border:1px solid rgba(212,175,55,.5);background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);color:#ffee9e;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),inset 0 -3px 6px rgba(0,0,0,.4);border-radius:12px;font-family:var(--font);font-weight:800;font-size:.9rem;cursor:pointer;">📖 اقرأ الأجزاء المقرّرة وتابع إتمامها</button>
                         <button type="button" class="mem-reset" id="kh-reset">إعادة تعيين الخطة</button>
                     </div>
                 </div>
@@ -3907,6 +3950,42 @@
                                     <div style="font-size:1.8rem;margin-bottom:8px;">📖</div>
                                     <p style="margin:0;">اختر سورة من القائمة للبدء في وردك اليومي.</p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= KHATMA READ (الختمة الجماعية — اقرأ أجزاءك المقرّرة) SCREEN ================= -->
+            <div id="khatma-read-screen" style="display:none;flex-direction:column;height:100%;width:100%;gap:15px;">
+                <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);gap:8px;flex-wrap:wrap;">
+                        <button type="button" class="back-btn glass-btn" id="btn-back-from-khatma-read">‹ مخطط الختمة</button>
+                        <div style="text-align:center;flex:1;min-width:180px;">
+                            <h1 style="font-family:var(--font-quran);font-size:1.6rem;color:#f4d03f;margin:0;">الختمة الجماعية</h1>
+                            <p style="font-family:var(--font-quran);font-size:.95rem;color:#fff;margin-top:4px;line-height:1.7;">اقرأ الأجزاء المسندة لكل عضو في خطتك — وتُشطب الجزء تلقائيًا فور إتمامه</p>
+                        </div>
+                        <div class="isl-header-spacer" style="width:80px;"></div>
+                    </div>
+                    <div class="adhkar-split-view" id="khatma-read-split" style="flex:1;min-height:0;">
+                        <div class="adhkar-sidebar">
+                            <div class="khr-member-chips" id="khr-member-chips"></div>
+                            <div class="adhkar-cat-list" id="khr-juz-list"></div>
+                        </div>
+                        <div class="adhkar-text-area glass-btn">
+                            <div class="adhkar-text-header">
+                                <button type="button" id="khr-back-to-list">☰ القائمة</button>
+                                <h1 id="khr-title">الختمة الجماعية</h1>
+                                <div class="meta" id="khr-meta">اختر جزءًا من القائمة للقراءة</div>
+                            </div>
+                            <div class="adhkar-text-body" id="khr-body" style="font-family:var(--font-quran);">
+                                <div style="max-width:520px;width:100%;margin:10px auto;padding:18px 16px;text-align:center;color:var(--text-dim);line-height:1.9;">
+                                    <div style="font-size:1.8rem;margin-bottom:8px;">🕮</div>
+                                    <p style="margin:0;">اختر جزءًا من القائمة — ستُعرض قراءته كاملة هنا.</p>
+                                </div>
+                            </div>
+                            <div class="khr-finish-bar" id="khr-finish-bar" style="display:none;">
+                                <button type="button" class="khr-finish-btn" id="khr-finish">✓ أتممت القراءة</button>
                             </div>
                         </div>
                     </div>
@@ -5351,6 +5430,8 @@ var gender = 'male';
             });
         }
         document.getElementById('card-wird').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); window._quranReturnTo = null; window._quranWarshMode = false; showScreen(islamiyatScreen); initIslamiyat(); if (typeof window._setQuranWirdMode === 'function') window._setQuranWirdMode(true); activatePane('quran'); var sv=document.querySelector('.quran-split-view'); if(sv) sv.classList.remove('show-text'); var sl=document.getElementById('isl-surah-list-container'); if(sl) sl.scrollTop = 0; window.scrollTo(0,0); };
+        var _khReadCard = document.getElementById('card-khatma-read');
+        if (_khReadCard) _khReadCard.onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var _kEl = document.getElementById('khatma-read-screen'); try { if (typeof window.renderKhatmaReadMenu === 'function') window.renderKhatmaReadMenu(); } catch (e) {} if (_kEl && typeof showScreen === 'function') showScreen(_kEl); window.scrollTo(0,0); };
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
         var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
@@ -7132,16 +7213,35 @@ var gender = 'male';
                 item.onclick = () => {
                     container.querySelectorAll('.tajweed-row').forEach(el => el.classList.remove('current'));
                     item.classList.add('current');
-                    document.getElementById('tab-surah').click();
                     islTargetAyah = ayahNum;
-                    selectSurah(start[0], SURAH_NAMES[surahIndex], SURAH_META[surahIndex]);
-                    document.querySelectorAll('#isl-surah-list-container .tajweed-row').forEach(el => el.classList.remove('current'));
-                    const surahItem = document.getElementById('surah-item-' + start[0]);
-                    if (surahItem) surahItem.classList.add('current');
+                    islLoadJuz(juzNum, ayahNum);
                     showQuranTextOnMobile();
                 };
                 container.appendChild(item);
             }
+        }
+        // تحميل جزء كامل (القراءة) بدل الانتقال للسورة : انقر أي جزء يُعرض في لوحة القراءة مباشرة
+        function islLoadJuz(n, targetAyah) {
+            var titleEl = document.getElementById('current-surah-title'); var metaEl = document.getElementById('current-surah-meta'); var body = document.getElementById('isl-quran-body');
+            if (titleEl) titleEl.textContent = 'الجزء ' + n;
+            var p1 = (typeof JUZ_PAGES !== 'undefined' ? (JUZ_PAGES[n - 1] || 1) : 1); var p2 = (n < 30 && typeof JUZ_PAGES !== 'undefined') ? JUZ_PAGES[n] - 1 : 604;
+            if (metaEl) metaEl.innerHTML = '<span class="meta-badge">الجزء ' + n + '</span> · <span>ص ' + p1 + ' — ' + p2 + '</span>';
+            if (body) body.innerHTML = '<div style="color:var(--gold); text-align:center; font-size:1.5rem;">جاري التحميل…</div>';
+            islSelectedSurah = (typeof JUZ_STARTS !== 'undefined' && JUZ_STARTS[n - 1]) ? JUZ_STARTS[n - 1][0] : islSelectedSurah;
+            stopIslamiyatAudio();
+            fetch('https://api.alquran.cloud/v1/juz/' + n + '/quran-uthmani').then(function (res) { return res.json(); }).then(function (j) {
+                if (!j || j.code !== 200 || !j.data || !j.data.ayahs) throw new Error('API');
+                var verses = j.data.ayahs;
+                islQuranAyahs = verses.map(function (a) { return { numberInSurah: a.numberInSurah, text: a.text, surahNum: a.surah && a.surah.number }; });
+                var html = '', cur = -1;
+                verses.forEach(function (a) {
+                    var sn = a.surah && a.surah.number;
+                    if (sn !== cur) { cur = sn; html += '<div class="isl-juz-surah-h">سُورَةُ ' + ((a.surah && a.surah.name ? a.surah.name : '').replace(/^سُورَةُ /, '') || ('سورة ' + sn)) + '</div>'; }
+                    html += '<span class="ayah-span" id="isl-ayah-j' + sn + '-' + a.numberInSurah + '">' + a.text + ' <span class="ayah-num-circle">' + a.numberInSurah + '</span></span> ';
+                });
+                if (body) { body.innerHTML = html; if (!targetAyah) body.scrollTop = 0; }
+                if (targetAyah) { setTimeout(function () { var el = document.getElementById('isl-ayah-j' + islSelectedSurah + '-' + targetAyah); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('ayah-reading'); setTimeout(function () { el.classList.remove('ayah-reading'); }, 2500); } }, 400); }
+            }).catch(function () { if (body) body.innerHTML = '<div style="color:#f88; text-align:center;">⚠️ تعذر تحميل الجزء — تحقق من الاتصال</div>'; });
         }
         function selectSurah(num, name, meta) { islSelectedSurah = parseInt(num); islLastAyah = null; islUpdateMarkBtn(); try { localStorage.setItem('islLastSurahNum', num); localStorage.setItem('islLastSurahName', name); } catch (e) {} stopIslamiyatAudio(); loadSurahIslamiyat(num, name, meta); }
         async function loadSurahIslamiyat(num, name, meta) {
@@ -8004,6 +8104,148 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     window.importKhatmaFromLink = importKhatmaFromLink;
     window.initKhatma = initKhatma;
     window.khatmaLoad = khatmaLoad;
+    window.khatmaRenderTracker = khatmaRenderTracker;
+    // ===== صفحة « الختمة الجماعية » (قراءة الأجزاء المسندة وإتمامها) — على غرار ورد القرآن اليومي =====
+    var khatmaReadScreen = document.getElementById('khatma-read-screen');
+    var khatmaReadSplit = document.getElementById('khatma-read-split');
+    var khrBody = document.getElementById('khr-body');
+    var khrChips = document.getElementById('khr-member-chips');
+    var khrList = document.getElementById('khr-juz-list');
+    var khrTitle = document.getElementById('khr-title');
+    var khrMeta = document.getElementById('khr-meta');
+    var khrFinishBar = document.getElementById('khr-finish-bar');
+    var khrFinish = document.getElementById('khr-finish');
+    var KHR_SEL_KEY = 'YaMousahil_khatma_read_member';
+    var _khrMemberIdx = 0;
+    var _khrJuzNum = null;
+    var _khrJuzCache = {};
+    var KHR_JUZ_PAGES = [1,22,42,59,74,89,106,126,151,176,201,225,249,273,297,311,325,339,353,367,381,395,409,423,437,451,465,479,493,507];
+    var KHR_JUZ_END_PAGES = (function(){ var a=[]; for (var i=0;i<30;i++){ a.push(i<29 ? KHR_JUZ_PAGES[i+1]-1 : 604); } return a; })();
+    function khrEscape(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function khrDoneCount(m){ var c=0; (m.done||[]).forEach(function(v){ if(v)c++; }); return c; }
+    function khrSavedIdx(){ try { var v = parseInt(localStorage.getItem(KHR_SEL_KEY), 10); if (!isNaN(v) && v >= 0) return v; } catch (e) {} return 0; }
+    function khrSetMember(i){ _khrMemberIdx = i; try { localStorage.setItem(KHR_SEL_KEY, String(i)); } catch (e) {} renderKhatmaReadMenu(); }
+    function renderKhatmaReadMenu(){
+        if (!khrChips || !khrList) return;
+        var st = khatmaLoad();
+        var members = (st && st.members && st.members.length) ? st.members : [];
+        if (!members.length) {
+            khrChips.innerHTML = '';
+            khrList.innerHTML = '';
+            if (khrTitle) khrTitle.textContent = 'الختمة الجماعية';
+            if (khrMeta) khrMeta.textContent = 'لا توجد خطة على هذا الجهاز بعد';
+            if (khrBody) khrBody.innerHTML = '<div class="khr-empty"><div style="font-size:2.2rem;">🕌</div><p>خطتك فارغة — أنشئ « مخطط الختمة الجماعية » أو استردّ قائمة الأعضاء، ثم عُد هنا لقراءة نصيبك المسند.</p><button type="button" class="khr-empty-btn" id="khr-goto-plan">📋 افتح مخطط الختمة الجماعية</button></div>';
+            var go = document.getElementById('khr-goto-plan');
+            if (go) go.onclick = function(){ try { initKhatma(); } catch (e) {} if (typeof khatmaScreen !== 'undefined' && khatmaScreen && typeof showScreen === 'function') showScreen(khatmaScreen); else { var kEl = document.getElementById('khatma-screen'); if (kEl && typeof showScreen === 'function') showScreen(kEl); } };
+            if (khrFinishBar) khrFinishBar.style.display = 'none';
+            return;
+        }
+        if (_khrMemberIdx >= members.length || _khrMemberIdx < 0) _khrMemberIdx = Math.min(khrSavedIdx(), members.length - 1);
+        var m = members[_khrMemberIdx];
+        khrChips.innerHTML = members.map(function (mm, i) {
+            return '<button type="button" class="khr-chip' + (i === _khrMemberIdx ? ' active' : '') + '" data-i="' + i + '">' + khrEscape(mm.name) + '<small>' + khrDoneCount(mm) + '/' + mm.juz.length + '</small></button>';
+        }).join('');
+        khrList.innerHTML = m.juz.map(function (j, ji) {
+            var done = !!m.done[ji];
+            return '<button type="button" class="khr-juz' + (done ? ' done' : '') + '" data-j="' + j + '" data-ji="' + ji + '"><span class="khr-num">الجزء ' + j + '</span><span class="khr-state">' + (done ? '✓ تمت القراءة' : 'لقراءة') + '</span></button>';
+        }).join('');
+        if (khrTitle) khrTitle.textContent = 'الختمة الجماعية';
+        if (khrMeta) khrMeta.textContent = 'نصيب ' + m.name + ' — ' + khrDoneCount(m) + '/' + m.juz.length + ' أجزاء مكتملة';
+        if (_khrJuzNum != null) Array.prototype.forEach.call(khrList.querySelectorAll('.khr-juz'), function (el) { el.classList.toggle('current', parseInt(el.getAttribute('data-j'), 10) === _khrJuzNum); });
+    }
+    window.renderKhatmaReadMenu = renderKhatmaReadMenu;
+    if (khrChips) khrChips.onclick = function (e) {
+        var chip = e.target && e.target.closest ? e.target.closest('.khr-chip') : null; if (!chip) return;
+        khrSetMember(parseInt(chip.getAttribute('data-i'), 10));
+    };
+    function khrJuzAyahs(n) {
+        if (_khrJuzCache[n]) return Promise.resolve(_khrJuzCache[n]);
+        return fetch('https://api.alquran.cloud/v1/juz/' + n + '/quran-uthmani').then(function (r) { return r.json(); }).then(function (j) {
+            if (!j || j.code !== 200 || !j.data || !j.data.ayahs) throw new Error('API');
+            _khrJuzCache[n] = j.data.ayahs;
+            return _khrJuzCache[n];
+        });
+    }
+    function khrRenderJuzHtml(ayahs, idPrefix) {
+        var html = '', curSurah = -1;
+        ayahs.forEach(function (a) {
+            var sn = a.surah && a.surah.number;
+            if (sn !== curSurah) { curSurah = sn; html += '<div class="isl-juz-surah-h">سُورَةُ ' + ((a.surah && a.surah.name ? a.surah.name : '').replace(/^سُورَةُ /, '') || ('سورة ' + sn)) + '</div>'; }
+            html += '<span class="ayah-span" id="' + idPrefix + sn + '-' + a.numberInSurah + '">' + a.text + ' <span class="ayah-num-circle">' + a.numberInSurah + '</span></span> ';
+        });
+        return html;
+    }
+    function openKhrJuz(n) {
+        _khrJuzNum = n;
+        Array.prototype.forEach.call(khrList ? khrList.querySelectorAll('.khr-juz') : [], function (el) { el.classList.toggle('current', parseInt(el.getAttribute('data-j'), 10) === n); });
+        if (khatmaReadSplit) khatmaReadSplit.classList.add('show-text');
+        var st = khatmaLoad(); var m = st && st.members ? st.members[_khrMemberIdx] : null;
+        if (khrTitle) khrTitle.textContent = 'الجزء ' + n;
+        if (khrMeta) khrMeta.textContent = 'نصيب ' + (m ? m.name : '') + ' · ص ' + (KHR_JUZ_PAGES[n-1] || 1) + ' إلى ' + KHR_JUZ_END_PAGES[n-1];
+        if (khrBody) khrBody.innerHTML = '<div style="color:var(--gold);text-align:center;font-size:1.4rem;padding:30px 10px;">جاري التحميل…</div>';
+        if (khrFinishBar) khrFinishBar.style.display = 'none';
+        khrJuzAyahs(n).then(function (ayahs) {
+            if (!khrBody || _khrJuzNum !== n) return;
+            khrBody.innerHTML = khrRenderJuzHtml(ayahs, 'khr-ayah-');
+            khrBody.scrollTop = 0;
+            if (typeof window.scrollTo === 'function') window.scrollTo(0, 0);
+            khrUpdateFinishBtn();
+        }).catch(function () {
+            if (khrBody) khrBody.innerHTML = '<div style="color:#f88;text-align:center;padding:24px;">⚠️ تعذر تحميل الجزء — تحقق من الاتصال ثم حاول مجددًا</div>';
+        });
+    }
+    function khrUpdateFinishBtn() {
+        if (!khrFinishBar || !khrFinish) return;
+        if (_khrJuzNum == null) { khrFinishBar.style.display = 'none'; return; }
+        var st = khatmaLoad(); var m = st && st.members ? st.members[_khrMemberIdx] : null; var ji = m ? m.juz.indexOf(_khrJuzNum) : -1;
+        if (ji < 0) { khrFinishBar.style.display = 'none'; return; }
+        var done = !!m.done[ji];
+        khrFinishBar.style.display = 'flex';
+        khrFinish.textContent = done ? '✓ تمت القراءة — اضغط للإلغاء' : '✓ أتممت القراءة';
+        khrFinish.classList.toggle('done', done);
+        khrFinish.classList.remove('pulse');
+    }
+    if (khrList) khrList.onclick = function (e) {
+        var item = e.target && e.target.closest ? e.target.closest('.khr-juz') : null; if (!item) return;
+        openKhrJuz(parseInt(item.getAttribute('data-j'), 10));
+    };
+    if (khrFinish) khrFinish.addEventListener('click', function () {
+        if (_khrJuzNum == null) return;
+        var st = khatmaLoad(); if (!st || !st.members) return;
+        var m = st.members[_khrMemberIdx]; if (!m) return;
+        var ji = m.juz.indexOf(_khrJuzNum); if (ji < 0) return;
+        m.done[ji] = !m.done[ji];
+        khatmaSave(st);
+        renderKhatmaReadMenu();
+        if (window.khatmaRenderTracker) { try { window.khatmaRenderTracker(st); } catch (e) {} }
+        Array.prototype.forEach.call(khrList ? khrList.querySelectorAll('.khr-juz') : [], function (el) { el.classList.toggle('current', parseInt(el.getAttribute('data-j'), 10) === _khrJuzNum); });
+        khrUpdateFinishBtn();
+        var doneNow = m.done[ji];
+        if (typeof islShowToast === 'function') islShowToast(doneNow ? ('🎉 تمت القراءة — الجزء ' + _khrJuzNum + ' من نصيب ' + m.name) : ('↩ أُلغيت علامة الإتمام — الجزء ' + _khrJuzNum));
+    });
+    if (khrBody) {
+        var _khrScrollTick = false;
+        khrBody.addEventListener('scroll', function () {
+            if (_khrScrollTick) return; _khrScrollTick = true;
+            var max = khrBody.scrollHeight - khrBody.clientHeight;
+            var ratio = max > 4 ? (khrBody.scrollTop / max) : 0;
+            if (khrFinish) khrFinish.classList.toggle('pulse', ratio > 0.82);
+            _khrScrollTick = false;
+        });
+    }
+    var khrBack = document.getElementById('btn-back-from-khatma-read');
+    if (khrBack) khrBack.addEventListener('click', function () {
+        try { initKhatma(); } catch (e) {}
+        if (typeof khatmaScreen !== 'undefined' && khatmaScreen && typeof showScreen === 'function') showScreen(khatmaScreen);
+        else { var kEl = document.getElementById('khatma-screen'); if (kEl && typeof showScreen === 'function') showScreen(kEl); }
+    });
+    var khrBackList = document.getElementById('khr-back-to-list');
+    if (khrBackList) khrBackList.addEventListener('click', function () { if (khatmaReadSplit) khatmaReadSplit.classList.remove('show-text'); });
+    var khOpenRead = document.getElementById('kh-open-read');
+    if (khOpenRead) khOpenRead.addEventListener('click', function () {
+        try { renderKhatmaReadMenu(); } catch (e) {}
+        if (khatmaReadScreen && typeof showScreen === 'function') showScreen(khatmaReadScreen);
+    });
     var khGroup = document.getElementById('kh-group');
     if (khGroup) khGroup.addEventListener('input', khSetupCommit);
     var khDate = document.getElementById('kh-date');
@@ -9474,7 +9716,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-khatma-read' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
