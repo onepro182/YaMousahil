@@ -170,6 +170,230 @@
         #isl-header-title::before,#isl-header-title::after{content:"";flex:0 0 auto;width:60px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 20%,var(--gold) 50%,rgba(212,175,55,.45) 80%,transparent);}
         #isl-header-title::after{transform:scaleX(-1);}
 
+        /* ===== تطبيق « العد التلقائي » (زمرد + ذهبي 3D) على: الإعدادات والمواقيت والمساجد وصحتي والمواريث ===== */
+
+        /* أزرار الرجوع العامة */
+        .back-btn.glass-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            border-radius:12px;font-family:var(--font);font-weight:700;cursor:pointer;transition:all .2s ease;
+        }
+        .back-btn.glass-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        .back-btn.glass-btn:active{transform:scale(.97);}
+
+        /* أزرار عنوان + خطوط زخرفية بزويري العنوان (موحّد) */
+        #prayers-screen .title-prayers h1,
+        #mosques-screen .title-prayers h1,
+        #sihatar-screen .title-prayers h1,
+        #inheritance-screen h1,
+        #settings-modal .settings-header h2,
+        #radiomaroc-screen .title-prayers h1,
+        #quranradio-screen .world-radio-title,
+        #pharmacy-screen .title-prayers h1,
+        #mushaf-screen .title-prayers h1,
+        #wird-screen .title-prayers h1,
+        #muhammadi-screen .title-prayers h1,
+        #muallim-screen .title-prayers h1,
+        #memorization-screen .title-prayers h1,
+        #khatma-screen .title-prayers h1,
+        #tajweed-rules-screen .title-prayers h1,
+        #tilawah-adab-screen .title-prayers h1,
+        #dua-khatm-screen .title-prayers h1,
+        #inheritance-screen h1,
+        #asma-screen .asma-title{
+            font-family:var(--font-quran); color:var(--gold); margin:0;
+            display:flex; align-items:center; justify-content:center; gap:12px;
+            text-shadow:0 2px 8px rgba(0,0,0,.7);
+        }
+        #prayers-screen .title-prayers h1::before, #prayers-screen .title-prayers h1::after,
+        #mosques-screen .title-prayers h1::before, #mosques-screen .title-prayers h1::after,
+        #sihatar-screen .title-prayers h1::before, #sihatar-screen .title-prayers h1::after,
+        #inheritance-screen h1::before, #inheritance-screen h1::after,
+        #settings-modal .settings-header h2::before, #settings-modal .settings-header h2::after,
+        #radiomaroc-screen .title-prayers h1::before, #radiomaroc-screen .title-prayers h1::after,
+        #pharmacy-screen .title-prayers h1::before, #pharmacy-screen .title-prayers h1::after,
+        #wird-screen .title-prayers h1::before, #wird-screen .title-prayers h1::after,
+        #muhammadi-screen .title-prayers h1::before, #muhammadi-screen .title-prayers h1::after,
+        #muallim-screen .title-prayers h1::before, #muallim-screen .title-prayers h1::after,
+        #memorization-screen .title-prayers h1::before, #memorization-screen .title-prayers h1::after,
+        #khatma-screen .title-prayers h1::before, #khatma-screen .title-prayers h1::after,
+        #tajweed-rules-screen .title-prayers h1::before, #tajweed-rules-screen .title-prayers h1::after,
+        #tilawah-adab-screen .title-prayers h1::before, #tilawah-adab-screen .title-prayers h1::after,
+        #dua-khatm-screen .title-prayers h1::before, #dua-khatm-screen .title-prayers h1::after{
+            content:""; flex:0 0 auto; width:55px; height:2px; border-radius:2px;
+            background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 18%,var(--gold) 50%,rgba(212,175,55,.45) 82%,transparent);
+        }
+        #prayers-screen .title-prayers h1::after, #mosques-screen .title-prayers h1::after,
+        #sihatar-screen .title-prayers h1::after, #inheritance-screen h1::after,
+        #settings-modal .settings-header h2::after, #radiomaroc-screen .title-prayers h1::after,
+        #pharmacy-screen .title-prayers h1::after, #wird-screen .title-prayers h1::after,
+        #muhammadi-screen .title-prayers h1::after, #muallim-screen .title-prayers h1::after,
+        #memorization-screen .title-prayers h1::after, #khatma-screen .title-prayers h1::after,
+        #tajweed-rules-screen .title-prayers h1::after, #tilawah-adab-screen .title-prayers h1::after,
+        #dua-khatm-screen .title-prayers h1::after{
+            transform:scaleX(-1);
+        }
+        #inheritance-screen > div > div:first-child,
+        #prayers-screen .header-prayers,
+        #mosques-screen .header-prayers,
+        #sihatar-screen .header-prayers,
+        #settings-modal .settings-header,
+        #asma-screen .header-prayers,
+        #quranradio-screen .world-radio-title,
+        #pharmacy-screen .header-prayers{
+            border-bottom:1.5px solid rgba(212,175,55,.4) !important;
+            padding-bottom:12px !important;
+        }
+
+        /* === 1) الإعدادات (⚙) === */
+        #settings-modal .settings-header h2{ font-size:1.7rem; }
+        #settings-modal .settings-container{
+            border:1px solid rgba(212,175,55,.35) !important;
+            box-shadow:0 25px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05) !important;
+        }
+        #settings-modal .nav-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream); box-shadow:inset 0 1.5px 1px rgba(255,255,255,.22),inset 0 -3px 6px rgba(0,0,0,.4),0 4px 10px rgba(0,0,0,.4);
+            border-radius:12px; transition:all .2s ease;
+        }
+        #settings-modal .nav-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        #settings-modal .nav-btn.active{
+            border-color:var(--gold); color:#ffee9e;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+        }
+        #settings-modal .file-btn{
+            border:1px solid rgba(255,255,255,.16) !important;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%) !important;
+            color:var(--cream) !important; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45) !important;
+            border-radius:12px !important; transition:all .2s ease !important;
+        }
+        #settings-modal .file-btn:hover{border-color:var(--gold) !important;color:#ffe9a8 !important;}
+        #settings-modal .file-btn:active{transform:scale(.97) !important;}
+        #settings-modal #btn-test-adhan{
+            border:1px solid var(--gold) !important; color:#ffee9e !important; font-weight:800 !important;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%) !important;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3) !important;
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+        }
+        #settings-modal #btn-test-adhan:hover{color:#fff6c0 !important;}
+        #settings-modal .group-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:#cdbf8a; border-radius:12px; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.22),inset 0 -3px 6px rgba(0,0,0,.4),0 4px 10px rgba(0,0,0,.4);
+            transition:all .2s ease;
+        }
+        #settings-modal .group-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        #settings-modal .group-btn.active{
+            border-color:var(--gold); color:#ffee9e;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+        }
+        #settings-modal .save-settings{
+            border:1px solid var(--gold) !important; background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%) !important;
+            color:#ffee9e !important; font-weight:800 !important; text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 8px 18px rgba(212,175,55,.4) !important;
+            border-radius:12px !important;
+        }
+        #settings-modal .save-settings:hover{color:#fff6c0 !important;}
+        #settings-modal .save-settings:active{transform:scale(.98) !important;}
+
+        /* === 2) مواقيت الصلاة (prayers) === */
+        #prayers-screen h1{ font-size:1.9rem; }
+        #prayers-screen .qibla-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            border-radius:12px; min-height:44px; transition:all .2s ease;cursor:pointer;
+        }
+        #prayers-screen .qibla-btn:hover{border-color:var(--gold);color:#ffe9a8;}
+        #prayers-screen .p-item{
+            border:1px solid rgba(255,255,255,.16); color:#f4ecd8;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            border-radius:12px; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.22),inset 0 -3px 6px rgba(0,0,0,.4),0 4px 10px rgba(0,0,0,.4);
+            transition:all .2s ease;
+        }
+        #prayers-screen .p-item:hover{border-color:var(--gold); color:#ffe9a8;}
+        #prayers-screen .p-item.active, #prayers-screen .p-item.selected{
+            border-color:var(--gold);
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            color:#ffee9e; text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);
+        }
+        #prayers-screen .mihrab-detail{
+            background:#221d23; border:1px solid rgba(255,255,255,.10);
+            box-shadow:0 10px 28px rgba(0,0,0,.45);
+        }
+
+        /* === 3) المساجد القريبة (mosques) === */
+        #mosques-screen h1{ font-size:1.9rem; }
+        #mosques-screen .radius-chip{
+            border:1px solid rgba(255,255,255,.16) !important;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%) !important;
+            color:var(--cream) !important; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45) !important;
+            border-radius:12px !important; padding:8px 14px !important; font-weight:700 !important; transition:all .2s ease !important; cursor:pointer;
+        }
+        #mosques-screen .radius-chip:hover{border-color:var(--gold) !important;color:#ffe9a8 !important;}
+        #mosques-screen .radius-chip.active{
+            border-color:var(--gold) !important; color:#ffee9e !important;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%) !important;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3) !important;
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+        }
+        #mosques-screen #btn-mosques-locate{
+            border:1px solid var(--gold) !important; color:#ffee9e !important;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%) !important;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3) !important;
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+            font-weight:800 !important;
+        }
+        #mosques-screen .mosques-city-select{
+            background:#221d23 !important; color:#efe9dc !important;
+            border:1px solid rgba(255,255,255,.12) !important; border-radius:10px !important; padding:8px 12px !important;
+        }
+
+        /* === 4) صحتي (sihatar) === */
+        #sihatar-screen h1{ font-size:1.9rem; }
+        #sihatar-screen .sihatar-refresh{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream); box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            border-radius:12px !important; transition:all .2s ease; cursor:pointer; font-size:1.2rem !important;
+        }
+        #sihatar-screen .sihatar-refresh:hover{border-color:var(--gold);color:#ffe9a8;}
+        #sihatar-screen .sihatar-top{
+            background:#221d23 !important; border:1px solid rgba(255,255,255,.10) !important;
+            box-shadow:0 10px 28px rgba(0,0,0,.45) !important; border-radius:14px !important;
+        }
+        #sihatar-screen .sihatar-label{ color:var(--gold) !important; }
+        #sihatar-screen .sihatar-mtxt b{ color:var(--cream) !important; }
+        #sihatar-screen .mt-icon,
+        #sihatar-screen .sihatar-mcount{ color:#cdbf8a !important; }
+
+        /* === 5) حساب المواريث (inheritance) === */
+        #inheritance-screen h1{ font-size:1.9rem; }
+        #inheritance-screen .inh-grid .setting-title{ font-family:var(--font); color:#cdbf8a !important; font-weight:700 !important; }
+        #inheritance-screen .inh-grid .setting-select{
+            background:#221d23 !important; color:#efe9dc !important;
+            border:1px solid rgba(255,255,255,.12) !important; border-radius:10px !important; padding:6px 8px !important;
+        }
+        #inheritance-screen #inheritance-app{
+            background:#221d23 !important; border:1px solid rgba(255,255,255,.10) !important;
+            border-radius:16px !important; box-shadow:0 10px 28px rgba(0,0,0,.45) !important;
+        }
+        #inheritance-screen #inh-calc{
+            border:1px solid var(--gold) !important; color:#ffee9e !important; font-weight:800 !important;
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%) !important;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3) !important;
+            text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6) !important;
+            border-radius:12px !important;
+        }
+        #inheritance-screen #inh-calc:hover{color:#fff6c0 !important;}
+
         .main-layout{display:flex;flex:1;gap:25px;min-height:0;}
         .apps-column{flex:1;display:flex;flex-direction:column;min-height:0;}
         .prayer-row{display:flex;gap:8px;margin-bottom:20px;justify-content:flex-start;flex-direction:row-reverse;flex-shrink:0;}
@@ -3520,7 +3744,7 @@
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;padding-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);gap:8px;flex-wrap:wrap;">
                         <button type="button" class="back-btn glass-btn" id="btn-back-from-inheritance">‹ الرئيسية</button>
                         <div style="text-align:center;flex:1;min-width:180px;">
-                            <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">حساب المواريث</h1>
+                            <h1>حساب المواريث</h1>
                             <p style="font-family:var(--font);font-size:.95rem;color:#fff;margin-top:4px;line-height:1.7;">حاسبة إلكترونية لحساب الميراث الشرعي لكل وارث ونسبته ومقدار حصته مع توضيح موجز لحالة كل وارث ونصيبه الشرعي ويبين حجب كل من يتم حجبه من الورثة.</p>
                         </div>
                         <div style="width:80px;"></div>
