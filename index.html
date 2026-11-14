@@ -664,7 +664,8 @@
         body.is-mobile #dua-khatm-screen h1,
         body.is-mobile #pharmacy-screen h1,
         body.is-mobile #mushaf-screen h1,
-        body.is-mobile #radiomaroc-screen h1{ font-size: 1.4rem !important; }
+        body.is-mobile #radiomaroc-screen h1,
+        body.is-mobile #asma-screen h1{ font-size: 1.05rem !important; }
         /* Android : ‹ الرئيسية / ‹ العودة → أيقونة SVG ثلاثية الأبعاد فقط (بلا نص) */
         body.is-mobile .back-btn,
         body.is-mobile .back-btn.glass-btn {
@@ -686,6 +687,17 @@
         }
         body.is-mobile .back-btn:active,
         body.is-mobile .back-btn.glass-btn:active{ transform:scale(.94) !important; }
+        /* Android : كل الشاشات — العنوان بخط واحد مع الزر وفي نفس السطر */
+        body.is-mobile .header-prayers{ flex-wrap:nowrap !important; gap:8px !important; padding:8px 10px !important; }
+        body.is-mobile .header-prayers .isl-header-spacer{ width:0 !important; flex:0 0 auto !important; }
+        body.is-mobile .title-prayers{ flex:1 1 auto !important; min-width:0 !important; text-align:right !important; align-items:flex-start !important; justify-content:center !important; overflow:visible !important; }
+        body.is-mobile .title-prayers h1{ font-size:1.05rem !important; font-family:var(--font-quran) !important; line-height:1.35 !important; margin:0 !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; max-width:100% !important; }
+        body.is-mobile .title-prayers p{ font-size:.78rem !important; line-height:1.25 !important; margin-top:2px !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; max-width:100% !important; }
+        body.is-mobile .title-prayers{ display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:center !important; }
+        body.is-mobile .header-prayers h1,
+        body.is-mobile .header-prayers h2,
+        body.is-mobile .header-prayers .world-radio-title{ font-size:1.05rem !important; line-height:1.35 !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; max-width:100% !important; }
+        body.is-mobile .header-prayers .world-radio-sub{ font-size:.78rem !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
         /* ===== body.is-mobile (détection JS) : layout mobile dédié ===== */
         body.is-mobile{overflow-y:auto;}
         body.is-mobile .tv-screen{width:100%;max-width:100%;height:auto;max-height:none;min-height:100dvh;overflow:visible;}
