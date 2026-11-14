@@ -1845,16 +1845,7 @@
         .asma-detail-num{font-size:.8rem;color:var(--gold);opacity:.85;}
         .asma-detail-name{font-family:var(--font-quran);font-size:2.4rem;color:#f4d03f;margin:6px 0 12px;line-height:1.5;}
         .asma-detail-desc{font-size:1rem;line-height:2.1;color:var(--cream);margin:0 0 18px;text-align:center;}
-        .asma-detail-play{
-            display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:12px; cursor:pointer;
-            border:1px solid var(--gold);
-            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
-            color:#ffee9e; text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
-            font-family:var(--font); font-weight:800; font-size:.95rem;
-            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.32);
-        }
-        .asma-detail-play:hover{ color:#fff6c0; transform:translateY(-1px); }
-        .asma-detail-play:active{ transform:scale(.97); }
+        /* زر « 🔊 الاستماع » أُزيل — التفاصيل تظهر بالنص فقط */
         #quran-player-modal, #quran-player-modal .setting-title, #quran-player-modal label, #quran-player-modal h2, #quran-player-modal span, #quran-player-modal p, #quran-player-modal div {
             color: var(--cream) !important;
         }
@@ -5022,20 +5013,6 @@ var gender = 'male';
             } catch (e) {}
         }
 
-        function playAsmaAudio(text) {
-            try { speechSynthesis.cancel(); } catch (e) {} try { if (asmaAutoAudio) { asmaAutoAudio.pause(); } } catch (e) {}
-            var grid = document.getElementById('asma-grid');
-            if (grid) Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('asma-selected'); });
-            var idx = ASMA.findIndex(function(s){ return s.ar === text; });
-            if (idx >= 0 && grid && grid.children[idx]) grid.children[idx].classList.add('asma-selected');
-            markAsmaPlaying(text);
-            // lecture du nom + de sa signification (comme l'annonce vocale des prieres)
-            var entry = idx >= 0 ? ASMA[idx] : null;
-            var toSay = entry ? (entry.ar + (entry.desc ? '. ' + entry.desc : '')) : text;
-            var ok = asmaAudioOn && (typeof window.speakArabicText === 'function') ? window.speakArabicText(toSay) : false;
-            if (!ok && typeof islShowToast === 'function') islShowToast('الصوت غير متاح على هذا المتصفح');
-        }
-
         function asmaAutoStop(resetBtn) {
             asmaAuto = false;
             if (asmaAutoTimer) { clearTimeout(asmaAutoTimer); asmaAutoTimer = null; }
@@ -5071,7 +5048,6 @@ var gender = 'male';
             playAsmaAuto(0);
         };
         // Exposer globalement pour les onclick/onchange inline (sinon ReferenceError)
-        window.playAsmaAudio = playAsmaAudio;
         window.renderAsma = renderAsma;
         window.asmaAutoStop = asmaAutoStop;
         window.asmaOpenDetail = asmaOpenDetail;
@@ -5150,10 +5126,6 @@ var gender = 'male';
             if (close) close.addEventListener('click', asmaCloseDetail);
             var modal = document.getElementById('asma-detail-modal');
             if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) asmaCloseDetail(); });
-            var play = document.getElementById('asma-detail-play');
-            if (play) play.addEventListener('click', function () {
-                if (_asmaCurrent && typeof window.speakArabicText === 'function') window.speakArabicText(_asmaCurrent);
-            });
             // « ‹ » = suivant · « › » = precedent (وراثة العربية)
             var prev = document.getElementById('asma-detail-prev');
             if (prev) prev.addEventListener('click', function () { if (_asmaCurrentIdx > 0) applyAsmaDetailByIdx(_asmaCurrentIdx - 1); });
@@ -10288,7 +10260,6 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             <div class="asma-detail-num" id="asma-detail-num">—</div>
             <h2 class="asma-detail-name" id="asma-detail-name">—</h2>
             <p class="asma-detail-desc" id="asma-detail-desc"></p>
-            <button type="button" class="asma-detail-play" id="asma-detail-play">🔊 الاستماع</button>
         </div>
     </div>
 <div id="friday-kahf-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(2,13,8,.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;">
