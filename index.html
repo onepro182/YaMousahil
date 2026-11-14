@@ -1380,6 +1380,24 @@
         .mem-loading{display:flex;align-items:center;justify-content:center;min-height:120px;color:var(--gold);grid-column:1/-1;}
         /* ===== مخطط الختمة الجماعية ===== */
         .khatma-error{border:1px solid rgba(230,120,120,.5);background:rgba(230,120,120,.12);color:#ffb3b3;border-radius:12px;padding:10px 14px;font-size:.85rem;line-height:1.6;}
+        /* بطاقة الاستيراد (اختيارية) */
+        .kh-import-card{border:1px solid rgba(212,175,55,.25);border-radius:12px;background:rgba(255,255,255,.03);margin-bottom:10px;overflow:hidden;}
+        .kh-import-card summary{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;color:var(--gold);font-family:var(--font);font-weight:700;font-size:.88rem;list-style:none;user-select:none;}
+        .kh-import-card summary::-webkit-details-marker{display:none;}
+        .kh-import-card[open] summary{border-bottom:1px solid rgba(212,175,55,.25);}
+        .kh-import-icon{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:rgba(212,175,55,.18);color:#ffeeb0;font-weight:700;}
+        .kh-import-body{padding:10px 14px 12px;display:flex;flex-direction:column;gap:8px;}
+        .kh-import-hint{color:var(--text-dim);font-size:.8rem;line-height:1.6;margin:0;}
+        .kh-import-ta{width:100%;min-height:120px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#f4ecd8;font-family:'Courier New',monospace;font-size:.9rem;line-height:1.7;resize:vertical;direction:rtl;text-align:right;outline:none;}
+        .kh-import-ta:focus{border-color:var(--gold);}
+        .kh-import-ta::placeholder{color:var(--text-dim);opacity:.45;font-size:.77rem;line-height:1.5;}
+        .kh-import-row{display:flex;gap:8px;}
+        .kh-import-btn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--gold);background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);color:#ffee9e;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -3px 6px rgba(0,0,0,.42),0 4px 12px rgba(212,175,55,.25);font-family:var(--font);font-weight:800;cursor:pointer;transition:all .2s ease;}
+        .kh-import-btn:hover{color:#fff6c0;transform:translateY(-1px);}
+        .kh-import-btn:active{transform:scale(.98);}
+        .kh-import-clear{flex:0 0 auto;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--cream);cursor:pointer;font-family:var(--font);}
+        .kh-import-clear:hover{border-color:var(--gold);color:#ffe9a8;}
+        .kh-import-note{color:var(--text-dim);font-size:.75rem;line-height:1.6;margin:0;opacity:.85;}
         .kh-days-left{display:flex;align-items:center;gap:8px;border:1px dashed rgba(212,175,55,.35);padding:8px 14px;border-radius:12px;font-family:var(--font);font-size:.88rem;color:var(--gold);background:rgba(212,175,55,.06);}
         .kh-days-left b{color:#ffeeb0;font-size:1.05rem;}
         .kh-days-left.passed{color:#ffb3b3;border-color:rgba(230,120,120,.4);background:rgba(230,120,120,.08);}
@@ -3343,6 +3361,18 @@
                         </label>
                         <div class="kh-days-left" id="kh-days-left" aria-live="polite"></div>
                         <div class="kh-label">الأعضاء</div>
+                        <details class="kh-import-card" id="kh-import-card">
+                            <summary><span class="kh-import-icon" aria-hidden="true">⇓</span> استيراد قائمة أعضاء من مكان آخر</summary>
+                            <div class="kh-import-body">
+                                <p class="kh-import-hint">ألصق القائمة — سطر لكل اسم، أو اسم: أجزاؤه (مفصولة بفواصل) لتوزيع مخصص:</p>
+                                <textarea class="kh-import-ta" id="kh-import-ta" rows="5" placeholder="مثال:&#10;أحمد&#10;فاطمة، بنت الجيران&#10;الحاج محمد: 1,3,5,7,9,11,13,15&#10;ياسين: 2,4,6,8,10,12,14,16,18,20,22,24,26,28,30" autocomplete="off" spellcheck="false"></textarea>
+                                <div class="kh-import-row">
+                                    <button type="button" class="kh-btn kh-import-btn" id="kh-import-btn">استيراد</button>
+                                    <button type="button" class="kh-btn kh-import-clear" id="kh-import-clear">مسح</button>
+                                </div>
+                                <p class="kh-import-note">قائمة فارغة تستورد قائمة الكنترة التي أمامك (الأسماء الموجودة تُضاف)</p>
+                            </div>
+                        </details>
                         <div class="kh-member-add">
                             <input type="text" id="kh-member" class="kh-input" placeholder="اسم العضو…" aria-label="اسم العضو" autocomplete="off">
                             <button type="button" class="kh-btn" id="kh-add-member">إضافة</button>
@@ -7939,6 +7969,62 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
         khDate.addEventListener('input', function () { khSetupCommit(); updateKhDaysLeft(); });
         khDate.addEventListener('change', function () { khSetupCommit(); updateKhDaysLeft(); });
         updateKhDaysLeft();
+    }
+    var khImportCard = document.getElementById('kh-import-card');
+    var khImportBtn = document.getElementById('kh-import-btn');
+    var khImportClear = document.getElementById('kh-import-clear');
+    var khImportTa = document.getElementById('kh-import-ta');
+    if (khImportClear && khImportTa) khImportClear.onclick = function () { khImportTa.value = ''; khImportTa.focus(); };
+    if (khImportBtn && khImportTa) khImportBtn.onclick = function () {
+        var members = parseKhImport(khImportTa.value);
+        if (!members.length) { window.alert('لم نتعرف على أي اسم في القائمة.\nأدخل أسماء، كل اسم في سطر، أو «الاسم: 1,3,5» لتوزيع أجزاء محددة.'); return; }
+        var group = (document.getElementById('kh-group') && document.getElementById('kh-group').value.trim()) || 'ختمة المجموعة';
+        var date = (document.getElementById('kh-date') && document.getElementById('kh-date').value) || '';
+        var state = { group: group, date: date, members: members };
+        khatmaSave(state);
+        khMembers = state.members.map(function (m) { return m.name; });
+        khatmaRenderMembers();
+        var su = document.getElementById('khatma-setup'); if (su) su.hidden = true;
+        var tr = document.getElementById('khatma-tracker'); if (tr) tr.hidden = false;
+        khatmaRenderTracker(state);
+    };
+    function parseKhImport(text) {
+        var members = [];
+        var unassignedIdx = []; // members without explicit parts
+        var assigned = {};
+        var lines = String(text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+        lines.forEach(function (line, i) {
+            var m = line.match(/^([^:،,]+)\s*[:：]\s*([\d\s،,]+)\s*$/);
+            if (m) {
+                var name = m[1].trim(); if (!name) return;
+                var partsStr = m[2].replace(/[٠-٩]/g, function (d) { return String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)); });
+                var parts = partsStr.split(/[،,+\s]+/).map(function (n) { return parseInt(n, 10); }).filter(function (n) { return !isNaN(n) && n >= 1 && n <= 30; });
+                // dedupe
+                var seen = {}, unique = [];
+                parts.forEach(function (p) { if (!seen[p]) { seen[p] = 1; unique.push(p); } });
+                unique.sort(function (a,b){ return a - b; });
+                members.push({ name: name, juz: unique, done: unique.map(function () { return false; }) });
+                unique.forEach(function (p) { assigned[p] = true; });
+            } else {
+                var clean = line.trim(); if (!clean) return;
+                members.push({ name: clean, juz: [], done: [] });
+                unassignedIdx.push(members.length - 1);
+            }
+        });
+        // distribute remaining parts to unassigned members (round-robin)
+        var free = [];
+        for (var i2 = 1; i2 <= 30; i2++) { if (!assigned[i2]) free.push(i2); }
+        if (unassignedIdx.length) {
+            for (var k = 0; k < free.length; k++) {
+                var idx = unassignedIdx[k % unassignedIdx.length];
+                members[idx].juz.push(free[k]);
+                members[idx].done.push(false);
+            }
+        }
+        members.forEach(function (m) {
+            if (m.done.length !== m.juz.length) m.done = m.juz.map(function () { return false; });
+        });
+        return members;
     }
     var khAddBtn = document.getElementById('kh-add-member');
     if (khAddBtn) khAddBtn.onclick = function () {
