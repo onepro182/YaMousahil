@@ -390,10 +390,11 @@
             .settings-sidebar{flex-direction:row;flex-wrap:wrap;gap:6px;width:100%;}
             .settings-content{min-width:0;}
             #mosque-map{min-height:300px;}
-            /* أسماء الله الحسنى — affichage amélioré */
-        #asma-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr)) !important;gap:10px !important;padding:10px !important;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-        #asma-screen .asma-card{min-height:110px;display:flex;flex-direction:column;justify-content:center;}
-        body.is-mobile #asma-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important;padding:8px !important;}
+            /* أسماء الله الحسنى — دائماً 7 / 4 على الهاتف */
+        #asma-grid{grid-template-columns:repeat(7,minmax(0,1fr)) !important;gap:8px !important;padding:8px !important;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+        #asma-screen .asma-card{min-height:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+        body.is-mobile #asma-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:6px !important;padding:6px !important;}
+        @media (max-width:560px){ #asma-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;} }
         body.is-mobile #asma-screen{height:auto !important;min-height:100dvh;}
         body.is-mobile #asma-screen > div{height:auto !important;min-height:100dvh;padding:8px !important;gap:10px !important;}
         body.is-mobile #btn-back-from-asma{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
@@ -402,8 +403,7 @@
         body.is-mobile .inh-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
         @media (max-width:1100px){ body:not(.is-mobile) .inh-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;} }
         @media (max-width:560px){ .inh-grid{grid-template-columns:1fr !important;} }
-        body.is-mobile .asma-header-row{flex-wrap:wrap;gap:8px;padding-top:6px;}
-        body.is-mobile .asma-header-spacer{display:none;}
+        @media (max-width:560px){ .asma-card .asma-name{font-size:1rem !important;} }
         body.is-mobile #asma-screen h1{font-size:1.5rem !important;}
         body.is-mobile #asma-screen .asma-verse{margin:0 4px 6px !important;font-size:1rem !important;padding:8px !important;}
         }
@@ -1513,25 +1513,68 @@
         .card .num{font-size:.65rem;color:rgba(255,255,255,0.45);margin-top:6px;}
         /* Texte crème + or homogène dans le Quran Player Modal */
         #asma-screen { display: flex; flex-direction: column; height: 100%; width: 100%; gap: 15px; }
-        #asma-screen .header-prayers { display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
-        /* boutons audio / lecture auto (أسماء الله) */
-        .asma-actions{display:flex;gap:8px;align-items:center;}
-        .asma-act-btn{
-            width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
-            background:rgba(255,255,255,.06);border:1px solid var(--glass-border);color:var(--gold);
-            font-size:1rem;line-height:1;cursor:pointer;
-            transition:transform .15s ease,border-color .15s ease,background .15s ease;
+        #asma-screen .asma-header-row {
+            display:flex; align-items:center; gap:12px; flex-shrink:0;
+            padding-bottom:12px; border-bottom:1.5px solid rgba(212,175,55,.4);
         }
-        .asma-act-btn:hover{border-color:var(--gold);background:rgba(212,175,55,.12);transform:translateY(-2px);}
-        .asma-act-btn.off{color:var(--text-dim);opacity:.7;}
-        .asma-act-btn.on{background:rgba(212,175,55,.24);border-color:rgba(212,175,55,.6);}
-        .asma-card{position:relative;}
-        .asma-card .asma-num{font-size:.68rem;color:rgba(255,255,255,.5);margin-top:6px;}
+        #asma-screen .asma-title{
+            flex:1; margin:0; display:flex; align-items:center; justify-content:center; gap:14px;
+            font-family:var(--font-quran); font-size:2rem; color:var(--gold); text-shadow:0 2px 6px rgba(0,0,0,.7);
+        }
+        #asma-screen .asma-title::before,#asma-screen .asma-title::after{
+            content:""; flex:0 0 auto; width:55px; height:2px; border-radius:2px;
+            background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 20%,var(--gold) 50%,rgba(212,175,55,.45) 80%,transparent);
+        }
+        #asma-screen .asma-title::after{ transform:scaleX(-1); }
+        #asma-screen .asma-sep{
+            height:1.5px; flex-shrink:0; border-radius:2px;
+            background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 18%,var(--gold) 50%,rgba(212,175,55,.35) 82%,transparent);
+            opacity:.8;
+        }
+        #asma-screen .asma-verse{
+            text-align:center; padding:10px 12px; color:#d4af37;
+            font-family:var(--font-quran); font-size:1.05rem; line-height:1.9;
+            background:#221d23; border:1px solid rgba(212,175,55,.35); border-radius:14px;
+            box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+        }
+        /* العناصر العليا: زر رجوع + بطاقة بيضاء 2D→هادئ 3D زمردي */
+        #asma-screen .back-btn{
+            border:1px solid rgba(255,255,255,.16);
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            color:var(--cream); box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            border-radius:12px; min-height:40px; padding:8px 14px; font-family:var(--font); font-size:.85rem; font-weight:700; cursor:pointer;
+            transition:all .2s ease; white-space:nowrap;
+        }
+        #asma-screen .back-btn:hover{ border-color:var(--gold); color:#ffe9a8; }
+        #asma-screen .back-btn:active{ transform:scale(.97); }
+        /* الشبكة: 7 أسماء/سطر — 4 على الهاتف */
+        #asma-grid{
+            flex:1; overflow-y:auto; display:grid; gap:8px; padding:8px;
+            grid-template-columns:repeat(7,1fr);
+        }
+        body.is-mobile #asma-grid{ grid-template-columns:repeat(4,1fr); }
+        @media (max-width:560px){ #asma-grid{ grid-template-columns:repeat(4,1fr); } }
+        /* بطاقات الـ99 اسمًا — 3D زمرد الذهبي */
+        .asma-card{
+            position:relative; cursor:pointer; text-align:center;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            border:1px solid rgba(255,255,255,.16); border-radius:12px;
+            padding:12px 6px; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            transition:all .2s ease;
+        }
+        .asma-card:hover{ border-color:var(--gold); transform:translateY(-2px); }
+        .asma-card:active{ transform:scale(.97); }
+        .asma-card.asma-selected,.asma-card.asma-playing{
+            border-color:var(--gold);
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);
+        }
+        .asma-card .asma-num{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:6px;font-family:var(--font);direction:ltr;}
         .asma-card .asma-info-hint{
-            position:absolute;top:6px;left:7px;font-size:.72rem;color:rgba(212,175,55,.65);
-            line-height:1;pointer-events:none;
+            position:absolute; top:6px; left:7px; font-size:.72rem; color:rgba(212,175,55,.7);
+            line-height:1; pointer-events:none;
         }
-        .asma-card:hover .asma-info-hint{color:var(--gold);}
+        .asma-card:hover .asma-info-hint{ color:var(--gold); }
         .asma-tip{
             position:fixed;z-index:120000;max-width:min(360px,86vw);display:none;
             background:rgba(7,24,17,.97);border:1px solid rgba(212,175,55,.55);border-radius:14px;
@@ -1553,19 +1596,26 @@
             box-shadow:0 24px 70px rgba(0,0,0,.6);
         }
         .asma-detail-close{
-            position:absolute;top:10px;left:12px;width:32px;height:32px;border-radius:50%;
-            background:rgba(255,255,255,.08);border:1px solid var(--glass-border);color:var(--cream);
-            font-size:1rem;cursor:pointer;line-height:1;
+            position:absolute; top:10px; left:12px; width:34px; height:34px; border-radius:12px;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            border:1px solid rgba(255,255,255,.16); color:var(--cream);
+            font-size:1rem; cursor:pointer; line-height:1;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
         }
-        .asma-detail-close:hover{background:rgba(212,175,55,.2);border-color:var(--gold);}
+        .asma-detail-close:hover{ border-color:var(--gold); color:#ffe9a8; }
         .asma-detail-num{font-size:.8rem;color:var(--gold);opacity:.85;}
         .asma-detail-name{font-family:var(--font-quran);font-size:2.4rem;color:#f4d03f;margin:6px 0 12px;line-height:1.5;}
         .asma-detail-desc{font-size:1rem;line-height:2.1;color:var(--cream);margin:0 0 18px;text-align:center;}
         .asma-detail-play{
-            display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;cursor:pointer;
-            background:linear-gradient(135deg,#ffeeb0,#d4af37);color:#0b132b;border:none;
-            font-family:var(--font);font-weight:800;font-size:.9rem;box-shadow:0 6px 18px rgba(212,175,55,.3);
+            display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:12px; cursor:pointer;
+            border:1px solid var(--gold);
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            color:#ffee9e; text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);
+            font-family:var(--font); font-weight:800; font-size:.95rem;
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.32);
         }
+        .asma-detail-play:hover{ color:#fff6c0; transform:translateY(-1px); }
+        .asma-detail-play:active{ transform:scale(.97); }
         #quran-player-modal, #quran-player-modal .setting-title, #quran-player-modal label, #quran-player-modal h2, #quran-player-modal span, #quran-player-modal p, #quran-player-modal div {
             color: var(--cream) !important;
         }
@@ -1649,10 +1699,7 @@
         .isl-reciter-opt img,.isl-reciter-opt .isl-r-fb{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:1px solid rgba(212,175,55,0.4);}
         .isl-reciter-opt .isl-r-fb{display:grid;place-items:center;background:rgba(212,175,55,0.15);color:var(--gold);font-weight:700;}
         body.is-mobile .isl-reciter-dd{min-width:170px;max-width:100%;}
-        .asma-playing{background:rgba(212,175,55,0.25) !important; border:2px solid var(--gold) !important; box-shadow:0 0 14px rgba(212,175,55,0.45);}
-        .asma-selected{background:rgba(212,175,55,0.22) !important; border:2px solid var(--gold) !important; box-shadow:0 0 0 2px rgba(212,175,55,0.25), 0 0 16px rgba(212,175,55,0.35) !important; transform:translateY(-2px);}
-        .asma-card:hover{border-color:var(--gold) !important; background:rgba(212,175,55,0.10) !important;}
-            /* تصفح القرآن - mushaf viewer (mp3quran mushaf2) */
+        /* تصفح القرآن - mushaf viewer (mp3quran mushaf2) */
         #mushaf-screen{gap:10px;}
 
         /* ===== المصحف المحمدي (source fm6oa.org/coran, integrée) ===== */
@@ -3489,20 +3536,15 @@
             <!-- ASMA ALLAH SCREEN -->
             <div id="asma-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:15px;">
                 <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
-                    <div class="asma-header-row" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);gap:8px;flex-wrap:wrap;">
-                        <button type="button" class="back-btn glass-btn" id="btn-back-from-asma">‹ الرئيسية</button>
-                        <div style="text-align:center;flex:1;min-width:180px;">
-                            <h1 style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ أسماء الله الحسنى</h1>
-                        </div>
-                        <div class="asma-actions">
-                            <button type="button" class="asma-act-btn" id="asma-audio-btn" aria-label="تعطيل الصوت" title="تعطيل الصوت">🔊</button>
-                            <button type="button" class="asma-act-btn" id="asma-auto-btn" aria-label="القراءة التلقائية" title="القراءة التلقائية">▶</button>
-                        </div>
+                    <div class="asma-header-row">
+                        <button type="button" class="back-btn" id="btn-back-from-asma">‹ الرئيسية</button>
+                        <h1 class="asma-title" id="asma-title">أسماء الله الحسنى</h1>
                     </div>
-                    <div class="asma-verse" style="text-align:center;padding:8px;color:#d4af37;font-family:'Amiri',serif;font-size:1.1rem;background:rgba(212,175,55,0.05);border:2px solid rgba(212,175,55,0.2);border-radius:10px;margin:0 10px 8px;line-height:1.7;">
+                    <div class="asma-sep" aria-hidden="true"></div>
+                    <div class="asma-verse">
                       ﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا ۖ وَذَرُوا الَّذِينَ يُلْحِدُونَ فِي أَسْمَائِهِ ۚ سَيُجْزَوْنَ مَا كَانُوا يَعْمَلُونَ﴾ [الأعراف: 180]
                     </div>
-                    <main id="asma-grid" class="grid" style="flex:1; overflow-y:auto; display:grid; grid-template-columns:repeat(7,1fr); gap:8px; padding:8px;"></main>
+                    <main id="asma-grid" class="asma-grid"></main>
                 </div>
 
             </div>
@@ -4726,22 +4768,6 @@ var gender = 'male';
         // etat du son + boutons audio / lecture auto
         var asmaAudioOn = true;
         try { var _ao = localStorage.getItem('asmaAudioOn'); if (_ao !== null) asmaAudioOn = (_ao === '1'); } catch (e) {}
-        function updateAsmaButtons() {
-            var ab = document.getElementById('asma-audio-btn');
-            if (ab) {
-                ab.textContent = asmaAudioOn ? '\u{1F50A}' : '\u{1F507}';
-                ab.classList.toggle('off', !asmaAudioOn);
-                ab.setAttribute('aria-label', asmaAudioOn ? 'تعطيل الصوت' : 'تفعيل الصوت');
-                ab.title = ab.getAttribute('aria-label');
-            }
-            var tb = document.getElementById('asma-auto-btn');
-            if (tb) {
-                tb.textContent = asmaAuto ? '\u23F8' : '\u25B6';
-                tb.classList.toggle('on', !!asmaAuto);
-                tb.setAttribute('aria-label', asmaAuto ? 'إيقاف القراءة التلقائية' : 'القراءة التلقائية');
-                tb.title = tb.getAttribute('aria-label');
-            }
-        }
         function clearAsmaPlaying() {            try {
                 var grid = document.getElementById('asma-grid');
                 if (grid) Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('asma-playing'); var sp = c.querySelector('.asma-speaker'); if (sp) sp.textContent = ''; });
@@ -4779,7 +4805,6 @@ var gender = 'male';
             if (resetBtn !== false) {
                 var b = document.getElementById('btn-auto-asma');
                 if (b) b.textContent = '▶ Lecture auto';
-                updateAsmaButtons();
                 var grid = document.getElementById('asma-grid');
                 if (grid && asmaHighlightIdx >= 0) { grid.children[asmaHighlightIdx].style.outline = ''; asmaHighlightIdx = -1; }
             }
@@ -4788,7 +4813,7 @@ var gender = 'male';
         function playAsmaAuto(i) {
             if (!asmaAuto) return;
             var grid = document.getElementById('asma-grid');
-            if (i >= ASMA.length) { clearAsmaPlaying(); asmaHighlightIdx = -1; asmaAuto = false; var b=document.getElementById('btn-auto-asma'); if(b) b.textContent='▶ Lecture auto'; updateAsmaButtons(); return; }
+            if (i >= ASMA.length) { clearAsmaPlaying(); asmaHighlightIdx = -1; asmaAuto = false; var b=document.getElementById('btn-auto-asma'); if(b) b.textContent='▶ Lecture auto'; return; }
             if (grid) {
                 asmaHighlightIdx = i;
                 markAsmaPlaying(ASMA[i].ar);
@@ -4805,12 +4830,10 @@ var gender = 'male';
             var b = document.getElementById('btn-auto-asma');
             if (b) b.textContent = '⏸ Arrêter';
             playAsmaAuto(0);
-            updateAsmaButtons();
         };
         // Exposer globalement pour les onclick/onchange inline (sinon ReferenceError)
         window.playAsmaAudio = playAsmaAudio;
         window.renderAsma = renderAsma;
-        window.updateAsmaButtons = updateAsmaButtons;
         window.asmaAutoStop = asmaAutoStop;
         window.asmaOpenDetail = asmaOpenDetail;
         window.asmaCloseDetail = asmaCloseDetail;
@@ -4883,29 +4906,14 @@ var gender = 'male';
                 if (_asmaCurrent && typeof window.speakArabicText === 'function') window.speakArabicText(_asmaCurrent);
             });
         })();
-        // boutons audio / lecture auto
-        var _asmaAudioBtn = document.getElementById('asma-audio-btn');
-        if (_asmaAudioBtn) _asmaAudioBtn.addEventListener('click', function () {
-            asmaAudioOn = !asmaAudioOn;
-            try { localStorage.setItem('asmaAudioOn', asmaAudioOn ? '1' : '0'); } catch (e) {}
-            if (!asmaAudioOn) { try { speechSynthesis.cancel(); } catch (e) {} clearAsmaPlaying(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); }
-            updateAsmaButtons();
-        });
-        var _asmaAutoBtn = document.getElementById('asma-auto-btn');
-        if (_asmaAutoBtn) _asmaAutoBtn.addEventListener('click', function () {
-            if (!asmaAudioOn) { asmaAudioOn = true; try { localStorage.setItem('asmaAudioOn', '1'); } catch (e) {} }
-            window.__toggleAsmaAuto();
-            updateAsmaButtons();
-        });
-        updateAsmaButtons();
         window.__setAsmaGender = function(v) { gender = v; };
         function renderAsma() {
             const grid = document.getElementById('asma-grid');
             if (!grid) return;
             grid.innerHTML = ASMA.map(s => `
-                <div class="asma-card" data-ar="${s.ar.replace(/"/g, '&quot;')}" data-num="${s.num}" data-desc="${String(s.desc).replace(/"/g, '&quot;')}" onclick="playAsmaAudio('${s.ar}')" style="cursor:pointer; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:14px 10px; text-align:center; backdrop-filter:blur(8px); transition:border-color .2s, box-shadow .2s, background .2s, transform .15s;">
+                <div class="asma-card" data-ar="${s.ar.replace(/"/g, '&quot;')}" data-num="${s.num}" data-desc="${String(s.desc).replace(/"/g, '&quot;')}" onclick="playAsmaAudio('${s.ar}')">
                     <div class="asma-speaker" style="font-size:.8rem;color:var(--gold);min-height:1rem;"></div>
-                    <div style="font-family:var(--font-quran); font-size:1.35rem; color:#f4d03f; margin-bottom:6px; line-height:1.4;">${s.ar}</div>
+                    <div class="asma-name" style="font-family:var(--font-quran); font-size:1.3rem; color:#f4ecd8; line-height:1.4;">${s.ar}</div>
                     <div class="asma-num">${s.num}</div>
                     <span class="asma-info-hint" title="التفاصيل" aria-hidden="true">ℹ</span>
                 </div>`).join('');
@@ -5240,7 +5248,7 @@ var gender = 'male';
         }
         document.getElementById('card-inheritance').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderInheritance(); showScreen(inheritanceScreen); window.scrollTo(0,0); };
         document.getElementById('btn-back-from-inheritance').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
-        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); try { if (typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) { console.warn('renderAsma', e); } try { if (typeof window.updateAsmaButtons === 'function') window.updateAsmaButtons(); } catch (e) {} setTimeout(function(){ try { var g = document.getElementById('asma-grid'); if (g && !g.children.length && typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) {} }, 120); });
+        document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); try { if (typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) { console.warn('renderAsma', e); } setTimeout(function(){ try { var g = document.getElementById('asma-grid'); if (g && !g.children.length && typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) {} }, 120); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
         // ==================================================
