@@ -3396,6 +3396,7 @@
                                 <div class="setting-row"><div class="setting-title">رسالة تنبيه على الشاشة</div><label class="switch"><input type="checkbox" id="set-reminder-text" checked><span class="slider"></span></label></div>
                                 <div class="setting-row"><div class="setting-title">تنبيه صوتي بالعربية</div><label class="switch"><input type="checkbox" id="set-reminder-voice" checked><span class="slider"></span></label></div>
                                 <div class="setting-row" style="justify-content:center;margin-top:15px;"><button type="button" class="file-btn" id="btn-test-reminder" style="background:var(--glass-bg);backdrop-filter:blur(10px);border:1px solid var(--gold);color:var(--gold);font-weight:bold;width:100%;justify-content:center;">▶ اختبار شاشة التنبيه</button></div>
+                                <div class="setting-row" id="row-test-background" style="justify-content:center;margin-top:10px;"><button type="button" class="file-btn" id="btn-test-background" style="background:var(--glass-bg);backdrop-filter:blur(10px);border:1px solid #4ade80;color:#4ade80;font-weight:bold;width:100%;justify-content:center;">🔔 اختبار إشعار الخلفية (اقفل الهاتف — خلال 15 ثانية)</button></div>
                             </div>
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
                             <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title" data-i18n="set_clock">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 <span data-i18n="hour_suffix">س</span></button><button type="button" class="group-btn active" data-value="24">24 <span data-i18n="hour_suffix">س</span></button></div></div><div class="setting-row"><div class="setting-title" data-i18n="set_seconds">إظهار الثواني</div><label class="switch"><input type="checkbox" id="set-seconds"><span class="slider"></span></label></div><div class="setting-row"><div class="setting-title" data-i18n="set_gmt">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select"><option value="auto" selected data-i18n="gmt_auto">تلقائي (توقيت الجهاز)</option>
@@ -3738,6 +3739,39 @@
             prayerTimesToday = computePrayerTimes(today); prayerTimesTomorrow = computePrayerTimes(tomorrow);
             currentPrayerKey = null; for (const k of PRAYER_ORDER) if (prayerTimesToday[k] <= now) currentPrayerKey = k; if (!currentPrayerKey) currentPrayerKey = 'isha';
             nextPrayerKey = null; for (const k of ['fajr','dhuhr','asr','maghrib','isha']) { if (prayerTimesToday[k] > now) { nextPrayerKey = k; break; } } if (!nextPrayerKey) nextPrayerKey = 'fajr';
+            try { scheduleBackgroundPrayers(); } catch (e) { console.warn('background sync failed:', e); }
+        }
+
+        // ===== Synchronisation avec l'alerte native Android (APK) =====
+        // L'APK expose window.AndroidAdhan : les heures de priere (aujourd'hui + demain)
+        // sont programmees via AlarmManager — l'alerte s'affiche meme si l'app est fermee
+        // ou le telephone verrouille. Sur le web (sans bridge), rien ne change.
+        function scheduleBackgroundPrayers() {
+            try {
+                if (!window.AndroidAdhan || typeof window.AndroidAdhan.sync !== 'function') return;
+                var bridge = window.AndroidAdhan;
+                var reminderMin = Number(settings.reminderMinutes) || 10;
+                var items = [];
+                var addSet = function (timesObj, tag) {
+                    ['fajr','dhuhr','asr','maghrib','isha'].forEach(function (k) {
+                        var t = timesObj && timesObj[k]; if (!t) return;
+                        var at = t.getTime(); if (!isFinite(at)) return;
+                        var name = (typeof PRAYER_NAMES !== 'undefined' && PRAYER_NAMES[k]) ? PRAYER_NAMES[k] : k;
+                        if (settings.adhanEnabled && at > Date.now()) {
+                            items.push({ key: k + '_' + tag, pkey: k, name: name, at: at, type: 'adhan' });
+                        }
+                        if (settings.reminderEnabled) {
+                            var ratt = at - reminderMin * 60000;
+                            if (ratt > Date.now()) {
+                                items.push({ key: k + '_' + tag + '_rem', pkey: k, name: name, at: ratt, type: 'reminder', reminderMinutes: reminderMin });
+                            }
+                        }
+                    });
+                };
+                addSet(prayerTimesToday, 'today'); addSet(prayerTimesTomorrow, 'tomorrow');
+                var payload = JSON.stringify({ version: 1, items: items, adhanEnabled: !!settings.adhanEnabled, reminderEnabled: !!settings.reminderEnabled, reminderMinutes: reminderMin });
+                bridge.sync(payload);
+            } catch (e) { console.warn('scheduleBackgroundPrayers:', e); }
         }
 
         let clockTzPreview = null;   // fuseau en cours de previsualisation dans les reglages
@@ -7831,6 +7865,16 @@ function notifyPrayer(prayerKey, isTest, mode) {
             playAdhan(null, true);
         });
         document.getElementById('btn-test-reminder').addEventListener('click', () => { showAlertOverlay('isha', 'now'); notifyPrayer('isha', true); if (settings.reminderVoice) { if (typeof window.announcePrayerApproaching === 'function') window.announcePrayerApproaching(PRAYER_NAMES.isha); else if (typeof speakArabic === 'function') speakArabic('حان الآن موعد صلاة ' + PRAYER_NAMES.isha); } });
+        var _btnBgTest = document.getElementById('btn-test-background');
+        if (_btnBgTest) _btnBgTest.addEventListener('click', () => {
+            var st = document.getElementById('adhan-status');
+            if (window.AndroidAdhan && typeof window.AndroidAdhan.test === 'function') {
+                try { window.AndroidAdhan.test(15); } catch (e) {}
+                if (st) st.textContent = 'سيظهر إشعار الخلفية خلال 15 ثانية. اقفل الهاتف الآن — يجب أن تظهر رسالة الأذان فوق شاشة القفل حتى لو كان التطبيق مغلقًا.';
+            } else {
+                if (st) st.textContent = 'اختبار الخلفية يعمل داخل تطبيق أندرويد (APK) فقط — على الويب لن يصل إشعار إذا كان المتصفح مغلقًا.';
+            }
+        });
         // Test après déploiement: ?testAlert=1
         try{var _ta=new URLSearchParams(location.search); if(_ta.get('testAlert')==='1'||_ta.get('testalert')==='1'||_ta.get('test')==='alert'){setTimeout(function(){if(typeof showAlertOverlay==='function') showAlertOverlay('isha','now');},900);}}catch(e){}
         // ===== Geolocalisation fournie par l'APK Android =====
