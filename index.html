@@ -1500,6 +1500,12 @@
         .huj-dua{font-family:var(--font-quran);font-size:1.15rem;line-height:2.15;color:#ffefd0;text-align:center;padding:8px 12px;margin:6px 0 4px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);text-shadow:0 1px 2px rgba(0,0,0,.55);}
         .huj-dua.small{font-size:1rem;}
         .huj-shared-title{font-family:var(--font);font-weight:800;color:var(--gold);font-size:.95rem;border-bottom:2px solid rgba(212,175,55,.4);padding:2px 2px 8px;}
+        .huj-badge{flex:none;margin-inline-start:auto;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px;border:1px solid;white-space:nowrap;}
+        .huj-badge.rk{color:#ff9d8a;border-color:#e74c3c;background:rgba(231,76,60,.16);}
+        .huj-badge.wb{color:#ffee9e;border-color:var(--gold);background:rgba(212,175,55,.14);}
+        .huj-badge.sn{color:#9effc0;border-color:#2fa37c;background:rgba(46,170,90,.14);}
+        .huj-lead{color:var(--text-dim);font-size:.78rem;line-height:1.85;margin:4px 0 2px;}
+        .huj-source{font-size:.7rem;color:var(--text-dim);opacity:.85;margin-top:2px;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.03);line-height:1.7;}
         .huj-foot{font-size:.8rem;color:var(--text-dim);line-height:1.9;border:1px dashed rgba(212,175,55,.3);border-radius:10px;padding:10px 13px;text-align:center;}
         .kh-juz-actions{display:flex;gap:5px;}
         .kh-juz-act{flex:1 1 0;padding:7px 2px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-dim);font-family:var(--font);font-size:.7rem;font-weight:700;white-space:nowrap;cursor:pointer;transition:all .15s ease;}
@@ -4141,6 +4147,72 @@
                     </div>
                     <!-- ========== HAJJ ========== -->
                     <div class="huj-panel" id="huj-panel-hajj" role="tabpanel" hidden>
+                        <div class="huj-shared-title">🕋 مناسك الحج بالترتيب</div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">1</span> الإحرام<span class="huj-badge rk">ركن</span></div>
+                            <p class="huj-note">أن ينوي الحاج الدخول في نسك الحج بقلبه، وسبب تسميته بالإحرام لأن الحاج بمجرّد الدخول فيه يحرَّم عليه أمورًا كانت مُحلّلة له. يُستحبّ عنده الاغتسال وقصّ الأظافر واستعمال الطيب ولبس ثياب الإحرام.</p>
+                            <p class="huj-note dim"><b>الميقات الزماني:</b> شوال وذو القعدة وعشرٌ من ذي الحجة، وأعمال الحج تكون في 8 ← 13 من ذي الحجة.</p>
+                            <p class="huj-note dim"><b>الميقات المكاني:</b> أهل المدينة ← ذو الحليفة · أهل اليمن ← السعدية · أهل مصر والشام والمغرب ← الجحفة.</p>
+                            <p class="huj-note dim">وحكم التلبية عند الإحرام مستحبة عند جمهور العلماء.</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">2</span> طواف القدوم<span class="huj-badge sn">سنة</span></div>
+                            <p class="huj-note">أول سنن الحج، ويُسمى طواف الورود وطواف التحية؛ ويبدأ به الحاج بعد دخول مكة، تحيةً للبيت العتيق، ويُندب الدخول بها واقفًا بالطهارة.</p>
+                            <p class="huj-note">عَنْ عَائِشَةَ رَضِيَ الله عَنْهَا:</p>
+                            <div class="huj-dua small">أنَّ أَوَّلَ شيءٍ بَدَأَ به حِينَ قَدِمَ النبيُّ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ أنَّهُ تَوَضَّأَ، ثُمَّ طَافَ</div>
+                            <p class="huj-note dim">(متفق عليه) · وآخر وقت طواف القدوم الوقوف بعرفة (الجمهور).</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">3</span> السعي<span class="huj-badge rk">ركن</span></div>
+                            <p class="huj-note">ركن عند المالكي والشافعي والحنبلي، وسنة عند الحنفي. شرطه إتمام سبعة أشواط بين الصفا والمروة.</p>
+                            <p class="huj-note">يبدأ وقت السعي يوم النحر بعد طواف الزيارة (طواف الإفاضة) لا بعد طواف القدوم. ويُصعد على الصفا مستقبلًا البيت، فيوحد الله ويكبّره، ثم يتجه إلى المروة بالمشي المعتاد، وإذا حاذى العمودين الأخضرين أسرع، حتى إذا وصل المروة وحّد الله وكبّره، وهذا شوط واحد.</p>
+                            <p class="huj-note dim">قال تعالى: ﴿إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ …﴾</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">4</span> يوم التروية بمنى<span class="huj-badge sn">سنة</span></div>
+                            <p class="huj-note">يوم <b>8 ذي الحجة</b>. يُستحبّ للحاج أن يخرج من مكة إلى منى فيُصلّي بها خمس صلوات: الظهر والعصر والمغرب والعشاء وفجر اليوم التاسع، باتفاق الأئمة الأربعة، ويبيت بها ليلة عرفة، ثم يسير إلى عرفة سيرًا على الأقدام بعد طلوع شمس اليوم التاسع، وهو سنة عند الجمهور.</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">5</span> الوقوف بعرفة<span class="huj-badge rk">ركن</span></div>
+                            <p class="huj-note">يوم <b>9 ذي الحجة</b> إلى طلوع فجر يوم النحر. لا يتمّ الحجّ إلّا به بإجماع المذاهب الأربعة، فمن فاته فقد فاته الحجّ.</p>
+                            <p class="huj-note">عن عائشة رضي الله عنها قالت: إنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قال:</p>
+                            <div class="huj-dua small">« ما من يومٍ أكثر من أن يعتق اللهُ فيه عبدًا من النارِ من يوم عرفة، وإنه لَيَدْنُو ثُمَّ يُبَاهِي بِهِمِ الْمَلائِكَةَ فَيَقُولُ: ما أَرادَ هؤلاءِ »</div>
+                            <p class="huj-note dim">(رواه مسلم) · ويُكثر فيها من الدعاء والذكر والقرآن، وخصوصًا بعد الصلاة.</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">6</span> المبيت بمزدلفة ورمي جمرة العقبة<span class="huj-badge wb">واجب</span></div>
+                            <p class="huj-note">بعد غروب شمس عرفة يسير الحاج إلى المزدلفة في سكينة ووقار، ويُسرع إذا ما وجد فرجة. ويجوز تأخير صلاتيّ المغرب والعشاء وجمعهما وقصرهما بمزدلفة (الجمهور). يبيت بها إلى أن يصلي فجر اليوم العاشر، ويجوز الحضور في النصف الثاني من الليل.</p>
+                            <p class="huj-note">وقبل طلوع شمس اليوم العاشر يسير إلى منى، فيأخذ سبع حصيات من المزدلفة (حجم الحمصة تقريبًا) لرمي <b>جمرة العقبة</b> (الجمرة الكبرى)، ويُكبّر مع كل حصاة، ويلتقط باقي الحصى من منى.</p>
+                            <p class="huj-note dim">رمي الجمرات واجب من واجبات الحج، ومن تركها لزمه دم (هدي).</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">7</span> التحلل (الحلق أو التقصير)<span class="huj-badge wb">واجب</span></div>
+                            <p class="huj-note">بعد رمي جمرة العقبة يحلق الحاج شعره أو يقصّره، ويفضَّل للرجل الحلق وللمرأة التقصير، ويحلُّ له بذلك كل شيء إلا النساء.</p>
+                            <p class="huj-note dim">وقد تعددت آراء الفقهاء في ترتيب أعمال يوم النحر (الرمي ← الذبح ← الحلق ← الإفاضة)، فمنهم من قدّم الرمي على الحلق ومنهم من قدّم الذبح على الحلق، ومنهم من لم يرَ وجوب ترتيب أعمال يوم النحر.</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">8</span> طواف الإفاضة (طواف الزيارة)<span class="huj-badge rk">ركن</span></div>
+                            <p class="huj-note">ركن من أركان الحجّ باتفاق المذاهب الأربعة. سبعة أشواط (الجمهور)، اليوم العاشر أو أيام التشريق 11 ← 13 من ذي الحجة.</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">9</span> رمي الجمرات في أيام التشريق<span class="huj-badge wb">واجب</span></div>
+                            <p class="huj-note">واجب في <b>منى</b> في أيام 11 ← 13 من ذي الحجة، وهنّ ثلاث جمرات:</p>
+                            <p class="huj-note"><b>⑂ الأولى (الصغرى):</b> تقع بعد مسجد الخيف في منى — وهي أبعد الجمرات عن مكة — تُرمى بسبع حصيات.</p>
+                            <p class="huj-note"><b>⑂ الثانية (الوسطى):</b> بعد الأولى وقبل جمرة العقبة — تُرمى بسبع حصيات.</p>
+                            <p class="huj-note"><b>⑂ الثالثة (العقبة):</b> تُرمى بسبع حصيات.</p>
+                            <p class="huj-note dim">ويُكبّر مع كل حصاة، ومن ترك الرمي لزمه هدي.</p>
+                        </div>
+                        <div class="huj-item">
+                            <div class="huj-head"><span class="huj-num">10</span> طواف الوداع (طواف الصدر)<span class="huj-badge wb">واجب</span></div>
+                            <p class="huj-note">آخر مناسك الحج، ويُسمى طواف آخر العهد؛ واجب عند الجمهور، وقته عقب انتهاء الحاج من جميع المناسك، وأي طواف يفعله الحاج بعد طواف الإفاضة يُجزئ عن طواف الوداع.</p>
+                        </div>
+                        <div class="huj-shared-title">أركان وواجبات وسنن الحج</div>
+                        <div class="huj-item">
+                            <p class="huj-note"><span class="huj-badge rk">ركن</span> &nbsp;الوقوف بعرفة · طواف الإفاضة · الإحرام · السعي بين الصفا والمروة</p>
+                            <p class="huj-note" style="margin-top:8px;"><span class="huj-badge wb">واجب</span> &nbsp;المبيت بمزدلفة · المبيت بمنى · طواف الوداع · رمي الجمرات</p>
+                            <p class="huj-note" style="margin-top:8px;"><span class="huj-badge sn">سنة</span> &nbsp;طواف القدوم · التوجّه إلى منى يوم التروية</p>
+                        </div>
+                        <div class="huj-shared-title">🤲 الأدعية والأذكار في مناسك الحج</div>
                         <div class="huj-item">
                             <div class="huj-head"><span class="huj-num">1</span> نية الإحرام</div>
                             <p class="huj-note">تقول عند نية الإحرام:</p>
@@ -4178,9 +4250,11 @@
                         </div>
                         <div class="huj-item">
                             <div class="huj-head"><span class="huj-num">7</span> رمي الجمار</div>
-                            <p class="huj-note">يُكبّر مع كل حصاة عند رمي الجمرة:</p>
+                            <p class="huj-note">يُكبّر مع كل حصاة عند رمي أي جمرة:</p>
                             <div class="huj-dua">الله أكبر</div>
-                            <p class="huj-note dim">(يرمي كل جمرة بسبع حصيات، ويُكبّر مع كل حصاة — وكان عبد الله بن عمر رضي الله عنهما يقول: الله أكبر)</p>
+                            <p class="huj-note">أو يقول بالصيغة المختارة من العلماء:</p>
+                            <div class="huj-dua small">« بِسْمِ اللهِ واللهُ أَكْبَرُ، رَغْمًا لِلشَّيْطَانِ وَرِضًا لِلرَّحْمَنِ، اللَّهُمَّ اجْعَلْهُ حَجًّا مَبْرُورًا وَسَعْيًا مَشْكُورًا، وَذَنْبًا مَغْفُورًا »</div>
+                            <p class="huj-note dim">(سبع حصيات لكل جمرة، ويُكبّر مع كل حصاة)</p>
                         </div>
                         <div class="huj-item">
                             <div class="huj-head"><span class="huj-num">8</span> عند الصفا و المروة</div>
@@ -4206,6 +4280,7 @@
                             <p class="huj-note dim">(متفق عليه)</p>
                         </div>
                         <div class="huj-foot"><b>تنبيه مهم :</b> الأصل في الدعاء الإخلاص وحضور القلب، ويُشرع الإكثار من الدعاء في جميع أركان الحج وأوقاته وفي الأماكن الفاضلة.</div>
+                        <div class="huj-source">المصدر: توينكل (twinkl.ar &amp; twinkl.com) — « مناسك الحج بالترتيب التي يؤديها الحاج اشترك لتعرفها بالتفصيل » · « مناسك الحج — خطوات الحج بالترتيب ».</div>
                     </div>
                 </div>
             </div>
