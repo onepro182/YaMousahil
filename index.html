@@ -632,16 +632,25 @@
         body.is-mobile #asma-screen .asma-verse{margin:0 4px 6px !important;font-size:1rem !important;padding:8px !important;}
         }
         @media (max-width: 560px){ .fav-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
-        /* محليات صغيرة على الهاتف */
-        .setting-row-duo{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
-        .setting-row-duo .setting-row{flex:1 1 240px;min-width:0;margin-bottom:0;gap:8px;padding:10px 12px;}
-        .setting-row-duo .setting-row .setting-select{flex:1;min-width:0;}
-        @media (max-width:560px){ .setting-row-duo{flex-direction:column;gap:6px;} }
-        /* تصغير العناوين الذهبية على الهاتف */
-        body.is-mobile #inheritance-screen h1 { font-size: 1.3rem !important; gap: 6px !important; margin: 0 !important; text-shadow: 0 1px 4px rgba(0,0,0,.8) !important; }
-        body.is-mobile #inheritance-screen h1::before, body.is-mobile #inheritance-screen h1::after { width: 18px !important; height: 1px !important; opacity: .7; }
-        body.is-mobile #inheritance-screen > div > div:first-child{ padding: 6px 8px !important; gap: 6px !important; }
-        body.is-mobile #inheritance-screen > div > div:first-child p{ font-size: .76rem !important; line-height: 1.45 !important; margin-top: 2px !important; }
+        /* الحشو الهادئ للقواعد والتكوينات (mobile dédié) */
+        .setting-duo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+        .setting-duo-tile{display:flex;flex-direction:column;gap:5px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);padding:10px 12px;border-radius:10px;min-width:0;}
+        .setting-duo-label{font-size:.82rem;font-weight:700;color:#cdbf8a;font-family:var(--font);line-height:1.2;}
+        .setting-duo-select{width:100%;min-width:0;box-sizing:border-box;direction:rtl !important;padding:6px 10px;color-scheme:dark;text-align:right;}
+        @media (max-width:560px){
+            .setting-duo{gap:6px;}
+            .setting-duo-tile{padding:6px 8px;gap:3px;border-radius:10px;}
+            .setting-duo-label{font-size:.66rem;line-height:1.1;white-space:normal;}
+            .setting-duo-select{font-size:.76rem;padding:5px 6px;}
+        }
+        /* تصغير عنوان حساب المواريث على الهاتف + تحرير min-width (الخانق النصفي) */
+        body.is-mobile #inheritance-screen h1 { font-size: 1.25rem !important; gap: 6px !important; margin: 0 !important; text-shadow: 0 1px 4px rgba(0,0,0,.8) !important; }
+        body.is-mobile #inheritance-screen h1::before, body.is-mobile #inheritance-screen h1::after{ width: 16px !important; height: 1px !important; opacity: .7; }
+        body.is-mobile #inheritance-screen .inheritance-spacer{ width: 0 !important; }
+        body.is-mobile #inheritance-screen > div > div:first-child{ padding: 5px 6px !important; gap: 4px !important; }
+        body.is-mobile #inheritance-screen > div > div:first-child > div[style*="min-width:180px"]{ min-width: 0 !important; }
+        body.is-mobile #inheritance-screen > div > div:first-child p{ font-size: .74rem !important; line-height: 1.45 !important; margin-top: 4px !important; }
+        /* سماح للعنوان الذهبي الكبير أن يكون أسفل الزر */
         body.is-mobile #prayers-screen h1,
         body.is-mobile #mosques-screen h1,
         body.is-mobile #sihatar-screen h1,
@@ -3777,7 +3786,7 @@
                             <h1>حساب المواريث</h1>
                             <p style="font-family:var(--font);font-size:.95rem;color:#fff;margin-top:4px;line-height:1.7;">حاسبة إلكترونية لحساب الميراث الشرعي لكل وارث ونسبته ومقدار حصته مع توضيح موجز لحالة كل وارث ونصيبه الشرعي ويبين حجب كل من يتم حجبه من الورثة.</p>
                         </div>
-                        <div style="width:80px;"></div>
+                        <div class="inheritance-spacer" style="width:80px;"></div>
                     </div>
                     <div id="inheritance-app" class="glass-btn" style="padding:14px;border-radius:14px;border:1px solid rgba(212,175,55,0.25);"></div>
                     <div class="glass-btn" style="padding:12px 14px;border-radius:12px;border:1px solid rgba(212,175,55,0.2);font-size:.92rem;line-height:1.9;color:var(--text-dim);text-align:center;">
@@ -3816,9 +3825,9 @@
                         </div>
                         <div class="settings-content">
                             <div class="settings-pane active" id="pane-prayer">
-                                <div class="setting-row-duo">
-                                    <div class="setting-row setting-row-compact"><div class="setting-title">الدولة / الموقع</div><select id="set-country" class="setting-select"></select></div>
-                                    <div class="setting-row setting-row-compact"><div class="setting-title">المدينة</div><select id="set-city" class="setting-select"></select></div>
+                                <div class="setting-duo">
+                                    <label class="setting-duo-tile" for="set-country"><div class="setting-duo-label">الدولة / الموقع</div><select id="set-country" class="setting-select setting-duo-select"></select></label>
+                                    <label class="setting-duo-tile" for="set-city"><div class="setting-duo-label">المدينة</div><select id="set-city" class="setting-select setting-duo-select"></select></label>
                                 </div>
                                 <div class="setting-row"><div class="setting-title">طريقة الحساب</div><select id="set-method" class="setting-select"><option value="Egyptian">الهيئة المصرية</option><option value="Morocco">وزارة الأوقاف المغربية</option><option value="UmmAlQura">أم القرى</option></select></div>
                                 <div class="setting-row"><div class="setting-title">مذهب العصر</div><div class="toggle-group" id="set-asr"><button type="button" class="group-btn active" data-value="Shafi">الشافعي / المالكي</button><button type="button" class="group-btn" data-value="Hanafi">الحنفي</button></div></div>
