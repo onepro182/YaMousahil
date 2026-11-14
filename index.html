@@ -5808,13 +5808,13 @@ var gender = 'male';
                     var dx = e.changedTouches[0].clientX - sx;
                     var dy = e.changedTouches[0].clientY - sy;
                     if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
-                    if (dx < 0) tajweedCmd('next'); else tajweedCmd('prev');
+                    if (dx < 0) tajweedCmd('prev'); else tajweedCmd('next');
                 }, { passive: true });
                 document.addEventListener('keydown', function (e) {
                     var scr = document.getElementById('tajweed-screen');
                     if (!scr || scr.offsetParent === null) return;
-                    if (e.key === 'ArrowLeft') tajweedCmd('next');
-                    else if (e.key === 'ArrowRight') tajweedCmd('prev');
+                    if (e.key === 'ArrowLeft') tajweedCmd('prev');
+                    else if (e.key === 'ArrowRight') tajweedCmd('next');
                 });
             }
             var last = 1;
