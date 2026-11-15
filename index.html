@@ -1623,13 +1623,12 @@
         .zakat-nisab-toggle{padding:0;}
         .zakat-card-toggle{justify-content:space-between;}
         .zakat-card-toggle .zakat-h3{margin:0;border-bottom:none;padding:0;flex:1;text-align:right;}
-        .zakat-eye{display:none;flex:none;font-size:1.05rem;opacity:.75;transition:opacity .18s ease, transform .18s ease;}
-        body.is-mobile .zakat-eye{display:inline-flex;}
+        .zakat-eye{display:inline-flex;flex:none;font-size:1.05rem;opacity:.85;transition:opacity .18s ease, transform .18s ease;}
         .zakat-toggle[aria-expanded="true"] .zakat-eye{opacity:1;transform:scale(1.12);}
-        /* أجسام قابلة للطي — مرئية على سطح المكتب دائمًا، وتُطوى تحت Android */
+        /* أجسام قابلة للطي — تُطوى افتراضيًا على كل المنصات (Android وWindows) وتفتح بالنقر على 👁 */
         .zakat-item-body{display:flex;flex-direction:column;gap:3px;margin-top:4px;}
         .zakat-card-body{display:block;margin-top:10px;border-top:1px dashed rgba(212,175,55,.28);padding-top:10px;}
-        body.is-mobile .zakat-collapse-body.collapsed{display:none !important;}
+        .zakat-collapse-body.collapsed{display:none !important;}
         body.is-mobile .zakat-nisab-grid{grid-template-columns:1fr;}
         /* عناوين فرعية وقوائم قسم « ما تجب فيه الزكاة » */
         .zakat-scope-intro{margin:0 0 8px;}
@@ -1664,9 +1663,8 @@
         .zakat-ol li{margin:3px 0;}
         .zakat-foot{font-size:.72rem;color:var(--text-dim);text-align:center;line-height:1.9;padding:2px 8px;}
         @media (max-width:640px){ .zakat-nisab-grid{grid-template-columns:1fr;} .zakat-gold-grid{grid-template-columns:1fr;} .zakat-tabs .huj-tab{min-width:calc(50% - 8px);} .zakat-result-line-due{flex-direction:column;align-items:flex-start;gap:2px;} }
-        /* تحت Android: كرت النتيجة مثبّت أسفل الشاشة ليبقى ظاهرًا أثناء الإدخال والتمرير */
-        body.is-mobile #zakat-screen .zakat-result{position:fixed;left:0;right:0;bottom:0;z-index:60;border-radius:18px 18px 0 0;border-bottom:none;padding:10px 14px calc(10px + env(safe-area-inset-bottom, 0px));box-shadow:0 -8px 26px rgba(0,0,0,.5), inset 0 1.5px 1px rgba(255,255,255,.32);}
-        body.is-mobile #zakat-screen .zakat-wrap{padding:0 2px calc(170px + env(safe-area-inset-bottom, 0px));}
+        /* تحت Android: كرت النتيجة مدمج داخل الصفحة بين « النقد في يدك » و« موعد زكاتك » */
+        body.is-mobile #zakat-screen .zakat-wrap{padding:0 2px 18px;}
         /* أكورديون — يُعرض العناوين فقط؛ النقر يعرض تفاصيل العنصر ويُغلق الباقي (Android وWindows) */
         #hajj-umrah-screen .huj-head{cursor:pointer;user-select:none;}
         #hajj-umrah-screen .huj-head:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;}
@@ -4690,6 +4688,8 @@
                         <button type="button" class="file-btn zakat-ics-btn" id="zakatHawlIcs" style="display:none;">📅 أضف تذكيرًا إلى التقويم (قبل بأسبوع)</button>
                         <p class="zakat-note zakat-hawl-note">تذكير قبل الموعد بأسبوع. والتاريخ على تقويم وزارة الأوقاف المغربية، وقد يتقدّم يومًا أو يتأخّر بحسب الرؤية.</p>
                     </div>
+                    <!-- إفادات: أقسام الشرح -->
+                    <h2 class="zakat-sec-title">إفادات</h2>
                     <!-- how to compute -->
                     <div class="zakat-info-card">
                         <button type="button" class="zakat-toggle zakat-card-toggle" aria-expanded="false" aria-controls="zakat-body-how" id="zakat-toggle-how">
