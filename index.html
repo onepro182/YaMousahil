@@ -231,6 +231,7 @@
         #live-screen .title-prayers h1::before, #live-screen .title-prayers h1::after,
         #weather-screen .title-prayers h1::before, #weather-screen .title-prayers h1::after,
         #fm6oa-screen .title-prayers h1::before, #fm6oa-screen .title-prayers h1::after,
+        #zakat-screen .title-prayers h1::before, #zakat-screen .title-prayers h1::after,
         #quran-player-modal .qp-main-title::before, #quran-player-modal .qp-main-title::after,
         #dua-khatm-screen .title-prayers h1::before, #dua-khatm-screen .title-prayers h1::after{
             content:""; flex:0 0 auto; width:55px; height:2px; border-radius:2px;
@@ -246,6 +247,7 @@
         #tajweed-rules-screen .title-prayers h1::after, #tilawah-adab-screen .title-prayers h1::after,
         #live-screen .title-prayers h1::after, #weather-screen .title-prayers h1::after,
         #fm6oa-screen .title-prayers h1::after, #quran-player-modal .qp-main-title::after,
+        #zakat-screen .title-prayers h1::after,
         #dua-khatm-screen .title-prayers h1::after{
             transform:scaleX(-1);
         }
@@ -680,7 +682,7 @@
         body.is-mobile #mushaf-screen h1,
         body.is-mobile #radiomaroc-screen h1,
         body.is-mobile #asma-screen h1,
-        body.is-mobile #khatma-read-screen h1{ font-size: 1.9rem !important; }
+        body.is-mobile #khatma-read-screen h1, #zakat-screen h1{ font-size: 1.9rem !important; }
         /* Android : ‹ الرئيسية / ‹ العودة → أيقونة SVG ثلاثية الأبعاد فقط (بلا نص) */
         body.is-mobile .back-btn,
         body.is-mobile .back-btn.glass-btn {
@@ -1531,6 +1533,62 @@
         .huj-dua.small{font-size:1rem;}
         .huj-shared-title{font-family:var(--font);font-weight:800;color:var(--gold);font-size:.95rem;border-bottom:2px solid rgba(212,175,55,.4);padding:2px 2px 8px;}
         .huj-badge{flex:none;margin-inline-start:auto;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px;border:1px solid;white-space:nowrap;}
+        /* ===== حاسبة الزكاة ===== */
+        .zakat-wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:12px;width:100%;padding:0 0 22px;}
+        .zakat-card{border:1px solid rgba(212,175,55,.3);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));padding:14px 14px;box-shadow:inset 0 1px 1px rgba(255,255,255,.07),0 4px 10px rgba(0,0,0,.3);}
+        .zakat-nisab{border:1px solid rgba(212,175,55,.5);background:linear-gradient(135deg,rgba(212,175,55,.18) 0%,rgba(212,175,55,.07) 45%,rgba(255,255,255,.02) 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.14),0 6px 16px rgba(0,0,0,.35);}
+        .zakat-nisab-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+        .zakat-nisab-item{border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:3px;}
+        .zakat-nisab-item.silver{background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -4px 8px rgba(0,0,0,.4);color:#fff;}
+        .zakat-nisab-item.gold{background:rgba(10,32,19,.65);border:1px solid rgba(212,175,55,.4);color:var(--text-main);}
+        .zakat-mark{font-size:.72rem;color:rgba(255,255,255,.75);font-weight:700;}
+        .zakat-nisab-item.gold .zakat-mark{color:var(--text-dim);}
+        .zakat-nisab-value{font-size:clamp(1.1rem,5vw,1.45rem);font-weight:800;line-height:1.25;font-variant-numeric:tabular-nums;color:#fff;margin-top:2px;}
+        .zakat-nisab-item.gold .zakat-nisab-value{color:#ffe9a8;}
+        .zakat-unit{font-size:.78rem;font-weight:600;margin-inline-start:6px;opacity:.85;}
+        .zakat-price{font-size:.74rem;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums;}
+        .zakat-nisab-item.gold .zakat-price{color:var(--text-dim);}
+        .zakat-price b{color:#ffee9e;font-weight:700;}
+        .zakat-nisab-item.gold .zakat-price b{color:var(--gold);}
+        .zakat-badge{margin-top:8px;align-self:flex-start;font-size:.66rem;font-weight:800;color:#9effc0;border:1px solid rgba(46,220,132,.4);border-radius:999px;padding:3px 10px;background:rgba(46,220,132,.08);}
+        .zakat-prices-date{margin:10px 2px 8px;font-size:.72rem;color:var(--text-dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+        .zakat-refresh-btn{background:none;border:1px solid rgba(212,175,55,.4);color:var(--gold-light);border-radius:999px;font-size:.68rem;padding:2px 10px;cursor:pointer;font-family:var(--font);}
+        .zakat-refresh-btn:hover{border-color:var(--gold);color:#ffee9e;}
+        .zakat-adjust-toggle{align-self:flex-start;}
+        .zakat-adjust{margin-top:10px;display:flex;flex-direction:column;gap:6px;border-top:1px dashed rgba(212,175,55,.3);padding-top:10px;}
+        .zakat-adjust[hidden]{display:none !important;}
+        .zakat-adjust label{font-size:.74rem;color:var(--text-dim);}
+        .zakat-adjust input{background:rgba(12,46,34,.7);color:#ffee9e;border:1px solid rgba(212,175,55,.35);border-radius:8px;padding:8px 10px;font-size:.95rem;outline:none;direction:ltr;text-align:left;max-width:220px;font-variant-numeric:tabular-nums;}
+        .zakat-apply-prices{align-self:flex-start;border-color:var(--gold);color:#ffee9e;}
+        .zakat-reset-prices{align-self:flex-start;border-color:rgba(255,255,255,.2);color:#fff;}
+        .zakat-label{display:block;font-size:.78rem;color:var(--text-dim);margin-bottom:6px;line-height:1.7;}
+        .zakat-label-inline{margin:0;}
+        .zakat-input{width:100%;background:rgba(12,46,34,.7);color:#ffee9e;border:1px solid rgba(212,175,55,.35);border-radius:12px;padding:12px 14px;font-size:1.05rem;outline:none;direction:ltr;text-align:left;font-variant-numeric:tabular-nums;transition:border-color .15s ease;}
+        .zakat-input:focus,.zakat-adjust input:focus{border-color:var(--gold);}
+        #zakatCurrency{direction:rtl;text-align:right;width:100%;font-size:.95rem;padding:10px 12px;color-scheme:dark;}
+        .zakat-tabs{display:flex;flex-wrap:wrap;gap:8px;}
+        .zakat-tabs .huj-tab{flex:1 1 auto;min-width:130px;max-width:none;font-size:.84rem;padding:10px 10px;}
+        .zakat-panel{display:flex;flex-direction:column;gap:10px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03);padding:12px;}
+        .zakat-panel[hidden]{display:none !important;}
+        .zakat-gold-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 14px;}
+        .zakat-field{display:flex;flex-direction:column;gap:6px;}
+        .zakat-note{font-size:.72rem;color:var(--text-dim);line-height:1.8;margin:2px 0 0;}
+        .zakat-result{border:1px solid rgba(212,175,55,.55);border-radius:16px;background:radial-gradient(150% 170% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 10px rgba(0,0,0,.45),0 8px 20px rgba(0,0,0,.45);padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+        .zakat-result-line{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.9rem;color:#e8f5ec;border-bottom:1px solid rgba(255,255,255,.09);padding-bottom:8px;}
+        .zakat-result-line b{font-variant-numeric:tabular-nums;color:#fff;font-size:.98rem;}
+        .zakat-result-line-nisab b{color:#ffe9a8;}
+        .zakat-result-line-due{border-bottom:none;padding-bottom:0;font-size:1.02rem;font-weight:800;color:#ffee9e;}
+        .zakat-result-line-due b{color:#ffee9e;font-size:1.28rem;text-shadow:0 1px 3px rgba(0,0,0,.6);}
+        .zakat-result-status{text-align:center;font-size:.82rem;font-weight:700;color:#d9f2e0;border-top:1px dashed rgba(255,255,255,.25);padding-top:10px;line-height:1.9;min-height:1.2em;}
+        .zakat-result-status.due{color:#9effc0;}
+        .zakat-result-status.under{color:#ffd9a0;}
+        .zakat-info-card{border:1px solid rgba(212,175,55,.22);border-radius:14px;background:rgba(255,255,255,.03);padding:12px 14px;}
+        .zakat-h3{font-family:var(--font);color:var(--gold);font-size:.95rem;margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid rgba(212,175,55,.3);}
+        .zakat-ol{margin:0;padding-inline-start:20px;color:#efe9dc;font-size:.86rem;line-height:1.95;}
+        .zakat-ol li{margin:3px 0;}
+        .zakat-foot{font-size:.72rem;color:var(--text-dim);text-align:center;line-height:1.9;padding:2px 8px;}
+        @media (max-width:640px){ .zakat-nisab-grid{grid-template-columns:1fr;} .zakat-gold-grid{grid-template-columns:1fr;} .zakat-tabs .huj-tab{min-width:calc(50% - 8px);} .zakat-result-line-due{flex-direction:column;align-items:flex-start;gap:2px;} }
+        body.is-mobile #zakat-screen .zakat-wrap{padding:0 2px 18px;}
         /* أكورديون — يُعرض العناوين فقط؛ النقر يعرض تفاصيل العنصر ويُغلق الباقي (Android وWindows) */
         #hajj-umrah-screen .huj-head{cursor:pointer;user-select:none;}
         #hajj-umrah-screen .huj-head:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;}
@@ -2814,6 +2872,33 @@
                                     <span class="app-name" data-i18n="card_mosques">المساجد القريبة منك</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-inheritance"><img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" alt="حساب المواريث"><span class="app-name" data-i18n="card_inheritance">حساب المواريث</span></div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-zakat" title="نصاب اليوم بعملتك وحسم الديون">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="حاسبة الزكاة">
+                                        <defs>
+                                            <radialGradient id="zkBg" cx="0.35" cy="0.3" r="1">
+                                                <stop offset="0" stop-color="#2ea36b"/><stop offset="0.45" stop-color="#14663f"/><stop offset="1" stop-color="#041f12"/>
+                                            </radialGradient>
+                                            <radialGradient id="zkCoin" cx="0.38" cy="0.32" r="0.95">
+                                                <stop offset="0" stop-color="#fff6b8"/><stop offset="0.4" stop-color="#e8c558"/><stop offset="0.78" stop-color="#c49a33"/><stop offset="1" stop-color="#8a6517"/>
+                                            </radialGradient>
+                                            <radialGradient id="zkCoinSmall" cx="0.4" cy="0.35" r="0.95">
+                                                <stop offset="0" stop-color="#f7e394"/><stop offset="0.7" stop-color="#caa23c"/><stop offset="1" stop-color="#7d5a14"/>
+                                            </radialGradient>
+                                        </defs>
+                                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#zkBg)"/>
+                                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.3"/>
+                                        <ellipse cx="32" cy="53" rx="16" ry="3.6" fill="#000" opacity=".25"/>
+                                        <circle cx="46" cy="18.5" r="9" fill="url(#zkCoinSmall)"/>
+                                        <circle cx="46" cy="18.5" r="6.3" fill="none" stroke="#8a6517" stroke-width="1.3" opacity=".85"/>
+                                        <circle cx="28" cy="34" r="16" fill="url(#zkCoin)"/>
+                                        <circle cx="28" cy="34" r="12" fill="none" stroke="#8a6517" stroke-width="1.6" opacity=".9"/>
+                                        <path d="M22.5 24.5 A13 13 0 0 1 38.5 23.5" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" opacity=".85"/>
+                                        <text x="28" y="40.5" text-anchor="middle" font-family="Amiri, 'Noto Naskh Arabic', serif" font-weight="700" font-size="16.5" fill="#5d430c">ز</text>
+                                        <path d="M51 34 l1.4 3.1 3.1 1.4 -3.1 1.4 -1.4 3.1 -1.4 -3.1 -3.1 -1.4 3.1 -1.4 z" fill="#ffee9e" opacity=".95"/>
+                                        <path d="M14 14 l1.1 2.4 2.4 1.1 -2.4 1.1 -1.1 2.4 -1.1 -2.4 -2.4 -1.1 2.4 -1.1 z" fill="#ffee9e" opacity=".8"/>
+                                    </svg>
+                                    <span class="app-name" data-i18n="card_zakat">حاسبة الزكاة</span>
+                                </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-sihatar" title="دليل الخدمات الصحية">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="صحتي">
                                         <defs>
@@ -4356,6 +4441,149 @@
                 </div>
             </div>
 
+            <!-- ZAKAT (حاسبة الزكاة) SCREEN -->
+            <div id="zakat-screen" style="display:none; flex-direction:column; height:100%; width:100%; gap:10px; overflow:auto; padding:10px;">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-zakat">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">حاسبة الزكاة</h1>
+                        <p>نصاب اليوم بعملتك، ووزن الذهب وعياره، وحسم الديون — جواب واحد واضح</p>
+                    </div>
+                    <div class="isl-header-spacer" style="width:80px;"></div>
+                </header>
+                <div class="zakat-wrap">
+                    <!-- currency selector -->
+                    <div class="zakat-card">
+                        <label class="zakat-label" for="zakatCurrency">العملة</label>
+                        <select class="setting-select setting-full" id="zakatCurrency"></select>
+                    </div>
+                    <!-- nisab section -->
+                    <div class="zakat-card zakat-nisab">
+                        <div class="zakat-nisab-grid">
+                            <div class="zakat-nisab-item silver">
+                                <div class="zakat-mark">نصاب الفضة · 595 غرامًا</div>
+                                <div class="zakat-nisab-value"><span id="zakatNisabSilver">0</span><span class="zakat-unit" id="zakatCurrencyName">ر.س</span></div>
+                                <div class="zakat-price">الغرام <b id="zakatSilverPrice">0</b> <span id="zakatSilverUnit">ر.س</span></div>
+                                <div class="zakat-badge">المعتمد في النتيجة — الأحوط والأدنى</div>
+                            </div>
+                            <div class="zakat-nisab-item gold">
+                                <div class="zakat-mark">نصاب الذهب · 85 غرامًا</div>
+                                <div class="zakat-nisab-value"><span id="zakatNisabGold">0</span><span class="zakat-unit" id="zakatCurrencyName2">ر.س</span></div>
+                                <div class="zakat-price">الغرام <b id="zakatGoldPrice">0</b> <span id="zakatGoldUnit">ر.س</span></div>
+                            </div>
+                        </div>
+                        <p class="zakat-prices-date" id="zakatPricesDate"></p>
+                        <button type="button" class="file-btn zakat-adjust-toggle" id="zakatToggleAdjust">⚙ تعديل الأسعار</button>
+                        <div class="zakat-adjust" id="zakatAdjustPanel" hidden>
+                            <label>سعر الغرام الذهب (عيار 24) — بالعملة الحالية</label>
+                            <input type="number" id="zakatGoldInput" step="0.01" min="0">
+                            <label>سعر الغرام الفضة — بالعملة الحالية</label>
+                            <input type="number" id="zakatSilverInput" step="0.01" min="0">
+                            <button type="button" class="file-btn zakat-apply-prices" id="zakatSavePrices">تطبيق الأسعار</button>
+                            <button type="button" class="file-btn zakat-reset-prices" id="zakatResetPrices" style="display:none;">↩ استرجاع أسعار اليوم</button>
+                            <p class="zakat-note">الأسعار تحسب تلقائيًا من gold-api.com وتُحدَّث كل 12 ساعة. يمكنك إدخال سعر صائغك المحلي بدلًا منه.</p>
+                        </div>
+                    </div>
+                    <!-- assets tabs -->
+                    <div class="zakat-tabs" id="zakatTabs">
+                        <button type="button" class="huj-tab active" data-zakat-tab="cash">النقد والحسابات</button>
+                        <button type="button" class="huj-tab" data-zakat-tab="gold">الذهب والفضة</button>
+                        <button type="button" class="huj-tab" data-zakat-tab="stocks">الأسهم والاستثمارات</button>
+                        <button type="button" class="huj-tab" data-zakat-tab="trade">عروض التجارة</button>
+                        <button type="button" class="huj-tab" data-zakat-tab="loans">ديون لك عند الناس</button>
+                        <button type="button" class="huj-tab" data-zakat-tab="debts">ديون عليك (تُحسم)</button>
+                    </div>
+                    <div class="zakat-panel" id="zakat-panel-cash">
+                        <label class="zakat-label" for="zakatCash">النقد في يدك + الأرصدة البنكية (كل أشكال النقدية)</label>
+                        <input type="number" id="zakatCash" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="zakat-panel" id="zakat-panel-gold" hidden>
+                        <div class="zakat-gold-grid">
+                            <div class="zakat-field">
+                                <label class="zakat-label zakat-label-inline" for="zakatGold24">ذهب 24 عيار (غ)</label>
+                                <input type="number" id="zakatGold24" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                            </div>
+                            <div class="zakat-field">
+                                <label class="zakat-label zakat-label-inline" for="zakatGold22">ذهب 22 عيار (غ)</label>
+                                <input type="number" id="zakatGold22" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                            </div>
+                            <div class="zakat-field">
+                                <label class="zakat-label zakat-label-inline" for="zakatGold21">ذهب 21 عيار (غ)</label>
+                                <input type="number" id="zakatGold21" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                            </div>
+                            <div class="zakat-field">
+                                <label class="zakat-label zakat-label-inline" for="zakatGold18">ذهب 18 عيار (غ)</label>
+                                <input type="number" id="zakatGold18" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                            </div>
+                            <div class="zakat-field">
+                                <label class="zakat-label zakat-label-inline" for="zakatSilver">فضة (غ)</label>
+                                <input type="number" id="zakatSilver" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="zakat-panel" id="zakat-panel-stocks" hidden>
+                        <label class="zakat-label" for="zakatStocks">قيمة الأسهم المملوكة والصناديق والعملات الرقمية والاستثمارات التي تُتاجر فيها</label>
+                        <input type="number" id="zakatStocks" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="zakat-panel" id="zakat-panel-trade" hidden>
+                        <label class="zakat-label" for="zakatTrade">قيمة بضاعة التجارة (بسعر البيع) — نقد المتجر + ما له عند العملاء</label>
+                        <input type="number" id="zakatTrade" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="zakat-panel" id="zakat-panel-loans" hidden>
+                        <label class="zakat-label" for="zakatLoans">الديون التي تُرجى من أدائها (القروض الحسنة التي أعطيتها)</label>
+                        <input type="number" id="zakatLoans" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="zakat-panel" id="zakat-panel-debts" hidden>
+                        <label class="zakat-label" for="zakatDebts">الديون التي عليك + أقساط التمويل القادمة في السنة الحوالية</label>
+                        <input type="number" id="zakatDebts" class="zakat-input" inputmode="decimal" placeholder="0" min="0" step="0.01">
+                        <p class="zakat-note">الشافعية لا تحسم الديون؛ فإن كنت على مذهبهم أبقِها فارغة. أكثر الهيئات المعاصرة تحسم أقساط السنة القادمة لا كامل الرصيد.</p>
+                    </div>
+                    <!-- result -->
+                    <div class="zakat-result">
+                        <div class="zakat-result-line">
+                            <span>المجموع الزكوي</span>
+                            <b><span id="zakatTotal">0</span> <span id="zakatCurrencySymbol">ر.س</span></b>
+                        </div>
+                        <div class="zakat-result-line zakat-result-line-nisab">
+                            <span>النصاب (الفضة — الأدنى والأحوط)</span>
+                            <b><span id="zakatNisabUsed">0</span> <span id="zakatCurrencySymbol2">ر.س</span></b>
+                        </div>
+                        <div class="zakat-result-line zakat-result-line-due">
+                            <span>الزكاة الواجبة 2.5%</span>
+                            <b><span id="zakatDue">0</span> <span id="zakatCurrencySymbol3">ر.س</span></b>
+                        </div>
+                        <div class="zakat-result-status" id="zakatStatus"></div>
+                    </div>
+                    <!-- how to compute -->
+                    <div class="zakat-info-card">
+                        <h3 class="zakat-h3">كيف تُحسب الزكاة</h3>
+                        <ol class="zakat-ol">
+                            <li>اجمع ما تملكه مما تجب فيه الزكاة: النقد والأرصدة البنكية، والذهب والفضة، والأسهم والاستثمارات، وبضاعة التجارة، والديون التي ترجو أداءها.</li>
+                            <li>احسم الديون التي عليك، وأكثر الهيئات تحسم ما يحلّ منها خلال السنة القادمة.</li>
+                            <li>قارن الباقي بنصاب اليوم، فإن كان دونه فلا زكاة عليك.</li>
+                            <li>فإن بلغه أو جاوزه فزكاتك 2.5% من المبلغ كله، لا مما زاد على النصاب فقط.</li>
+                        </ol>
+                    </div>
+                    <!-- recips -->
+                    <div class="zakat-info-card">
+                        <h3 class="zakat-h3">مصارف الزكاة الثمانية</h3>
+                        <ol class="zakat-ol">
+                            <li>الفقراء: من لا يجدون كفايتهم.</li>
+                            <li>المساكين: أهل الحاجة كذلك، وفي أيّ الصنفين أشد حاجة خلافٌ بين الفقهاء.</li>
+                            <li>العاملون عليها: من يتولّون جمعها وتفريقها.</li>
+                            <li>المؤلفة قلوبهم: من يُراد استمالتهم إلى الإسلام أو تثبيتهم عليه.</li>
+                            <li>في الرقاب: إعانة الرقيق على العتق.</li>
+                            <li>الغارمون: المدينون العاجزون عن وفاء ديونهم.</li>
+                            <li>في سبيل الله: الغزاة المتطوعون في أصل معناه عند الفقهاء.</li>
+                            <li>ابن السبيل: المسافر المنقطع عن بلده وماله.</li>
+                        </ol>
+                    </div>
+                    <div class="zakat-foot">
+                        تأخذ هذه الحاسبة بما تشترك فيه الهيئات الكبرى في حساب الزكاة، وتسمّي خلاف المذاهب حيث يؤثّر في الرقم. وهي أداة تقدير لا فتوى.
+                    </div>
+                </div>
+            </div>
+
             <!-- ASMA ALLAH SCREEN -->
             <div id="asma-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:15px;">
                 <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
@@ -4577,7 +4805,7 @@
                 sec_islamiyat:'إسلاميات', sec_radios:'إذاعات وبث مباشر', sec_services:'خدمات',
                 card_quran:'القرآن الكريم', card_adhkar:'حِصْنُ الْمُسْلِم', card_tasbih:'المسبحة الإلكترونية', card_asma:'أسماء الله الحسنى', card_wird:'ورد القرآن اليومي',
                 card_radioMaroc:'إذاعات مغربية', card_live:'بث مباشر', card_quranRadio:'📻 إذاعات القرآن', card_fm6oa:'مواقيت الصلاة',
-                card_mosques:'المساجد القريبة منك', card_inheritance:'حساب المواريث', card_sihatar:'صحتي',
+                card_mosques:'المساجد القريبة منك', card_inheritance:'حساب المواريث', card_sihatar:'صحتي', card_zakat:'حاسبة الزكاة',
                 set_nav_prayer:'مواقيت الصلاة', set_nav_adhan:'التنبيهات والأذان', set_nav_display:'العرض واللغة', set_nav_about:'حول التطبيق',
                 set_clock:'الساعة', hour_suffix:'س', set_seconds:'إظهار الثواني',
                 set_gmt:'المنطقة الزمنية (GMT)', gmt_auto:'تلقائي (توقيت الجهاز)', gmt_ma:'توقيت المغرب الرسمي',
@@ -4594,7 +4822,7 @@
                 sec_islamiyat:'Islam', sec_radios:'Radios & Direct', sec_services:'Services',
                 card_quran:'Coran', card_adhkar:'Hisn al-Muslim', card_tasbih:'Tasbih numérique', card_asma:'Les 99 Noms d’Allah', card_wird:'Wird quotidien',
                 card_radioMaroc:'Radios marocaines', card_live:'Direct', card_quranRadio:'📻 Radios du Coran', card_fm6oa:'Horaires de prière',
-                card_mosques:'Mosquées près de vous', card_inheritance:'Héritages', card_sihatar:'Ma santé',
+                card_mosques:'Mosquées près de vous', card_inheritance:'Héritages', card_sihatar:'Ma santé', card_zakat:'Calculateur de Zakat',
                 set_nav_prayer:'Horaires de prière', set_nav_adhan:'Rappels & Adhan', set_nav_display:'Affichage & langue', set_nav_about:'À propos',
                 set_clock:'Heure', hour_suffix:'h', set_seconds:'Afficher les secondes',
                 set_gmt:'Fuseau horaire (GMT)', gmt_auto:'Automatique (heure de l’appareil)', gmt_ma:'Heure officielle du Maroc',
@@ -6177,6 +6405,201 @@ var gender = 'male';
         }
         document.getElementById('card-inheritance').onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); renderInheritance(); showScreen(inheritanceScreen); window.scrollTo(0,0); };
         document.getElementById('btn-back-from-inheritance').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
+
+        // ==================================================
+        // حاسبة الزكاة — نصاب اليوم بعملتك، أسعار حية (gold-api.com) مع احتياط محلي
+        // ==================================================
+        var zakatScreen = document.getElementById('zakat-screen');
+        var ZAKAT_CURRENCIES = [
+            {code:'SAR',name:'ريال سعودي',symbol:'ر.س',decimals:2},{code:'AED',name:'درهم إماراتي',symbol:'د.إ',decimals:2},{code:'QAR',name:'ريال قطري',symbol:'ر.ق',decimals:2},
+            {code:'KWD',name:'دينار كويتي',symbol:'د.ك',decimals:3},{code:'BHD',name:'دينار بحريني',symbol:'د.ب',decimals:3},{code:'OMR',name:'ريال عماني',symbol:'ر.ع',decimals:3},
+            {code:'EGP',name:'جنيه مصري',symbol:'ج.م',decimals:0},{code:'JOD',name:'دينار أردني',symbol:'د.أ',decimals:3},{code:'MAD',name:'درهم مغربي',symbol:'د.م',decimals:2},
+            {code:'DZD',name:'دينار جزائري',symbol:'د.ج',decimals:0},{code:'TND',name:'دينار تونسي',symbol:'د.ت',decimals:3},{code:'LYD',name:'دينار ليبي',symbol:'د.ل',decimals:3},
+            {code:'IQD',name:'دينار عراقي',symbol:'د.ع',decimals:0},{code:'SDG',name:'جنيه سوداني',symbol:'ج.س',decimals:0},{code:'YER',name:'ريال يمني',symbol:'ر.ي',decimals:0},
+            {code:'SYP',name:'ليرة سورية',symbol:'ل.س',decimals:0},{code:'LBP',name:'ليرة لبنانية',symbol:'ل.ل',decimals:0},{code:'USD',name:'دولار أمريكي',symbol:'دولار',decimals:2},
+            {code:'EUR',name:'يورو',symbol:'يورو',decimals:2},{code:'GBP',name:'جنيه إسترليني',symbol:'جنيه إسترليني',decimals:2},{code:'TRY',name:'ليرة تركية',symbol:'ليرة تركية',decimals:2},
+            {code:'CAD',name:'دولار كندي',symbol:'دولار كندي',decimals:2},{code:'AUD',name:'دولار أسترالي',symbol:'دولار أسترالي',decimals:2},{code:'CHF',name:'فرنك سويسري',symbol:'فرنك',decimals:2},
+            {code:'SEK',name:'كرونة سويدية',symbol:'كرونة',decimals:0},{code:'NOK',name:'كرونة نرويجية',symbol:'كرونة',decimals:0},{code:'DKK',name:'كرونة دنماركية',symbol:'كرونة',decimals:0},
+            {code:'SGD',name:'دولار سنغافوري',symbol:'دولار سنغافوري',decimals:2},{code:'MYR',name:'رينغيت ماليزي',symbol:'رينغيت',decimals:2},{code:'IDR',name:'روبية إندونيسية',symbol:'روبية',decimals:0},
+            {code:'PKR',name:'روبية باكستانية',symbol:'روبية',decimals:0},{code:'INR',name:'روبية هندية',symbol:'روبية',decimals:0},{code:'BDT',name:'تاكا بنغلاديشية',symbol:'تاكا',decimals:0},
+            {code:'ZAR',name:'راند جنوب أفريقي',symbol:'راند',decimals:2},{code:'NGN',name:'نايرا نيجيرية',symbol:'نايرا',decimals:0}
+        ];
+        var ZAKAT_FALLBACK = { xau: 3887.60, xag: 48.65, date: '15 نوفمبر 2026',
+            rates: {SAR:3.75,AED:3.6725,QAR:3.64,KWD:0.31116,BHD:0.376,OMR:0.384497,EGP:53.439277,JOD:0.709,MAD:9.882546,DZD:136.792539,TND:3.018899,LYD:6.427677,IQD:1515.052653,SDG:498.093029,YER:236.746097,SYP:121.955344,LBP:89500,USD:1,EUR:0.905984,GBP:0.756391,TRY:50.381173,CAD:1.425922,AUD:1.474704,CHF:0.838392,SEK:10.068923,NOK:9.568086,DKK:6.767105,SGD:1.28751,MYR:4.085788,IDR:18229.363747,PKR:276.662404,INR:94.262076,BDT:124.601359,ZAR:16.919798,NGN:1352.072165} };
+        var ZAKAT_OZ = 31.1034768;
+        var ZAKAT_KARAT = { '24': 0.999, '22': 0.916, '21': 0.875, '18': 0.75 };
+        var ZAKAT_GOLD_NISAB_G = 85, ZAKAT_SILVER_NISAB_G = 595, ZAKAT_RATE = 0.025, ZAKAT_CACHE_TTL = 12 * 3600 * 1000;
+        var zakatState = { currency: 'SAR', gold: 0, silver: 0, pricesDate: '', source: 'daily', manual: false };
+        var zakatFetching = false;
+
+        function zakatCur(code) { for (var i = 0; i < ZAKAT_CURRENCIES.length; i++) { if (ZAKAT_CURRENCIES[i].code === code) return ZAKAT_CURRENCIES[i]; } return ZAKAT_CURRENCIES[0]; }
+        function zakatParseNum(v) {
+            if (v == null) return 0;
+            var s = String(v).replace(/[٠-٩]/g, function (d) { return String(d.charCodeAt(0) - 1632); }).replace(/[۰-۹]/g, function (d) { return String(d.charCodeAt(0) - 1776); });
+            s = s.replace(/٬/g, '').replace(/,/g, '').replace(/٫/g, '.').replace(/[^\d.\-]/g, '');
+            var n = parseFloat(s); return (isFinite(n) && n > 0) ? n : 0;
+        }
+        function zakatFmt(n, dec) { if (!isFinite(n)) n = 0; dec = (dec == null ? 2 : dec); return n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }); }
+        function zakatFmtInt(n) { return zakatFmt(n, 0); }
+        function zakatCacheGet() { try { var c = JSON.parse(localStorage.getItem('zakat-cache-v1') || 'null'); if (c && typeof c.t === 'number' && (Date.now() - c.t) < ZAKAT_CACHE_TTL && isFinite(c.xau) && isFinite(c.xag) && c.rates) return c; } catch (e) {} return null; }
+        function zakatCacheSet(xau, xag, rates) { try { localStorage.setItem('zakat-cache-v1', JSON.stringify({ t: Date.now(), xau: xau, xag: xag, rates: rates, date: new Intl.DateTimeFormat('ar', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date()) })); } catch (e) {} }
+        function zakatManualGet() { try { return JSON.parse(localStorage.getItem('zakat-prices') || 'null'); } catch (e) { return null; } }
+        function zakatManualSet(obj) { try { localStorage.setItem('zakat-prices', JSON.stringify(obj)); } catch (e) {} }
+        function zakatManualClear() { try { localStorage.removeItem('zakat-prices'); } catch (e) {} }
+        function zakatCurrentRates() {
+            var cache = zakatCacheGet();
+            if (cache) return { xau: cache.xau, xag: cache.xag, rates: cache.rates, date: cache.date || '', source: 'live', fxFallback: !!cache.fxFallback };
+            return { xau: ZAKAT_FALLBACK.xau, xag: ZAKAT_FALLBACK.xag, rates: ZAKAT_FALLBACK.rates, date: ZAKAT_FALLBACK.date, source: 'fallback', fxFallback: true };
+        }
+        async function zakatRefreshLive(force) {
+            if (zakatFetching) return;
+            var cache0 = zakatCacheGet();
+            if (cache0 && !force) return;
+            zakatFetching = true;
+            var ctrl = new AbortController(); var to = setTimeout(function () { ctrl.abort(); }, 9000);
+            var goldP = null, silverP = null, ratesObj = null;
+            try {
+                var r1 = await fetch('https://api.gold-api.com/price/XAU', { signal: ctrl.signal });
+                if (r1.ok) { var j1 = await r1.json(); if (isFinite(j1 && j1.price)) goldP = j1.price; }
+            } catch (e) { /* المعدن: الاحتياط */ }
+            try {
+                var r2 = await fetch('https://api.gold-api.com/price/XAG', { signal: ctrl.signal });
+                if (r2.ok) { var j2 = await r2.json(); if (isFinite(j2 && j2.price)) silverP = j2.price; }
+            } catch (e) { /* المعدن: الاحتياط */ }
+            try {
+                var r3 = await fetch('https://open.er-api.com/v6/latest/USD', { signal: ctrl.signal });
+                if (r3.ok) {
+                    var j3 = await r3.json();
+                    if (j3 && j3.rates) {
+                        var rates = {}; ZAKAT_CURRENCIES.forEach(function (c) { if (isFinite(j3.rates[c.code])) rates[c.code] = j3.rates[c.code]; });
+                        if (Object.keys(rates).length) ratesObj = rates;
+                    }
+                }
+            } catch (e) { /* الصرف: الجدول الاحتياطي */ }
+            clearTimeout(to);
+            if (goldP != null && silverP != null) {
+                var finalRates = ratesObj || ZAKAT_FALLBACK.rates;
+                var dateStr = new Intl.DateTimeFormat('ar', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+                zakatCacheSet(goldP, silverP, finalRates);
+                try { localStorage.setItem('zakat-cache-v1', JSON.stringify({ t: Date.now(), xau: goldP, xag: silverP, rates: finalRates, date: dateStr, fxFallback: !ratesObj })); } catch (e) {}
+                zakatApplyPrices();
+            }
+            zakatFetching = false;
+            zakatRenderPricesDate();
+        }
+        function zakatApplyPrices() {
+            var cur = zakatState.currency, info = zakatCur(cur);
+            var manual = zakatManualGet();
+            if (manual && manual.cur === cur && isFinite(manual.gold) && isFinite(manual.silver)) {
+                zakatState.gold = manual.gold; zakatState.silver = manual.silver; zakatState.manual = true; zakatState.pricesDate = 'أسعار يدوية (سعر صائغك المحلي)'; zakatState.source = 'manual';
+            } else {
+                var fx = zakatCurrentRates();
+                var rate = (fx.rates && isFinite(fx.rates[cur])) ? fx.rates[cur] : fx.rates.USD;
+                zakatState.gold = (fx.xau / ZAKAT_OZ) * rate;
+                zakatState.silver = (fx.xag / ZAKAT_OZ) * rate;
+                zakatState.manual = false;
+                var liveNote = fx.source === 'live' ? ('أسعار السوق ليوم ' + (fx.date || '') + (fx.fxFallback ? ' (الصرف احتياطي)' : '')) : ('سعر احتياطي ليوم ' + (fx.date || '') + ' — ستُحدّث عند توفر الإنترنت');
+                zakatState.pricesDate = liveNote;
+                zakatState.source = fx.source;
+            }
+            zakatRenderPrices();
+        }
+        function zakatRenderPrices() {
+            var info = zakatCur(zakatState.currency);
+            var sym = info.symbol;
+            document.getElementById('zakatNisabSilver').textContent = zakatFmt(ZAKAT_SILVER_NISAB_G * zakatState.silver, info.decimals);
+            document.getElementById('zakatNisabGold').textContent = zakatFmt(ZAKAT_GOLD_NISAB_G * zakatState.gold, info.decimals);
+            document.getElementById('zakatSilverPrice').textContent = zakatFmt(zakatState.silver, 2);
+            document.getElementById('zakatGoldPrice').textContent = zakatFmt(zakatState.gold, 2);
+            ['zakatSilverUnit','zakatGoldUnit','zakatCurrencyName','zakatCurrencyName2','zakatCurrencySymbol','zakatCurrencySymbol2','zakatCurrencySymbol3'].forEach(function (id) { var el = document.getElementById(id); if (el) el.textContent = sym; });
+            zakatRenderPricesDate();
+            var resetBtn = document.getElementById('zakatResetPrices'); if (resetBtn) resetBtn.style.display = zakatState.manual ? 'inline-flex' : 'none';
+            zakatCompute();
+        }
+        function zakatRenderPricesDate() {
+            var el = document.getElementById('zakatPricesDate'); if (!el) return;
+            el.innerHTML = '';
+            var span = document.createElement('span'); span.textContent = zakatState.pricesDate ? (zakatState.pricesDate + ' · ') : '';
+            var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'zakat-refresh-btn'; btn.textContent = '🔄 تحديث';
+            btn.addEventListener('click', function () { zakatState.source = 'refreshing'; btn.textContent = '… جارٍ التحديث'; zakatRefreshLive(true).then(function () { zakatApplyPrices(); }); });
+            el.appendChild(span); el.appendChild(btn);
+        }
+        function zakatCompute() {
+            var info = zakatCur(zakatState.currency);
+            var pf = function (id) { var el = document.getElementById(id); return el ? zakatParseNum(el.value) : 0; };
+            var g24 = pf('zakatGold24'), g22 = pf('zakatGold22'), g21 = pf('zakatGold21'), g18 = pf('zakatGold18');
+            var goldVal = (g24 * ZAKAT_KARAT['24'] + g22 * ZAKAT_KARAT['22'] + g21 * ZAKAT_KARAT['21'] + g18 * ZAKAT_KARAT['18']) * zakatState.gold;
+            var silverVal = pf('zakatSilver') * zakatState.silver;
+            var cash = pf('zakatCash'), stocks = pf('zakatStocks'), trade = pf('zakatTrade'), loans = pf('zakatLoans'), debts = pf('zakatDebts');
+            var metals = goldVal + silverVal;
+            var assets = cash + metals + stocks + trade + loans;
+            var net = Math.max(0, assets - debts);
+            var nisabSilver = ZAKAT_SILVER_NISAB_G * zakatState.silver;
+            var nisabGold = ZAKAT_GOLD_NISAB_G * zakatState.gold;
+            var touched = assets > 0 || debts > 0;
+            var due = (net >= nisabSilver) ? net * ZAKAT_RATE : 0;
+            document.getElementById('zakatTotal').textContent = zakatFmt(net, info.decimals);
+            document.getElementById('zakatNisabUsed').textContent = zakatFmt(nisabSilver, info.decimals);
+            document.getElementById('zakatDue').textContent = zakatFmt(due, info.decimals);
+            var statusEl = document.getElementById('zakatStatus');
+            statusEl.classList.remove('due', 'under');
+            if (!touched) { statusEl.textContent = 'أدخل أرقامك أعلاه وتظهر زكاتك هنا.'; }
+            else if (net >= Math.max(nisabGold, nisabSilver)) { statusEl.textContent = '✓ بلغ مالك النصاب بالذهب والفضة — الزكاة واجبة: ربع العشر 2.5% من المبلغ كله.'; statusEl.classList.add('due'); }
+            else if (net >= nisabSilver) { statusEl.textContent = '✓ بلغ مالك نصاب الفضة (الأدنى والأحوط) — تجب الزكاة عنده وإن قلّ عن نصاب الذهب.'; statusEl.classList.add('due'); }
+            else { statusEl.textContent = 'لم يبلغ مالك نصاب الفضة — لا زكاة عليك هذه السنة.'; statusEl.classList.add('under'); }
+        }
+        function initZakat() {
+            try { var saved = localStorage.getItem('zakat-currency'); if (saved && zakatCur(saved)) zakatState.currency = saved; } catch (e) {}
+            var sel = document.getElementById('zakatCurrency');
+            if (sel && !sel.options.length) {
+                ZAKAT_CURRENCIES.forEach(function (c) { var o = document.createElement('option'); o.value = c.code; o.textContent = c.name + ' (' + c.code + ')'; sel.appendChild(o); });
+            }
+            if (sel) sel.value = zakatState.currency;
+            sel.addEventListener('change', function () { zakatState.currency = this.value; try { localStorage.setItem('zakat-currency', this.value); } catch (e) {} zakatApplyPrices(); });
+            // حقول الإدخال → إعادة الحساب
+            ['zakatCash','zakatGold24','zakatGold22','zakatGold21','zakatGold18','zakatSilver','zakatStocks','zakatTrade','zakatLoans','zakatDebts'].forEach(function (id) {
+                var el = document.getElementById(id); if (el) el.addEventListener('input', zakatCompute);
+            });
+            // التبويبات
+            document.querySelectorAll('#zakatTabs [data-zakat-tab]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var target = btn.getAttribute('data-zakat-tab');
+                    document.querySelectorAll('#zakatTabs [data-zakat-tab]').forEach(function (b) { b.classList.toggle('active', b === btn); });
+                    ['cash','gold','stocks','trade','loans','debts'].forEach(function (name) {
+                        var p = document.getElementById('zakat-panel-' + name); if (p) p.hidden = (name !== target);
+                    });
+                });
+            });
+            // لوحة تعديل الأسعار
+            var toggleBtn = document.getElementById('zakatToggleAdjust'), panel = document.getElementById('zakatAdjustPanel');
+            toggleBtn.addEventListener('click', function () {
+                panel.hidden = !panel.hidden;
+                if (!panel.hidden) {
+                    var gi = document.getElementById('zakatGoldInput'), si = document.getElementById('zakatSilverInput');
+                    if (gi) gi.value = zakatState.gold.toFixed(2);
+                    if (si) si.value = zakatState.silver.toFixed(2);
+                }
+            });
+            document.getElementById('zakatSavePrices').addEventListener('click', function () {
+                var gi = document.getElementById('zakatGoldInput'), si = document.getElementById('zakatSilverInput');
+                var g = zakatParseNum(gi.value), s = zakatParseNum(si.value);
+                if (!g || !s) { gi.style.borderColor = !g ? 'var(--danger,#e35b5b)' : gi.style.borderColor; si.style.borderColor = !s ? 'var(--danger,#e35b5b)' : si.style.borderColor; return; }
+                zakatManualSet({ cur: zakatState.currency, gold: g, silver: s, t: Date.now() });
+                zakatApplyPrices();
+                panel.hidden = true;
+            });
+            document.getElementById('zakatResetPrices').addEventListener('click', function () {
+                zakatManualClear();
+                zakatApplyPrices();
+                zakatRefreshLive(true);
+            });
+            // الأسعار: اعرض الاحتياطي فورًا ثم حدّث في الخلفية
+            zakatApplyPrices();
+            zakatRefreshLive(false);
+        }
+        document.getElementById('card-zakat').onclick = function () { if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio(); if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer(); showScreen(zakatScreen); window.scrollTo(0, 0); try { zakatRefreshLive(false); } catch (e) {} };
+        document.getElementById('btn-back-from-zakat').onclick = function () { showScreen(homeScreen); navHome.classList.add('active'); };
+        initZakat();
         document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); try { if (typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) { console.warn('renderAsma', e); } setTimeout(function(){ try { var g = document.getElementById('asma-grid'); if (g && !g.children.length && typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) {} }, 120); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
@@ -10230,7 +10653,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-khatma-read' || card.id === 'card-hajj-umrah' || card.id === 'card-inheritance' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-khatma-read' || card.id === 'card-hajj-umrah' || card.id === 'card-inheritance' || card.id === 'card-zakat' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
