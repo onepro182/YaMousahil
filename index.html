@@ -7019,15 +7019,29 @@ var gender = 'male';
             rateLine.textContent = '1 ' + from + ' = ' + fxFormatRate(ratio) + ' ' + to;
             updEl.textContent = fxState.live ? ('أسعار السوق ليوم ' + fxState.date + ' · تتحدث كل 24 ساعة') : ('أسعار محفوظة ليوم ' + fxState.date + ' — اضغط 🔄 للتحديث');
         }
+        // تحت Android: نعرض فقط العملات الشائعة (مجموعة « Popular » من ودجت currencyrate.today) مع MAD أولًا ثم EUR/USD
+        var FX_POPULAR = ['MAD','EUR','USD','SAR','AED','BTC','ETH','GBP','AUD','CAD','CHF','CNY','JPY','NZD','SGD','HKD','NOK','PLN','INR','THB','KRW','MXN','NGN','BRL','RUB','UAH','PKR','CLP','BGN'];
+        function fxVisibleCurrencies() {
+            if (!document.body.classList.contains('is-mobile') && window.innerWidth > 900) return FX_CURRENCIES;
+            var out = [];
+            FX_POPULAR.forEach(function (code) {
+                var found = null;
+                for (var k = 0; k < FX_CURRENCIES.length; k++) { if (FX_CURRENCIES[k].c === code) { found = FX_CURRENCIES[k]; break; } }
+                if (found) out.push(found);
+            });
+            return out;
+        }
         function initFx() {
             var selFrom = document.getElementById('fxFrom'), selTo = document.getElementById('fxTo');
+            var visible = fxVisibleCurrencies();
             if (!selFrom.options.length) {
-                FX_CURRENCIES.forEach(function (c) { var o = document.createElement('option'); o.value = c.c; o.textContent = fxFlag(c.c) + ' ' + c.n; selFrom.appendChild(o); });
-                FX_CURRENCIES.forEach(function (c) { var o = document.createElement('option'); o.value = c.c; o.textContent = fxFlag(c.c) + ' ' + c.n; selTo.appendChild(o); });
+                visible.forEach(function (c) { var o = document.createElement('option'); o.value = c.c; o.textContent = fxFlag(c.c) + ' ' + c.n; selFrom.appendChild(o); });
+                visible.forEach(function (c) { var o = document.createElement('option'); o.value = c.c; o.textContent = fxFlag(c.c) + ' ' + c.n; selTo.appendChild(o); });
             }
+            var visibleCodes = {}; visible.forEach(function (c) { visibleCodes[c.c] = true; });
             var saved = fxLoadPrefs();
-            if (saved && saved.from && fxMergeRates(null)[saved.from] !== undefined) fxState.from = saved.from;
-            if (saved && saved.to && fxMergeRates(null)[saved.to] !== undefined) fxState.to = saved.to;
+            if (saved && saved.from && visibleCodes[saved.from]) fxState.from = saved.from;
+            if (saved && saved.to && visibleCodes[saved.to]) fxState.to = saved.to;
             if (saved && saved.amount != null) document.getElementById('fxAmount').value = saved.amount;
             selFrom.value = fxState.from; selTo.value = fxState.to;
             selFrom.addEventListener('change', function () { fxState.from = this.value; fxSavePrefs(); fxUpdate(); });
