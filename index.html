@@ -1631,7 +1631,9 @@
         .zakat-ol li{margin:3px 0;}
         .zakat-foot{font-size:.72rem;color:var(--text-dim);text-align:center;line-height:1.9;padding:2px 8px;}
         @media (max-width:640px){ .zakat-nisab-grid{grid-template-columns:1fr;} .zakat-gold-grid{grid-template-columns:1fr;} .zakat-tabs .huj-tab{min-width:calc(50% - 8px);} .zakat-result-line-due{flex-direction:column;align-items:flex-start;gap:2px;} }
-        body.is-mobile #zakat-screen .zakat-wrap{padding:0 2px 18px;}
+        /* تحت Android: كرت النتيجة مثبّت أسفل الشاشة ليبقى ظاهرًا أثناء الإدخال والتمرير */
+        body.is-mobile #zakat-screen .zakat-result{position:fixed;left:0;right:0;bottom:0;z-index:60;border-radius:18px 18px 0 0;border-bottom:none;padding:10px 14px calc(10px + env(safe-area-inset-bottom, 0px));box-shadow:0 -8px 26px rgba(0,0,0,.5), inset 0 1.5px 1px rgba(255,255,255,.32);}
+        body.is-mobile #zakat-screen .zakat-wrap{padding:0 2px calc(170px + env(safe-area-inset-bottom, 0px));}
         /* أكورديون — يُعرض العناوين فقط؛ النقر يعرض تفاصيل العنصر ويُغلق الباقي (Android وWindows) */
         #hajj-umrah-screen .huj-head{cursor:pointer;user-select:none;}
         #hajj-umrah-screen .huj-head:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;}
@@ -4616,7 +4618,7 @@
                     </div>
                     <!-- موعد زكاتك (الحول) -->
                     <div class="zakat-info-card zakat-hawl-card">
-                        <h3 class="zakat-h3">موعد زكاتك</h3>
+                        <h2 class="zakat-sec-title">موعد زكاتك</h2>
                         <p class="zakat-note zakat-hawl-desc">تجب الزكاة بتمام حولٍ قمري على المال من يوم بلغ النصاب، ثم في التاريخ الهجري نفسه كل عام. اختر يومك وشهرك مرة واحدة، ويحفظه هذا الجهاز.</p>
                         <div class="zakat-hawl-row">
                             <label class="zakat-hawl-field" for="zakatHawlDay">
