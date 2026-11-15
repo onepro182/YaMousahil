@@ -1564,6 +1564,35 @@
         .zakat-reset-prices{align-self:flex-start;border-color:rgba(255,255,255,.2);color:#fff;}
         .zakat-label{display:block;font-size:.78rem;color:var(--text-dim);margin-bottom:6px;line-height:1.7;}
         .zakat-label-inline{margin:0;}
+        /* صف « العملة » — تسمية ومنسدلة في نفس السطر */
+        .zakat-currency-row{display:flex;align-items:center;gap:10px;}
+        .zakat-currency-label{flex:0 0 auto;font-size:.88rem;font-weight:800;color:var(--gold-light);white-space:nowrap;}
+        .zakat-currency-select{flex:1;min-width:0;width:auto !important;direction:rtl;text-align:right;font-size:.9rem;padding:10px 12px;color-scheme:dark;}
+        /* عنوان « ماذا تملك؟ » قبل التبويبات */
+        .zakat-own-head{margin:2px 2px -4px;}
+        .zakat-own-title{font-family:var(--font-quran);color:var(--gold);font-size:1.12rem;margin:0;}
+        .zakat-own-sub{font-size:.72rem;color:var(--text-dim);margin:2px 0 0;line-height:1.7;}
+        /* أزرار الطي بأيقونة عين — تظهر تحت Android (is-mobile) فقط */
+        .zakat-toggle{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:inherit;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;}
+        .zakat-nisab-toggle{padding:0;}
+        .zakat-card-toggle{justify-content:space-between;}
+        .zakat-card-toggle .zakat-h3{margin:0;border-bottom:none;padding:0;flex:1;text-align:right;}
+        .zakat-eye{display:none;flex:none;font-size:1.05rem;opacity:.75;transition:opacity .18s ease, transform .18s ease;}
+        body.is-mobile .zakat-eye{display:inline-flex;}
+        .zakat-toggle[aria-expanded="true"] .zakat-eye{opacity:1;transform:scale(1.12);}
+        /* أجسام قابلة للطي — مرئية على سطح المكتب دائمًا، وتُطوى تحت Android */
+        .zakat-item-body{display:flex;flex-direction:column;gap:3px;margin-top:4px;}
+        .zakat-card-body{display:block;margin-top:10px;border-top:1px dashed rgba(212,175,55,.28);padding-top:10px;}
+        body.is-mobile .zakat-collapse-body.collapsed{display:none !important;}
+        body.is-mobile .zakat-nisab-grid{grid-template-columns:1fr;}
+        /* عناوين فرعية وقوائم قسم « ما تجب فيه الزكاة » */
+        .zakat-scope-intro{margin:0 0 8px;}
+        .zakat-h4{font-size:.86rem;font-weight:800;margin:12px 0 6px;padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,.3);}
+        .zakat-h4:first-of-type{margin-top:4px;}
+        .zakat-h4-yes{color:#9effc0;border-bottom-color:rgba(46,220,132,.35);}
+        .zakat-h4-no{color:#ffb3a0;border-bottom-color:rgba(255,150,120,.3);}
+        .zakat-ul{margin:0;padding-inline-start:20px;color:#efe9dc;font-size:.86rem;line-height:1.95;}
+        .zakat-ul li{margin:3px 0;}
         .zakat-input{width:100%;background:rgba(12,46,34,.7);color:#ffee9e;border:1px solid rgba(212,175,55,.35);border-radius:12px;padding:12px 14px;font-size:1.05rem;outline:none;direction:ltr;text-align:left;font-variant-numeric:tabular-nums;transition:border-color .15s ease;}
         .zakat-input:focus,.zakat-adjust input:focus{border-color:var(--gold);}
         #zakatCurrency{direction:rtl;text-align:right;width:100%;font-size:.95rem;padding:10px 12px;color-scheme:dark;}
@@ -4455,22 +4484,34 @@
                 <div class="zakat-wrap">
                     <!-- currency selector -->
                     <div class="zakat-card">
-                        <label class="zakat-label" for="zakatCurrency">العملة</label>
-                        <select class="setting-select setting-full" id="zakatCurrency"></select>
+                        <div class="zakat-currency-row">
+                            <label class="zakat-currency-label" for="zakatCurrency">العملة</label>
+                            <select class="setting-select zakat-currency-select" id="zakatCurrency"></select>
+                        </div>
                     </div>
                     <!-- nisab section -->
                     <div class="zakat-card zakat-nisab">
                         <div class="zakat-nisab-grid">
                             <div class="zakat-nisab-item silver">
-                                <div class="zakat-mark">نصاب الفضة · 595 غرامًا</div>
-                                <div class="zakat-nisab-value"><span id="zakatNisabSilver">0</span><span class="zakat-unit" id="zakatCurrencyName">ر.س</span></div>
-                                <div class="zakat-price">الغرام <b id="zakatSilverPrice">0</b> <span id="zakatSilverUnit">ر.س</span></div>
-                                <div class="zakat-badge">المعتمد في النتيجة — الأحوط والأدنى</div>
+                                <button type="button" class="zakat-toggle zakat-nisab-toggle" aria-expanded="false" aria-controls="zakat-body-silver" id="zakat-toggle-silver">
+                                    <span class="zakat-mark">نصاب الفضة · 595 غرامًا</span>
+                                    <span class="zakat-eye" aria-hidden="true">👁</span>
+                                </button>
+                                <div class="zakat-item-body zakat-collapse-body collapsed" id="zakat-body-silver">
+                                    <div class="zakat-nisab-value"><span id="zakatNisabSilver">0</span><span class="zakat-unit" id="zakatCurrencyName">ر.س</span></div>
+                                    <div class="zakat-price">الغرام <b id="zakatSilverPrice">0</b> <span id="zakatSilverUnit">ر.س</span></div>
+                                    <div class="zakat-badge">المعتمد في النتيجة — الأحوط والأدنى</div>
+                                </div>
                             </div>
                             <div class="zakat-nisab-item gold">
-                                <div class="zakat-mark">نصاب الذهب · 85 غرامًا</div>
-                                <div class="zakat-nisab-value"><span id="zakatNisabGold">0</span><span class="zakat-unit" id="zakatCurrencyName2">ر.س</span></div>
-                                <div class="zakat-price">الغرام <b id="zakatGoldPrice">0</b> <span id="zakatGoldUnit">ر.س</span></div>
+                                <button type="button" class="zakat-toggle zakat-nisab-toggle" aria-expanded="false" aria-controls="zakat-body-gold" id="zakat-toggle-gold">
+                                    <span class="zakat-mark">نصاب الذهب · 85 غرامًا</span>
+                                    <span class="zakat-eye" aria-hidden="true">👁</span>
+                                </button>
+                                <div class="zakat-item-body zakat-collapse-body collapsed" id="zakat-body-gold">
+                                    <div class="zakat-nisab-value"><span id="zakatNisabGold">0</span><span class="zakat-unit" id="zakatCurrencyName2">ر.س</span></div>
+                                    <div class="zakat-price">الغرام <b id="zakatGoldPrice">0</b> <span id="zakatGoldUnit">ر.س</span></div>
+                                </div>
                             </div>
                         </div>
                         <p class="zakat-prices-date" id="zakatPricesDate"></p>
@@ -4486,6 +4527,10 @@
                         </div>
                     </div>
                     <!-- assets tabs -->
+                    <div class="zakat-own-head">
+                        <h2 class="zakat-own-title">ماذا تملك؟</h2>
+                        <p class="zakat-own-sub">اختر ما ينطبق عليك، ولا تظهر إلا خاناته.</p>
+                    </div>
                     <div class="zakat-tabs" id="zakatTabs">
                         <button type="button" class="huj-tab active" data-zakat-tab="cash">النقد والحسابات</button>
                         <button type="button" class="huj-tab" data-zakat-tab="gold">الذهب والفضة</button>
@@ -4557,18 +4602,27 @@
                     </div>
                     <!-- how to compute -->
                     <div class="zakat-info-card">
-                        <h3 class="zakat-h3">كيف تُحسب الزكاة</h3>
-                        <ol class="zakat-ol">
-                            <li>اجمع ما تملكه مما تجب فيه الزكاة: النقد والأرصدة البنكية، والذهب والفضة، والأسهم والاستثمارات، وبضاعة التجارة، والديون التي ترجو أداءها.</li>
-                            <li>احسم الديون التي عليك، وأكثر الهيئات تحسم ما يحلّ منها خلال السنة القادمة.</li>
-                            <li>قارن الباقي بنصاب اليوم، فإن كان دونه فلا زكاة عليك.</li>
-                            <li>فإن بلغه أو جاوزه فزكاتك 2.5% من المبلغ كله، لا مما زاد على النصاب فقط.</li>
-                        </ol>
+                        <button type="button" class="zakat-toggle zakat-card-toggle" aria-expanded="false" aria-controls="zakat-body-how" id="zakat-toggle-how">
+                            <h3 class="zakat-h3">كيف تُحسب الزكاة</h3>
+                            <span class="zakat-eye" aria-hidden="true">👁</span>
+                        </button>
+                        <div class="zakat-card-body zakat-collapse-body collapsed" id="zakat-body-how">
+                            <ol class="zakat-ol">
+                                <li>اجمع ما تملكه مما تجب فيه الزكاة: النقد والأرصدة البنكية، والذهب والفضة، والأسهم والاستثمارات، وبضاعة التجارة، والديون التي ترجو أداءها.</li>
+                                <li>احسم الديون التي عليك، وأكثر الهيئات تحسم ما يحلّ منها خلال السنة القادمة.</li>
+                                <li>قارن الباقي بنصاب اليوم، فإن كان دونه فلا زكاة عليك.</li>
+                                <li>فإن بلغه أو جاوزه فزكاتك 2.5% من المبلغ كله، لا مما زاد على النصاب فقط.</li>
+                            </ol>
+                        </div>
                     </div>
                     <!-- recips -->
                     <div class="zakat-info-card">
-                        <h3 class="zakat-h3">مصارف الزكاة الثمانية</h3>
-                        <ol class="zakat-ol">
+                        <button type="button" class="zakat-toggle zakat-card-toggle" aria-expanded="false" aria-controls="zakat-body-recips" id="zakat-toggle-recips">
+                            <h3 class="zakat-h3">مصارف الزكاة الثمانية</h3>
+                            <span class="zakat-eye" aria-hidden="true">👁</span>
+                        </button>
+                        <div class="zakat-card-body zakat-collapse-body collapsed" id="zakat-body-recips">
+                            <ol class="zakat-ol">
                             <li>الفقراء: من لا يجدون كفايتهم.</li>
                             <li>المساكين: أهل الحاجة كذلك، وفي أيّ الصنفين أشد حاجة خلافٌ بين الفقهاء.</li>
                             <li>العاملون عليها: من يتولّون جمعها وتفريقها.</li>
@@ -4577,7 +4631,34 @@
                             <li>الغارمون: المدينون العاجزون عن وفاء ديونهم.</li>
                             <li>في سبيل الله: الغزاة المتطوعون في أصل معناه عند الفقهاء.</li>
                             <li>ابن السبيل: المسافر المنقطع عن بلده وماله.</li>
-                        </ol>
+                            </ol>
+                        </div>
+                    </div>
+                    <!-- what is zakatable -->
+                    <div class="zakat-info-card">
+                        <button type="button" class="zakat-toggle zakat-card-toggle" aria-expanded="false" aria-controls="zakat-body-scope" id="zakat-toggle-scope">
+                            <h3 class="zakat-h3">ما تجب فيه الزكاة، وما لا تجب فيه</h3>
+                            <span class="zakat-eye" aria-hidden="true">👁</span>
+                        </button>
+                        <div class="zakat-card-body zakat-collapse-body collapsed" id="zakat-body-scope">
+                            <p class="zakat-note zakat-scope-intro">تجب الزكاة في المال الذي تملكه ملكًا تامًّا، ومضى عليه حولٌ قمري كامل، وكان من جنس ما ينمو: النقود وما يقوم مقامها.</p>
+                            <h4 class="zakat-h4 zakat-h4-yes">✓ تجب فيه</h4>
+                            <ul class="zakat-ul">
+                                <li>النقد في يدك وفي الحسابات الجارية وحسابات التوفير، وما ادّخرته لأي غرض، ولو للحج أو لشراء بيت.</li>
+                                <li>الذهب والفضة بكل صورهما: سبائك وعملات ومصوغات (وللحليّ الملبوس تفصيل أسفله).</li>
+                                <li>الأسهم المشتراة للمتاجرة، والصناديق، والعملات الرقمية، بقيمتها السوقية يوم زكاتك.</li>
+                                <li>بضاعة التجارة بسعر بيعها، مع نقد المتجر وما له عند العملاء.</li>
+                                <li>ما أقرضته لغيرك وترجو أداءه.</li>
+                                <li>ما قبضته من أجرة العقار المؤجَّر وبقي في يدك.</li>
+                            </ul>
+                            <h4 class="zakat-h4 zakat-h4-no">✗ لا تجب فيه</h4>
+                            <ul class="zakat-ul">
+                                <li>البيت الذي تسكنه، وسيارتك، وأثاثك وثيابك، وأدوات عملك ومركبته.</li>
+                                <li>أصل العقار المؤجَّر؛ وإنما الزكاة فيما ادّخرته من أجرته.</li>
+                                <li>مكافأة نهاية الخدمة قبل أن تُحدَّد وتُسلَّم إليك، والمال الذي لا تقدر على الوصول إليه أو يئست من استرداده.</li>
+                                <li>الجواهر من غير الذهب والفضة، كاللؤلؤ والأحجار الكريمة والبلاتين، إلا أن تكون بضاعة للتجارة.</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="zakat-foot">
                         تأخذ هذه الحاسبة بما تشترك فيه الهيئات الكبرى في حساب الزكاة، وتسمّي خلاف المذاهب حيث يؤثّر في الرقم. وهي أداة تقدير لا فتوى.
@@ -6570,6 +6651,16 @@ var gender = 'male';
                     ['cash','gold','stocks','trade','loans','debts'].forEach(function (name) {
                         var p = document.getElementById('zakat-panel-' + name); if (p) p.hidden = (name !== target);
                     });
+                });
+            });
+            // أزرار الطي بأيقونة العين (تحت Android تُخفي المحتوى وتُظهره عند النقر)
+            document.querySelectorAll('.zakat-toggle').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var target = document.getElementById(btn.getAttribute('aria-controls'));
+                    if (!target) return;
+                    var willOpen = target.classList.contains('collapsed');
+                    target.classList.toggle('collapsed', !willOpen);
+                    btn.setAttribute('aria-expanded', String(willOpen));
                 });
             });
             // لوحة تعديل الأسعار
