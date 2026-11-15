@@ -1155,9 +1155,9 @@
         .tasbih-embedded .stat{min-width:0;min-height:60px;padding:6px 2px;border:1px solid var(--tsb-border);border-radius:11px;background:rgba(255,255,255,0.06);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--font-quran);}
         .tasbih-embedded .stat span{display:block;color:var(--tsb-muted);font-size:1.15rem;font-family:var(--font-quran);white-space:nowrap;}
         .tasbih-embedded .stat strong{display:block;color:#f4d03f;font-size:clamp(15px,4.5vw,22px);line-height:1.15;direction:ltr;font-family:var(--font-quran);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:0;}
-        .tasbih-embedded .control-btn{min-height:60px;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:8px;padding:10px 8px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:radial-gradient(130% 170% at 50% -40%,#2d4736 0%,#14231a 55%,#070f0a 100%);color:#f4ecd8;font-size:1.15rem;cursor:pointer;font-family:var(--font-quran);white-space:nowrap;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.22),inset 0 -3px 7px rgba(0,0,0,.42),0 5px 12px rgba(0,0,0,.45);}
-        .tasbih-embedded .control-btn:hover{border-color:var(--gold);}
-        .tasbih-embedded .control-btn.active{background:rgba(212,175,55,0.25);color:#f4d03f;}
+        .tasbih-embedded .control-btn{min-height:46px;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:8px;padding:12px 14px;border:1px solid var(--gold);border-radius:12px;background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);color:#ffee9e;font-size:.95rem;cursor:pointer;font-family:var(--font-quran);font-weight:700;white-space:nowrap;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.32);text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);transition:all .2s ease;}
+        .tasbih-embedded .control-btn:hover{color:#fff6c0;transform:translateY(-1px);}
+        .tasbih-embedded .control-btn:active{transform:scale(.97);}
         .tasbih-embedded .control-icon{font-size:15px;}
         .tasbih-embedded .notice{min-height:16px;text-align:center;color:#d4af37;font-size:1.15rem;margin:10px 0 0;}
 .tasbih-embedded svg text{font-size:22px;}
@@ -1224,7 +1224,9 @@
         .tasbih-modal .modal-card{width:100%;max-width:480px;max-height:85%;overflow-y:auto;overscroll-behavior:contain;padding:18px;border:1px solid rgba(212,175,55,0.45);border-radius:21px;background:radial-gradient(ellipse at 50% 0%,rgba(17,66,49,0.85),rgba(3,20,12,0.95));box-shadow:0 20px 70px rgba(0,0,0,0.6);color:#f4ecd8;}
         .tasbih-modal .modal-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px;}
         .tasbih-modal .modal-header h2{margin:0;font-size:22px;color:#f4d03f;font-family:var(--font-quran);}
-        .tasbih-modal .close-btn{width:35px;height:35px;flex-shrink:0;border:1px solid rgba(212,175,55,0.4);border-radius:10px;background:rgba(255,255,255,0.06);color:#f4d03f;font-size:23px;cursor:pointer;}
+        .tasbih-modal .close-btn{width:34px;height:34px;flex-shrink:0;border:1px solid rgba(255,255,255,.16);border-radius:10px;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);color:var(--gold);display:grid;place-items:center;font-size:22px;cursor:pointer;padding:0;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -4px 7px rgba(0,0,0,.45),0 6px 14px rgba(0,0,0,.5);}
+        .tasbih-modal .close-btn:hover{border-color:var(--gold);}
+        .tasbih-modal .close-btn:active{transform:scale(.92);}
         .tasbih-modal .dhikr-list{display:grid;gap:6px;}
         .tasbih-modal .dhikr-item{width:100%;padding:12px;border:1px solid transparent;border-radius:12px;background:transparent;direction:rtl;text-align:right;color:#f4ecd8;font-family:var(--font-quran);font-size:22px;line-height:1.6;overflow-wrap:anywhere;cursor:pointer;}
         .tasbih-modal .dhikr-item:hover,.tasbih-modal .dhikr-item.selected{border-color:rgba(212,175,55,0.4);background:rgba(212,175,55,0.12);}
@@ -3138,7 +3140,8 @@
                                     </section>
                                     <nav class="controls">
                                         <button class="control-btn active" id="targetBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g stroke="url(#t3dGold)" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3" stroke-width="2"/><circle cx="12" cy="12" r="5.1" stroke-width="2"/><circle cx="12" cy="12" r="1.7" fill="url(#t3dGold)" stroke="none"/></g></svg><span id="targetLabel"></span></button>
-                                        <button class="control-btn" id="dhikrBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g stroke="url(#t3dGold)" fill="none" stroke-width="2" stroke-linecap="round"><path d="M5 7.7h14M5 12h14M5 16.3h14"/></g></svg><span>الذِّكر</span></button>
+                                        <button class="control-btn" id="dhikrBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g stroke="url(#t3dGold)" fill="none" stroke-width="2" stroke-linecap="round"><path d="M5 7.7h14M5 12h14M5 16.3h14"/></g></svg><span>إضافة ذِكر</span></button>
+                                        <button class="control-btn" id="resetBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="url(#t3dGold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.5 15a9 9 0 1 1-2.1-9.4L23 10"/></g></svg><span>إعادة ضبط</span></button>
                                         </nav>
                                     </div>
                                     <section class="counter-area">
@@ -3148,7 +3151,6 @@
                                         </div>
                                         <div class="tasbih-top-group-right">
                                             <button type="button" class="tasbih-quick-btn" id="undoBtn" aria-label="تراجع" title="تراجع" disabled><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="url(#t3dGold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5.3 4 10.3l5 5"/><path d="M4.5 10.3h10.2a4.9 4.9 0 0 1 0 9.8H9.4"/></g></svg></button>
-                                            <button type="button" class="tasbih-quick-btn" id="resetBtn" aria-label="إعادة ضبط" title="إعادة ضبط"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="url(#t3dGold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.5 15a9 9 0 1 1-2.1-9.4L23 10"/></g></svg></button>
                                         </div>
                                         <div class="stage" id="tasbihStage" role="button" tabindex="0" aria-label="اضغط للعد">
                                             <svg viewBox="0 0 120 120" role="img" aria-labelledby="svgTitle">
