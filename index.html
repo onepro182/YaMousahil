@@ -1492,6 +1492,9 @@
         @keyframes khrPulse{0%,100%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 5px 14px rgba(0,0,0,.5);}50%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 0 22px rgba(61,220,132,.65);}}
         /* صفحة « الحج و العمرة » */
         #hajj-umrah-screen .huj-tabs{display:flex;gap:10px;justify-content:center;padding:0 4px;}
+        body.is-mobile #hajj-umrah-screen .huj-tabs{justify-content:flex-start;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:none;}
+        body.is-mobile #hajj-umrah-screen .huj-tabs::-webkit-scrollbar{display:none;}
+        body.is-mobile #hajj-umrah-screen .huj-tab{flex:0 0 auto;white-space:nowrap;font-size:.8rem;padding:10px 12px;}
         .huj-tab{flex:1;max-width:340px;padding:12px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-weight:800;font-size:.92rem;white-space:nowrap;box-shadow:inset 0 1px 1px rgba(255,255,255,.08);transition:all .18s ease;}
         .huj-tab:hover{border-color:var(--gold);color:#ffee9e;}
         .huj-tab.active{border-color:var(--gold);color:#ffee9e;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),inset 0 -3px 6px rgba(0,0,0,.4),0 5px 12px rgba(0,0,0,.4);text-shadow:0 1px 2px rgba(0,0,0,.6);}
@@ -4093,6 +4096,7 @@
                 <div class="huj-tabs" role="tablist" aria-label="النسك">
                     <button type="button" class="huj-tab active" id="huj-tab-umrah" data-huj-tab="umrah" role="tab">🕋 أداء مناسك العمرة</button>
                     <button type="button" class="huj-tab" id="huj-tab-hajj" data-huj-tab="hajj" role="tab">🕋 أداء مناسك الحج</button>
+                    <button type="button" class="huj-tab" id="huj-tab-adeya" data-huj-tab="adeya" role="tab">🤲 أدعية</button>
                 </div>
                 <div class="huj-scroll">
                     <!-- ========== UMRAH (من الصورة) ========== -->
@@ -4143,20 +4147,6 @@
                             <div class="huj-head"><span class="huj-num">8</span> عند التحلل</div>
                             <p class="huj-note">لا يوجد دعاء ثابت<br>مخصوص عند التحلل</p>
                         </div>
-                        <div class="huj-shared-title">أدعية مشتركة</div>
-                        <div class="huj-item">
-                            <div class="huj-head"><span class="huj-num">✈</span> دعاء السفر (عند ركوب الطائرة)</div>
-                            <p class="huj-note">عن ابن عباس رضي الله عنهما أن النبي ﷺ كان إذا استوى على راحلته (وفي رواية: في مقعده قال):</p>
-                            <div class="huj-dua">﴿سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ * وَإِنَّا إِلَىٰ رَبِّنَا مُنقَلِبُونَ﴾</div>
-                            <p class="huj-note dim">(أخرجه مسلم)</p>
-                        </div>
-                        <div class="huj-item">
-                            <div class="huj-head"><span class="huj-num">ﷺ</span> دعاء زيارة قبر الرسول ﷺ</div>
-                            <p class="huj-note">عند زيارة قبر النبي ﷺ في المدينة المنورة تقول:</p>
-                            <div class="huj-dua">السلام عليك أيها النبي ورحمة الله وبركاته،<br>السلام علينا وعلى عباد الله الصالحين،<br>أشهد أن لا إله إلا الله وأنك رسول الله</div>
-                            <p class="huj-note dim">(متفق عليه)</p>
-                        </div>
-                        <div class="huj-foot"><b>تنبيه مهم :</b> الأصل في الدعاء الإخلاص وحضور القلب، ويُشرع الإكثار من الدعاء في جميع أوقات العمرة وفي الأماكن الفاضلة.</div>
                     </div>
                     <!-- ========== HAJJ ========== -->
                     <div class="huj-panel" id="huj-panel-hajj" role="tabpanel" hidden>
@@ -4279,7 +4269,10 @@
                             <div class="huj-dua">الله أكبر، الله أكبر، الله أكبر،<br>لا إله إلا الله وحده لا شريك له،<br>له الملك وله الحمد وهو على كل شيء قدير،<br>لا إله إلا الله وحده، أنجز وعده،<br>ونصر عبده، وهزم الأحزاب وحده،</div>
                             <p class="huj-note dim">ثم تدعوا بما شئت</p>
                         </div>
-                        <div class="huj-shared-title">أدعية مشتركة</div>
+                    </div>
+                    <!-- ========== أدعية ========== -->
+                    <div class="huj-panel" id="huj-panel-adeya" role="tabpanel" hidden>
+                        <div class="huj-shared-title">🤲 أدعية مشتركة</div>
                         <div class="huj-item">
                             <div class="huj-head"><span class="huj-num">✈</span> دعاء السفر (عند ركوب الطائرة)</div>
                             <p class="huj-note">عن ابن عباس رضي الله عنهما أن النبي ﷺ كان إذا استوى على راحلته (وفي رواية: في مقعده قال):</p>
@@ -4293,7 +4286,6 @@
                             <p class="huj-note dim">(متفق عليه)</p>
                         </div>
                         <div class="huj-foot"><b>تنبيه مهم :</b> الأصل في الدعاء الإخلاص وحضور القلب، ويُشرع الإكثار من الدعاء في جميع أركان الحج وأوقاته وفي الأماكن الفاضلة.</div>
-                        <div class="huj-source">المصدر: توينكل (twinkl.ar &amp; twinkl.com) — « مناسك الحج بالترتيب التي يؤديها الحاج اشترك لتعرفها بالتفصيل » · « مناسك الحج — خطوات الحج بالترتيب ».</div>
                     </div>
                 </div>
             </div>
@@ -5743,15 +5735,17 @@ var gender = 'male';
         if (_huCard) _huCard.onclick = () => { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); var _hEl = document.getElementById('hajj-umrah-screen'); if (_hEl && typeof showScreen === 'function') showScreen(_hEl); window.scrollTo(0,0); };
         var _huBack = document.getElementById('btn-back-from-hajj-umrah');
         if (_huBack) _huBack.onclick = () => { var hs = (typeof homeScreen !== 'undefined' && homeScreen) ? homeScreen : document.getElementById('home-screen'); if (hs && typeof showScreen === 'function') showScreen(hs); if (typeof navHome !== 'undefined' && navHome) navHome.classList.add('active'); };
-        ['huj-tab-umrah', 'huj-tab-hajj'].forEach(function (id) {
-            var t = document.getElementById(id);
+        var _huTabs = ['umrah', 'hajj', 'adeya'];
+        _huTabs.forEach(function (which) {
+            var t = document.getElementById('huj-tab-' + which);
             if (!t) return;
             t.addEventListener('click', function () {
-                var which = t.getAttribute('data-huj-tab');
-                ['huj-tab-umrah', 'huj-tab-hajj'].forEach(function (x) { var xx = document.getElementById(x); if (xx) xx.classList.toggle('active', x === id); });
-                var pa = document.getElementById('huj-panel-umrah'); var ph = document.getElementById('huj-panel-hajj');
-                if (pa) pa.hidden = (which !== 'umrah');
-                if (ph) ph.hidden = (which !== 'hajj');
+                _huTabs.forEach(function (x) {
+                    var xx = document.getElementById('huj-tab-' + x);
+                    if (xx) xx.classList.toggle('active', x === which);
+                    var p = document.getElementById('huj-panel-' + x);
+                    if (p) p.hidden = (x !== which);
+                });
             });
         });
         // Android: أكورديون « الحج و العمرة » — عرض العناوين فقط؛ فتح عنصر يُغلق بقية العناصر في نفس التبويب
@@ -5780,6 +5774,7 @@ var gender = 'male';
         }
         hujSetupAccordion('huj-panel-umrah');
         hujSetupAccordion('huj-panel-hajj');
+        hujSetupAccordion('huj-panel-adeya');
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
         var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
