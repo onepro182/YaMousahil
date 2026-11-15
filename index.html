@@ -6445,11 +6445,12 @@ var gender = 'male';
             listContainer.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-dim);">📡 جاري تحديد موقعك بدقة...</div>';
             const onOk = (position) => {
                 lastRealPos = { lat: position.coords.latitude, lon: position.coords.longitude };
-                if (typeof resetManualLocationSelects === 'function') resetManualLocationSelects();
                 searchMosques(lastRealPos.lat, lastRealPos.lon);
             };
             const onFinalError = async (error) => {
                 console.error('Geolocation error:', error);
+                // لا نتجاوز المدينة المختارة يدويًا إذا كانت موجودة — الاحتفاظ بما اختاره المستخدم
+                if (lastRealPos) return;
                 // Le GPS est refusé/indisponible → tenter la localisation par adresse IP
                 const ipPos = await locateByIP();
                 if (ipPos) {
@@ -6486,7 +6487,7 @@ var gender = 'male';
         document.getElementById('btn-mosques-locate').onclick = () => locateUser(true);
 
         // ثنائية « الدولة + المدينة » المشتركة بين صفحات المساجد/الصيدلية/الطقس
-        function initGeoDuo(countrySelId, citySelId, onPick) {
+        function initGeoDuo(countrySelId, citySelId, onPick, persistenceKey) {
             const cSel = document.getElementById(countrySelId);
             const sel = document.getElementById(citySelId);
             const db = (typeof CITIES_DB !== 'undefined') ? CITIES_DB : null;
@@ -6527,7 +6528,26 @@ var gender = 'male';
                     const o = this.options[this.selectedIndex];
                     if (!o || !o.value) return;
                     onPick({ id: o.value, lat: parseFloat(o.dataset.lat), lon: parseFloat(o.dataset.lng), name: o.dataset.name });
+                    if (persistenceKey) {
+                        try { localStorage.setItem(persistenceKey, JSON.stringify({ country: cSel ? cSel.value : '', city: sel.value })); } catch (e) {}
+                    }
                 });
+            }
+            // استعادة الاختيار المحفوظ (إن وُجد) — تُعيد عرض نفس المدينة بدل الرجوع إلى IP
+            if (persistenceKey) {
+                try {
+                    const raw = localStorage.getItem(persistenceKey);
+                    const p = raw ? JSON.parse(raw) : null;
+                    if (p && p.country) {
+                        if (cSel) cSel.value = p.country;
+                        fillCities(p.country);
+                        if (p.city && sel) {
+                            sel.value = p.city;
+                            const o = sel.options[sel.selectedIndex];
+                            if (o && o.value) onPick({ id: o.value, lat: parseFloat(o.dataset.lat), lon: parseFloat(o.dataset.lng), name: o.dataset.name });
+                        }
+                    }
+                } catch (e) {}
             }
             return {
                 fillCities,
@@ -6537,17 +6557,18 @@ var gender = 'male';
         const mosquesManual = initGeoDuo('mosques-country-select', 'mosques-city-select', function (c) {
             lastRealPos = { lat: c.lat, lon: c.lon };
             searchMosques(c.lat, c.lon, c.name + ' (اختيار يدوي)', '<div style="text-align:center;padding:12px;color:var(--gold-light);">✏️ اختيار يدوي: ' + c.name + '. اضغط 📍 تحديث الموقع لموقعك الحقيقي.</div>');
-        });
+        }, 'YaMousahil_mosque_manual');
         const pharmacyManual = initGeoDuo('pharmacy-country-select', 'pharmacy-city-select', function (c) {
             pharmacyLastPos = { lat: c.lat, lon: c.lon };
             searchPharmacies(c.lat, c.lon);
-        });
+        }, 'YaMousahil_pharmacy_manual');
         const weatherManual = initGeoDuo('weather-country-select', 'weather-city-select', function (c) {
             weatherPos = { lat: c.lat, lon: c.lon };
             fetchWeather(c.lat, c.lon, c.name);
-        });
+        }, 'YaMousahil_weather_manual');
         function resetManualLocationSelects() {
             if (typeof mosquesManual !== 'undefined' && mosquesManual) mosquesManual.reset();
+            try { localStorage.removeItem('YaMousahil_mosque_manual'); } catch (e) {}
         }
 
         document.getElementById('card-mosques').onclick = () => {
