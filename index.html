@@ -1507,6 +1507,13 @@
         .huj-dua.small{font-size:1rem;}
         .huj-shared-title{font-family:var(--font);font-weight:800;color:var(--gold);font-size:.95rem;border-bottom:2px solid rgba(212,175,55,.4);padding:2px 2px 8px;}
         .huj-badge{flex:none;margin-inline-start:auto;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px;border:1px solid;white-space:nowrap;}
+        /* Android: أكورديون — فقط العناوين مرئية، وبضغط تُعرض تفاصيل العنصر وتُخفى الباقي */
+        body.is-mobile #hajj-umrah-screen .huj-head{cursor:pointer;user-select:none;}
+        body.is-mobile #hajj-umrah-screen .huj-head:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;}
+        body.is-mobile #hajj-umrah-screen .huj-head::after{content:'▾';flex:none;color:var(--gold);font-size:1.15rem;opacity:.9;transition:transform .25s ease;}
+        body.is-mobile #hajj-umrah-screen .huj-item.huj-open .huj-head::after{transform:rotate(180deg);}
+        body.is-mobile #hajj-umrah-screen .huj-item-body{display:none;}
+        body.is-mobile #hajj-umrah-screen .huj-item.huj-open .huj-item-body{display:block;}
         .huj-badge.rk{color:#ff9d8a;border-color:#e74c3c;background:rgba(231,76,60,.16);}
         .huj-badge.wb{color:#ffee9e;border-color:var(--gold);background:rgba(212,175,55,.14);}
         .huj-badge.sn{color:#9effc0;border-color:#2fa37c;background:rgba(46,170,90,.14);}
@@ -5747,6 +5754,32 @@ var gender = 'male';
                 if (ph) ph.hidden = (which !== 'hajj');
             });
         });
+        // Android: أكورديون « الحج و العمرة » — عرض العناوين فقط؛ فتح عنصر يُغلق بقية العناصر في نفس التبويب
+        function hujSetupAccordion(panelId) {
+            var panel = document.getElementById(panelId); if (!panel) return;
+            panel.querySelectorAll('.huj-item').forEach(function (item) {
+                var head = item.querySelector('.huj-head'); if (!head) return;
+                if (item.querySelector('.huj-item-body')) return; // تم الالتفاف مسبقًا
+                var body = document.createElement('div');
+                body.className = 'huj-item-body';
+                var nodes = [];
+                Array.prototype.forEach.call(item.children, function (ch) { if (ch !== head) nodes.push(ch); });
+                nodes.forEach(function (n) { body.appendChild(n); });
+                item.appendChild(body);
+                head.setAttribute('tabindex', '0');
+                head.setAttribute('role', 'button');
+                head.setAttribute('aria-expanded', 'false');
+                var toggle = function () {
+                    var willOpen = !item.classList.contains('huj-open');
+                    panel.querySelectorAll('.huj-item.huj-open').forEach(function (o) { o.classList.remove('huj-open'); o.querySelector('.huj-head').setAttribute('aria-expanded', 'false'); });
+                    if (willOpen) { item.classList.add('huj-open'); head.setAttribute('aria-expanded', 'true'); }
+                };
+                head.addEventListener('click', toggle);
+                head.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+            });
+        }
+        hujSetupAccordion('huj-panel-umrah');
+        hujSetupAccordion('huj-panel-hajj');
         document.getElementById('btn-back-from-wird').onclick = () => { showScreen(homeScreen); navHome.classList.add('active'); };
         var _wirdInfo = document.getElementById('wird-show-info'); if (_wirdInfo) _wirdInfo.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.add('show-text'); };
         var _wirdBackList = document.getElementById('wird-back-to-list'); if (_wirdBackList) _wirdBackList.onclick = function(){ var ws=document.getElementById('wird-split'); if(ws) ws.classList.remove('show-text'); };
