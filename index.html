@@ -10481,13 +10481,42 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             }
             function playRoundSound() {
                 if (!state.sound) return;
-                // « الله أكبر » — صوت ذِكر أصيل مدمج في التطبيق (نفس الروح المسبحة)
+                // جرس ذروة Jade/ذهبي — يتناسب مع هوية التطبيق (لطيف للسمع، بدون كلمات)
                 try {
-                    var a = new Audio('assets/audio/dhikr-2.mp3');
-                    a.volume = 1;
-                    a.play().catch(function () { try { playCountSound(); } catch (e2) {} });
-                    return;
-                } catch (e) { try { playCountSound(); } catch (e2) {} }
+                    var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+                    if (!_roundAudio || _roundAudio.state === "closed") _roundAudio = new AC();
+                    var ctx = _roundAudio;
+                    function play() {
+                        try {
+                            var start = ctx.currentTime;
+                            // جرس « كبير » بـ 4 طبقات توافقية (Do5–Mi5–Sol5–Do6) — احتفالي مثالي بدون كلمات
+                            var bells = [
+                                { freq: 523.25, peak: 0.18, attack: 0.035, decay: 1.8 },
+                                { freq: 659.25, peak: 0.13, attack: 0.045, decay: 1.6 },
+                                { freq: 783.99, peak: 0.16, attack: 0.05,  decay: 2.0 },
+                                { freq: 1046.5, peak: 0.07, attack: 0.07,  decay: 1.5 }
+                            ];
+                            bells.forEach(function (b) {
+                                var o = ctx.createOscillator(), g = ctx.createGain();
+                                o.type = "sine"; o.frequency.setValueAtTime(b.freq, start);
+                                g.gain.setValueAtTime(0.0001, start);
+                                g.gain.linearRampToValueAtTime(b.peak, start + b.attack);
+                                g.gain.exponentialRampToValueAtTime(0.0001, start + b.decay);
+                                o.connect(g); g.connect(ctx.destination);
+                                o.start(start); o.stop(start + b.decay + 0.1);
+                            });
+                            // بريق برونزي (طبقة رنين من الـ fasle الخامسة)
+                            var sh = ctx.createOscillator(), sg = ctx.createGain();
+                            sh.type = "triangle"; sh.frequency.setValueAtTime(1174.66, start + 0.12);
+                            sg.gain.setValueAtTime(0.0001, start + 0.12);
+                            sg.gain.linearRampToValueAtTime(0.09, start + 0.18);
+                            sg.gain.exponentialRampToValueAtTime(0.0001, start + 1.3);
+                            sh.connect(sg); sg.connect(ctx.destination);
+                            sh.start(start + 0.12); sh.stop(start + 1.4);
+                        } catch (e) {}
+                    }
+                    if (ctx.state === "suspended") ctx.resume().then(play).catch(function () {}); else play();
+                } catch (e) {}
             }
             function beep() {
                 if (state.target > 0 && state.session % state.target === 0) playRoundSound();
