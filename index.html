@@ -1183,6 +1183,8 @@
 .fm6oa-hero-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
 .fm6oa-mihrab{width:16px;height:16px;vertical-align:middle;margin-inline-end:4px;color:var(--gold);}
 .fm6oa-hero-name{font-family:var(--font-quran);font-weight:800;font-size:1.35rem;color:#fff;}
+.fm6oa-hero-name::before{content:'( ';}
+.fm6oa-hero-name::after{content:' )';}
 .fm6oa-hero-time{font-family:var(--font-quran);font-weight:800;font-size:1.7rem;color:var(--gold);font-variant-numeric:tabular-nums;direction:ltr;}
 .fm6oa-hero-cd{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--glass-border);border-radius:999px;padding:4px 12px;background:rgba(0,0,0,.25);margin-top:8px;}
 .fm6oa-cd-label{font-size:.75rem;color:var(--text-dim);}
@@ -4190,7 +4192,7 @@
                         <!-- HERO : prochaine prière + compte à rebours -->
                         <div class="fm6oa-hero glass-btn">
                             <div class="fm6oa-hero-row">
-                                <span class="fm6oa-hero-label"><svg class="fm6oa-mihrab" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M4 21h16"/><path d="M9 21v-5a3 3 0 0 1 6 0v5"/></svg> الصلاة القادمة</span>
+                                <span class="fm6oa-hero-label"><svg class="fm6oa-mihrab" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10a8 8 0 0 1 16 0v11"/><path d="M4 21h16"/><path d="M9 21v-5a3 3 0 0 1 6 0v5"/></svg> الصلاة القادمة إن شاء الله :</span>
                                 <span id="fm6oa-next-name" class="fm6oa-hero-name">—</span>
                                 <span id="fm6oa-next-time" class="fm6oa-hero-time">--:--</span>
                                 <span class="fm6oa-hero-cd">
