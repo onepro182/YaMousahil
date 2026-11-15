@@ -1533,7 +1533,8 @@
         /* صفحة « الحج و العمرة » */
         #hajj-umrah-screen .huj-tabs{display:flex;gap:10px;justify-content:center;padding:0 4px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
         #hajj-umrah-screen .huj-tabs::-webkit-scrollbar{display:none;}
-        body.is-mobile #hajj-umrah-screen .huj-tabs{justify-content:flex-start;}
+        body.is-mobile #hajj-umrah-screen .huj-tabs{justify-content:flex-start;flex-wrap:wrap;}
+        body.is-mobile #hajj-umrah-screen .huj-tab{flex:1 1 calc(50% - 10px);min-width:130px;}
         body.is-mobile #hajj-umrah-screen .huj-tab{flex:0 0 auto;font-size:.8rem;padding:10px 12px;}
         .huj-tab{flex:1;max-width:340px;padding:12px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-weight:800;font-size:.92rem;white-space:nowrap;box-shadow:inset 0 1px 1px rgba(255,255,255,.08);transition:all .18s ease;}
         .huj-tab:hover{border-color:var(--gold);color:#ffee9e;}
