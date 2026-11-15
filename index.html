@@ -1070,6 +1070,9 @@
         .adhkar-pager-ref{color:var(--gold);font-size:.85rem;font-weight:700;}
         .adhkar-pager-count{background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.5);color:var(--gold);border-radius:999px;padding:3px 13px;font-size:.78rem;font-weight:700;white-space:nowrap;direction:ltr;}
         .adhkar-pager-nav{flex:none;display:flex;gap:8px;}
+        /* حصن المسلم — تحت Android: « السابق / القائمة / التالي » مثبّتة أسفل الشاشة دائمًا */
+        body.is-mobile #isl-pane-adhkar .adhkar-pager-nav{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom, 0px));background:linear-gradient(180deg,rgba(4,23,14,0) 0%,rgba(4,23,14,.92) 35%,rgba(3,17,10,.98) 100%);}
+        body.is-mobile #isl-pane-adhkar .adhkar-pager{padding-bottom:82px;}
         /* أزرار حصن المسلم بأسلوب 3D مطابق لأزرار المسبحة (العد التلقائي) */
         .adhkar-pager-nav button,
         #adhkar-back-to-cats,
