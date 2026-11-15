@@ -1590,9 +1590,11 @@
         .zakat-hawl-note{margin:10px 0 0;border-top:1px dashed rgba(212,175,55,.25);padding-top:8px;}
         /* ===== محول العملات ===== */
         .fx-wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:12px;width:100%;padding:0 0 22px;}
-        .fx-amount-input{font-size:1.4rem;font-weight:800;}
-        .fx-pair-row{display:flex;align-items:stretch;gap:8px;}
-        .fx-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+        .fx-amount-input{font-size:1.35rem;font-weight:800;}
+        /* Windows: المبلغ + من + ⇄ + إلى كلهم في نفس السطر */
+        .fx-amount-row{display:flex;align-items:stretch;gap:10px;}
+        .fx-field{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+        .fx-amount-field{flex:.85;}
         .fx-select{width:100%;direction:rtl;text-align:right;color-scheme:dark;font-size:.9rem;padding:10px 12px;}
         .fx-swap{flex:0 0 auto;align-self:center;width:48px;height:48px;border-radius:50%;font-size:1.35rem;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold-light);border:1px solid rgba(212,175,55,.45);background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),0 4px 10px rgba(0,0,0,.4);transition:transform .35s ease,color .2s ease;}
         .fx-swap:hover{color:#ffee9e;transform:rotate(180deg);}
@@ -1605,7 +1607,12 @@
         .fx-quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
         .fx-chip{padding:9px 6px;border-radius:10px;border:1px solid rgba(212,175,55,.35);background:rgba(255,255,255,.04);color:#ffe9a8;font-size:.8rem;font-weight:700;cursor:pointer;font-variant-numeric:tabular-nums;transition:all .15s ease;font-family:var(--font);}
         .fx-chip:hover{border-color:var(--gold);background:rgba(212,175,55,.14);color:#fff6c0;}
-        @media (max-width:640px){ .fx-pair-row{flex-direction:column;} .fx-swap{margin:-2px auto;transform:rotate(90deg);} .fx-swap:hover{transform:rotate(270deg);} .fx-quick-grid{grid-template-columns:repeat(2,1fr);} }
+        body.is-mobile .fx-amount-row{flex-direction:column;}
+        body.is-mobile .fx-field{flex-direction:row;align-items:center;gap:12px;}
+        body.is-mobile .fx-field .zakat-label{flex:0 0 52px;margin:0;}
+        body.is-mobile .fx-swap{margin:-6px auto;transform:rotate(90deg);}
+        body.is-mobile .fx-swap:hover{transform:rotate(270deg);}
+        @media (max-width:640px){ .fx-amount-row{flex-direction:column;} .fx-field{flex-direction:row;align-items:center;gap:12px;} .fx-field .zakat-label{flex:0 0 52px;margin:0;} .fx-swap{margin:-6px auto;transform:rotate(90deg);} .fx-swap:hover{transform:rotate(270deg);} .fx-quick-grid{grid-template-columns:repeat(2,1fr);} }
         body.is-mobile #currency-screen .fx-wrap{padding:0 2px 18px;}
         /* أزرار الطي بأيقونة عين — تظهر تحت Android (is-mobile) فقط */
         .zakat-toggle{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:inherit;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;}
@@ -4756,19 +4763,18 @@
                     <div class="isl-header-spacer" style="width:80px;"></div>
                 </header>
                 <div class="fx-wrap">
-                    <!-- amount -->
-                    <div class="zakat-card">
-                        <label class="zakat-label" for="fxAmount">المبلغ</label>
-                        <input type="number" id="fxAmount" class="zakat-input fx-amount-input" inputmode="decimal" placeholder="1" min="0" step="any" value="1">
-                    </div>
-                    <!-- from / to -->
-                    <div class="fx-pair-row">
-                        <div class="zakat-card fx-col">
+                    <!-- المبلغ + من + ⇄ + إلى في سطر واحد (Windows)، وصفّين inline تحت Android -->
+                    <div class="fx-amount-row">
+                        <div class="zakat-card fx-field fx-amount-field">
+                            <label class="zakat-label" for="fxAmount">المبلغ</label>
+                            <input type="number" id="fxAmount" class="zakat-input fx-amount-input" inputmode="decimal" placeholder="1" min="0" step="any" value="1">
+                        </div>
+                        <div class="zakat-card fx-field">
                             <label class="zakat-label" for="fxFrom">من</label>
                             <select class="setting-select fx-select" id="fxFrom"></select>
                         </div>
                         <button type="button" class="fx-swap glass-btn" id="fxSwap" title="اعكس العملتين" aria-label="اعكس العملتين">⇄</button>
-                        <div class="zakat-card fx-col">
+                        <div class="zakat-card fx-field">
                             <label class="zakat-label" for="fxTo">إلى</label>
                             <select class="setting-select fx-select" id="fxTo"></select>
                         </div>
