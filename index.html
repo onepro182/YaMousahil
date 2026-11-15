@@ -1491,10 +1491,10 @@
         .khr-finish-btn.pulse{animation:khrPulse 1.05s ease-in-out infinite;}
         @keyframes khrPulse{0%,100%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 5px 14px rgba(0,0,0,.5);}50%{box-shadow:inset 0 1.5px 1px rgba(255,255,255,.35),0 0 22px rgba(61,220,132,.65);}}
         /* صفحة « الحج و العمرة » */
-        #hajj-umrah-screen .huj-tabs{display:flex;gap:10px;justify-content:center;padding:0 4px;}
-        body.is-mobile #hajj-umrah-screen .huj-tabs{justify-content:flex-start;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:none;}
-        body.is-mobile #hajj-umrah-screen .huj-tabs::-webkit-scrollbar{display:none;}
-        body.is-mobile #hajj-umrah-screen .huj-tab{flex:0 0 auto;white-space:nowrap;font-size:.8rem;padding:10px 12px;}
+        #hajj-umrah-screen .huj-tabs{display:flex;gap:10px;justify-content:center;padding:0 4px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+        #hajj-umrah-screen .huj-tabs::-webkit-scrollbar{display:none;}
+        body.is-mobile #hajj-umrah-screen .huj-tabs{justify-content:flex-start;}
+        body.is-mobile #hajj-umrah-screen .huj-tab{flex:0 0 auto;font-size:.8rem;padding:10px 12px;}
         .huj-tab{flex:1;max-width:340px;padding:12px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-weight:800;font-size:.92rem;white-space:nowrap;box-shadow:inset 0 1px 1px rgba(255,255,255,.08);transition:all .18s ease;}
         .huj-tab:hover{border-color:var(--gold);color:#ffee9e;}
         .huj-tab.active{border-color:var(--gold);color:#ffee9e;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),inset 0 -3px 6px rgba(0,0,0,.4),0 5px 12px rgba(0,0,0,.4);text-shadow:0 1px 2px rgba(0,0,0,.6);}
@@ -1510,13 +1510,13 @@
         .huj-dua.small{font-size:1rem;}
         .huj-shared-title{font-family:var(--font);font-weight:800;color:var(--gold);font-size:.95rem;border-bottom:2px solid rgba(212,175,55,.4);padding:2px 2px 8px;}
         .huj-badge{flex:none;margin-inline-start:auto;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px;border:1px solid;white-space:nowrap;}
-        /* Android: أكورديون — فقط العناوين مرئية، وبضغط تُعرض تفاصيل العنصر وتُخفى الباقي */
-        body.is-mobile #hajj-umrah-screen .huj-head{cursor:pointer;user-select:none;}
-        body.is-mobile #hajj-umrah-screen .huj-head:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;}
-        body.is-mobile #hajj-umrah-screen .huj-head::after{content:'▾';flex:none;color:var(--gold);font-size:1.15rem;opacity:.9;transition:transform .25s ease;}
-        body.is-mobile #hajj-umrah-screen .huj-item.huj-open .huj-head::after{transform:rotate(180deg);}
-        body.is-mobile #hajj-umrah-screen .huj-item-body{display:none;}
-        body.is-mobile #hajj-umrah-screen .huj-item.huj-open .huj-item-body{display:block;}
+        /* أكورديون — يُعرض العناوين فقط؛ النقر يعرض تفاصيل العنصر ويُغلق الباقي (Android وWindows) */
+        #hajj-umrah-screen .huj-head{cursor:pointer;user-select:none;}
+        #hajj-umrah-screen .huj-head:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px;}
+        #hajj-umrah-screen .huj-head::after{content:'▾';flex:none;color:var(--gold);font-size:1.15rem;opacity:.9;transition:transform .25s ease;}
+        #hajj-umrah-screen .huj-item.huj-open .huj-head::after{transform:rotate(180deg);}
+        #hajj-umrah-screen .huj-item-body{display:none;}
+        #hajj-umrah-screen .huj-item.huj-open .huj-item-body{display:block;}
         .huj-badge.rk{color:#ff9d8a;border-color:#e74c3c;background:rgba(231,76,60,.16);}
         .huj-badge.wb{color:#ffee9e;border-color:var(--gold);background:rgba(212,175,55,.14);}
         .huj-badge.sn{color:#9effc0;border-color:#2fa37c;background:rgba(46,170,90,.14);}
@@ -4150,6 +4150,12 @@
                     </div>
                     <!-- ========== HAJJ ========== -->
                     <div class="huj-panel" id="huj-panel-hajj" role="tabpanel" hidden>
+                        <div class="huj-shared-title">أركان وواجبات وسنن الحج</div>
+                        <div class="huj-item">
+                            <p class="huj-note"><span class="huj-badge rk">ركن</span> &nbsp;الوقوف بعرفة · طواف الإفاضة · الإحرام · السعي بين الصفا والمروة</p>
+                            <p class="huj-note" style="margin-top:8px;"><span class="huj-badge wb">واجب</span> &nbsp;المبيت بمزدلفة · المبيت بمنى · طواف الوداع · رمي الجمرات</p>
+                            <p class="huj-note" style="margin-top:8px;"><span class="huj-badge sn">سنة</span> &nbsp;طواف القدوم · التوجّه إلى منى يوم التروية</p>
+                        </div>
                         <div class="huj-shared-title">🕋 مناسك الحج بالترتيب</div>
                         <div class="huj-item">
                             <div class="huj-head"><span class="huj-num">1</span> الإحرام<span class="huj-badge rk">ركن</span></div>
@@ -4208,12 +4214,6 @@
                         <div class="huj-item">
                             <div class="huj-head"><span class="huj-num">10</span> طواف الوداع (طواف الصدر)<span class="huj-badge wb">واجب</span></div>
                             <p class="huj-note">آخر مناسك الحج، ويُسمى طواف آخر العهد؛ واجب عند الجمهور، وقته عقب انتهاء الحاج من جميع المناسك، وأي طواف يفعله الحاج بعد طواف الإفاضة يُجزئ عن طواف الوداع.</p>
-                        </div>
-                        <div class="huj-shared-title">أركان وواجبات وسنن الحج</div>
-                        <div class="huj-item">
-                            <p class="huj-note"><span class="huj-badge rk">ركن</span> &nbsp;الوقوف بعرفة · طواف الإفاضة · الإحرام · السعي بين الصفا والمروة</p>
-                            <p class="huj-note" style="margin-top:8px;"><span class="huj-badge wb">واجب</span> &nbsp;المبيت بمزدلفة · المبيت بمنى · طواف الوداع · رمي الجمرات</p>
-                            <p class="huj-note" style="margin-top:8px;"><span class="huj-badge sn">سنة</span> &nbsp;طواف القدوم · التوجّه إلى منى يوم التروية</p>
                         </div>
                         <div class="huj-shared-title">🤲 الأدعية والأذكار في مناسك الحج</div>
                         <div class="huj-item">
