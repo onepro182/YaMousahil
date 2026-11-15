@@ -1571,7 +1571,10 @@
         /* عنوان « ماذا تملك؟ » قبل التبويبات */
         .zakat-own-head{margin:2px 2px -4px;}
         .zakat-own-title{font-family:var(--font-quran);color:var(--gold);font-size:1.12rem;margin:0;}
-        .zakat-own-sub{font-size:.72rem;color:var(--text-dim);margin:2px 0 0;line-height:1.7;}
+        .zakat-own-sub{font-size:.72rem;color:var(--text-dim);margin:2px 0 0;line-height:1.7;text-align:center;}
+        /* عناوين الأقسام داخل حاسبة الزكاة — بخطين زخرفيين جانبيين */
+        .zakat-sec-title{display:flex;align-items:center;gap:10px;color:var(--gold);font-family:var(--font-quran);font-weight:800;font-size:.98rem;white-space:nowrap;margin:0 0 10px;text-shadow:0 1px 3px rgba(0,0,0,.5);}
+        .zakat-sec-title::before,.zakat-sec-title::after{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 18%,var(--gold) 50%,rgba(212,175,55,.45) 82%,transparent);}
         /* موعد زكاتك (الحول) */
         .zakat-hawl-desc{margin:0 0 10px;}
         .zakat-hawl-row{display:flex;gap:10px;flex-wrap:wrap;}
@@ -4501,6 +4504,7 @@
                     </div>
                     <!-- nisab section -->
                     <div class="zakat-card zakat-nisab">
+                        <h2 class="zakat-sec-title">النصاب اليوم</h2>
                         <div class="zakat-nisab-grid">
                             <div class="zakat-nisab-item silver">
                                 <button type="button" class="zakat-toggle zakat-nisab-toggle" aria-expanded="false" aria-controls="zakat-body-silver" id="zakat-toggle-silver">
@@ -4538,7 +4542,7 @@
                     </div>
                     <!-- assets tabs -->
                     <div class="zakat-own-head">
-                        <h2 class="zakat-own-title">ماذا تملك؟</h2>
+                        <h2 class="zakat-sec-title zakat-own-title">ماذا تملك؟</h2>
                         <p class="zakat-own-sub">اختر ما ينطبق عليك، ولا تظهر إلا خاناته.</p>
                     </div>
                     <div class="zakat-tabs" id="zakatTabs">
