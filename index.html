@@ -205,6 +205,7 @@
         #weather-screen .title-prayers h1,
         #fm6oa-screen .title-prayers h1,
         #zakat-screen .title-prayers h1,
+        #currency-screen .title-prayers h1,
         #quran-player-modal .qp-main-title,
         #dua-khatm-screen .title-prayers h1,
         #inheritance-screen h1,
@@ -233,6 +234,7 @@
         #weather-screen .title-prayers h1::before, #weather-screen .title-prayers h1::after,
         #fm6oa-screen .title-prayers h1::before, #fm6oa-screen .title-prayers h1::after,
         #zakat-screen .title-prayers h1::before, #zakat-screen .title-prayers h1::after,
+        #currency-screen .title-prayers h1::before, #currency-screen .title-prayers h1::after,
         #quran-player-modal .qp-main-title::before, #quran-player-modal .qp-main-title::after,
         #dua-khatm-screen .title-prayers h1::before, #dua-khatm-screen .title-prayers h1::after{
             content:""; flex:0 0 auto; width:55px; height:2px; border-radius:2px;
@@ -249,6 +251,7 @@
         #live-screen .title-prayers h1::after, #weather-screen .title-prayers h1::after,
         #fm6oa-screen .title-prayers h1::after, #quran-player-modal .qp-main-title::after,
         #zakat-screen .title-prayers h1::after,
+        #currency-screen .title-prayers h1::after,
         #dua-khatm-screen .title-prayers h1::after{
             transform:scaleX(-1);
         }
@@ -683,7 +686,7 @@
         body.is-mobile #mushaf-screen h1,
         body.is-mobile #radiomaroc-screen h1,
         body.is-mobile #asma-screen h1,
-        body.is-mobile #khatma-read-screen h1, #zakat-screen h1{ font-size: 1.9rem !important; }
+        body.is-mobile #khatma-read-screen h1, #zakat-screen h1, #currency-screen h1{ font-size: 1.9rem !important; }
         /* Android : ‹ الرئيسية / ‹ العودة → أيقونة SVG ثلاثية الأبعاد فقط (بلا نص) */
         body.is-mobile .back-btn,
         body.is-mobile .back-btn.glass-btn {
@@ -1585,6 +1588,25 @@
         .zakat-ics-btn{align-self:flex-start;border-color:var(--gold);color:#ffee9e;margin-top:8px;}
         .zakat-ics-btn:hover{color:#fff6c0;border-color:#ffee9e;}
         .zakat-hawl-note{margin:10px 0 0;border-top:1px dashed rgba(212,175,55,.25);padding-top:8px;}
+        /* ===== محول العملات ===== */
+        .fx-wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:12px;width:100%;padding:0 0 22px;}
+        .fx-amount-input{font-size:1.4rem;font-weight:800;}
+        .fx-pair-row{display:flex;align-items:stretch;gap:8px;}
+        .fx-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+        .fx-select{width:100%;direction:rtl;text-align:right;color-scheme:dark;font-size:.9rem;padding:10px 12px;}
+        .fx-swap{flex:0 0 auto;align-self:center;width:48px;height:48px;border-radius:50%;font-size:1.35rem;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold-light);border:1px solid rgba(212,175,55,.45);background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),0 4px 10px rgba(0,0,0,.4);transition:transform .35s ease,color .2s ease;}
+        .fx-swap:hover{color:#ffee9e;transform:rotate(180deg);}
+        .fx-result{border:1px solid rgba(212,175,55,.55);border-radius:16px;background:radial-gradient(150% 170% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 10px rgba(0,0,0,.45),0 8px 20px rgba(0,0,0,.45);padding:16px;display:flex;flex-direction:column;gap:6px;}
+        .fx-result-label{font-size:.75rem;color:rgba(255,255,255,.65);font-weight:700;}
+        .fx-result-value{font-variant-numeric:tabular-nums;font-size:clamp(1.5rem,7vw,2.3rem);font-weight:800;color:#ffee9e;line-height:1.2;word-break:break-all;text-shadow:0 1px 4px rgba(0,0,0,.6);}
+        .fx-result-unit{font-size:.55em;color:#fff;opacity:.85;font-weight:700;}
+        .fx-rate-line{font-size:.85rem;color:#ffe9a8;font-variant-numeric:tabular-nums;direction:ltr;text-align:right;}
+        .fx-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px dashed rgba(255,255,255,.22);padding-top:8px;font-size:.72rem;color:rgba(255,255,255,.7);flex-wrap:wrap;}
+        .fx-quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+        .fx-chip{padding:9px 6px;border-radius:10px;border:1px solid rgba(212,175,55,.35);background:rgba(255,255,255,.04);color:#ffe9a8;font-size:.8rem;font-weight:700;cursor:pointer;font-variant-numeric:tabular-nums;transition:all .15s ease;font-family:var(--font);}
+        .fx-chip:hover{border-color:var(--gold);background:rgba(212,175,55,.14);color:#fff6c0;}
+        @media (max-width:640px){ .fx-pair-row{flex-direction:column;} .fx-swap{margin:-2px auto;transform:rotate(90deg);} .fx-swap:hover{transform:rotate(270deg);} .fx-quick-grid{grid-template-columns:repeat(2,1fr);} }
+        body.is-mobile #currency-screen .fx-wrap{padding:0 2px 18px;}
         /* أزرار الطي بأيقونة عين — تظهر تحت Android (is-mobile) فقط */
         .zakat-toggle{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:inherit;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;}
         .zakat-nisab-toggle{padding:0;}
@@ -2943,6 +2965,29 @@
                                         <path d="M14 14 l1.1 2.4 2.4 1.1 -2.4 1.1 -1.1 2.4 -1.1 -2.4 -2.4 -1.1 2.4 -1.1 z" fill="#ffee9e" opacity=".8"/>
                                     </svg>
                                     <span class="app-name" data-i18n="card_zakat">حاسبة الزكاة</span>
+                                </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-fx" title="تحويل فوري بين 174 عملة">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="محول العملات">
+                                        <defs>
+                                            <radialGradient id="fxBg" cx="0.35" cy="0.3" r="1">
+                                                <stop offset="0" stop-color="#1b6f9c"/><stop offset="0.45" stop-color="#0d4063"/><stop offset="1" stop-color="#041627"/>
+                                            </radialGradient>
+                                            <radialGradient id="fxCoin" cx="0.38" cy="0.32" r="0.95">
+                                                <stop offset="0" stop-color="#fff6b8"/><stop offset="0.4" stop-color="#e8c558"/><stop offset="0.78" stop-color="#c49a33"/><stop offset="1" stop-color="#8a6517"/>
+                                            </radialGradient>
+                                        </defs>
+                                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#fxBg)"/>
+                                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.3"/>
+                                        <ellipse cx="32" cy="53" rx="16" ry="3.6" fill="#000" opacity=".25"/>
+                                        <circle cx="45" cy="18.5" r="9.5" fill="url(#fxCoin)"/>
+                                        <circle cx="45" cy="18.5" r="6.7" fill="none" stroke="#8a6517" stroke-width="1.3" opacity=".9"/>
+                                        <text x="45" y="22.3" text-anchor="middle" font-family="Amiri, 'Noto Naskh Arabic', serif" font-weight="700" font-size="10.5" fill="#5d430c">د</text>
+                                        <path d="M10 27 H40" stroke="#ffee9e" stroke-width="3.4" stroke-linecap="round"/>
+                                        <path d="M34 20 L42 27 L34 34" fill="none" stroke="#ffee9e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M54 39 H24" stroke="#ffee9e" stroke-width="3.4" stroke-linecap="round"/>
+                                        <path d="M30 32 L22 39 L30 46" fill="none" stroke="#ffee9e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span class="app-name" data-i18n="card_fx">محول العملات</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-sihatar" title="دليل الخدمات الصحية">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="صحتي">
@@ -4700,6 +4745,52 @@
                 </div>
             </div>
 
+            <!-- CURRENCY CONVERTER (محول العملات) SCREEN -->
+            <div id="currency-screen" style="display:none; flex-direction:column; height:100%; width:100%; gap:10px; overflow:auto; padding:10px;">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-currency">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">محول العملات</h1>
+                        <p>174 عملة بما فيها الذهب والبتكوين — تحويل فوري</p>
+                    </div>
+                    <div class="isl-header-spacer" style="width:80px;"></div>
+                </header>
+                <div class="fx-wrap">
+                    <!-- amount -->
+                    <div class="zakat-card">
+                        <label class="zakat-label" for="fxAmount">المبلغ</label>
+                        <input type="number" id="fxAmount" class="zakat-input fx-amount-input" inputmode="decimal" placeholder="1" min="0" step="any" value="1">
+                    </div>
+                    <!-- from / to -->
+                    <div class="fx-pair-row">
+                        <div class="zakat-card fx-col">
+                            <label class="zakat-label" for="fxFrom">من</label>
+                            <select class="setting-select fx-select" id="fxFrom"></select>
+                        </div>
+                        <button type="button" class="fx-swap glass-btn" id="fxSwap" title="اعكس العملتين" aria-label="اعكس العملتين">⇄</button>
+                        <div class="zakat-card fx-col">
+                            <label class="zakat-label" for="fxTo">إلى</label>
+                            <select class="setting-select fx-select" id="fxTo"></select>
+                        </div>
+                    </div>
+                    <!-- result -->
+                    <div class="fx-result" aria-live="polite">
+                        <div class="fx-result-label">النتيجة</div>
+                        <div class="fx-result-value"><span id="fxResultValue">0.00</span> <span class="fx-result-unit" id="fxResultCode">EUR</span></div>
+                        <div class="fx-rate-line" id="fxRateLine">1 MAD = 0.00 EUR</div>
+                        <div class="fx-meta"><span id="fxUpdated">⏳ جارٍ تحميل الأسعار…</span><button type="button" class="zakat-refresh-btn" id="fxRefresh">🔄 تحديث</button></div>
+                    </div>
+                    <!-- quick pairs -->
+                    <div class="zakat-info-card">
+                        <h2 class="zakat-sec-title">تحويلات سريعة</h2>
+                        <div class="fx-quick-grid" id="fxQuick"></div>
+                    </div>
+                    <div class="zakat-foot">
+                        الأسعار مأخوذة من currencyrate.today وتُحدَّث من open.er-api.com (كل 24 ساعة أو عند النقر على « تحديث »). أداة تقدير وليست نصيحة مالية.
+                    </div>
+                </div>
+            </div>
+
             <!-- ASMA ALLAH SCREEN -->
             <div id="asma-screen" style="display:none; flex-direction:column;height:100%;width:100%;gap:15px;">
                 <div style="display:flex;flex-direction:column;height:100%;width:100%;gap:15px;padding:10px;">
@@ -4921,7 +5012,7 @@
                 sec_islamiyat:'إسلاميات', sec_radios:'إذاعات وبث مباشر', sec_services:'خدمات',
                 card_quran:'القرآن الكريم', card_adhkar:'حِصْنُ الْمُسْلِم', card_tasbih:'المسبحة الإلكترونية', card_asma:'أسماء الله الحسنى', card_wird:'ورد القرآن اليومي',
                 card_radioMaroc:'إذاعات مغربية', card_live:'بث مباشر', card_quranRadio:'📻 إذاعات القرآن', card_fm6oa:'مواقيت الصلاة',
-                card_mosques:'المساجد القريبة منك', card_inheritance:'حساب المواريث', card_sihatar:'صحتي', card_zakat:'حاسبة الزكاة',
+                card_mosques:'المساجد القريبة منك', card_inheritance:'حساب المواريث', card_sihatar:'صحتي', card_zakat:'حاسبة الزكاة', card_fx:'محول العملات',
                 set_nav_prayer:'مواقيت الصلاة', set_nav_adhan:'التنبيهات والأذان', set_nav_display:'العرض واللغة', set_nav_about:'حول التطبيق',
                 set_clock:'الساعة', hour_suffix:'س', set_seconds:'إظهار الثواني',
                 set_gmt:'المنطقة الزمنية (GMT)', gmt_auto:'تلقائي (توقيت الجهاز)', gmt_ma:'توقيت المغرب الرسمي',
@@ -4938,7 +5029,7 @@
                 sec_islamiyat:'Islam', sec_radios:'Radios & Direct', sec_services:'Services',
                 card_quran:'Coran', card_adhkar:'Hisn al-Muslim', card_tasbih:'Tasbih numérique', card_asma:'Les 99 Noms d’Allah', card_wird:'Wird quotidien',
                 card_radioMaroc:'Radios marocaines', card_live:'Direct', card_quranRadio:'📻 Radios du Coran', card_fm6oa:'Horaires de prière',
-                card_mosques:'Mosquées près de vous', card_inheritance:'Héritages', card_sihatar:'Ma santé', card_zakat:'Calculateur de Zakat',
+                card_mosques:'Mosquées près de vous', card_inheritance:'Héritages', card_sihatar:'Ma santé', card_zakat:'Calculateur de Zakat', card_fx:'Convertisseur de devises',
                 set_nav_prayer:'Horaires de prière', set_nav_adhan:'Rappels & Adhan', set_nav_display:'Affichage & langue', set_nav_about:'À propos',
                 set_clock:'Heure', hour_suffix:'h', set_seconds:'Afficher les secondes',
                 set_gmt:'Fuseau horaire (GMT)', gmt_auto:'Automatique (heure de l’appareil)', gmt_ma:'Heure officielle du Maroc',
@@ -6845,6 +6936,109 @@ var gender = 'male';
         document.getElementById('card-zakat').onclick = function () { if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio(); if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer(); showScreen(zakatScreen); window.scrollTo(0, 0); try { zakatRefreshLive(false); } catch (e) {} };
         document.getElementById('btn-back-from-zakat').onclick = function () { showScreen(homeScreen); navHome.classList.add('active'); };
         initZakat();
+        // ===== محول العملات — الأسعار مضمّنة من currencyrate.today (USD أساس) وتُحدَّث من open.er-api.com =====
+        var fxScreen = document.getElementById('currency-screen');
+        var FX_CURRENCIES = [{c:'BGN',n:'BGN - Bulgarian Lev',r:1.77457},{c:'BTC',n:'BTC - Bitcoin',r:0.0000154636},{c:'USD',n:'USD - US Dollar',r:1},{c:'EUR',n:'EUR - Euro',r:0.907194},{c:'GBP',n:'GBP - British Pound Sterling',r:0.755715},{c:'AUD',n:'AUD - Australian Dollar',r:1.476669},{c:'CAD',n:'CAD - Canadian Dollar',r:1.42735},{c:'CHF',n:'CHF - Swiss Franc',r:0.837484},{c:'CNY',n:'CNY - Chinese Yuan',r:6.6717},{c:'JPY',n:'JPY - Japanese Yen',r:159.735},{c:'SGD',n:'SGD - Singapore Dollar',r:1.2873},{c:'NZD',n:'NZD - New Zealand Dollar',r:1.809137},{c:'PKR',n:'PKR - Pakistani Rupee',r:277.274577},{c:'HKD',n:'HKD - Hong Kong Dollar',r:7.8457},{c:'KRW',n:'KRW - South Korean Won',r:1335.485},{c:'MXN',n:'MXN - Mexican Peso',r:18.5365},{c:'NOK',n:'NOK - Norwegian Krone',r:9.57399},{c:'CLP',n:'CLP - Chilean Peso',r:1002.37674},{c:'NGN',n:'NGN - Nigerian Naira',r:1343.57},{c:'BRL',n:'BRL - Brazilian Real',r:5.6666},{c:'RUB',n:'RUB - Russian Ruble',r:82.829062},{c:'UAH',n:'UAH - Ukrainian Hryvnia',r:45.588968},{c:'THB',n:'THB - Thai Baht',r:33.959695},{c:'PLN',n:'PLN - Polish Zloty',r:3.987844},{c:'INR',n:'INR - Indian Rupee',r:94.26395},{c:'ETH',n:'ETH - Ethereum',r:0.0005531229},{c:'AFN',n:'AFN - Afghan Afghani',r:64.999999},{c:'ALL',n:'ALL - Albanian Lek',r:82.324126},{c:'DZD',n:'DZD - Algerian Dinar',r:137.172636},{c:'AOA',n:'AOA - Angolan Kwanza',r:918},{c:'ARS',n:'ARS - Argentine Peso',r:1546.131275},{c:'AMD',n:'AMD - Armenian Dram',r:360.54},{c:'AWG',n:'AWG - Aruban Florin',r:1.8},{c:'AZN',n:'AZN - Azerbaijani Manat',r:1.7},{c:'BSD',n:'BSD - Bahamian Dollar',r:1},{c:'BHD',n:'BHD - Bahraini Dinar',r:0.378283},{c:'BDT',n:'BDT - Bangladeshi Taka',r:124.715411},{c:'BBD',n:'BBD - Barbadian Dollar',r:2},{c:'BYN',n:'BYN - Belarusian Ruble',r:3.004037},{c:'BZD',n:'BZD - Belize Dollar',r:2.016692},{c:'BMD',n:'BMD - Bermudan Dollar',r:1},{c:'BTN',n:'BTN - Bhutanese Ngultrum',r:94.446396},{c:'BOB',n:'BOB - Bolivian Boliviano',r:11.678099},{c:'BAM',n:'BAM - Bosnia-Herzegovina Mark',r:1.769883},{c:'BWP',n:'BWP - Botswanan Pula',r:14.015512},{c:'BND',n:'BND - Brunei Dollar',r:1.291151},{c:'MMK',n:'MMK - Burmese kyat (Myanmar Kyat)',r:2099.95},{c:'BIF',n:'BIF - Burundian Franc',r:3011.030286},{c:'KHR',n:'KHR - Cambodian Riel',r:4080},{c:'CVE',n:'CVE - Cape Verdean Escudo',r:100.15},{c:'XCG',n:'XCG - Caribbean guilder',r:1.807139},{c:'KYD',n:'KYD - Cayman Islands Dollar',r:0.835579},{c:'XOF',n:'XOF - CFA Franc BCEAO',r:595.080292},{c:'XAF',n:'XAF - CFA Franc BEAC',r:595.080292},{c:'XPF',n:'XPF - CFP Franc',r:108.257047},{c:'CLF',n:'CLF - Chilean Unit of Account (UF)',r:0.025469},{c:'CNH',n:'CNH - Chinese Yuan (Offshore)',r:6.6766},{c:'COP',n:'COP - Colombian Peso',r:3315.105631},{c:'KMF',n:'KMF - Comorian Franc',r:447.000266},{c:'CDF',n:'CDF - Congolese Franc',r:2324.289504},{c:'CRC',n:'CRC - Costa Rican Colón',r:449.312503},{c:'HRK',n:'HRK - Croatian Kuna',r:6.83622},{c:'CUC',n:'CUC - Cuban Convertible Peso',r:1},{c:'CUP',n:'CUP - Cuban Peso',r:25.75},{c:'CZK',n:'CZK - Czech Koruna',r:22.1393},{c:'DKK',n:'DKK - Danish Krone',r:6.7823},{c:'DJF',n:'DJF - Djiboutian Franc',r:178.55486},{c:'DOGE',n:'DOGE - DogeCoin',r:17.0958562248},{c:'DOP',n:'DOP - Dominican Peso',r:60.996954},{c:'XCD',n:'XCD - East Caribbean Dollar',r:2.70255},{c:'EGP',n:'EGP - Egyptian Pound',r:53.502064},{c:'AED',n:'AED - Emirati Dirham',r:3.6725},{c:'ERN',n:'ERN - Eritrean Nakfa',r:15},{c:'ETB',n:'ETB - Ethiopian Birr',r:164.576379},{c:'FKP',n:'FKP - Falkland Islands Pound',r:0.755715},{c:'FJD',n:'FJD - Fijian Dollar',r:2.27435},{c:'GMD',n:'GMD - Gambian Dalasi',r:74.000005},{c:'GEL',n:'GEL - Georgian Lari',r:2.59},{c:'GHS',n:'GHS - Ghanaian Cedi',r:11.725},{c:'GIP',n:'GIP - Gibraltar Pound',r:0.755715},{c:'XAU',n:'XAU - Gold (ounce)',r:0.00025783},{c:'GTQ',n:'GTQ - Guatemalan Quetzal',r:7.646644},{c:'GGP',n:'GGP - Guernsey pound',r:0.755715},{c:'GNF',n:'GNF - Guinean Franc',r:8883.733089},{c:'GYD',n:'GYD - Guyanese dollar',r:209.264665},{c:'HTG',n:'HTG - Haitian Gourde',r:131.491798},{c:'HNL',n:'HNL - Honduran Lempira',r:26.963305},{c:'HUF',n:'HUF - Hungarian Forint',r:331.455635},{c:'ISK',n:'ISK - Icelandic Króna',r:123.735633},{c:'IDR',n:'IDR - Indonesian Rupiah',r:18235.137382},{c:'IRR',n:'IRR - Iranian Rial',r:1374600},{c:'IQD',n:'IQD - Iraqi Dinar',r:1520.117679},{c:'ILS',n:'ILS - Israeli Sheqel',r:3.216745},{c:'JMD',n:'JMD - Jamaican Dollar',r:158.434238},{c:'JEP',n:'JEP - Jersey pound',r:0.755715},{c:'JOD',n:'JOD - Jordanian Dinar',r:0.709},{c:'KZT',n:'KZT - Kazakhstani Tenge',r:446.94546},{c:'KES',n:'KES - Kenyan Shilling',r:130.05},{c:'KWD',n:'KWD - Kuwaiti Dinar',r:0.311952},{c:'KGS',n:'KGS - Kyrgystani Som',r:87.4355},{c:'LAK',n:'LAK - Laotian Kip',r:22570.638394},{c:'LBP',n:'LBP - Lebanese Pound',r:89799.824542},{c:'LSL',n:'LSL - Lesotho Loti',r:16.951422},{c:'LRD',n:'LRD - Liberian Dollar',r:170.4631},{c:'LYD',n:'LYD - Libyan Dinar',r:6.463464},{c:'LD',n:'LD - Linden Dollar',r:320},{c:'MOP',n:'MOP - Macanese Pataca',r:8.103687},{c:'MKD',n:'MKD - Macedonian Denar',r:55.830728},{c:'MGA',n:'MGA - Malagasy Ariary',r:4555.698514},{c:'MWK',n:'MWK - Malawian Kwacha',r:1738.742449},{c:'MYR',n:'MYR - Malaysian Ringgit',r:4.0861},{c:'MVR',n:'MVR - Maldivian Rufiyaa',r:15.4},{c:'IMP',n:'IMP - Manx pound',r:0.755715},{c:'MRO',n:'MRO - Mauritanian Ouguiya',r:356.999828},{c:'MUR',n:'MUR - Mauritian Rupee',r:47.619999},{c:'MDL',n:'MDL - Moldovan Leu',r:18.213816},{c:'MNT',n:'MNT - Mongolian Tugrik',r:3599},{c:'MAD',n:'MAD - Moroccan Dirham',r:9.936862},{c:'MZN',n:'MZN - Mozambican Metical',r:63.899993},{c:'NAD',n:'NAD - Namibian Dollar',r:16.947138},{c:'NPR',n:'NPR - Nepalese Rupee',r:151.114449},{c:'ANG',n:'ANG - Netherlands Antillean Guilder',r:1.79},{c:'TWD',n:'TWD - New Taiwan Dollar',r:32.8914},{c:'NIO',n:'NIO - Nicaraguan Córdoba',r:36.90298},{c:'KPW',n:'KPW - North Korean Won',r:900},{c:'OMR',n:'OMR - Omani Rial',r:0.385095},{c:'XPD',n:'XPD - Palladium (ounce)',r:0.00099646},{c:'PAB',n:'PAB - Panamanian Balboa',r:1},{c:'PGK',n:'PGK - Papua New Guinean Kina',r:4.575679},{c:'PYG',n:'PYG - Paraguayan Guarani',r:6207.917524},{c:'PEN',n:'PEN - Peruvian Nuevo Sol',r:3.411802},{c:'PHP',n:'PHP - Philippine Peso',r:63.96},{c:'XPT',n:'XPT - Platinum (ounce)',r:0.00067172},{c:'QAR',n:'QAR - Qatari Rial',r:3.64425},{c:'RON',n:'RON - Romanian Leu',r:4.851901},{c:'RWF',n:'RWF - Rwandan Franc',r:1483.465169},{c:'SHP',n:'SHP - Saint Helena Pound',r:0.755715},{c:'SVC',n:'SVC - Salvadoran Colón',r:8.773983},{c:'WST',n:'WST - Samoan Tala',r:2.7509},{c:'STD',n:'STD - Sao Tome and Principe Dobra',r:22281.8},{c:'STN',n:'STN - São Tomé and Príncipe Dobra',r:22.225246},{c:'SAR',n:'SAR - Saudi Riyal',r:3.82571},{c:'RSD',n:'RSD - Serbian Dinar',r:106.559},{c:'SCR',n:'SCR - Seychellois Rupee',r:13.874903},{c:'SLL',n:'SLL - Sierra Leonean Leone',r:20969.5},{c:'XAG',n:'XAG - Silver (ounce)',r:0.02045868},{c:'SBD',n:'SBD - Solomon Islands Dollar',r:8.105794},{c:'SOS',n:'SOS - Somali Shilling',r:573.049028},{c:'ZAR',n:'ZAR - South African Rand',r:16.976255},{c:'SSP',n:'SSP - South Sudanese Pound',r:130.26},{c:'XDR',n:'XDR - Special Drawing Rights',r:0.732916},{c:'LKR',n:'LKR - Sri Lankan Rupee',r:333.505516},{c:'SDG',n:'SDG - Sudanese Pound',r:601.5},{c:'SRD',n:'SRD - Surinamese Dollar',r:37.49},{c:'SZL',n:'SZL - Swazi Lilangeni',r:16.943219},{c:'SEK',n:'SEK - Swedish Krona',r:10.075},{c:'SYP',n:'SYP - Syrian Pound',r:13002},{c:'TJS',n:'TJS - Tajikistani Somoni',r:9.249966},{c:'TZS',n:'TZS - Tanzanian Shilling',r:2655.143534},{c:'TOP',n:'TOP - Tongan Paanga',r:2.40776},{c:'TTD',n:'TTD - Trinidad and Tobago Dollar',r:6.806368},{c:'TND',n:'TND - Tunisian Dinar',r:3.0085},{c:'TRY',n:'TRY - Turkish Lira',r:50.333801},{c:'TMT',n:'TMT - Turkmenistan Manat',r:3.5},{c:'UGX',n:'UGX - Ugandan Shilling',r:4131.055532},{c:'UYU',n:'UYU - Uruguayan Peso',r:40.606918},{c:'UZS',n:'UZS - Uzbekistan Som',r:12057.791873},{c:'VUV',n:'VUV - Vanuatu Vatu',r:118.43},{c:'VES',n:'VES - Venezuelan bolívar soberano',r:910.125},{c:'VND',n:'VND - Vietnamese Dong',r:25725.5},{c:'YER',n:'YER - Yemeni Rial',r:236.55008},{c:'ZMW',n:'ZMW - Zambian Kwacha',r:20.500748},{c:'ZWG',n:'ZWG - Zimbabwe Gold',r:26.688},{c:'ZWL',n:'ZWL - Zimbabwean Dollar (2009)',r:322}];
+        var FX_SNAPSHOT = {}; FX_CURRENCIES.forEach(function (x) { FX_SNAPSHOT[x.c] = x.r; });
+        var FX_SNAPSHOT_DATE = '15 نوفمبر 2026';
+        var FX_QUICK = [['MAD','EUR'],['MAD','USD'],['MAD','SAR'],['MAD','AED'],['EUR','MAD'],['USD','MAD'],['MAD','GBP'],['MAD','BTC']];
+        var fxState = { from: 'MAD', to: 'EUR', rates: null, live: false, date: '' };
+        var fxFetching = false;
+        var FX_CACHE_KEY = 'fx-cache-v1', FX_PREFS_KEY = 'fx-prefs', FX_TTL = 24 * 3600 * 1000;
+        function fxLoadPrefs() { try { return JSON.parse(localStorage.getItem(FX_PREFS_KEY) || 'null'); } catch (e) { return null; } }
+        function fxSavePrefs() { try { localStorage.setItem(FX_PREFS_KEY, JSON.stringify({ from: fxState.from, to: fxState.to, amount: document.getElementById('fxAmount').value })); } catch (e) {} }
+        function fxCacheGet() { try { var c = JSON.parse(localStorage.getItem(FX_CACHE_KEY) || 'null'); if (c && typeof c.t === 'number' && (Date.now() - c.t) < FX_TTL && c.rates) return c; } catch (e) {} return null; }
+        function fxCacheSet(rates, source, date) { try { localStorage.setItem(FX_CACHE_KEY, JSON.stringify({ t: Date.now(), rates: rates, source: source, date: date })); } catch (e) {} }
+        function fxMergeRates(liveRates) {
+            var merged = {}; FX_CURRENCIES.forEach(function (x) { merged[x.c] = x.r; });
+            if (liveRates) { Object.keys(liveRates).forEach(function (k) { if (isFinite(liveRates[k]) && merged[k] !== undefined) merged[k] = liveRates[k]; }); }
+            return merged;
+        }
+        function fxApplyRates() {
+            var cache = fxCacheGet();
+            if (cache) { fxState.rates = fxMergeRates(cache.rates); fxState.live = cache.source === 'live'; fxState.date = cache.date || ''; }
+            else { fxState.rates = fxMergeRates(null); fxState.live = false; fxState.date = FX_SNAPSHOT_DATE; }
+            fxUpdate();
+        }
+        function fxRefreshLive(force) {
+            if (fxFetching) return;
+            var cache = fxCacheGet();
+            if (cache && !force) return;
+            fxFetching = true;
+            var ctrl = new AbortController(); var to = setTimeout(function () { ctrl.abort(); }, 9000);
+            fetch('https://open.er-api.com/v6/latest/USD', { signal: ctrl.signal }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+                clearTimeout(to);
+                if (j && j.rates) {
+                    var dateStr = new Intl.DateTimeFormat('ar', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+                    fxCacheSet(j.rates, 'live', dateStr);
+                    fxApplyRates();
+                }
+                fxFetching = false;
+            }).catch(function () { clearTimeout(to); fxFetching = false; fxApplyRates(); });
+        }
+        function fxFormat(n) {
+            if (!isFinite(n)) return '—';
+            var a = Math.abs(n);
+            var d = a === 0 ? 2 : a >= 1 ? 2 : a >= 0.01 ? 4 : 6;
+            return new Intl.NumberFormat('fr', { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
+        }
+        function fxFormatRate(n) {
+            if (!isFinite(n)) return '—';
+            var a = Math.abs(n);
+            var d = a >= 1000 ? 2 : a >= 1 ? 4 : a >= 0.01 ? 6 : 8;
+            return new Intl.NumberFormat('fr', { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
+        }
+        function fxUpdate() {
+            var amountEl = document.getElementById('fxAmount'); if (!amountEl) return;
+            var amount = zakatParseNum(amountEl.value);
+            var from = fxState.from, to = fxState.to;
+            var resultEl = document.getElementById('fxResultValue');
+            var unitEl = document.getElementById('fxResultCode');
+            var rateLine = document.getElementById('fxRateLine');
+            var updEl = document.getElementById('fxUpdated');
+            if (!fxState.rates) return;
+            var ratio = fxState.rates[to] / fxState.rates[from];
+            resultEl.textContent = fxFormat(amount * ratio);
+            unitEl.textContent = to;
+            rateLine.textContent = '1 ' + from + ' = ' + fxFormatRate(ratio) + ' ' + to;
+            updEl.textContent = fxState.live ? ('أسعار السوق ليوم ' + fxState.date + ' · تتحدث كل 24 ساعة') : ('أسعار محفوظة ليوم ' + fxState.date + ' — اضغط 🔄 للتحديث');
+        }
+        function initFx() {
+            var selFrom = document.getElementById('fxFrom'), selTo = document.getElementById('fxTo');
+            if (!selFrom.options.length) {
+                FX_CURRENCIES.forEach(function (c) { var o = document.createElement('option'); o.value = c.c; o.textContent = c.n; selFrom.appendChild(o); });
+                FX_CURRENCIES.forEach(function (c) { var o = document.createElement('option'); o.value = c.c; o.textContent = c.n; selTo.appendChild(o); });
+            }
+            var saved = fxLoadPrefs();
+            if (saved && saved.from && fxMergeRates(null)[saved.from] !== undefined) fxState.from = saved.from;
+            if (saved && saved.to && fxMergeRates(null)[saved.to] !== undefined) fxState.to = saved.to;
+            if (saved && saved.amount != null) document.getElementById('fxAmount').value = saved.amount;
+            selFrom.value = fxState.from; selTo.value = fxState.to;
+            selFrom.addEventListener('change', function () { fxState.from = this.value; fxSavePrefs(); fxUpdate(); });
+            selTo.addEventListener('change', function () { fxState.to = this.value; fxSavePrefs(); fxUpdate(); });
+            document.getElementById('fxAmount').addEventListener('input', function () { fxSavePrefs(); fxUpdate(); });
+            document.getElementById('fxSwap').addEventListener('click', function () {
+                var tmp = fxState.from; fxState.from = fxState.to; fxState.to = tmp;
+                selFrom.value = fxState.from; selTo.value = fxState.to; fxSavePrefs(); fxUpdate();
+            });
+            document.getElementById('fxRefresh').addEventListener('click', function () { fxRefreshLive(true); });
+            var quick = document.getElementById('fxQuick');
+            FX_QUICK.forEach(function (pair) {
+                var b = document.createElement('button'); b.type = 'button'; b.className = 'fx-chip';
+                b.textContent = pair[0] + ' → ' + pair[1];
+                b.addEventListener('click', function () {
+                    fxState.from = pair[0]; fxState.to = pair[1];
+                    selFrom.value = pair[0]; selTo.value = pair[1]; fxSavePrefs(); fxUpdate();
+                });
+                quick.appendChild(b);
+            });
+            fxApplyRates();
+            fxRefreshLive(false);
+        }
+        document.getElementById('card-fx').onclick = function () { if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio(); if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer(); showScreen(fxScreen); window.scrollTo(0, 0); try { fxRefreshLive(false); } catch (e) {} };
+        document.getElementById('btn-back-from-currency').onclick = function () { showScreen(homeScreen); navHome.classList.add('active'); };
+        initFx();
+
         document.getElementById('card-asma').addEventListener('click', function() { if(typeof radioPlaying!=='undefined'&&radioPlaying)stopRadio(); if(typeof marocPlaying!=='undefined'&&marocPlaying)stopMarocPlayer(); if (typeof asmaAutoStop === 'function') asmaAutoStop(true); const aScreen=document.getElementById('asma-screen'); showScreen(aScreen); navHome.classList.remove('active'); try { if (typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) { console.warn('renderAsma', e); } setTimeout(function(){ try { var g = document.getElementById('asma-grid'); if (g && !g.children.length && typeof window.renderAsma === 'function') window.renderAsma(); } catch (e) {} }, 120); });
         document.getElementById('btn-back-from-asma').onclick = () => { if (typeof asmaAutoStop === 'function') asmaAutoStop(true); showScreen(homeScreen); navHome.classList.add('active'); };
 
@@ -10898,7 +11092,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         };
 
         document.querySelectorAll('.app-card').forEach(card => {
-            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-khatma-read' || card.id === 'card-hajj-umrah' || card.id === 'card-inheritance' || card.id === 'card-zakat' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
+            if (card.id === 'btn-radio-maroc' || card.id === 'card-quran-radio' || card.id === 'card-quran' || card.id === 'card-Adhkar' || card.id === 'card-tasbih' || card.id === 'card-mosques' || card.id === 'card-mushaf' || card.id === 'card-surah-kahf' || card.id === 'card-quran-player' || card.id === 'card-live' || card.id === 'card-weather' || card.id === 'card-asma' || card.id === 'card-wird' || card.id === 'card-khatma-read' || card.id === 'card-hajj-umrah' || card.id === 'card-inheritance' || card.id === 'card-zakat' || card.id === 'card-fx' || card.id === 'card-pharmacy' || card.id === 'card-prayer-fm6oa' || card.id === 'card-quran-read' || card.id === 'card-tajweed' || card.id === 'card-quran-menu') return;
             card.onclick = () => { const url = card.getAttribute('data-url'); if (url) window.open(url, '_blank'); };
         });
 
