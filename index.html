@@ -1572,6 +1572,16 @@
         .zakat-own-head{margin:2px 2px -4px;}
         .zakat-own-title{font-family:var(--font-quran);color:var(--gold);font-size:1.12rem;margin:0;}
         .zakat-own-sub{font-size:.72rem;color:var(--text-dim);margin:2px 0 0;line-height:1.7;}
+        /* موعد زكاتك (الحول) */
+        .zakat-hawl-desc{margin:0 0 10px;}
+        .zakat-hawl-row{display:flex;gap:10px;flex-wrap:wrap;}
+        .zakat-hawl-field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:130px;}
+        .zakat-hawl-select{width:100%;direction:rtl;text-align:right;color-scheme:dark;}
+        .zakat-hawl-next{margin:12px 0 0;font-size:.92rem;line-height:2;color:#ffe9a8;}
+        .zakat-hawl-next b{color:var(--gold);font-variant-numeric:tabular-nums;}
+        .zakat-ics-btn{align-self:flex-start;border-color:var(--gold);color:#ffee9e;margin-top:8px;}
+        .zakat-ics-btn:hover{color:#fff6c0;border-color:#ffee9e;}
+        .zakat-hawl-note{margin:10px 0 0;border-top:1px dashed rgba(212,175,55,.25);padding-top:8px;}
         /* أزرار الطي بأيقونة عين — تظهر تحت Android (is-mobile) فقط */
         .zakat-toggle{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:inherit;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;}
         .zakat-nisab-toggle{padding:0;}
@@ -1607,11 +1617,11 @@
         .zakat-result-line{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.9rem;color:#e8f5ec;border-bottom:1px solid rgba(255,255,255,.09);padding-bottom:8px;}
         .zakat-result-line b{font-variant-numeric:tabular-nums;color:#fff;font-size:.98rem;}
         .zakat-result-line-nisab b{color:#ffe9a8;}
-        .zakat-result-line-due{border-bottom:none;padding-bottom:0;font-size:1.02rem;font-weight:800;color:#ffee9e;}
-        .zakat-result-line-due b{color:#ffee9e;font-size:1.28rem;text-shadow:0 1px 3px rgba(0,0,0,.6);}
+        .zakat-result-line-due{border-bottom:none;padding-bottom:0;font-size:1.02rem;font-weight:800;color:#63e2ff;}
+        .zakat-result-line-due b{color:#63e2ff;font-size:1.28rem;text-shadow:0 0 14px rgba(99,226,255,.4),0 1px 3px rgba(0,0,0,.6);}
         .zakat-result-status{text-align:center;font-size:.82rem;font-weight:700;color:#d9f2e0;border-top:1px dashed rgba(255,255,255,.25);padding-top:10px;line-height:1.9;min-height:1.2em;}
         .zakat-result-status.due{color:#9effc0;}
-        .zakat-result-status.under{color:#ffd9a0;}
+        .zakat-result-status.under{color:#ff7d7d;}
         .zakat-info-card{border:1px solid rgba(212,175,55,.22);border-radius:14px;background:rgba(255,255,255,.03);padding:12px 14px;}
         .zakat-h3{font-family:var(--font);color:var(--gold);font-size:.95rem;margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid rgba(212,175,55,.3);}
         .zakat-ol{margin:0;padding-inline-start:20px;color:#efe9dc;font-size:.86rem;line-height:1.95;}
@@ -4600,6 +4610,24 @@
                         </div>
                         <div class="zakat-result-status" id="zakatStatus"></div>
                     </div>
+                    <!-- موعد زكاتك (الحول) -->
+                    <div class="zakat-info-card zakat-hawl-card">
+                        <h3 class="zakat-h3">موعد زكاتك</h3>
+                        <p class="zakat-note zakat-hawl-desc">تجب الزكاة بتمام حولٍ قمري على المال من يوم بلغ النصاب، ثم في التاريخ الهجري نفسه كل عام. اختر يومك وشهرك مرة واحدة، ويحفظه هذا الجهاز.</p>
+                        <div class="zakat-hawl-row">
+                            <label class="zakat-hawl-field" for="zakatHawlDay">
+                                <span class="zakat-label zakat-label-inline">اليوم</span>
+                                <select class="setting-select zakat-hawl-select" id="zakatHawlDay"></select>
+                            </label>
+                            <label class="zakat-hawl-field" for="zakatHawlMonth">
+                                <span class="zakat-label zakat-label-inline">الشهر الهجري</span>
+                                <select class="setting-select zakat-hawl-select" id="zakatHawlMonth"></select>
+                            </label>
+                        </div>
+                        <p class="zakat-hawl-next" id="zakatHawlNext" aria-live="polite"></p>
+                        <button type="button" class="file-btn zakat-ics-btn" id="zakatHawlIcs" style="display:none;">📅 أضف تذكيرًا إلى التقويم (قبل بأسبوع)</button>
+                        <p class="zakat-note zakat-hawl-note">تذكير قبل الموعد بأسبوع. والتاريخ على تقويم وزارة الأوقاف المغربية، وقد يتقدّم يومًا أو يتأخّر بحسب الرؤية.</p>
+                    </div>
                     <!-- how to compute -->
                     <div class="zakat-info-card">
                         <button type="button" class="zakat-toggle zakat-card-toggle" aria-expanded="false" aria-controls="zakat-body-how" id="zakat-toggle-how">
@@ -6631,6 +6659,122 @@ var gender = 'male';
             else if (net >= nisabSilver) { statusEl.textContent = '✓ بلغ مالك نصاب الفضة (الأدنى والأحوط) — تجب الزكاة عنده وإن قلّ عن نصاب الذهب.'; statusEl.classList.add('due'); }
             else { statusEl.textContent = 'لم يبلغ مالك نصاب الفضة — لا زكاة عليك هذه السنة.'; statusEl.classList.add('under'); }
         }
+        // ===== موعد زكاتك (الحول) — حفظ وتقريب التاريخ الهجري عبر Intl =====
+        var ZAKAT_HIJRI_MONTHS = ['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
+        var zakatHawlPartsFmt = null;
+        function zakatIslamicParts(d) {
+            if (!zakatHawlPartsFmt) zakatHawlPartsFmt = new Intl.DateTimeFormat('ar-MA-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' });
+            var parts = zakatHawlPartsFmt.formatToParts(d), out = {};
+            for (var i = 0; i < parts.length; i++) {
+                var p = parts[i];
+                if (p.type === 'day') out.day = parseInt(p.value, 10);
+                else if (p.type === 'month') out.month = parseInt(p.value, 10);
+                else if (p.type === 'year') out.year = parseInt(String(p.value).replace(/[^0-9]/g, ''), 10);
+            }
+            return out;
+        }
+        function zakatHijriToGreg(y, m, d) {
+            var base = Date.UTC(622, 6, 19, 12, 0, 0);
+            var approx = base + ((y - 1) * 354.367 + (m - 1) * 29.53 + d) * 86400000;
+            for (var off = -64; off <= 64; off++) {
+                var cand = new Date(approx + off * 86400000);
+                var p = zakatIslamicParts(cand);
+                if (p.year === y && p.month === m && p.day === d) return cand;
+            }
+            return null;
+        }
+        function zakatMonthLength(y, m) { return zakatHijriToGreg(y, m, 30) ? 30 : 29; }
+        function zakatHawlSave(hd, hm) { try { localStorage.setItem('zakat-hawl', JSON.stringify({ hd: hd, hm: hm })); } catch (e) {} }
+        function zakatHawlLoad() { try { return JSON.parse(localStorage.getItem('zakat-hawl') || 'null'); } catch (e) { return null; } }
+        function zakatHawlNextDate(hd, hm) {
+            var now = new Date();
+            var today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            var nowH = zakatIslamicParts(now);
+            for (var dy = nowH.year; dy <= nowH.year + 2; dy++) {
+                var dayReal = Math.min(hd, zakatMonthLength(dy, hm));
+                var g = zakatHijriToGreg(dy, hm, dayReal);
+                if (g && g.getTime() >= today) return { date: g, hy: dy, hd: dayReal };
+            }
+            return null;
+        }
+        function zakatHawlRender() {
+            var daySel = document.getElementById('zakatHawlDay');
+            var monthSel = document.getElementById('zakatHawlMonth');
+            var nextEl = document.getElementById('zakatHawlNext');
+            var icsBtn = document.getElementById('zakatHawlIcs');
+            if (!daySel || !monthSel || !nextEl) return;
+            var hd = parseInt(daySel.value, 10) || 0;
+            var hm = parseInt(monthSel.value, 10) || 0;
+            if (!hd || !hm) { nextEl.textContent = 'اختر يومًا وشهرًا لحفظ موعدك.'; icsBtn.style.display = 'none'; return; }
+            zakatHawlSave(hd, hm);
+            var target = zakatHawlNextDate(hd, hm);
+            if (!target) { nextEl.textContent = 'تعذّر حساب الموعد الآن — حاول لاحقًا.'; icsBtn.style.display = 'none'; return; }
+            var gFmt = new Intl.DateTimeFormat('fr', { day: 'numeric', month: 'long', year: 'numeric' });
+            nextEl.innerHTML = 'موعد زكاتك القادمة: <b>' + target.hd + ' ' + ZAKAT_HIJRI_MONTHS[hm - 1] + ' ' + target.hy + ' هـ</b> — الموافق ' + gFmt.format(target.date) + ' تقريبًا.';
+            icsBtn.style.display = 'inline-flex';
+        }
+        function zakatHawlDownloadIcs() {
+            var hd = parseInt(document.getElementById('zakatHawlDay').value, 10) || 0;
+            var hm = parseInt(document.getElementById('zakatHawlMonth').value, 10) || 0;
+            if (!hd || !hm) return;
+            var target = zakatHawlNextDate(hd, hm);
+            if (!target) return;
+            var ds = target.date;
+            var pad = function (n) { return String(n).padStart(2, '0'); };
+            var dtStart = ds.getUTCFullYear() + pad(ds.getUTCMonth() + 1) + pad(ds.getUTCDate());
+            var nextDay = new Date(ds.getTime() + 86400000);
+            var dtEnd = nextDay.getUTCFullYear() + pad(nextDay.getUTCMonth() + 1) + pad(nextDay.getUTCDate());
+            var now = new Date();
+            var dtStamp = now.getUTCFullYear() + pad(now.getUTCMonth() + 1) + pad(now.getUTCDate()) + 'T' + pad(now.getUTCHours()) + pad(now.getUTCMinutes()) + pad(now.getUTCSeconds()) + 'Z';
+            var monthName = ZAKAT_HIJRI_MONTHS[hm - 1];
+            var lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//YaMousahil//Zakat//AR',
+                'CALSCALE:GREGORIAN',
+                'BEGIN:VEVENT',
+                'UID:zakat-hawl-' + dtStart + '@yamousahil',
+                'DTSTAMP:' + dtStamp,
+                'DTSTART;VALUE=DATE:' + dtStart,
+                'DTEND;VALUE=DATE:' + dtEnd,
+                'SUMMARY:موعد الزكاة — ' + target.hd + ' ' + monthName + ' ' + target.hy + ' هـ',
+                'DESCRIPTION:موعد إخراج زكاة المال — تذكير قبل بأسبوع. التاريخ تقريبي على تقويم وزارة الأوقاف المغربية وقد يتقدّم يومًا أو يتأخّر بحسب الرؤية.',
+                'BEGIN:VALARM',
+                'TRIGGER:-P7D',
+                'ACTION:DISPLAY',
+                'DESCRIPTION:موعد الزكاة بعد أسبوع — جهّز زكاتك',
+                'END:VALARM',
+                'END:VEVENT',
+                'END:VCALENDAR',
+                ''
+            ];
+            try {
+                var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url; a.download = 'zakat-hawl.ics';
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 1500);
+            } catch (e) { /* تجاهل */ }
+        }
+        function zakatHawlInit() {
+            var daySel = document.getElementById('zakatHawlDay');
+            var monthSel = document.getElementById('zakatHawlMonth');
+            if (!daySel || !monthSel) return;
+            if (!daySel.options.length) {
+                var ph = document.createElement('option'); ph.value = ''; ph.textContent = '—'; ph.disabled = true; ph.selected = true; daySel.appendChild(ph);
+                for (var d = 1; d <= 30; d++) { var o = document.createElement('option'); o.value = String(d); o.textContent = String(d); daySel.appendChild(o); }
+                var ph2 = document.createElement('option'); ph2.value = ''; ph2.textContent = '—'; ph2.disabled = true; ph2.selected = true; monthSel.appendChild(ph2);
+                ZAKAT_HIJRI_MONTHS.forEach(function (name, i) { var o2 = document.createElement('option'); o2.value = String(i + 1); o2.textContent = name; monthSel.appendChild(o2); });
+                var saved = zakatHawlLoad();
+                if (saved && saved.hd >= 1 && saved.hd <= 30 && saved.hm >= 1 && saved.hm <= 12) { daySel.value = String(saved.hd); monthSel.value = String(saved.hm); }
+            }
+            daySel.addEventListener('change', zakatHawlRender);
+            monthSel.addEventListener('change', zakatHawlRender);
+            var icsBtn = document.getElementById('zakatHawlIcs');
+            if (icsBtn) icsBtn.addEventListener('click', zakatHawlDownloadIcs);
+            zakatHawlRender();
+        }
         function initZakat() {
             try { var saved = localStorage.getItem('zakat-currency'); if (saved && zakatCur(saved)) zakatState.currency = saved; } catch (e) {}
             var sel = document.getElementById('zakatCurrency');
@@ -6663,6 +6807,8 @@ var gender = 'male';
                     btn.setAttribute('aria-expanded', String(willOpen));
                 });
             });
+            // موعد زكاتك (الحول)
+            zakatHawlInit();
             // لوحة تعديل الأسعار
             var toggleBtn = document.getElementById('zakatToggleAdjust'), panel = document.getElementById('zakatAdjustPanel');
             toggleBtn.addEventListener('click', function () {
