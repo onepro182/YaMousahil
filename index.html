@@ -1555,6 +1555,12 @@
         .zakat-price b{color:#ffee9e;font-weight:700;}
         .zakat-nisab-item.gold .zakat-price b{color:var(--gold);}
         .zakat-badge{margin-top:8px;align-self:flex-start;font-size:.66rem;font-weight:800;color:#9effc0;border:1px solid rgba(46,220,132,.4);border-radius:999px;padding:3px 10px;background:rgba(46,220,132,.08);}
+        .zakat-karat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;}
+        .zakat-karat{border:1px solid rgba(212,175,55,.32);border-radius:11px;padding:7px 4px 6px;text-align:center;background:rgba(255,255,255,.035);}
+        .zakat-karat-label{display:block;font-size:.68rem;color:var(--gold-light);font-weight:800;margin-bottom:2px;}
+        .zakat-karat b{font-size:.85rem;color:#ffe9a8;font-variant-numeric:tabular-nums;display:block;}
+        .zakat-karat-unit{font-size:.62rem;color:rgba(255,255,255,.65);font-weight:600;}
+        .zakat-karat-sub{display:block;font-size:.58rem;color:var(--text-dim);margin-top:2px;}
         .zakat-prices-date{margin:10px 2px 8px;font-size:.72rem;color:var(--text-dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
         .zakat-refresh-btn{background:none;border:1px solid rgba(212,175,55,.4);color:var(--gold-light);border-radius:999px;font-size:.68rem;padding:2px 10px;cursor:pointer;font-family:var(--font);}
         .zakat-refresh-btn:hover{border-color:var(--gold);color:#ffee9e;}
@@ -4626,7 +4632,12 @@
                                 </button>
                                 <div class="zakat-item-body zakat-collapse-body collapsed" id="zakat-body-gold">
                                     <div class="zakat-nisab-value"><span id="zakatNisabGold">0</span><span class="zakat-unit" id="zakatCurrencyName2">ر.س</span></div>
-                                    <div class="zakat-price">الغرام <b id="zakatGoldPrice">0</b> <span id="zakatGoldUnit">ر.س</span></div>
+                                    <div class="zakat-price">الغرام (عيار 24) <b id="zakatGoldPrice">0</b> <span id="zakatGoldUnit">ر.س</span></div>
+                                    <div class="zakat-karat-row">
+                                        <div class="zakat-karat"><span class="zakat-karat-label">عيار 24</span><b><span id="zakatKarat24">0</span> <span class="zakat-karat-unit" id="zakatKaratUnit24">ر.س</span></b><span class="zakat-karat-sub">نقاء 99.9%</span></div>
+                                        <div class="zakat-karat"><span class="zakat-karat-label">عيار 21</span><b><span id="zakatKarat21">0</span> <span class="zakat-karat-unit" id="zakatKaratUnit21">ر.س</span></b><span class="zakat-karat-sub">نقاء 87.5%</span></div>
+                                        <div class="zakat-karat"><span class="zakat-karat-label">عيار 18</span><b><span id="zakatKarat18">0</span> <span class="zakat-karat-unit" id="zakatKaratUnit18">ر.س</span></b><span class="zakat-karat-sub">نقاء 75%</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -6781,7 +6792,10 @@ var gender = 'male';
             document.getElementById('zakatNisabGold').textContent = zakatFmt(ZAKAT_GOLD_NISAB_G * zakatState.gold, info.decimals);
             document.getElementById('zakatSilverPrice').textContent = zakatFmt(zakatState.silver, 2);
             document.getElementById('zakatGoldPrice').textContent = zakatFmt(zakatState.gold, 2);
-            ['zakatSilverUnit','zakatGoldUnit','zakatCurrencyName','zakatCurrencyName2','zakatCurrencySymbol','zakatCurrencySymbol2','zakatCurrencySymbol3'].forEach(function (id) { var el = document.getElementById(id); if (el) el.textContent = sym; });
+            document.getElementById('zakatKarat24').textContent = zakatFmt(zakatState.gold * ZAKAT_KARAT['24'], 2);
+            document.getElementById('zakatKarat21').textContent = zakatFmt(zakatState.gold * ZAKAT_KARAT['21'], 2);
+            document.getElementById('zakatKarat18').textContent = zakatFmt(zakatState.gold * ZAKAT_KARAT['18'], 2);
+            ['zakatSilverUnit','zakatGoldUnit','zakatCurrencyName','zakatCurrencyName2','zakatCurrencySymbol','zakatCurrencySymbol2','zakatCurrencySymbol3','zakatKaratUnit24','zakatKaratUnit21','zakatKaratUnit18'].forEach(function (id) { var el = document.getElementById(id); if (el) el.textContent = sym; });
             zakatRenderPricesDate();
             var resetBtn = document.getElementById('zakatResetPrices'); if (resetBtn) resetBtn.style.display = zakatState.manual ? 'inline-flex' : 'none';
             zakatCompute();
