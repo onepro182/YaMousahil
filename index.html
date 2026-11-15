@@ -204,6 +204,7 @@
         #live-screen .title-prayers h1,
         #weather-screen .title-prayers h1,
         #fm6oa-screen .title-prayers h1,
+        #zakat-screen .title-prayers h1,
         #quran-player-modal .qp-main-title,
         #dua-khatm-screen .title-prayers h1,
         #inheritance-screen h1,
@@ -6411,9 +6412,10 @@ var gender = 'male';
         // ==================================================
         var zakatScreen = document.getElementById('zakat-screen');
         var ZAKAT_CURRENCIES = [
+            {code:'MAD',name:'درهم مغربي',symbol:'د.م',decimals:2},
             {code:'SAR',name:'ريال سعودي',symbol:'ر.س',decimals:2},{code:'AED',name:'درهم إماراتي',symbol:'د.إ',decimals:2},{code:'QAR',name:'ريال قطري',symbol:'ر.ق',decimals:2},
             {code:'KWD',name:'دينار كويتي',symbol:'د.ك',decimals:3},{code:'BHD',name:'دينار بحريني',symbol:'د.ب',decimals:3},{code:'OMR',name:'ريال عماني',symbol:'ر.ع',decimals:3},
-            {code:'EGP',name:'جنيه مصري',symbol:'ج.م',decimals:0},{code:'JOD',name:'دينار أردني',symbol:'د.أ',decimals:3},{code:'MAD',name:'درهم مغربي',symbol:'د.م',decimals:2},
+            {code:'EGP',name:'جنيه مصري',symbol:'ج.م',decimals:0},{code:'JOD',name:'دينار أردني',symbol:'د.أ',decimals:3},
             {code:'DZD',name:'دينار جزائري',symbol:'د.ج',decimals:0},{code:'TND',name:'دينار تونسي',symbol:'د.ت',decimals:3},{code:'LYD',name:'دينار ليبي',symbol:'د.ل',decimals:3},
             {code:'IQD',name:'دينار عراقي',symbol:'د.ع',decimals:0},{code:'SDG',name:'جنيه سوداني',symbol:'ج.س',decimals:0},{code:'YER',name:'ريال يمني',symbol:'ر.ي',decimals:0},
             {code:'SYP',name:'ليرة سورية',symbol:'ل.س',decimals:0},{code:'LBP',name:'ليرة لبنانية',symbol:'ل.ل',decimals:0},{code:'USD',name:'دولار أمريكي',symbol:'دولار',decimals:2},
@@ -6429,7 +6431,7 @@ var gender = 'male';
         var ZAKAT_OZ = 31.1034768;
         var ZAKAT_KARAT = { '24': 0.999, '22': 0.916, '21': 0.875, '18': 0.75 };
         var ZAKAT_GOLD_NISAB_G = 85, ZAKAT_SILVER_NISAB_G = 595, ZAKAT_RATE = 0.025, ZAKAT_CACHE_TTL = 12 * 3600 * 1000;
-        var zakatState = { currency: 'SAR', gold: 0, silver: 0, pricesDate: '', source: 'daily', manual: false };
+        var zakatState = { currency: 'MAD', gold: 0, silver: 0, pricesDate: '', source: 'daily', manual: false };
         var zakatFetching = false;
 
         function zakatCur(code) { for (var i = 0; i < ZAKAT_CURRENCIES.length; i++) { if (ZAKAT_CURRENCIES[i].code === code) return ZAKAT_CURRENCIES[i]; } return ZAKAT_CURRENCIES[0]; }
