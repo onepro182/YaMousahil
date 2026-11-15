@@ -3242,7 +3242,12 @@
                     <button type="button" class="radius-chip pharm-radius active" data-r="3">3 كم</button>
                     <button type="button" class="radius-chip pharm-radius" data-r="5">5 كم</button>
                     <button type="button" class="radius-chip" id="btn-pharmacy-locate" style="margin-right:14px;">📍 تحديث الموقع</button>
-                    <select id="pharmacy-city-select" class="mosques-city-select"><option value="">✏️ اختيار يدوي للمدينة</option></select>
+                </div>
+                <div class="mosques-manual">
+                    <div class="setting-duo" style="max-width:560px;margin:2px auto 4px;">
+                        <label class="setting-duo-tile" for="pharmacy-country-select"><div class="setting-duo-label">الدولة / الموقع</div><select id="pharmacy-country-select" class="setting-select setting-duo-select"><option value="">اختيار الدولة…</option></select></label>
+                        <label class="setting-duo-tile" for="pharmacy-city-select"><div class="setting-duo-label">المدينة</div><select id="pharmacy-city-select" class="setting-select setting-duo-select"><option value="">اختيار المدينة…</option></select></label>
+                    </div>
                 </div>
                 <div class="mosques-layout">
                     <div class="mosques-sidebar" id="pharmacy-list">
@@ -3861,9 +3866,14 @@
                     <div style="width:80px;"></div>
                 </header>
                 <div class="weather-controls">
-                    <select id="weather-city-select" class="mosques-city-select"><option value="">✏️ اختيار المدينة</option></select>
                     <button type="button" class="radius-chip" id="btn-weather-locate">📍 موقعي الحالي</button>
                     <button type="button" class="radius-chip" id="btn-weather-refresh">🔄 تحديث</button>
+                </div>
+                <div class="mosques-manual">
+                    <div class="setting-duo" style="max-width:560px;margin:4px auto 6px;">
+                        <label class="setting-duo-tile" for="weather-country-select"><div class="setting-duo-label">الدولة / الموقع</div><select id="weather-country-select" class="setting-select setting-duo-select"><option value="">اختيار الدولة…</option></select></label>
+                        <label class="setting-duo-tile" for="weather-city-select"><div class="setting-duo-label">المدينة</div><select id="weather-city-select" class="setting-select setting-duo-select"><option value="">اختيار المدينة…</option></select></label>
+                    </div>
                 </div>
                 <div class="weather-hero glass-btn" id="weather-hero">
                     <div class="weather-emoji" id="weather-emoji">🌦</div>
@@ -6183,10 +6193,6 @@ var gender = 'male';
             if (typeof marocPlaying!=='undefined'&&marocPlaying) stopMarocPlayer();
             showScreen(pharmacyScreen);
             initPharmacyMap();
-            const sel = document.getElementById('pharmacy-city-select');
-            if (sel && sel.options.length <= 1 && typeof CITIES_DB!=='undefined') {
-                Object.entries(CITIES_DB).forEach(([id,c]) => { const o=document.createElement('option'); o.value=id; o.textContent=c.nameAr; sel.appendChild(o); });
-            }
             setTimeout(() => { try { pharmacyMap && pharmacyMap.invalidateSize(); } catch(e){} locatePharmacies(); }, 120);
             window.scrollTo(0,0);
         };
@@ -6198,10 +6204,7 @@ var gender = 'male';
             if (pharmacyLastPos) searchPharmacies(pharmacyLastPos.lat, pharmacyLastPos.lon);
             else locatePharmacies();
         });
-        document.getElementById('pharmacy-city-select').onchange = function(){
-            const c = (typeof CITIES_DB!=='undefined') ? CITIES_DB[this.value] : null;
-            if (c) { pharmacyLastPos = {lat:c.lat, lon:c.lng}; searchPharmacies(c.lat, c.lng); }
-        };
+
         var qpCurrent = null; // identifiant « lecteur|سورة » pour savoir si on peut reprendre là où on a pausé
         document.getElementById('qp-play-btn').onclick = async () => {
             const surah = document.getElementById('qp-surah').value;
@@ -6284,8 +6287,8 @@ var gender = 'male';
             try {
                 // les noms de mosquees au Maroc sont en arabe : interroger les deux termes puis fusionner
                 const urls = [
-                    'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent('مسجد') + '&format=json&limit=50&addressdetails=1&bounded=1&viewbox=' + vb,
-                    'https://nominatim.openstreetmap.org/search?q=mosque&format=json&limit=50&addressdetails=1&bounded=1&viewbox=' + vb
+                    'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent('مسجد') + '&format=json&limit=50&addressdetails=1&bounded=1&viewbox=' + vb + '&accept-language=ar',
+                    'https://nominatim.openstreetmap.org/search?q=mosque&format=json&limit=50&addressdetails=1&bounded=1&viewbox=' + vb + '&accept-language=ar'
                 ];
                 const rs = await Promise.all(urls.map(u => fetch(u, { signal: ctrl.signal }).then(r => r.json()).catch(() => null)));
                 clearTimeout(t);
@@ -6330,7 +6333,7 @@ var gender = 'male';
                     raw = elements.map(el => {
                         const mLat = el.lat || (el.center && el.center.lat); const mLon = el.lon || (el.center && el.center.lon);
                         if (mLat == null || mLon == null) return null;
-                        return { name: (el.tags && el.tags.name) || 'مسجد غير مسمى', address: (el.tags && (el.tags['addr:street'] || el.tags['addr:city'])) || 'العنوان غير متوفر', lat: mLat, lon: mLon };
+                        return { name: (el.tags && (el.tags['name:ar'] || el.tags.name)) || 'مسجد غير مسمى', address: (el.tags && (el.tags['addr:street'] || el.tags['addr:city'])) || 'العنوان غير متوفر', lat: mLat, lon: mLon };
                     }).filter(Boolean);
                 }
                 if (elements === null && nList === null) { networkFailed = true; }
@@ -6431,9 +6434,10 @@ var gender = 'male';
         });
         document.getElementById('btn-mosques-locate').onclick = () => locateUser(true);
 
-        (function initManualCitySelect() {
-            const cSel = document.getElementById('mosques-country-select');
-            const sel = document.getElementById('mosques-city-select');
+        // ثنائية « الدولة + المدينة » المشتركة بين صفحات المساجد/الصيدلية/الطقس
+        function initGeoDuo(countrySelId, citySelId, onPick) {
+            const cSel = document.getElementById(countrySelId);
+            const sel = document.getElementById(citySelId);
             const db = (typeof CITIES_DB !== 'undefined') ? CITIES_DB : null;
             const cdb = (typeof COUNTRIES_DB !== 'undefined') ? COUNTRIES_DB : null;
             function fillCities(countryId) {
@@ -6471,15 +6475,28 @@ var gender = 'male';
                 sel.addEventListener('change', function () {
                     const o = this.options[this.selectedIndex];
                     if (!o || !o.value) return;
-                    const lat = parseFloat(o.dataset.lat), lng = parseFloat(o.dataset.lng);
-                    lastRealPos = { lat, lon: lng };
-                    searchMosques(lat, lng, o.dataset.name + ' (اختيار يدوي)', '<div style="text-align:center;padding:12px;color:var(--gold-light);">✏️ اختيار يدوي: ' + o.dataset.name + '. اضغط 📍 تحديث الموقع لموقعك الحقيقي.</div>');
+                    onPick({ id: o.value, lat: parseFloat(o.dataset.lat), lon: parseFloat(o.dataset.lng), name: o.dataset.name });
                 });
             }
-        })();
+            return {
+                fillCities,
+                reset: function () { if (cSel) cSel.value = ''; fillCities(''); if (sel) sel.value = ''; }
+            };
+        }
+        const mosquesManual = initGeoDuo('mosques-country-select', 'mosques-city-select', function (c) {
+            lastRealPos = { lat: c.lat, lon: c.lon };
+            searchMosques(c.lat, c.lon, c.name + ' (اختيار يدوي)', '<div style="text-align:center;padding:12px;color:var(--gold-light);">✏️ اختيار يدوي: ' + c.name + '. اضغط 📍 تحديث الموقع لموقعك الحقيقي.</div>');
+        });
+        const pharmacyManual = initGeoDuo('pharmacy-country-select', 'pharmacy-city-select', function (c) {
+            pharmacyLastPos = { lat: c.lat, lon: c.lon };
+            searchPharmacies(c.lat, c.lon);
+        });
+        const weatherManual = initGeoDuo('weather-country-select', 'weather-city-select', function (c) {
+            weatherPos = { lat: c.lat, lon: c.lon };
+            fetchWeather(c.lat, c.lon, c.name);
+        });
         function resetManualLocationSelects() {
-            const cSel = document.getElementById('mosques-country-select'); if (cSel) cSel.value = '';
-            const sel = document.getElementById('mosques-city-select'); if (sel) sel.value = '';
+            if (typeof mosquesManual !== 'undefined' && mosquesManual) mosquesManual.reset();
         }
 
         document.getElementById('card-mosques').onclick = () => {
@@ -9669,18 +9686,6 @@ function notifyPrayer(prayerKey, isTest, mode) {
             return { lat: city.lat, lon: city.lng, name: city.nameAr };
         }
         (function initWeatherUI() {
-            var sel = document.getElementById('weather-city-select');
-            if (!sel || sel.dataset.ready) return;
-            sel.dataset.ready = '1';
-            var db = (typeof CITIES_DB !== 'undefined') ? CITIES_DB : null;
-            if (!db) return;
-            Object.entries(db).forEach(([id, city]) => {
-                var o = document.createElement('option');
-                o.value = id; o.textContent = '📍 ' + city.nameAr;
-                o.dataset.lat = city.lat; o.dataset.lng = city.lng; o.dataset.name = city.nameAr;
-                sel.appendChild(o);
-            });
-            sel.onchange = () => { var c = weatherSelectedCity(); weatherPos = { lat: c.lat, lon: c.lon }; fetchWeather(c.lat, c.lon, c.name); };
             document.getElementById('btn-weather-locate').onclick = () => {
                 if (!navigator.geolocation) { var c0 = weatherSelectedCity(); fetchWeather(c0.lat, c0.lon, c0.name); return; }
                 navigator.geolocation.getCurrentPosition((p) => { weatherPos = { lat: p.coords.latitude, lon: p.coords.longitude }; fetchWeather(weatherPos.lat, weatherPos.lon, '📍 موقعك الحالي'); }, () => { var c = weatherSelectedCity(); fetchWeather(c.lat, c.lon, c.name); });
