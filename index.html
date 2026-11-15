@@ -1103,10 +1103,10 @@
         .tasbih-embedded button,.tasbih-embedded input,.tasbih-embedded textarea,.tasbih-embedded select{font:inherit;font-family:var(--font-quran);}
         .tasbih-embedded button{cursor:pointer;touch-action:manipulation;}
         .tasbih-embedded .app{width:100%;max-width:820px;margin:auto;}
-        .tasbih-embedded .layout{display:grid;grid-template-columns:210px 1fr 100px;gap:12px;align-items:start;direction:ltr;}
+        .tasbih-embedded .layout{display:grid;grid-template-columns:210px 1fr 130px;gap:12px;align-items:start;direction:ltr;}
         .tasbih-embedded .left-col{display:flex;flex-direction:column;gap:10px;grid-column:1;grid-row:1;direction:rtl;}
         .tasbih-embedded .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;direction:rtl;}
-        .tasbih-embedded .controls{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;direction:ltr;}
+        .tasbih-embedded .controls{display:flex;flex-direction:column;gap:6px;direction:rtl;width:100%;}
         .tasbih-embedded .counter-area{position:relative;grid-column:2;grid-row:1;min-width:0;padding:12px 10px;border:1.5px solid rgba(212,175,55,0.5);border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(212,175,55,0.05)), radial-gradient(ellipse at 50% 5%,rgba(212,175,55,0.18),transparent 65%),var(--tsb-surface);box-shadow:0 18px 45px rgba(0,0,0,0.3);text-align:center;}
         /* ===== أيقونات المسبحة ثلاثية الأبعاد ===== */
         .t3d{width:22px;height:22px;display:block;flex:none;filter:drop-shadow(0 1.2px 1.2px rgba(0,0,0,.55));}
@@ -1124,7 +1124,7 @@
         .tasbih-sound-btn.off .ico-sound{display:none;}
         .tasbih-sound-btn.off .ico-mute{display:inline !important;}
         .tasbih-sound-btn.off{color:var(--text-dim);opacity:.9;}
-        .tasbih-embedded .side-panel{grid-column:3;grid-row:1;width:100px;max-width:100%;padding-top:6px;display:flex;flex-direction:column;gap:6px;}
+        .tasbih-embedded .side-panel{grid-column:3;grid-row:1;width:130px;max-width:100%;padding-top:6px;display:flex;flex-direction:column;gap:8px;}
         .tasbih-embedded .dhikr-selector{width:100%;padding:10px 6px;border:1px solid var(--tsb-border);border-radius:14px;background:rgba(255,255,255,0.06);color:var(--tsb-green);cursor:pointer;font-family:var(--font-quran);}
         .tasbih-embedded .selector-label{display:block;margin-bottom:6px;font-size:1.15rem;color:var(--tsb-muted);}
         .tasbih-embedded #currentDhikrArabic{display:block;direction:rtl;font-family:var(--font-quran);font-size:22px;font-weight:bold;color:#f4ecd8;}
@@ -1156,7 +1156,7 @@
         .tasbih-embedded .stat{min-width:0;min-height:60px;padding:6px 2px;border:1px solid var(--tsb-border);border-radius:11px;background:rgba(255,255,255,0.06);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--font-quran);}
         .tasbih-embedded .stat span{display:block;color:var(--tsb-muted);font-size:1.15rem;font-family:var(--font-quran);white-space:nowrap;}
         .tasbih-embedded .stat strong{display:block;color:#f4d03f;font-size:clamp(15px,4.5vw,22px);line-height:1.15;direction:ltr;font-family:var(--font-quran);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:0;}
-        .tasbih-embedded .control-btn{min-height:46px;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:8px;padding:12px 14px;border:1px solid var(--gold);border-radius:12px;background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);color:#ffee9e;font-size:.95rem;cursor:pointer;font-family:var(--font-quran);font-weight:700;white-space:nowrap;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.32);text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);transition:all .2s ease;}
+        .tasbih-embedded .control-btn{min-height:46px;width:100%;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:8px;padding:12px 14px;border:1px solid var(--gold);border-radius:12px;background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);color:#ffee9e;font-size:.95rem;cursor:pointer;font-family:var(--font-quran);font-weight:700;white-space:nowrap;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.32);text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);transition:all .2s ease;}
         .tasbih-embedded .control-btn:hover{color:#fff6c0;transform:translateY(-1px);}
         .tasbih-embedded .control-btn:active{transform:scale(.97);}
         .tasbih-embedded .control-icon{font-size:15px;}
@@ -3146,17 +3146,12 @@
                             <main class="app">
                                 <div class="layout">
                                     <div class="left-col">
-                                    <section class="stats">
-                                        <div class="stat"><span>اليوم</span><strong id="todayDisplay">0</strong></div>
-                                        <div class="stat"><span>الجولات</span><strong id="roundsDisplay">0</strong></div>
-                                        <div class="stat"><span>المجموع</span><strong id="totalDisplay">0</strong></div>
-                                        <div class="stat"><span>الوقت</span><strong id="timeDisplay">00:00</strong></div>
-                                    </section>
-                                    <nav class="controls">
-                                        <button class="control-btn active" id="targetBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g stroke="url(#t3dGold)" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3" stroke-width="2"/><circle cx="12" cy="12" r="5.1" stroke-width="2"/><circle cx="12" cy="12" r="1.7" fill="url(#t3dGold)" stroke="none"/></g></svg><span id="targetLabel"></span></button>
-                                        <button class="control-btn" id="dhikrBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g stroke="url(#t3dGold)" fill="none" stroke-width="2" stroke-linecap="round"><path d="M5 7.7h14M5 12h14M5 16.3h14"/></g></svg><span>اختيار ذِكر</span></button>
-                                        <button class="control-btn" id="resetBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="url(#t3dGold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.5 15a9 9 0 1 1-2.1-9.4L23 10"/></g></svg><span>إعادة ضبط</span></button>
-                                        </nav>
+                                        <section class="stats">
+                                            <div class="stat"><span>اليوم</span><strong id="todayDisplay">0</strong></div>
+                                            <div class="stat"><span>الجولات</span><strong id="roundsDisplay">0</strong></div>
+                                            <div class="stat"><span>المجموع</span><strong id="totalDisplay">0</strong></div>
+                                            <div class="stat"><span>الوقت</span><strong id="timeDisplay">00:00</strong></div>
+                                        </section>
                                     </div>
                                     <section class="counter-area">
                                         <button type="button" class="tasbih-sound-btn" id="tasbih-sound-btn" aria-label="صوت العد" title="صوت العد"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g><path class="ico-sound-body" d="M4.6 9.7v4.6h3.1L12.4 19V5L7.7 9.7H4.6z" fill="url(#t3dGold)"/><path class="ico-sound" d="M15.3 9.4a3.6 3.6 0 0 1 0 5.2M17.9 6.8a7 7 0 0 1 0 10.4" fill="none" stroke="url(#t3dGold)" stroke-width="1.7" stroke-linecap="round"/><g class="ico-mute" style="display:none" stroke="url(#t3dGold)" stroke-width="2" stroke-linecap="round"><path d="M16 10l5 4m0-4l-5 4"/></g></g></svg></button>
@@ -3201,8 +3196,12 @@
                                         </div>
                                     </section>
                                     <aside class="side-panel">
+                                        <nav class="controls">
+                                            <button class="control-btn active" id="targetBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g stroke="url(#t3dGold)" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.3" stroke-width="2"/><circle cx="12" cy="12" r="5.1" stroke-width="2"/><circle cx="12" cy="12" r="1.7" fill="url(#t3dGold)" stroke="none"/></g></svg><span id="targetLabel"></span></button>
+                                            <button class="control-btn" id="dhikrBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g stroke="url(#t3dGold)" fill="none" stroke-width="2" stroke-linecap="round"><path d="M5 7.7h14M5 12h14M5 16.3h14"/></g></svg><span>اختيار ذِكر</span></button>
+                                            <button class="control-btn" id="resetBtn" type="button"><svg class="t3d" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="url(#t3dGold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.5 15a9 9 0 1 1-2.1-9.4L23 10"/></g></svg><span>إعادة ضبط</span></button>
+                                        </nav>
                                         <button class="dhikr-selector" id="openDhikrBtn" type="button" aria-haspopup="dialog"><span class="selector-label" data-i18n="choose">اختيار ذِكر</span><span id="currentDhikrArabic" lang="ar"></span></button>
-
                                     </aside>
                                 </div>
                                 <p class="notice" id="notice" role="status"></p>
@@ -10463,7 +10462,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             function fitPhrase() { var n = $("phraseDisplay"); if (!n) return; n.textContent = state.selected; n.style.fontSize = "11px"; try { var w = n.getComputedTextLength(); if (w > 64) { var sz = 11*64/w; if (sz >= 5) n.style.fontSize = sz + "px"; else n.textContent = ""; } } catch (e) {} }
             function updateTasbihSoundBtn() { var b = $("tasbih-sound-btn"); if (!b) return; var on = !!state.sound; b.classList.toggle("off", !state.sound); b.setAttribute("aria-label", state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"); b.title = state.sound ? "تعطيل صوت العد" : "تفعيل صوت العد"; }
             function updateTasbihVoiceBtn() { var b = document.getElementById("tasbih-voice-btn"); if (!b) return; b.textContent = state.voice ? "🗣️" : "🤐"; b.classList.toggle("off", !state.voice); b.setAttribute("aria-label", state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"); b.title = state.voice ? "تعطيل قراءة الذِّكر صوتياً" : "تفعيل قراءة الذِّكر صوتياً"; }
-            function render() { checkDay(); var count = state.session % state.target; var rounds = Math.floor(state.session / state.target); var cd = $("countDisplay"); if (state.session === 0) { cd.textContent = "انقر للبدأ"; cd.style.fontSize = "1.15rem"; cd.setAttribute("direction", "rtl"); } else { cd.textContent = count; cd.style.fontSize = ""; cd.setAttribute("font-size", "30"); cd.setAttribute("direction", "ltr"); } $("todayDisplay").textContent = state.today; $("roundsDisplay").textContent = rounds; $("totalDisplay").textContent = state.total; $("targetLabel").textContent = t("target") + " (" + count + "/" + state.target + ")"; $("currentDhikrArabic").textContent = state.selected; $("currentDhikrArabic").title = state.selected; $("undoBtn").disabled = state.session === 0; fitPhrase(); $("progressArc").setAttribute("stroke-dasharray", arcLength); $("progressArc").setAttribute("stroke-dashoffset", arcLength * (1 - count/state.target)); var lit = count === 0 ? 0 : ((count - 1) % 33) + 1; beads.forEach(function (b, i) { b.setAttribute("fill", i < lit ? "url(#jade)" : "url(#ivory)"); }); menuButtons.forEach(function (e) { var sel = e.text === state.selected; e.button.classList.toggle("selected", sel); e.button.setAttribute("aria-pressed", String(sel)); }); try { persistCounterState(); } catch (e) {} try { document.getElementById('set-target-33').classList.toggle('active', state.target === 33); document.getElementById('set-target-99').classList.toggle('active', state.target === 99); } catch (e) {} try { var _ai = document.getElementById('set-target-input'); if (_ai && document.activeElement !== _ai) _ai.value = state.target; } catch (e) {} updateAutoLabel(); updateTasbihSoundBtn(); updateTasbihVoiceBtn(); }
+            function render() { checkDay(); var count = state.session % state.target; var rounds = Math.floor(state.session / state.target); var cd = $("countDisplay"); if (state.session === 0) { cd.textContent = "انقر للبدأ"; cd.style.fontSize = "1.15rem"; cd.setAttribute("direction", "rtl"); } else { cd.textContent = count; cd.style.fontSize = ""; cd.setAttribute("font-size", "30"); cd.setAttribute("direction", "ltr"); } $("todayDisplay").textContent = state.today; $("roundsDisplay").textContent = rounds; $("totalDisplay").textContent = state.total; $("targetLabel").textContent = document.body.classList.contains('is-mobile') ? t("target") : (t("target") + " (" + count + "/" + state.target + ")"); $("currentDhikrArabic").textContent = state.selected; $("currentDhikrArabic").title = state.selected; $("undoBtn").disabled = state.session === 0; fitPhrase(); $("progressArc").setAttribute("stroke-dasharray", arcLength); $("progressArc").setAttribute("stroke-dashoffset", arcLength * (1 - count/state.target)); var lit = count === 0 ? 0 : ((count - 1) % 33) + 1; beads.forEach(function (b, i) { b.setAttribute("fill", i < lit ? "url(#jade)" : "url(#ivory)"); }); menuButtons.forEach(function (e) { var sel = e.text === state.selected; e.button.classList.toggle("selected", sel); e.button.setAttribute("aria-pressed", String(sel)); }); try { persistCounterState(); } catch (e) {} try { document.getElementById('set-target-33').classList.toggle('active', state.target === 33); document.getElementById('set-target-99').classList.toggle('active', state.target === 99); } catch (e) {} try { var _ai = document.getElementById('set-target-input'); if (_ai && document.activeElement !== _ai) _ai.value = state.target; } catch (e) {} updateAutoLabel(); updateTasbihSoundBtn(); updateTasbihVoiceBtn(); }
             function beep() {
                 if (!state.sound) return;
                 try {
