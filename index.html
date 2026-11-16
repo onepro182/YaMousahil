@@ -634,11 +634,13 @@
             .settings-sidebar{flex-direction:row;flex-wrap:wrap;gap:6px;width:100%;}
             .settings-content{min-width:0;}
             #mosque-map{min-height:300px;}
-            /* أسماء الله الحسنى — دائماً 7 / 4 على الهاتف */
-        #asma-grid{grid-template-columns:repeat(7,minmax(0,1fr)) !important;gap:8px !important;padding:8px !important;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-        #asma-screen .asma-card{min-height:118px;display:flex;flex-direction:column;justify-content:center;align-items:center;}
-        body.is-mobile #asma-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:6px !important;padding:6px !important;}
-        @media (max-width:560px){ #asma-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;} }
+            /* أسماء الله الحسنى — شبكة على نمط قائمة السور (2 / 3 / 4 حسب الشاشة) */
+        #asma-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important;padding:8px !important;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+        #asma-screen .asma-card{min-height:66px;}
+        @media (min-width:720px){ #asma-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:12px !important;} }
+        @media (min-width:1100px){ #asma-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;} }
+        body.is-mobile #asma-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important;padding:6px !important;}
+        @media (max-width:560px){ #asma-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;} }
         body.is-mobile #asma-screen{height:auto !important;min-height:100dvh;}
         body.is-mobile #asma-screen > div{height:auto !important;min-height:100dvh;padding:8px !important;gap:10px !important;}
         body.is-mobile #btn-back-from-asma{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
@@ -647,7 +649,7 @@
         body.is-mobile .inh-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
         @media (max-width:1100px){ body:not(.is-mobile) .inh-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;} }
         @media (max-width:560px){ .inh-grid{grid-template-columns:1fr !important;} }
-        @media (max-width:560px){ .asma-card .asma-name{font-size:1rem !important;} }
+        @media (max-width:560px){ .asma-card .asma-name{font-size:1.02rem !important;} .asma-card .asma-badge{width:40px;height:40px;} }
         body.is-mobile #asma-screen h1{font-size:1.9rem !important;}
         body.is-mobile #asma-screen .asma-verse{margin:0 4px 6px !important;font-size:1rem !important;padding:8px !important;}
         }
@@ -2205,32 +2207,61 @@
         }
         body.is-mobile #asma-grid{ grid-template-columns:repeat(4,1fr); }
         @media (max-width:560px){ #asma-grid{ grid-template-columns:repeat(4,1fr); } }
-        /* بطاقات الـ99 اسمًا — نفس نمط بلاطة السورة « 1 الفَاتِحة » (al-adkar.com/quran) */
+        /* أسماء الله الحسنى — نفس نمط قائمة السور « الفَاتِحة » (al-adkar.com/quran/list)
+           : badge numéroté ornemental + nom Uthmanic + méta — avec l'identité de l'app (zemerdi/or) */
+        #asma-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+        @media (min-width:720px){ #asma-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; } }
+        @media (min-width:1100px){ #asma-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
         .asma-card{
-            position:relative; cursor:pointer; text-align:center;
-            background:linear-gradient(135deg, #5a33ad 0%, #7c55d4 100%);
-            border:1px solid rgba(255,255,255,.18); border-radius:12px;
-            padding:12px 6px; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.22),0 4px 10px rgba(0,0,0,.35);
-            transition:all .2s ease;
+            position:relative; overflow:hidden; cursor:pointer; text-align:right;
+            display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:16px; min-height:66px;
+            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
+            border:1px solid rgba(212,175,55,.26);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.18),inset 0 -3px 6px rgba(0,0,0,.35),0 4px 10px rgba(0,0,0,.35);
+            transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
         }
-        .asma-card:hover{ border-color:#e5c065; transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.45); }
-        .asma-card:active{ transform:scale(.97); }
+        .asma-card::after{
+            content:""; position:absolute; inset-block:0; right:0; width:4px;
+            background:linear-gradient(180deg,#d4af37,#8a6b1f); transform:scaleY(0); transform-origin:top; transition:transform .25s ease;
+        }
+        .asma-card:hover{ transform:translateY(-2px); border-color:var(--gold); box-shadow:0 10px 22px rgba(0,0,0,.45); }
+        .asma-card:hover::after{ transform:scaleY(1); }
+        .asma-card:active{ transform:scale(.98); }
         .asma-card.asma-selected,.asma-card.asma-playing{
-            border-color:#e5c065;
-            background:linear-gradient(135deg, #4b2a94 0%, #6a45bf 100%);
-            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.28),0 5px 14px rgba(212,175,55,.35);
+            border-color:var(--gold);
+            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -4px 7px rgba(0,0,0,.4),0 6px 16px rgba(212,175,55,.28);
         }
-        .asma-card .asma-quran{font-size:.58rem;color:rgba(255,255,255,.82);line-height:1.45;min-height:2.9em;text-align:center;font-family:var(--font);}
-        .asma-card .asma-quran b{color:#fff;font-weight:700;}
+        /* الشارة الزخرفية — نفس زخرفة رقم السورة في المصدر */
+        .asma-badge{ position:relative; flex:0 0 auto; width:44px; height:44px; display:grid; place-items:center; transition:transform .4s ease; }
+        .asma-badge-orn{ position:absolute; inset:0; width:100%; height:100%; }
+        .asma-badge-num{ position:relative; font-weight:800; font-size:.95rem; color:var(--gold); font-variant-numeric:tabular-nums; transition:transform .4s ease; }
+        .asma-card:hover .asma-badge{ transform:rotate(45deg); }
+        .asma-card:hover .asma-badge-num{ transform:rotate(-45deg); }
+        .asma-body{ min-width:0; flex:1; display:flex; flex-direction:column; gap:1px; }
+        .asma-name{ font-family:'Amiri Quran',Amiri,serif !important; font-size:1.28rem; font-weight:700; color:#ffe9a8; line-height:1.75; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .asma-sub{ font-size:.64rem; color:rgba(255,255,255,.62); line-height:1.5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .asma-arrow{ display:none; }
+        @media (min-width:900px){
+            .asma-arrow{ display:grid; place-items:center; flex:0 0 auto; width:28px; height:28px; border-radius:999px; background:rgba(212,175,55,.14); color:var(--gold); font-size:1rem; }
+        }
+        /* البحث عن اسم */
+        .asma-search{
+            display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:14px;
+            border:1px solid rgba(212,175,55,.3); background:rgba(0,0,0,.25); box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+        }
+        .asma-search input{ flex:1; min-width:0; background:transparent; border:0; outline:none; color:var(--text-main); font-family:var(--font); font-size:.9rem; }
+        .asma-search input::placeholder{ color:rgba(255,255,255,.45); }
         /* أسماء الله الحسنى : police Uthmanic (Amiri Quran) — نفس نمط « الفَاتِحة » · al-adkar.com/quran */
         .asma-title,#asma-screen .asma-verse,.asma-card .asma-name,.asma-card .asma-quran,.asma-detail-name,.asma-detail-desc,.asma-detail-quran{font-family:'Amiri Quran',Amiri,serif !important;}
         .asma-detail-quran{font-size:.88rem;color:#9effc0;font-weight:800;margin:0 0 14px;text-align:center;font-variant-numeric:tabular-nums;}
         .asma-card .asma-num{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:6px;font-family:var(--font);direction:ltr;}
         .asma-card .asma-info-hint{
-            position:absolute; top:6px; left:7px; font-size:.72rem; color:rgba(255,255,255,.75);
+            position:absolute; top:5px; left:7px; font-size:.7rem; color:rgba(255,255,255,.42);
             line-height:1; pointer-events:none;
         }
-        .asma-card:hover .asma-info-hint{ color:#ffe9a8; }
+        .asma-card:hover .asma-info-hint{ color:var(--gold); }
+        .asma-card .asma-speaker{ position:absolute; top:4px; right:7px; font-size:.75rem; color:var(--gold); line-height:1; }
         .asma-tip{
             position:fixed;z-index:120000;max-width:min(360px,86vw);display:none;
             background:rgba(7,24,17,.97);border:1px solid rgba(212,175,55,.55);border-radius:14px;
@@ -2275,7 +2306,7 @@
         .asma-detail-next{ left:6px; }
         .asma-detail-card h2,.asma-detail-card p{ padding:0 34px; }
         .asma-detail-num{font-size:.8rem;color:var(--gold);opacity:.85;}
-        .asma-detail-name{font-family:'Amiri Quran',Amiri,serif;font-size:2.4rem;color:#ffffff;margin:6px 0 12px;line-height:1.6;text-shadow:0 2px 8px rgba(0,0,0,.5);}
+        .asma-detail-name{font-family:'Amiri Quran',Amiri,serif;font-size:2.4rem;color:#f4d03f;margin:6px 0 12px;line-height:1.6;text-shadow:0 2px 8px rgba(0,0,0,.5);}
         .asma-detail-desc{font-size:1rem;line-height:2.1;color:var(--cream);margin:0 0 18px;text-align:center;}
         /* زر « 🔊 الاستماع » أُزيل — التفاصيل تظهر بالنص فقط */
         #quran-player-modal, #quran-player-modal .setting-title, #quran-player-modal label, #quran-player-modal h2, #quran-player-modal span, #quran-player-modal p, #quran-player-modal div {
@@ -5015,6 +5046,10 @@
                     <div class="asma-verse">
                       ﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا ۖ وَذَرُوا الَّذِينَ يُلْحِدُونَ فِي أَسْمَائِهِ ۚ سَيُجْزَوْنَ مَا كَانُوا يَعْمَلُونَ﴾ [الأعراف: 180]
                     </div>
+                    <div class="asma-search">
+                      <span aria-hidden="true">🔍</span>
+                      <input type="search" id="asma-search-input" placeholder="ابحث عن اسم من أسماء الله الحسنى…" autocomplete="off" aria-label="بحث في أسماء الله الحسنى">
+                    </div>
                     <main id="asma-grid" class="asma-grid"></main>
                 </div>
 
@@ -6315,7 +6350,12 @@ var gender = 'male';
                 var grid = document.getElementById('asma-grid');
                 if (!grid) return;
                 var idx = ASMA.findIndex(s => s.ar === text);
-                if (idx >= 0 && grid.children[idx]) { grid.children[idx].classList.add('asma-playing'); var sp = grid.children[idx].querySelector('.asma-speaker'); if (sp) sp.textContent = '🔊'; }
+                var card = null;
+                for (var i = 0; i < grid.children.length; i++) {
+                    var ch = grid.children[i];
+                    if (ch.getAttribute && ch.getAttribute('data-ar') === text) { card = ch; break; }
+                }
+                if (card) { card.classList.add('asma-playing'); var sp = card.querySelector('.asma-speaker'); if (sp) sp.textContent = '🔊'; }
             } catch (e) {}
         }
 
@@ -6441,18 +6481,40 @@ var gender = 'male';
             if (next) next.addEventListener('click', function () { if (_asmaCurrentIdx < ASMA.length - 1) applyAsmaDetailByIdx(_asmaCurrentIdx + 1); });
         })();
         window.__setAsmaGender = function(v) { gender = v; };
+        var _asmaQuery = '';
+        function _asmaNorm(s) {
+            return String(s == null ? '' : s)
+                .replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g, '')
+                .replace(/[\u0622\u0623\u0625]/g, '\u0627')
+                .replace(/\u0640/g, '\u064A')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
+        }
         function renderAsma() {
             const grid = document.getElementById('asma-grid');
             if (!grid) return;
-            grid.innerHTML = ASMA.map(s => `
+            const _q = _asmaNorm(_asmaQuery);
+            const _list = _q ? ASMA.filter(function (s) { return _asmaNorm(s.ar).indexOf(_q) > -1 || _asmaNorm(s.desc).indexOf(_q) > -1; }) : ASMA;
+            grid.innerHTML = _list.map(s => `
                 <div class="asma-card" data-ar="${s.ar.replace(/"/g, '&quot;')}" data-num="${s.num}" data-desc="${String(s.desc).replace(/"/g, '&quot;')}">
-                    <div class="asma-speaker" style="font-size:.8rem;color:var(--gold);min-height:1rem;"></div>
-                    <div class="asma-name" style="font-family:'Amiri Quran',Amiri,serif; font-size:1.15rem; font-weight:600; color:#ffffff; line-height:1.9;">${s.ar}</div>
-                    <div class="asma-quran">${s.q == null ? 'مصدره خارج نص القرآن' : ('ورد في القرآن ' + (s.q === 1 ? 'مرة واحدة' : (s.q === 2 ? 'مرتين' : s.q + ' مرات')))}</div>
-                    <div class="asma-num">${s.num}</div>
+                    <span class="asma-badge" aria-hidden="true">
+                        <svg class="asma-badge-orn" viewBox="0 0 48 48"><g fill="rgba(212,175,55,.10)" stroke="#d4af37" stroke-width="1.6" stroke-linejoin="round"><rect x="9" y="9" width="30" height="30" rx="2.5"></rect><rect x="9" y="9" width="30" height="30" rx="2.5" transform="rotate(45 24 24)"></rect></g><circle cx="24" cy="24" r="12.5" fill="rgba(212,175,55,.10)"></circle></svg>
+                        <span class="asma-badge-num">${s.num}</span>
+                    </span>
+                    <span class="asma-body">
+                        <span class="asma-name">${s.ar}</span>
+                        <span class="asma-sub">${s.q == null ? 'مصدره خارج نص القرآن' : ('ورد في القرآن ' + (s.q === 1 ? 'مرة واحدة' : (s.q === 2 ? 'مرتين' : s.q + ' مرات')))}</span>
+                    </span>
+                    <span class="asma-arrow" aria-hidden="true">›</span>
+                    <span class="asma-speaker"></span>
                     <span class="asma-info-hint" title="التفاصيل" aria-hidden="true">ℹ</span>
                 </div>`).join('');
         }
+        try {
+            var _asmaSearch = document.getElementById('asma-search-input');
+            if (_asmaSearch) _asmaSearch.addEventListener('input', function () { _asmaQuery = this.value || ''; renderAsma(); });
+        } catch (e) {}
 
         function openSurahInQuran(n, fromWird) {
             window._quranReturnTo = null;
