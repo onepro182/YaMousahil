@@ -2706,6 +2706,120 @@
         #mushaf-img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:4px;box-shadow:0 8px 30px rgba(0,0,0,0.4);background:#f7f2e7;}
         .mushaf-jump input{direction:ltr;}
         @media (max-width:700px){ .mushaf-page-info{min-width:84px;font-size:.92rem;} .mushaf-nav-btn{padding:7px 10px;font-size:.85rem;} .mushaf-book-wrap{padding:4px;border-radius:10px;} }
+
+        /* ============================================================
+           THÈME SMARTCOD — clair teal / cyan (identique à l'image de référence)
+           Fond très clair, cartes blanches, bandeaux teal foncé, boutons teal
+           ============================================================ */
+        body.theme-teal{
+            --bg-dark:#0b3436;
+            --bg-screen:#e9f5f6;
+            --bg-card:#ffffff;
+            --bg-card-hover:#f1fbfb;
+            --gold:#0e8f95;
+            --gold-light:#16b0b6;
+            --cream:#16323a;
+            --text-main:#16323a;
+            --text-dim:#6b8a90;
+            --glass-bg:rgba(255,255,255,.95);
+            --glass-border:rgba(14,143,149,.16);
+            --glass-blur:blur(8px);
+            --glass-shadow:0 2px 10px rgba(9,60,64,.10);
+        }
+        /* fond général clair, sans l'image islamique */
+        body.theme-teal .tv-screen{ background-color:#e9f5f6 !important; background-image:none !important; }
+        /* cartes / boutons blancs à filet teal */
+        body.theme-teal .glass-btn{ background:#fff !important; border-color:rgba(14,143,149,.16) !important; color:#16323a !important; box-shadow:0 2px 10px rgba(9,60,64,.10) !important; }
+        body.theme-teal .glass-btn:hover{ border-color:#0e8f95 !important; background:#f1fbfb !important; color:#0b6f74 !important; }
+        /* cartes de l'accueil : blanc + ombre douce (SmartDoc) */
+        body.theme-teal #home-screen .app-card{
+            background:#fff !important; border:1px solid rgba(14,143,149,.16) !important;
+            box-shadow:0 2px 10px rgba(9,60,64,.10) !important; border-radius:14px !important;
+        }
+        body.theme-teal #home-screen .app-card:hover{ border-color:#0e8f95 !important; transform:translateY(-2px); }
+        body.theme-teal #home-screen .app-name{ color:#16323a !important; }
+        body.theme-teal .app-name{ color:#16323a !important; }
+        /* boutons ronds / pilules */
+        body.theme-teal #home-screen .nav-pill,
+        body.theme-teal #home-screen .circle-btn,
+        body.theme-teal #home-screen .pill-btn{
+            background:#fff !important; border:1px solid rgba(14,143,149,.18) !important; color:#16323a !important;
+            box-shadow:0 2px 10px rgba(9,60,64,.10) !important;
+        }
+        body.theme-teal #home-screen .nav-pill.active{
+            background:linear-gradient(135deg,#0e8f95 0%,#16b0b6 100%) !important; border-color:#0e8f95 !important; color:#fff !important;
+            box-shadow:0 6px 16px rgba(14,143,149,.32) !important; text-shadow:none !important;
+        }
+        body.theme-teal #home-screen .nav-pill:hover,
+        body.theme-teal #home-screen .circle-btn:hover,
+        body.theme-teal #home-screen .pill-btn:hover{ border-color:#0e8f95 !important; color:#0b6f74 !important; }
+        /* titres / accents */
+        body.theme-teal .section-title,
+        body.theme-teal #home-screen .section-title,
+        body.theme-teal #quran-menus .section-title{ color:#0b6f74 !important; text-shadow:none !important; }
+        body.theme-teal #home-screen .section-title::before,
+        body.theme-teal #home-screen .section-title::after,
+        body.theme-teal #quran-menus .section-title::before,
+        body.theme-teal #quran-menus .section-title::after{
+            background:linear-gradient(90deg,transparent,rgba(14,143,149,.35) 22%,#0e8f95 50%,rgba(14,143,149,.35) 78%,transparent) !important;
+        }
+        body.theme-teal .clock-large{ color:#0b6f74 !important; text-shadow:none !important; }
+        body.theme-teal .clock-gmt{ color:#0e8f95 !important; }
+        body.theme-teal .date-sub{ color:#16323a !important; text-shadow:none !important; }
+        body.theme-teal .date-sub.dim{ color:#6b8a90 !important; }
+        body.theme-teal .verse-arabic{ color:#0b6f74 !important; text-shadow:none !important; }
+        body.theme-teal .title-prayers h1,
+        body.theme-teal .header-prayers h1{ color:#0b6f74 !important; text-shadow:none !important; }
+        /* hero mihrab : bandeau teal foncé (comme l'image) */
+        body.theme-teal .mihrab-arch{
+            background:linear-gradient(160deg,#14484b 0%,#0b3436 100%) !important;
+            border-color:rgba(14,143,149,.35) !important;
+        }
+        body.theme-teal .mihrab-name{ color:#7fe3e7 !important; }
+        body.theme-teal .mihrab-label{ color:rgba(255,255,255,.72) !important; }
+        body.theme-teal .mihrab-adhan{ color:rgba(255,255,255,.85) !important; }
+        body.theme-teal .mihrab-bottom-border{ background:rgba(14,143,149,.3) !important; border-bottom-color:#16b0b6 !important; }
+        /* boutons retour */
+        body.theme-teal .back-btn{
+            background:#fff !important; border-color:rgba(14,143,149,.2) !important; color:#16323a !important;
+            box-shadow:0 2px 8px rgba(9,60,64,.10) !important;
+        }
+        body.theme-teal .back-btn:hover{ border-color:#0e8f95 !important; color:#0b6f74 !important; }
+        /* navigation */
+        body.theme-teal .nav-btn{ color:#3d5f66 !important; }
+        body.theme-teal .nav-btn:hover{ background:rgba(14,143,149,.08) !important; color:#0b6f74 !important; }
+        body.theme-teal .nav-btn.active{ color:#0b6f74 !important; border-color:#0e8f95 !important; background:rgba(14,143,149,.12) !important; }
+        /* puces des horaires */
+        body.theme-teal .time-box{
+            background:#fff !important; border:1px solid rgba(14,143,149,.16) !important;
+            box-shadow:0 2px 8px rgba(9,60,64,.08) !important;
+        }
+        body.theme-teal .time-box .name{ color:#6b8a90 !important; }
+        body.theme-teal .time-box .time{ color:#16323a !important; }
+        body.theme-teal .time-box.is-next{ border-color:#0e8f95 !important; background:rgba(14,143,149,.08) !important; }
+        body.theme-teal .time-box.is-next .name,
+        body.theme-teal .time-box.is-next .time{ color:#0b6f74 !important; }
+        body.theme-teal .time-box.is-now{ background:#0b6f74 !important; border-color:#0b6f74 !important; }
+        body.theme-teal .time-box.is-now .name,
+        body.theme-teal .time-box.is-now .time,
+        body.theme-teal .time-box.is-now .name-line .nm{ color:#fff !important; }
+        body.theme-teal .time-box.is-now .name-line .badge{ color:#cdeff1 !important; }
+        /* listes et panneaux internes */
+        body.theme-teal .p-item{ background:#fff !important; border-color:rgba(14,143,149,.16) !important; color:#16323a !important; }
+        body.theme-teal .p-item .p-name{ color:#16323a !important; }
+        body.theme-teal .huj-item,
+        body.theme-teal .huj-dua,
+        body.theme-teal .tajweed-drawer,
+        body.theme-teal .huj-table td{ background:#fff !important; border-color:rgba(14,143,149,.14) !important; color:#16323a !important; }
+        body.theme-teal .huj-head{ color:#0b6f74 !important; }
+        body.theme-teal .huj-note{ color:#4a6b72 !important; }
+        /* réglages */
+        body.theme-teal #settings-modal .settings-container,
+        body.theme-teal #settings-modal .settings-content{ background:#fff !important; color:#16323a !important; }
+        body.theme-teal #settings-modal .nav-btn.active{ background:linear-gradient(135deg,#0e8f95 0%,#16b0b6 100%) !important; color:#fff !important; border-color:#0e8f95 !important; }
+        body.theme-teal .setting-select,
+        body.theme-teal .group-btn{ background:#fff !important; border-color:rgba(14,143,149,.2) !important; color:#16323a !important; }
+        body.theme-teal .group-btn.active{ background:linear-gradient(135deg,#0e8f95 0%,#16b0b6 100%) !important; color:#fff !important; border-color:#0e8f95 !important; }
     </style>
     <!-- ASMA_END_STYLE -->
 </head>
@@ -5095,7 +5209,7 @@
                                 <div class="setting-row" id="row-test-background" style="justify-content:center;margin-top:10px;"><button type="button" class="file-btn" id="btn-test-background" style="background:var(--glass-bg);backdrop-filter:blur(10px);border:1px solid #4ade80;color:#4ade80;font-weight:bold;width:100%;justify-content:center;">🔔 اختبار إشعار الخلفية (اقفل الهاتف — خلال 15 ثانية)</button></div>
                             </div>
                             <div class="settings-pane" id="pane-radio"><div class="setting-row"><div class="setting-title">إذاعة القرآن</div><label class="switch"><input type="checkbox"><span class="slider"></span></label></div></div>
-                            <div class="settings-pane" id="pane-display"><div class="setting-row"><div class="setting-title" data-i18n="set_clock">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 <span data-i18n="hour_suffix">س</span></button><button type="button" class="group-btn active" data-value="24">24 <span data-i18n="hour_suffix">س</span></button></div></div><div class="setting-duo"><label class="setting-duo-tile" for="set-seconds"><div class="setting-duo-label" data-i18n="set_seconds">إظهار الثواني</div><span class="switch"><input type="checkbox" id="set-seconds"><span class="slider"></span></span></label><label class="setting-duo-tile" for="set-gregorian"><div class="setting-duo-label" data-i18n="set_gregorian">عرض التاريخ الميلادي</div><span class="switch"><input type="checkbox" id="set-gregorian" checked><span class="slider"></span></span></label></div><div class="setting-duo"><label class="setting-duo-tile" for="set-gmt"><div class="setting-duo-label" data-i18n="set_gmt">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select setting-duo-select"><option value="auto" selected data-i18n="gmt_auto">تلقائي (توقيت الجهاز)</option>
+                            <div class="settings-pane" id="pane-display"><div class="setting-row setting-row--inline"><div class="setting-title" data-i18n="set_theme">المظهر (السمة)</div><div class="toggle-group" id="set-theme"><button type="button" class="group-btn" data-value="default" data-i18n="theme_default">الافتراضي (أخضر وذهبي)</button><button type="button" class="group-btn" data-value="teal" data-i18n="theme_teal">فيروزي SmartDoc</button><button type="button" class="group-btn" data-value="blue" data-i18n="theme_blue">أزرق احترافي</button><button type="button" class="group-btn" data-value="gold" data-i18n="theme_gold">ذهبي ملكي</button><button type="button" class="group-btn" data-value="rose" data-i18n="theme_rose">وردي عصري</button></div></div><div class="setting-row"><div class="setting-title" data-i18n="set_clock">الساعة</div><div class="toggle-group" id="set-clock"><button type="button" class="group-btn" data-value="12">12 <span data-i18n="hour_suffix">س</span></button><button type="button" class="group-btn active" data-value="24">24 <span data-i18n="hour_suffix">س</span></button></div></div><div class="setting-duo"><label class="setting-duo-tile" for="set-seconds"><div class="setting-duo-label" data-i18n="set_seconds">إظهار الثواني</div><span class="switch"><input type="checkbox" id="set-seconds"><span class="slider"></span></span></label><label class="setting-duo-tile" for="set-gregorian"><div class="setting-duo-label" data-i18n="set_gregorian">عرض التاريخ الميلادي</div><span class="switch"><input type="checkbox" id="set-gregorian" checked><span class="slider"></span></span></label></div><div class="setting-duo"><label class="setting-duo-tile" for="set-gmt"><div class="setting-duo-label" data-i18n="set_gmt">المنطقة الزمنية (GMT)</div><select id="set-gmt" class="setting-select setting-duo-select"><option value="auto" selected data-i18n="gmt_auto">تلقائي (توقيت الجهاز)</option>
                               <option value="ma" data-i18n="gmt_ma">توقيت المغرب الرسمي</option><option value="-12">GMT-12</option><option value="-11">GMT-11</option><option value="-10">GMT-10</option><option value="-9">GMT-9</option><option value="-8">GMT-8</option><option value="-7">GMT-7</option><option value="-6">GMT-6</option><option value="-5">GMT-5</option><option value="-4">GMT-4</option><option value="-3">GMT-3</option><option value="-2">GMT-2</option><option value="-1">GMT-1</option><option value="0">GMT</option><option value="1">GMT+1</option><option value="2">GMT+2</option><option value="3">GMT+3</option><option value="4">GMT+4</option><option value="5">GMT+5</option><option value="6">GMT+6</option><option value="7">GMT+7</option><option value="8">GMT+8</option><option value="9">GMT+9</option><option value="10">GMT+10</option><option value="11">GMT+11</option><option value="12">GMT+12</option></select><div class="setting-hint" id="set-gmt-hint">—</div></label><label class="setting-duo-tile" for="set-theme"><div class="setting-duo-label" data-i18n="set_theme">المظهر (السمة)</div><select id="set-theme" class="setting-select setting-duo-select"><option value="default" data-i18n="theme_default">الافتراضي (أخضر وذهبي)</option><option value="blue" data-i18n="theme_blue">أزرق احترافي</option><option value="gold" data-i18n="theme_gold">ذهبي ملكي</option><option value="rose" data-i18n="theme_rose">وردي عصري</option></select></label></div><div class="setting-row"><div class="setting-title" data-i18n="set_lang">اللغة</div><div class="toggle-group" id="set-lang"><button type="button" class="group-btn active" data-value="ar">العربية</button><button type="button" class="group-btn" data-value="fr">Français</button></div></div></div>
                             <div class="settings-pane" id="pane-about">
                                 <div class="about-content about-about">
@@ -5264,7 +5378,7 @@
                 set_nav_prayer:'مواقيت الصلاة', set_nav_adhan:'التنبيهات والأذان', set_nav_display:'العرض واللغة', set_nav_about:'حول التطبيق',
                 set_clock:'الساعة', hour_suffix:'س', set_seconds:'إظهار الثواني',
                 set_gmt:'المنطقة الزمنية (GMT)', gmt_auto:'تلقائي (توقيت الجهاز)', gmt_ma:'توقيت المغرب الرسمي',
-                set_theme:'المظهر (السمة)', theme_default:'الافتراضي (أخضر وذهبي)', theme_blue:'أزرق احترافي', theme_gold:'ذهبي ملكي', theme_rose:'وردي عصري',
+                set_theme:'المظهر (السمة)', theme_default:'الافتراضي (أخضر وذهبي)', theme_blue:'أزرق احترافي', theme_gold:'ذهبي ملكي', theme_rose:'وردي عصري', theme_teal:'فيروزي SmartDoc',
                 set_lang:'اللغة', set_gregorian:'عرض التاريخ الميلادي',
                 footer_cancel:'إلغاء', footer_save:'حفظ',
                 about_title:'حول التطبيق',
@@ -5281,7 +5395,7 @@
                 set_nav_prayer:'Horaires de prière', set_nav_adhan:'Rappels & Adhan', set_nav_display:'Affichage & langue', set_nav_about:'À propos',
                 set_clock:'Heure', hour_suffix:'h', set_seconds:'Afficher les secondes',
                 set_gmt:'Fuseau horaire (GMT)', gmt_auto:'Automatique (heure de l’appareil)', gmt_ma:'Heure officielle du Maroc',
-                set_theme:'Apparence (thème)', theme_default:'Défaut (vert & or)', theme_blue:'Bleu professionnel', theme_gold:'Doré royal', theme_rose:'Rose moderne',
+                set_theme:'Apparence (thème)', theme_default:'Défaut (vert & or)', theme_blue:'Bleu professionnel', theme_gold:'Doré royal', theme_rose:'Rose moderne', theme_teal:'SmartDoc (turquoise)',
                 set_lang:'Langue', set_gregorian:'Afficher la date grégorienne',
                 footer_cancel:'Annuler', footer_save:'Enregistrer',
                 about_title:'À propos de l’application',
@@ -5303,9 +5417,9 @@
         window.applyAppLanguage = applyAppLanguage;
         function applyTheme(name) {
             try {
-                const names = ['blue', 'gold', 'rose'];
+                const names = ['blue', 'gold', 'rose', 'teal'];
                 if (names.indexOf(name) === -1) name = 'default';
-                document.body.classList.remove('theme-blue', 'theme-gold', 'theme-rose');
+                document.body.classList.remove('theme-blue', 'theme-gold', 'theme-rose', 'theme-teal');
                 if (name !== 'default') document.body.classList.add('theme-' + name);
             } catch (e) {}
         }
@@ -10223,7 +10337,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             document.getElementById('set-asr').value = settings.asr || 'Shafi';
             document.querySelectorAll('#set-clock .group-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.value) === settings.clockFormat));
             document.getElementById('set-gmt').value = (settings.clockTz === 'auto' || settings.clockTz === undefined) ? 'auto' : String(settings.clockTz);
-            var _th = document.getElementById('set-theme'); if (_th) _th.value = settings.theme || 'default';
+            var _th = document.getElementById('set-theme'); if (_th) { var _tv = settings.theme || 'default'; _th.querySelectorAll('.group-btn').forEach(function (b) { b.classList.toggle('active', (b.dataset.value || 'default') === _tv); }); }
             var _ss = document.getElementById('set-seconds'); if (_ss) _ss.checked = !!settings.showSeconds;
             var _gr = document.getElementById('set-gregorian'); if (_gr) _gr.checked = settings.showGregorian !== false;
             document.querySelectorAll('#set-lang .group-btn').forEach(b => b.classList.toggle('active', (b.dataset.value || 'ar') === (settings.language || 'ar')));
@@ -10248,6 +10362,10 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
                 btn.addEventListener('click', (e) => {
                     group.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
                     e.currentTarget.classList.add('active');
+                    // السمة تُطبَّق فورًا (SmartDoc / أزرق / ذهبي / وردي)
+                    if (group.id === 'set-theme') {
+                        try { if (typeof applyTheme === 'function') applyTheme(e.currentTarget.dataset.value || 'default'); } catch (err) {}
+                    }
                 });
             });
         });
@@ -10294,7 +10412,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             var _ssEl = document.getElementById('set-seconds'); if (_ssEl) settings.showSeconds = _ssEl.checked;
             var _grEl = document.getElementById('set-gregorian'); if (_grEl) settings.showGregorian = _grEl.checked;
             var _langEl = document.querySelector('#set-lang .group-btn.active'); if (_langEl) settings.language = _langEl.dataset.value || 'ar';
-            var _thEl = document.getElementById('set-theme'); if (_thEl) settings.theme = _thEl.value || 'default';
+            var _thEl = document.getElementById('set-theme'); if (_thEl) { var _tb = _thEl.querySelector('.group-btn.active'); settings.theme = (_tb && _tb.dataset.value) || 'default'; }
             settings.gmtOffset = (settings.clockTz === 'auto') ? Math.round(deviceOffsetMinutes(new Date()) / 60) : (settings.clockTz === 'ma' ? Math.round(moroccoOffsetMinutes(new Date()) / 60) : settings.clockTz);
             clockTzPreview = null;
             try { localStorage.setItem('YaMousahil_settings', JSON.stringify(settings)); } catch (e) {}
