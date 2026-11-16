@@ -2205,32 +2205,32 @@
         }
         body.is-mobile #asma-grid{ grid-template-columns:repeat(4,1fr); }
         @media (max-width:560px){ #asma-grid{ grid-template-columns:repeat(4,1fr); } }
-        /* بطاقات الـ99 اسمًا — 3D زمرد الذهبي */
+        /* بطاقات الـ99 اسمًا — نفس نمط بلاطة السورة « 1 الفَاتِحة » (al-adkar.com/quran) */
         .asma-card{
             position:relative; cursor:pointer; text-align:center;
-            background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
-            border:1px solid rgba(255,255,255,.16); border-radius:12px;
-            padding:12px 6px; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
+            background:linear-gradient(135deg, #5a33ad 0%, #7c55d4 100%);
+            border:1px solid rgba(255,255,255,.18); border-radius:12px;
+            padding:12px 6px; box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.22),0 4px 10px rgba(0,0,0,.35);
             transition:all .2s ease;
         }
-        .asma-card:hover{ border-color:var(--gold); transform:translateY(-2px); }
+        .asma-card:hover{ border-color:#e5c065; transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.45); }
         .asma-card:active{ transform:scale(.97); }
         .asma-card.asma-selected,.asma-card.asma-playing{
-            border-color:var(--gold);
-            background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);
-            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);
+            border-color:#e5c065;
+            background:linear-gradient(135deg, #4b2a94 0%, #6a45bf 100%);
+            box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.28),0 5px 14px rgba(212,175,55,.35);
         }
-        .asma-card .asma-quran{font-size:.58rem;color:#9effc0;line-height:1.45;min-height:2.9em;text-align:center;font-family:var(--font);}
-        .asma-card .asma-quran b{color:#c8ffd9;font-weight:700;}
+        .asma-card .asma-quran{font-size:.58rem;color:rgba(255,255,255,.82);line-height:1.45;min-height:2.9em;text-align:center;font-family:var(--font);}
+        .asma-card .asma-quran b{color:#fff;font-weight:700;}
         /* أسماء الله الحسنى : police Uthmanic (Amiri Quran) — نفس نمط « الفَاتِحة » · al-adkar.com/quran */
         .asma-title,#asma-screen .asma-verse,.asma-card .asma-name,.asma-card .asma-quran,.asma-detail-name,.asma-detail-desc,.asma-detail-quran{font-family:'Amiri Quran',Amiri,serif !important;}
         .asma-detail-quran{font-size:.88rem;color:#9effc0;font-weight:800;margin:0 0 14px;text-align:center;font-variant-numeric:tabular-nums;}
         .asma-card .asma-num{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:6px;font-family:var(--font);direction:ltr;}
         .asma-card .asma-info-hint{
-            position:absolute; top:6px; left:7px; font-size:.72rem; color:rgba(212,175,55,.7);
+            position:absolute; top:6px; left:7px; font-size:.72rem; color:rgba(255,255,255,.75);
             line-height:1; pointer-events:none;
         }
-        .asma-card:hover .asma-info-hint{ color:var(--gold); }
+        .asma-card:hover .asma-info-hint{ color:#ffe9a8; }
         .asma-tip{
             position:fixed;z-index:120000;max-width:min(360px,86vw);display:none;
             background:rgba(7,24,17,.97);border:1px solid rgba(212,175,55,.55);border-radius:14px;
@@ -2275,7 +2275,7 @@
         .asma-detail-next{ left:6px; }
         .asma-detail-card h2,.asma-detail-card p{ padding:0 34px; }
         .asma-detail-num{font-size:.8rem;color:var(--gold);opacity:.85;}
-        .asma-detail-name{font-family:var(--font-quran);font-size:2.4rem;color:#f4d03f;margin:6px 0 12px;line-height:1.5;}
+        .asma-detail-name{font-family:'Amiri Quran',Amiri,serif;font-size:2.4rem;color:#ffffff;margin:6px 0 12px;line-height:1.6;text-shadow:0 2px 8px rgba(0,0,0,.5);}
         .asma-detail-desc{font-size:1rem;line-height:2.1;color:var(--cream);margin:0 0 18px;text-align:center;}
         /* زر « 🔊 الاستماع » أُزيل — التفاصيل تظهر بالنص فقط */
         #quran-player-modal, #quran-player-modal .setting-title, #quran-player-modal label, #quran-player-modal h2, #quran-player-modal span, #quran-player-modal p, #quran-player-modal div {
@@ -6447,7 +6447,7 @@ var gender = 'male';
             grid.innerHTML = ASMA.map(s => `
                 <div class="asma-card" data-ar="${s.ar.replace(/"/g, '&quot;')}" data-num="${s.num}" data-desc="${String(s.desc).replace(/"/g, '&quot;')}">
                     <div class="asma-speaker" style="font-size:.8rem;color:var(--gold);min-height:1rem;"></div>
-                    <div class="asma-name" style="font-family:var(--font-quran); font-size:1.3rem; color:#f4ecd8; line-height:1.4;">${s.ar}</div>
+                    <div class="asma-name" style="font-family:'Amiri Quran',Amiri,serif; font-size:1.15rem; font-weight:600; color:#ffffff; line-height:1.9;">${s.ar}</div>
                     <div class="asma-quran">${s.q == null ? 'مصدره خارج نص القرآن' : ('ورد في القرآن ' + (s.q === 1 ? 'مرة واحدة' : (s.q === 2 ? 'مرتين' : s.q + ' مرات')))}</div>
                     <div class="asma-num">${s.num}</div>
                     <span class="asma-info-hint" title="التفاصيل" aria-hidden="true">ℹ</span>
