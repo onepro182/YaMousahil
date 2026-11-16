@@ -635,12 +635,12 @@
             .settings-content{min-width:0;}
             #mosque-map{min-height:300px;}
             /* أسماء الله الحسنى — شبكة على نمط قائمة السور (2 / 3 / 4 حسب الشاشة) */
-        #asma-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:10px !important;padding:8px !important;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+        #asma-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important;padding:8px !important;overflow-y:auto;-webkit-overflow-scrolling:touch;}
         #asma-screen .asma-card{min-height:66px;}
         @media (min-width:720px){ #asma-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:12px !important;} }
         @media (min-width:1100px){ #asma-grid{grid-template-columns:repeat(6,minmax(0,1fr)) !important;} }
-        body.is-mobile #asma-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;padding:6px !important;}
-        @media (max-width:560px){ #asma-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;} }
+        body.is-mobile #asma-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important;padding:6px !important;}
+        @media (max-width:560px){ #asma-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;} }
         body.is-mobile #asma-screen{height:auto !important;min-height:100dvh;}
         body.is-mobile #asma-screen > div{height:auto !important;min-height:100dvh;padding:8px !important;gap:10px !important;}
         body.is-mobile #btn-back-from-asma{position:fixed;top:14px;inset-inline-start:14px;z-index:80;box-shadow:0 4px 18px rgba(0,0,0,0.5);}
@@ -2226,7 +2226,7 @@
         @media (max-width:560px){ #asma-grid{ grid-template-columns:repeat(4,1fr); } }
         /* أسماء الله الحسنى — نفس نمط قائمة السور « الفَاتِحة » (al-adkar.com/quran/list)
            : badge numéroté ornemental + nom Uthmanic + méta — avec l'identité de l'app (zemerdi/or) */
-        #asma-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+        #asma-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
         @media (min-width:720px){ #asma-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; } }
         @media (min-width:1100px){ #asma-grid{ grid-template-columns:repeat(6,minmax(0,1fr)); } }
         .asma-card{
