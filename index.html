@@ -2263,10 +2263,15 @@
         .asma-detail-quran{font-size:.88rem;color:#9effc0;font-weight:800;margin:0 0 14px;text-align:center;font-variant-numeric:tabular-nums;}
         .asma-card .asma-num{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:6px;font-family:var(--font);direction:ltr;}
         .asma-card .asma-info-hint{
-            position:absolute; top:5px; left:7px; font-size:.7rem; color:rgba(255,255,255,.42);
-            line-height:1; pointer-events:none;
+            position:absolute; top:4px; left:6px; z-index:3;
+            width:22px; height:22px; padding:0; line-height:1; border-radius:50%;
+            display:grid; place-items:center; pointer-events:auto; cursor:pointer;
+            font-size:.7rem; font-family:var(--font); color:rgba(255,255,255,.55);
+            background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16);
+            transition:all .18s ease;
         }
-        .asma-card:hover .asma-info-hint{ color:var(--gold); }
+        .asma-card .asma-info-hint:hover,
+        .asma-card .asma-info-hint:active{ color:#0b132b; background:var(--gold); border-color:var(--gold); transform:scale(1.08); }
         .asma-card .asma-speaker{ position:absolute; top:4px; right:7px; font-size:.75rem; color:var(--gold); line-height:1; }
         .asma-tip{
             position:fixed;z-index:120000;max-width:min(360px,86vw);display:none;
@@ -2284,12 +2289,12 @@
         .asma-detail-modal.on{display:flex;}
         .asma-detail-card{
             position:relative;width:min(520px,94vw);max-height:82vh;overflow-y:auto;
-            border-radius:20px;padding:26px 22px 22px;text-align:center;
+            border-radius:20px;padding:40px 22px 22px;text-align:center;
             border:1px solid rgba(212,175,55,.5);background:linear-gradient(160deg,rgba(18,58,42,.96),rgba(6,24,17,.98));
             box-shadow:0 24px 70px rgba(0,0,0,.6);
         }
         .asma-detail-close{
-            position:absolute; top:10px; left:12px; width:34px; height:34px; border-radius:12px;
+            position:absolute; top:10px; left:12px; width:34px; height:34px; border-radius:12px; z-index:6;
             background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);
             border:1px solid rgba(255,255,255,.16); color:var(--cream);
             font-size:1rem; cursor:pointer; line-height:1;
@@ -6582,12 +6587,17 @@ var gender = 'male';
             });
             grid.addEventListener('mouseleave', function () { asmaHideTip(); });
             var openOnce = function (card) { if (!card) return; if (card.dataset.opened === '1') return; card.dataset.opened = '1'; setTimeout(function () { card.dataset.opened = '0'; }, 400); setTimeout(function () { asmaOpenDetail(card); }, 40); };
+            // l'information s'ouvre UNIQUEMENT via la petite icône ℹ (pas le clic sur la carte)
             grid.addEventListener('click', function (e) {
-                var card = e.target.closest ? e.target.closest('.asma-card') : null;
+                var btn = e.target.closest ? e.target.closest('.asma-info-hint') : null;
+                if (!btn) return;
+                var card = btn.closest ? btn.closest('.asma-card') : null;
                 if (card) openOnce(card);
             });
             grid.addEventListener('touchstart', function (e) {
-                var card = e.target.closest ? e.target.closest('.asma-card') : null;
+                var btn = e.target.closest ? e.target.closest('.asma-info-hint') : null;
+                if (!btn) return;
+                var card = btn.closest ? btn.closest('.asma-card') : null;
                 if (card) openOnce(card);
             }, { passive: true });
             var close = document.getElementById('asma-detail-close');
@@ -6628,7 +6638,7 @@ var gender = 'male';
                     </span>
                     <span class="asma-arrow" aria-hidden="true">›</span>
                     <span class="asma-speaker"></span>
-                    <span class="asma-info-hint" title="التفاصيل" aria-hidden="true">ℹ</span>
+                    <button type="button" class="asma-info-hint" title="التفاصيل" aria-label="عرض تفاصيل الاسم">ℹ</button>
                 </div>`).join('');
         }
         try {
