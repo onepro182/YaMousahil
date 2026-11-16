@@ -997,6 +997,8 @@
         #isl-back-to-surahs{display:none;padding:9px 16px;font-family:var(--font);font-size:.9rem;font-weight:700;cursor:pointer;}
         body.is-mobile .quran-split-view.show-text #isl-back-to-surahs{display:inline-block;margin:6px auto 0;}
         #isl-sheet-close{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;font-size:1.05rem;cursor:pointer;}
+        /* في « ورد القرآن اليومي » لا نحتاج زر إغلاق الفهرس */
+        body.wird-mode #isl-sheet-close{ display:none !important; }
         #isl-mark-btn{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer;}
         #isl-mark-btn.on{border-color:var(--gold);color:#ffee9e;background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3);}
         .isl-reciter-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;text-align:right;padding:8px 12px;font-family:var(--font);min-height:44px;}
@@ -8988,6 +8990,7 @@ var gender = 'male';
         window._quranWirdSurahs = [18, 36, 50, 55, 56, 67];
         window._setQuranWirdMode = function(on) {
             window._quranWirdOnly = !!on;
+            try { document.body.classList.toggle('wird-mode', window._quranWirdOnly); } catch (e) {}
             var tabJuz = document.getElementById('tab-juz');
             var tabSurah = document.getElementById('tab-surah');
             if (tabJuz) tabJuz.style.display = window._quranWirdOnly ? 'none' : '';
