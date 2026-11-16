@@ -1558,7 +1558,7 @@
         .huj-tab{flex:1;max-width:340px;padding:12px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--text-main);cursor:pointer;font-family:var(--font);font-weight:800;font-size:.92rem;white-space:nowrap;box-shadow:inset 0 1px 1px rgba(255,255,255,.08);transition:all .18s ease;}
         .huj-tab:hover{border-color:var(--gold);color:#ffee9e;}
         .huj-tab.active{border-color:var(--gold);color:#ffee9e;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),inset 0 -3px 6px rgba(0,0,0,.4),0 5px 12px rgba(0,0,0,.4);text-shadow:0 1px 2px rgba(0,0,0,.6);}
-        .huj-tab-download{border-color:#d4af37 !important;color:#ffee9e !important;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%) !important;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),inset 0 -3px 6px rgba(0,0,0,.4),0 5px 12px rgba(0,0,0,.45);text-shadow:0 1px 2px rgba(0,0,0,.6);text-decoration:none;}
+        .huj-tab-download{border-color:#d4af37 !important;color:#ffee9e !important;background:radial-gradient(150% 160% at 50% -40%,#31573f 0%,#16371f 46%,#0a2013 100%) !important;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.3),inset 0 -3px 6px rgba(0,0,0,.4),0 5px 12px rgba(0,0,0,.45);text-shadow:0 1px 2px rgba(0,0,0,.6);text-decoration:none;display:inline-flex !important;align-items:center !important;justify-content:center !important;padding:10px 12px !important;}
         .huj-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:4px 2px 14px;min-height:0;}
         .huj-panel{display:flex;flex-direction:column;gap:12px;max-width:760px;margin:0 auto;}
         .huj-panel[hidden]{display:none !important;}
@@ -4535,7 +4535,9 @@
                     <div class="huj-row huj-row-sub">
                         <button type="button" class="huj-tab" id="huj-tab-adeya" data-huj-tab="adeya" role="tab">🤲 أدعية</button>
                         <button type="button" class="huj-tab" id="huj-tab-nasaih" data-huj-tab="nasaih" role="tab">💡 نصائح ذهبية</button>
-                        <a class="huj-tab huj-tab-download" href="assets/Kitab_Hajj_Umrah_YaMousahil.pdf" download="Kitab_Hajj_Umrah_YaMousahil.pdf" target="_blank" role="button">📥 تحميل الكتيب</a>
+                        <a class="huj-tab huj-tab-download" href="assets/Kitab_Hajj_Umrah_YaMousahil.pdf" download="Kitab_Hajj_Umrah_YaMousahil.pdf" target="_blank" role="button" title="تحميل الكتيب" aria-label="تحميل الكتيب">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.5rem;height:1.5rem;flex:none;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M9 15v-4"></path><path d="M12 15v-4"></path><path d="M9 11h6"></path></svg>
+                        </a>
                     </div>
                 </div>
                 <div class="huj-scroll">
