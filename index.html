@@ -731,7 +731,7 @@
         body.is-mobile .top-right-icons{position:absolute;top:0;inset-inline-end:0;width:auto;justify-content:flex-end;}
         body.is-mobile .top-center-time{width:100%;}
         body.is-mobile .main-layout{flex-direction:column;gap:14px;}
-        body.is-mobile .prayer-row{display:flex;flex-wrap:wrap-reverse;flex-direction:row-reverse;direction:ltr;gap:8px;}
+        body.is-mobile .prayer-row{display:flex;flex-wrap:wrap-reverse;flex-direction:row-reverse;direction:rtl;gap:8px;}
         body.is-mobile .time-box{flex:1 1 30%;min-width:0;padding:10px 4px;direction:rtl;}
         /* Android : les heures de priere dans UN seul encadrement */
         body.is-mobile #home-prayer-times{
@@ -1054,6 +1054,12 @@
         .adhkar-cat-item:hover { border-color: var(--gold); color:#ffe9a8; transform: translateY(-2px); }
         .adhkar-cat-item.active { border-color:var(--gold); color:#ffee9e; text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6); box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.3); }
         .adhkar-cat-item .cat-icon { font-size: 1.8rem; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 12px; background: radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%); border: 1px solid var(--gold); box-shadow: 0 6px 16px rgba(0,0,0,.45), inset 0 1.5px 1px rgba(255,255,255,.3); color:#ffee9e; }
+        /* Android : icône à gauche, libellé à droite (au lieu de l'icône au-dessus) */
+        body.is-mobile .adhkar-cat-item{
+            flex-direction:row; align-items:center; justify-content:flex-start;
+            gap:8px; text-align:right; direction:ltr; padding:8px 10px;
+        }
+        body.is-mobile .adhkar-cat-item > span:not(.cat-icon):not(.live-empty-tag){ direction:rtl; }
 
         .adhkar-search-box { display: flex; gap: 8px; padding: 10px; background:#221d23; border-radius:14px; border:1px solid rgba(255,255,255,.10); box-shadow:0 10px 28px rgba(0,0,0,.45); }
         .adhkar-search-box input { flex: 1; background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:10px; color:#efe9dc; font-family: var(--font); font-size: 0.95rem; outline: none; padding:8px 12px; }
