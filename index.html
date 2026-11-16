@@ -5372,6 +5372,8 @@
         let prayerTimesToday = null, prayerTimesTomorrow = null, currentPrayerKey = null, nextPrayerKey = null;
         const PRAYER_ORDER = ['fajr','sunrise','dhuhr','asr','maghrib','isha'];
         const PRAYER_NAMES = { fajr:'الفجر', sunrise:'الشروق', dhuhr:'الظهر', asr:'العصر', maghrib:'المغرب', isha:'العشاء' };
+        const PRAYER_ANDROID_LABELS = { fajr:'🕌 الفجر', sunrise:'الشروق ☀️', dhuhr:'الظهر🌙', asr:'✨ العصر', maghrib:'المغرب 🌅', isha:'العشاء🌤️' };
+        const prayerLabel = (key) => (document.body && document.body.classList.contains('is-mobile') && PRAYER_ANDROID_LABELS[key]) ? PRAYER_ANDROID_LABELS[key] : PRAYER_NAMES[key];
         const pad = (n) => n.toString().padStart(2,'0');
 
         function populateCountrySelect() {
@@ -5602,9 +5604,9 @@
             const homePrayerContainer = document.getElementById('home-prayer-times'); homePrayerContainer.innerHTML = '';
             [...PRAYER_ORDER].reverse().forEach(key => {
                 const box = document.createElement('div'); box.className = 'time-box glass-btn';
-                if (key === currentPrayerKey) { box.classList.add('is-now'); box.innerHTML = `<div class="name-line"><span class="badge">الآن</span><span class="nm">${PRAYER_NAMES[key]}</span></div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
-                else if (key === nextPrayerKey) { box.classList.add('is-next'); box.style.cursor = 'pointer'; box.title = 'اضغط للاستماع'; box.innerHTML = `<div class="name-line"><span class="badge">التالية</span><span class="nm">${PRAYER_NAMES[key]}</span></div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; box.onclick = () => { if (typeof window.announceNextPrayer === 'function') window.announceNextPrayer(PRAYER_NAMES[key]); else if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
-                else { box.innerHTML = `<div class="name">${PRAYER_NAMES[key]}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
+                if (key === currentPrayerKey) { box.classList.add('is-now'); box.innerHTML = `<div class="name-line"><span class="badge">الآن</span><span class="nm">${prayerLabel(key)}</span></div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
+                else if (key === nextPrayerKey) { box.classList.add('is-next'); box.style.cursor = 'pointer'; box.title = 'اضغط للاستماع'; box.innerHTML = `<div class="name-line"><span class="badge">التالية</span><span class="nm">${prayerLabel(key)}</span></div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; box.onclick = () => { if (typeof window.announceNextPrayer === 'function') window.announceNextPrayer(PRAYER_NAMES[key]); else if (typeof speakArabic === 'function') speakArabic('باقي على صلاة ' + PRAYER_NAMES[key]); }; }
+                else { box.innerHTML = `<div class="name">${prayerLabel(key)}</div><div class="time">${formatTime(prayerTimesToday[key])}</div>`; }
                 homePrayerContainer.appendChild(box);
             });
             document.getElementById('home-next-prayer-name').textContent = PRAYER_NAMES[nextPrayerKey];
