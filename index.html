@@ -5377,7 +5377,7 @@
         let prayerTimesToday = null, prayerTimesTomorrow = null, currentPrayerKey = null, nextPrayerKey = null;
         const PRAYER_ORDER = ['fajr','sunrise','dhuhr','asr','maghrib','isha'];
         const PRAYER_NAMES = { fajr:'الفجر', sunrise:'الشروق', dhuhr:'الظهر', asr:'العصر', maghrib:'المغرب', isha:'العشاء' };
-        const PRAYER_ANDROID_LABELS = { fajr:'🕌 الفجر', sunrise:'الشروق ☀️', dhuhr:'الظهر🌙', asr:'✨ العصر', maghrib:'المغرب 🌅', isha:'العشاء🌤️' };
+        const PRAYER_ANDROID_LABELS = { fajr:'🕌 الفجر', sunrise:'☀️ الشروق', dhuhr:'🌙 الظهر', asr:'✨ العصر', maghrib:'🌅 المغرب', isha:'🌤️ العشاء' };
         const prayerLabel = (key) => (document.body && document.body.classList.contains('is-mobile') && PRAYER_ANDROID_LABELS[key]) ? PRAYER_ANDROID_LABELS[key] : PRAYER_NAMES[key];
         const pad = (n) => n.toString().padStart(2,'0');
 
