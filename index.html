@@ -210,6 +210,7 @@
         #zakat-screen .title-prayers h1,
         #currency-screen .title-prayers h1,
         #quran-player-screen .title-prayers h1,
+        #quran-read-screen .title-prayers h1,
         #dua-khatm-screen .title-prayers h1,
         #inheritance-screen h1,
         #asma-screen .asma-title{
@@ -239,6 +240,7 @@
         #zakat-screen .title-prayers h1::before, #zakat-screen .title-prayers h1::after,
         #currency-screen .title-prayers h1::before, #currency-screen .title-prayers h1::after,
         #quran-player-screen .title-prayers h1::before, #quran-player-screen .title-prayers h1::after,
+        #quran-read-screen .title-prayers h1::before, #quran-read-screen .title-prayers h1::after,
         #dua-khatm-screen .title-prayers h1::before, #dua-khatm-screen .title-prayers h1::after{
             content:""; flex:0 0 auto; width:55px; height:2px; border-radius:2px;
             background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 18%,var(--gold) 50%,rgba(212,175,55,.45) 82%,transparent);
@@ -252,7 +254,7 @@
         #khatma-read-screen h1::after, #hajj-umrah-screen .title-prayers h1::after,
         #tajweed-rules-screen .title-prayers h1::after, #tilawah-adab-screen .title-prayers h1::after,
         #live-screen .title-prayers h1::after, #weather-screen .title-prayers h1::after,
-        #fm6oa-screen .title-prayers h1::after, #quran-player-screen .title-prayers h1::after,
+        #fm6oa-screen .title-prayers h1::after, #quran-player-screen .title-prayers h1::after, #quran-read-screen .title-prayers h1::after,
         #zakat-screen .title-prayers h1::after,
         #currency-screen .title-prayers h1::after,
         #dua-khatm-screen .title-prayers h1::after{
@@ -2367,7 +2369,6 @@
         }
         /* === اقرأ القرآن الكريم — clone natif fidèle à qurancentral.net (popup) : نفس الخطوط والألوان والأنماط === */
         #quran-read-screen{padding:12px 14px;box-sizing:border-box;background:transparent;}
-        #quran-read-screen .title-prayers h1{margin:0;color:var(--gold);font-family:var(--font-quran);display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 2px 8px rgba(0,0,0,.7);}
         #quran-read-screen .qrc-toolbar{display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;justify-content:center;}
         #quran-read-screen .qrc-select{flex:1 1 260px;max-width:430px;min-width:200px;text-align:center;text-align-last:center;}
         #quran-read-screen .qrc-nav{width:46px;height:46px;border-radius:12px;font-size:1.6rem;line-height:1;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);cursor:pointer;flex-shrink:0;transition:border-color .15s,background .15s;}
@@ -2382,7 +2383,7 @@
         #quran-read-screen .qrc-mimic-ar{flex:1.1;text-align:right;font-family:'Amiri Quran','Amiri',serif;font-size:2.35rem;line-height:1.35;color:#0E4F2C;margin:0;}
         #quran-read-screen .qrc-mimic-meta{flex:0 0 auto;color:#7A8479;font-size:.92rem;display:flex;flex-direction:column;align-items:center;gap:8px;}
         #quran-read-screen .qrc-mimic-pill{display:inline-block;padding:4px 16px;border-radius:999px;font-size:.72rem;font-weight:600;background:#E8F1EA;color:#0E4F2C;text-transform:uppercase;letter-spacing:.08em;}
-        #quran-read-screen .qrc-mimic-en{flex:1.1;text-align:left;font-family:Georgia,'Times New Roman',serif;font-size:1.55rem;font-weight:700;color:#1A1F1B;letter-spacing:-.02em;}
+        body.is-mobile #quran-read-screen .qrc-mimic-en{display:none;}
         #quran-read-screen .qrc-mimic-strip{display:flex;align-items:center;justify-content:center;gap:14px;font-size:.85rem;color:#4A5750;padding:0 4px;}
         #quran-read-screen .qrc-mimic-strip input[type="range"]{width:150px;accent-color:#0E4F2C;cursor:pointer;}
         #quran-read-screen .qrc-mimic-panel{background:#E8F1EA;border:2px solid #0E4F2C;border-radius:10px;padding:22px 18px 28px;}
@@ -2394,7 +2395,6 @@
         body.is-mobile #quran-read-screen .qrc-mimic{padding:14px 12px 18px;gap:10px;}
         body.is-mobile #quran-read-screen .qrc-mimic-header{flex-direction:column;gap:4px;padding-bottom:14px;}
         body.is-mobile #quran-read-screen .qrc-mimic-ar{text-align:center;font-size:1.65rem;flex:0 0 auto;}
-        body.is-mobile #quran-read-screen .qrc-mimic-en{text-align:center;font-size:1.15rem;flex:0 0 auto;}
         body.is-mobile #quran-read-screen .qrc-mimic-meta{order:-1;}
         body.is-mobile #quran-read-screen .qrc-mimic-ayahs{line-height:2.1;}
         body.is-mobile #quran-read-screen .qrc-mimic-bism{font-size:1.25rem;}
@@ -2441,14 +2441,15 @@
         body.is-mobile #quran-read-screen .qrc-reader-col{overflow-y:visible;}
         /* === Android : قائمة السور في صفحة كاملة أولاً، والانتقال إلى القارئ عند الاختيار === */
         #qrc-back-list{display:none;align-items:center;gap:6px;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);border-radius:12px;padding:0 14px;height:46px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;}
-        body.is-mobile #quran-read-screen{gap:12px;}
+        body.is-mobile #quran-read-screen{height:100dvh;min-height:0;overflow:hidden;gap:10px;}
+        body.is-mobile #quran-read-screen .qrc-mimic{flex:1 1 auto;min-height:0;height:auto;overflow:hidden;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-toolbar{display:none;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-mimic-header{display:none;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-mimic-strip{display:none;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-reader-col{display:none;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-bodyrow{flex-direction:column;gap:0;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-surah-list{flex:1 1 auto;width:100%;max-height:none;height:auto;min-height:0;}
-        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-surah-items{max-height:none;flex:1;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-surah-items{max-height:none;flex:1;min-height:0;overflow-y:auto;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-surah-list{display:none;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-back-list{display:inline-flex;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-toolbar{flex-direction:row;flex-wrap:wrap;}
@@ -5479,7 +5480,7 @@
                 <header class="header-prayers">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-qrc" data-qm-back>‹ العودة</button>
                     <div class="title-prayers">
-                        <h1 style="font-family:var(--font-quran);">اقرأ القرآن الكريم</h1>
+                        <h1 style="font-family:var(--font-quran);"><svg class="huj-lantern" viewBox="0 0 48 78" role="img" aria-label="فانوس ذهبي"><use href="#huj-lantern"/></svg><span>اقرأ القرآن الكريم</span><svg class="huj-lantern" viewBox="0 0 48 78" role="img" aria-label="فانوس ذهبي"><use href="#huj-lantern"/></svg></h1>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
@@ -5493,7 +5494,6 @@
                     <div class="qrc-mimic-header">
                         <div class="qrc-mimic-ar" id="qrc-m-ar">سُورَةُ ٱلْفَاتِحَةِ</div>
                         <div class="qrc-mimic-meta"><span class="qrc-mimic-pill" id="qrc-m-type">مكية</span><span id="qrc-m-meta">سورة 1 · 7 آية</span></div>
-                        <div class="qrc-mimic-en" id="qrc-m-en">Al-Faatiha</div>
                     </div>
                     <div class="qrc-mimic-strip">
                         <span class="qrc-mimic-label">حجم الخط</span>
@@ -7839,7 +7839,6 @@ var gender = 'male';
             var prevBtn = document.getElementById('qrc-prev');
             var nextBtn = document.getElementById('qrc-next');
             var arEl = document.getElementById('qrc-m-ar');
-            var enEl = document.getElementById('qrc-m-en');
             var typeEl = document.getElementById('qrc-m-type');
             var metaEl = document.getElementById('qrc-m-meta');
             var panelEl = document.getElementById('qrc-m-panel');
@@ -8119,7 +8118,6 @@ var gender = 'male';
                     if (t.indexOf('بِسْمِ') === 0) ar.ayahs[0].text = t.split(' ').slice(4).join(' ');
                 }
                 arEl.textContent = ar.name;
-                enEl.textContent = ar.englishName;
                 typeEl.textContent = /^Mec/i.test(ar.revelationType || '') ? 'مكية' : 'مدنية';
                 metaEl.textContent = 'سورة ' + ar.number + ' · ' + ar.numberOfAyahs + ' آية' + ((ar.ayahs[0] && ar.ayahs[0].juz) ? ' · الجزء ' + ar.ayahs[0].juz : '');
                 var bism = (ar.number !== 1 && ar.number !== 9) ? '<div class="qrc-mimic-bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>' : '';
