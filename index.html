@@ -2375,8 +2375,9 @@
         #quran-read-screen .qrc-source a{color:var(--gold);text-decoration:none;}
         #quran-read-screen .qrc-source a:hover{text-decoration:underline;}
         /* le volet MiMushaf — style qurancentral.net popup (light « paper ») */
-        #quran-read-screen .qrc-mimic{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#FAFAF7;border-radius:16px;border:1px solid rgba(184,155,94,.55);box-shadow:0 12px 36px rgba(0,0,0,.35);padding:18px 22px 26px;display:flex;flex-direction:column;gap:14px;color-scheme:light;}
-        #quran-read-screen .qrc-mimic-header{position:relative;text-align:center;padding:8px 10px 16px;border-bottom:1px solid #E5E7DE;display:flex;flex-direction:column;align-items:center;gap:2px;}
+        #quran-read-screen .header-prayers{padding-bottom:2px;}
+        #quran-read-screen .qrc-mimic{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#FAFAF7;border-radius:16px;border:1px solid rgba(184,155,94,.55);box-shadow:0 12px 36px rgba(0,0,0,.35);padding:8px 14px 12px;display:flex;flex-direction:column;gap:8px;color-scheme:light;}
+        #quran-read-screen .qrc-mimic-header{position:relative;text-align:center;padding:2px 8px 12px;border-bottom:1px solid #E5E7DE;display:flex;flex-direction:column;align-items:center;gap:0;}
         #quran-read-screen .qrc-mimic-header::after{content:"✦";position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);background:#FAFAF7;color:#B89B5E;padding:0 14px;font-size:.85rem;}
         #quran-read-screen .qrc-mimic-ar{flex:0 0 auto;text-align:center;font-family:'Amiri Quran','Amiri',serif;font-size:2.3rem;line-height:1.35;color:#0E4F2C;margin:0;}
         #quran-read-screen .qrc-mimic-meta{flex:0 0 auto;color:#7A8479;font-size:.92rem;display:flex;flex-direction:row;align-items:center;gap:12px;justify-content:center;}
@@ -2405,7 +2406,9 @@
         #quran-read-screen .qrc-mimic-num{display:inline-flex;align-items:center;justify-content:center;min-width:1.55em;height:1.55em;border-radius:50%;background:radial-gradient(circle at 30% 30%,#D9C896,#B89B5E);color:#fff;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:.5em;line-height:1;margin:0 .22em;vertical-align:middle;box-shadow:0 2px 4px rgba(184,155,94,.45);border:1px solid #8E7440;}
         #quran-read-screen .qrc-mimic-loading,#quran-read-screen .qrc-mimic-error{text-align:center;padding:44px 10px;color:#7A8479;font-size:.95rem;}
         #quran-read-screen .qrc-mimic-error{color:#6E2A12;background:#FDF1EA;border:1px solid #E8A082;border-radius:10px;}
-        body.is-mobile #quran-read-screen .qrc-mimic{padding:14px 12px 18px;gap:10px;}
+        body.is-mobile #quran-read-screen .qrc-mimic{padding:6px 10px 8px;gap:6px;}
+        body.is-mobile #quran-read-screen{gap:8px;}
+        body.is-mobile #quran-read-screen .qrc-mimic-header{gap:0;padding:0 6px 8px;}
         body.is-mobile #quran-read-screen .qrc-mimic-header{flex-direction:column;gap:4px;padding-bottom:14px;}
         body.is-mobile #quran-read-screen .qrc-mimic-ar{text-align:center;font-size:1.65rem;flex:0 0 auto;}
         body.is-mobile #quran-read-screen .qrc-mimic-meta{gap:8px;padding:6px 10px;}
@@ -5538,7 +5541,7 @@
                 <header class="header-prayers">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-qrc" data-qm-back>‹ العودة</button>
                     <div class="title-prayers">
-                        <h1 style="font-family:var(--font-quran);"><svg class="huj-lantern" viewBox="0 0 48 78" role="img" aria-label="فانوس ذهبي"><use href="#huj-lantern"/></svg><span>اقرأ القرآن الكريم</span><svg class="huj-lantern" viewBox="0 0 48 78" role="img" aria-label="فانوس ذهبي"><use href="#huj-lantern"/></svg></h1>
+                        <h1 style="font-family:var(--font-quran);"><span>اقرأ القرآن الكريم</span></h1>
                     </div>
                     <div style="width:80px;"></div>
                 </header>
