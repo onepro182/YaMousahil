@@ -2362,9 +2362,32 @@
         #quran-player-screen .qp-transport{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
         @media (min-width:901px){
             body:not(.is-mobile) #quran-player-screen .qp-transport{flex-direction:row;align-items:center;gap:16px;background:linear-gradient(160deg,rgba(12,46,34,0.9),rgba(15,58,42,0.94));border:1px solid rgba(212,175,55,0.45);border-radius:14px;padding:10px 14px;box-shadow:0 10px 28px rgba(0,0,0,0.38),inset 0 1px 0 rgba(255,255,255,0.06);color-scheme:dark;}
-            body:not(.is-mobile) #quran-player-screen .qp-transport #qp-surah{flex:0 1 360px;min-width:240px;width:360px;font-size:1rem;}
+            body:not(.is-mobile) #quran-player-screen .qp-transport .qp-surah-picker{flex:0 1 400px;min-width:300px;}
             body:not(.is-mobile) #quran-player-screen .qp-transport audio{flex:1 1 auto;width:auto;height:36px;}
         }
+        /* === قائمة السور — محدد مخصّص يعرض اسم السورة بخط قرآني ذهبي === */
+        #quran-player-screen .qp-surah-picker{position:relative;flex-shrink:0;}
+        #quran-player-screen .qp-surah-btn{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;text-align:right;font-family:var(--font-quran);background:linear-gradient(160deg,rgba(17,64,46,0.95),rgba(11,40,28,0.96));border:1px solid rgba(212,175,55,0.5);border-radius:14px;padding:11px 16px;color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 6px 18px rgba(0,0,0,0.35);transition:border-color .2s,box-shadow .2s,transform .15s;}
+        #quran-player-screen .qp-surah-btn:hover{border-color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,0.1),0 10px 26px rgba(212,175,55,0.14);}
+        #quran-player-screen .qp-surah-btn:active{transform:scale(0.99);}
+        #quran-player-screen .qp-surah-icon{color:var(--gold);flex:0 0 auto;opacity:.9;}
+        #quran-player-screen .qp-surah-name{flex:1;min-width:0;font-size:1.45rem;font-weight:700;color:#f4d03f;text-shadow:0 2px 6px rgba(0,0,0,0.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.7;}
+        #quran-player-screen .qp-surah-caret{color:var(--gold);flex:0 0 auto;transition:transform .25s;}
+        #quran-player-screen .qp-surah-btn[aria-expanded="true"] .qp-surah-caret{transform:rotate(180deg);}
+        #quran-player-screen .qp-surah-panel{position:absolute;z-index:60;top:calc(100% + 10px);inset-inline-start:0;width:min(430px,94vw);background:linear-gradient(165deg,rgba(13,52,37,0.98),rgba(9,34,24,0.99));border:1px solid var(--gold);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,0.6);overflow:hidden;display:flex;flex-direction:column;color-scheme:dark;}
+        #quran-player-screen .qp-surah-panel[hidden]{display:none !important;}
+        #quran-player-screen .qp-surah-search-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(212,175,55,0.25);color:var(--gold);background:rgba(212,175,55,0.06);}
+        #quran-player-screen .qp-surah-search{flex:1;min-width:0;background:rgba(6,28,19,0.65);border:1px solid rgba(212,175,55,0.3);border-radius:10px;color:var(--cream);padding:10px 12px;font-family:var(--font);font-size:1rem;outline:none;}
+        #quran-player-screen .qp-surah-search:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,175,55,0.18);}
+        #quran-player-screen .qp-surah-list{max-height:330px;overflow-y:auto;padding:8px;-webkit-overflow-scrolling:touch;}
+        #quran-player-screen .qp-surah-item{display:flex;align-items:center;gap:10px;width:100%;text-align:right;cursor:pointer;background:transparent;border:1px solid transparent;border-radius:10px;padding:9px 12px;font-family:'Amiri Quran',Amiri,serif;color:var(--cream);font-size:1.12rem;line-height:1.8;transition:background .15s,border-color .15s;}
+        #quran-player-screen .qp-surah-item .num{flex:0 0 auto;min-width:36px;text-align:center;color:var(--gold);font-family:var(--font);font-weight:700;font-size:.92rem;background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.35);border-radius:8px;padding:2px 6px;}
+        #quran-player-screen .qp-surah-item:hover{background:rgba(212,175,55,0.09);}
+        #quran-player-screen .qp-surah-item.active{background:rgba(212,175,55,0.16);border-color:rgba(212,175,55,0.6);}
+        #quran-player-screen .qp-surah-empty{padding:18px;text-align:center;color:var(--text-dim);font-size:.95rem;}
+        body.is-mobile #quran-player-screen .qp-surah-btn{padding:10px 12px;}
+        body.is-mobile #quran-player-screen .qp-surah-name{font-size:1.12rem;}
+        body.is-mobile #quran-player-screen .qp-surah-panel{width:100%;}
         .qp-reciters{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;flex:1;min-height:0;overflow-y:auto;padding:10px;}
         .qp-rc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;padding:14px 8px;border-radius:14px;border:1px solid var(--glass-border);background:var(--glass-bg);backdrop-filter:blur(10px);transition:all .2s;min-height:130px;}
         .qp-rc:hover{border-color:var(--gold);background:rgba(212,175,55,0.08);transform:translateY(-2px);}
@@ -2374,7 +2397,6 @@
         .qp-rc span{font-size:.85rem;text-align:center;color:var(--text-main);font-weight:700;line-height:1.3;}
         #quran-player-screen audio{width:100%;height:38px;border-radius:8px;display:block;flex-shrink:0;}
         body.is-mobile #quran-player-screen{padding:10px;}
-        body.is-mobile #quran-player-screen #qp-surah{font-size:.9rem;padding:8px;}
         body.is-mobile #quran-player-screen .title-prayers h1{font-size:1.5rem;}
         body.is-mobile .qp-reciters{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
         body.is-mobile .qp-rc{min-height:110px;padding:10px 6px;}
@@ -5323,8 +5345,23 @@
                 </header>
                 <p class="world-radio-sub" style="margin:0;text-align:center;">اختر القارئ للاستماع القرآن الكريم بصوت أشهر القراء بجودة عالية.</p>
                 <div class="qp-transport">
-                <select id="qp-surah" class="setting-select" style="width:100%;max-width:100%;flex-shrink:0;"><option value="">-- اختر السورة --</option><option value="1">1. سُورَةُ ٱلْفَاتِحَةِ</option><option value="2">2. سُورَةُ البَقَرَةِ</option><option value="3">3. سُورَةُ آلِ عِمۡرَانَ</option><option value="4">4. سُورَةُ النِّسَاءِ</option><option value="5">5. سُورَةُ المَائـِدَةِ</option><option value="6">6. سُورَةُ الأَنۡعَامِ</option><option value="7">7. سُورَةُ الأَعۡرَافِ</option><option value="8">8. سُورَةُ الأَنفَالِ</option><option value="9">9. سُورَةُ التَّوۡبَةِ</option><option value="10">10. سُورَةُ يُونُسَ</option><option value="11">11. سُورَةُ هُودٍ</option><option value="12">12. سُورَةُ يُوسُفَ</option><option value="13">13. سُورَةُ الرَّعۡدِ</option><option value="14">14. سُورَةُ إِبۡرَاهِيمَ</option><option value="15">15. سُورَةُ الحِجۡرِ</option><option value="16">16. سُورَةُ النَّحۡلِ</option><option value="17">17. سُورَةُ الإِسۡرَاءِ</option><option value="18">18. سُورَةُ الكَهۡفِ</option><option value="19">19. سُورَةُ مَرۡيَمَ</option><option value="20">20. سُورَةُ طه</option><option value="21">21. سُورَةُ الأَنبِيَاءِ</option><option value="22">22. سُورَةُ الحَجِّ</option><option value="23">23. سُورَةُ المُؤۡمِنُونَ</option><option value="24">24. سُورَةُ النُّورِ</option><option value="25">25. سُورَةُ الفُرۡقَانِ</option><option value="26">26. سُورَةُ الشُّعَرَاءِ</option><option value="27">27. سُورَةُ النَّمۡلِ</option><option value="28">28. سُورَةُ القَصَصِ</option><option value="29">29. سُورَةُ العَنكَبُوتِ</option><option value="30">30. سُورَةُ الرُّومِ</option><option value="31">31. سُورَةُ لُقۡمَانَ</option><option value="32">32. سُورَةُ السَّجۡدَةِ</option><option value="33">33. سُورَةُ الأَحۡزَابِ</option><option value="34">34. سُورَةُ سَبَإٍ</option><option value="35">35. سُورَةُ فَاطِرٍ</option><option value="36">36. سُورَةُ يسٓ</option><option value="37">37. سُورَةُ الصَّافَّاتِ</option><option value="38">38. سُورَةُ صٓ</option><option value="39">39. سُورَةُ الزُّمَرِ</option><option value="40">40. سُورَةُ غَافِرٍ</option><option value="41">41. سُورَةُ فُصِّلَتۡ</option><option value="42">42. سُورَةُ الشُّورَىٰ</option><option value="43">43. سُورَةُ الزُّخۡرُفِ</option><option value="44">44. سُورَةُ الدُّخَانِ</option><option value="45">45. سُورَةُ الجَاثِيَةِ</option><option value="46">46. سُورَةُ الأَحۡقَافِ</option><option value="47">47. سُورَةُ مُحَمَّدٍ</option><option value="48">48. سُورَةُ الفَتۡحِ</option><option value="49">49. سُورَةُ الحُجُرَاتِ</option><option value="50">50. سُورَةُ قٓ</option><option value="51">51. سُورَةُ الذَّارِيَاتِ</option><option value="52">52. سُورَةُ الطُّورِ</option><option value="53">53. سُورَةُ النَّجۡمِ</option><option value="54">54. سُورَةُ القَمَرِ</option><option value="55">55. سُورَةُ الرَّحۡمَٰن</option><option value="56">56. سُورَةُ الوَاقِعَةِ</option><option value="57">57. سُورَةُ الحَدِيدِ</option><option value="58">58. سُورَةُ المُجَادلَةِ</option><option value="59">59. سُورَةُ الحَشۡرِ</option><option value="60">60. سُورَةُ المُمۡتَحنَةِ</option><option value="61">61. سُورَةُ الصَّفِّ</option><option value="62">62. سُورَةُ الجُمُعَةِ</option><option value="63">63. سُورَةُ المُنَافِقُونَ</option><option value="64">64. سُورَةُ التَّغَابُنِ</option><option value="65">65. سُورَةُ الطَّلَاقِ</option><option value="66">66. سُورَةُ التَّحۡرِيمِ</option><option value="67">67. سُورَةُ المُلۡكِ</option><option value="68">68. سُورَةُ القَلَمِ</option><option value="69">69. سُورَةُ الحَاقَّةِ</option><option value="70">70. سُورَةُ المَعَارِجِ</option><option value="71">71. سُورَةُ نُوحٍ</option><option value="72">72. سُورَةُ الجِنِّ</option><option value="73">73. سُورَةُ المُزَّمِّلِ</option><option value="74">74. سُورَةُ المُدَّثِّرِ</option><option value="75">75. سُورَةُ القِيَامَةِ</option><option value="76">76. سُورَةُ الإِنسَانِ</option><option value="77">77. سُورَةُ المُرۡسَلَاتِ</option><option value="78">78. سُورَةُ النَّبَإِ</option><option value="79">79. سُورَةُ النَّازِعَاتِ</option><option value="80">80. سُورَةُ عَبَسَ</option><option value="81">81. سُورَةُ التَّكۡوِيرِ</option><option value="82">82. سُورَةُ الانفِطَارِ</option><option value="83">83. سُورَةُ المُطَفِّفِينَ</option><option value="84">84. سُورَةُ الانشِقَاقِ</option><option value="85">85. سُورَةُ البُرُوجِ</option><option value="86">86. سُورَةُ الطَّارِقِ</option><option value="87">87. سُورَةُ الأَعۡلَىٰ</option><option value="88">88. سُورَةُ الغَاشِيَةِ</option><option value="89">89. سُورَةُ الفَجۡرِ</option><option value="90">90. سُورَةُ البَلَدِ</option><option value="91">91. سُورَةُ الشَّمۡسِ</option><option value="92">92. سُورَةُ اللَّيۡلِ</option><option value="93">93. سُورَةُ الضُّحَىٰ</option><option value="94">94. سُورَةُ الشَّرۡحِ</option><option value="95">95. سُورَةُ التِّينِ</option><option value="96">96. سُورَةُ العَلَقِ</option><option value="97">97. سُورَةُ القَدۡرِ</option><option value="98">98. سُورَةُ البَيِّنَةِ</option><option value="99">99. سُورَةُ الزَّلۡزَلَةِ</option><option value="100">100. سُورَةُ العَادِيَاتِ</option><option value="101">101. سُورَةُ القَارِعَةِ</option><option value="102">102. سُورَةُ التَّكَاثُرِ</option><option value="103">103. سُورَةُ العَصۡرِ</option><option value="104">104. سُورَةُ الهُمَزَةِ</option><option value="105">105. سُورَةُ الفِيلِ</option><option value="106">106. سُورَةُ قُرَيۡشٍ</option><option value="107">107. سُورَةُ المَاعُونِ</option><option value="108">108. سُورَةُ الكَوۡثَرِ</option><option value="109">109. سُورَةُ الكَافِرُونَ</option><option value="110">110. سُورَةُ النَّصۡرِ</option><option value="111">111. سُورَةُ المَسَدِ</option><option value="112">112. سُورَةُ الإِخۡلَاصِ</option><option value="113">113. سُورَةُ الفَلَقِ</option><option value="114">114. سُورَةُ النَّاسِ</option></select>
+                <div class="qp-surah-picker" id="qp-surah-picker">
+                    <button type="button" class="qp-surah-btn" id="qp-surah-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="اختيار السورة">
+                        <svg class="qp-surah-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H20v14H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 6.5v14"/><path d="M8 8h8M8 12h6"/></svg>
+                        <span class="qp-surah-name" id="qp-surah-name">1. سُورَةُ ٱلْفَاتِحَةِ</span>
+                        <svg class="qp-surah-caret" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="qp-surah-panel" id="qp-surah-panel" role="listbox" aria-label="قائمة السور" hidden>
+                        <div class="qp-surah-search-row">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                            <input type="text" class="qp-surah-search" id="qp-surah-search" placeholder="ابحث عن سورة…" autocomplete="off" aria-label="البحث عن سورة">
+                        </div>
+                        <div class="qp-surah-list" id="qp-surah-list"></div>
+                    </div>
+                </div>
                 <audio id="qp-audio" controls></audio>
+
+                <select id="qp-surah" style="display:none;"><option value="">-- اختر السورة --</option><option value="1">1. سُورَةُ ٱلْفَاتِحَةِ</option><option value="2">2. سُورَةُ البَقَرَةِ</option><option value="3">3. سُورَةُ آلِ عِمۡرَانَ</option><option value="4">4. سُورَةُ النِّسَاءِ</option><option value="5">5. سُورَةُ المَائـِدَةِ</option><option value="6">6. سُورَةُ الأَنۡعَامِ</option><option value="7">7. سُورَةُ الأَعۡرَافِ</option><option value="8">8. سُورَةُ الأَنفَالِ</option><option value="9">9. سُورَةُ التَّوۡبَةِ</option><option value="10">10. سُورَةُ يُونُسَ</option><option value="11">11. سُورَةُ هُودٍ</option><option value="12">12. سُورَةُ يُوسُفَ</option><option value="13">13. سُورَةُ الرَّعۡدِ</option><option value="14">14. سُورَةُ إِبۡرَاهِيمَ</option><option value="15">15. سُورَةُ الحِجۡرِ</option><option value="16">16. سُورَةُ النَّحۡلِ</option><option value="17">17. سُورَةُ الإِسۡرَاءِ</option><option value="18">18. سُورَةُ الكَهۡفِ</option><option value="19">19. سُورَةُ مَرۡيَمَ</option><option value="20">20. سُورَةُ طه</option><option value="21">21. سُورَةُ الأَنبِيَاءِ</option><option value="22">22. سُورَةُ الحَجِّ</option><option value="23">23. سُورَةُ المُؤۡمِنُونَ</option><option value="24">24. سُورَةُ النُّورِ</option><option value="25">25. سُورَةُ الفُرۡقَانِ</option><option value="26">26. سُورَةُ الشُّعَرَاءِ</option><option value="27">27. سُورَةُ النَّمۡلِ</option><option value="28">28. سُورَةُ القَصَصِ</option><option value="29">29. سُورَةُ العَنكَبُوتِ</option><option value="30">30. سُورَةُ الرُّومِ</option><option value="31">31. سُورَةُ لُقۡمَانَ</option><option value="32">32. سُورَةُ السَّجۡدَةِ</option><option value="33">33. سُورَةُ الأَحۡزَابِ</option><option value="34">34. سُورَةُ سَبَإٍ</option><option value="35">35. سُورَةُ فَاطِرٍ</option><option value="36">36. سُورَةُ يسٓ</option><option value="37">37. سُورَةُ الصَّافَّاتِ</option><option value="38">38. سُورَةُ صٓ</option><option value="39">39. سُورَةُ الزُّمَرِ</option><option value="40">40. سُورَةُ غَافِرٍ</option><option value="41">41. سُورَةُ فُصِّلَتۡ</option><option value="42">42. سُورَةُ الشُّورَىٰ</option><option value="43">43. سُورَةُ الزُّخۡرُفِ</option><option value="44">44. سُورَةُ الدُّخَانِ</option><option value="45">45. سُورَةُ الجَاثِيَةِ</option><option value="46">46. سُورَةُ الأَحۡقَافِ</option><option value="47">47. سُورَةُ مُحَمَّدٍ</option><option value="48">48. سُورَةُ الفَتۡحِ</option><option value="49">49. سُورَةُ الحُجُرَاتِ</option><option value="50">50. سُورَةُ قٓ</option><option value="51">51. سُورَةُ الذَّارِيَاتِ</option><option value="52">52. سُورَةُ الطُّورِ</option><option value="53">53. سُورَةُ النَّجۡمِ</option><option value="54">54. سُورَةُ القَمَرِ</option><option value="55">55. سُورَةُ الرَّحۡمَٰن</option><option value="56">56. سُورَةُ الوَاقِعَةِ</option><option value="57">57. سُورَةُ الحَدِيدِ</option><option value="58">58. سُورَةُ المُجَادلَةِ</option><option value="59">59. سُورَةُ الحَشۡرِ</option><option value="60">60. سُورَةُ المُمۡتَحنَةِ</option><option value="61">61. سُورَةُ الصَّفِّ</option><option value="62">62. سُورَةُ الجُمُعَةِ</option><option value="63">63. سُورَةُ المُنَافِقُونَ</option><option value="64">64. سُورَةُ التَّغَابُنِ</option><option value="65">65. سُورَةُ الطَّلَاقِ</option><option value="66">66. سُورَةُ التَّحۡرِيمِ</option><option value="67">67. سُورَةُ المُلۡكِ</option><option value="68">68. سُورَةُ القَلَمِ</option><option value="69">69. سُورَةُ الحَاقَّةِ</option><option value="70">70. سُورَةُ المَعَارِجِ</option><option value="71">71. سُورَةُ نُوحٍ</option><option value="72">72. سُورَةُ الجِنِّ</option><option value="73">73. سُورَةُ المُزَّمِّلِ</option><option value="74">74. سُورَةُ المُدَّثِّرِ</option><option value="75">75. سُورَةُ القِيَامَةِ</option><option value="76">76. سُورَةُ الإِنسَانِ</option><option value="77">77. سُورَةُ المُرۡسَلَاتِ</option><option value="78">78. سُورَةُ النَّبَإِ</option><option value="79">79. سُورَةُ النَّازِعَاتِ</option><option value="80">80. سُورَةُ عَبَسَ</option><option value="81">81. سُورَةُ التَّكۡوِيرِ</option><option value="82">82. سُورَةُ الانفِطَارِ</option><option value="83">83. سُورَةُ المُطَفِّفِينَ</option><option value="84">84. سُورَةُ الانشِقَاقِ</option><option value="85">85. سُورَةُ البُرُوجِ</option><option value="86">86. سُورَةُ الطَّارِقِ</option><option value="87">87. سُورَةُ الأَعۡلَىٰ</option><option value="88">88. سُورَةُ الغَاشِيَةِ</option><option value="89">89. سُورَةُ الفَجۡرِ</option><option value="90">90. سُورَةُ البَلَدِ</option><option value="91">91. سُورَةُ الشَّمۡسِ</option><option value="92">92. سُورَةُ اللَّيۡلِ</option><option value="93">93. سُورَةُ الضُّحَىٰ</option><option value="94">94. سُورَةُ الشَّرۡحِ</option><option value="95">95. سُورَةُ التِّينِ</option><option value="96">96. سُورَةُ العَلَقِ</option><option value="97">97. سُورَةُ القَدۡرِ</option><option value="98">98. سُورَةُ البَيِّنَةِ</option><option value="99">99. سُورَةُ الزَّلۡزَلَةِ</option><option value="100">100. سُورَةُ العَادِيَاتِ</option><option value="101">101. سُورَةُ القَارِعَةِ</option><option value="102">102. سُورَةُ التَّكَاثُرِ</option><option value="103">103. سُورَةُ العَصۡرِ</option><option value="104">104. سُورَةُ الهُمَزَةِ</option><option value="105">105. سُورَةُ الفِيلِ</option><option value="106">106. سُورَةُ قُرَيۡشٍ</option><option value="107">107. سُورَةُ المَاعُونِ</option><option value="108">108. سُورَةُ الكَوۡثَرِ</option><option value="109">109. سُورَةُ الكَافِرُونَ</option><option value="110">110. سُورَةُ النَّصۡرِ</option><option value="111">111. سُورَةُ المَسَدِ</option><option value="112">112. سُورَةُ الإِخۡلَاصِ</option><option value="113">113. سُورَةُ الفَلَقِ</option><option value="114">114. سُورَةُ النَّاسِ</option></select>
                 </div>
                 <div class="qp-reciters" id="qp-reciters-grid"></div>
                 <select id="qp-reciter" style="display:none;"><option value="">-- اختر القارئ --</option></select>
@@ -6270,6 +6307,7 @@ document.getElementById('adhkar-search-btn').onclick = () => { currentAdhkarSear
                     qpSurahs.forEach(s => { const o = document.createElement('option'); o.value = s.number; o.textContent = `${s.number}. ${s.name}`; surSelect.appendChild(o); });
                 }
                 if (surSelect) surSelect.value = '1';
+                if (window._qpSyncSurahLabel) window._qpSyncSurahLabel();
                 // Prépare la première piste sans lancer la lecture : le bouton ▶ natif du <audio controls> fonctionne tout de suite
                 try { await qpLoadAndPlay(false); } catch (e) { console.error('qp preload', e); }
             } catch (e) { console.error('Error fetching Quran player data', e); }
@@ -7637,6 +7675,75 @@ var gender = 'male';
         }
         // Le sélecteur de سورة pilote le lecteur natif
         document.getElementById('qp-surah').addEventListener('change', () => { qpLoadAndPlay(true); });
+        // ===== قائمة السور — محدد مخصّص (Amiri Quran) : زر « 1. سُورَةُ ٱلْفَاتِحَةِ » + لوحة بحث ومنسدلة أنيقة =====
+        (function () {
+            var select = document.getElementById('qp-surah');
+            var btn = document.getElementById('qp-surah-btn');
+            var panel = document.getElementById('qp-surah-panel');
+            var list = document.getElementById('qp-surah-list');
+            var search = document.getElementById('qp-surah-search');
+            var nameEl = document.getElementById('qp-surah-name');
+            if (!select || !btn || !panel || !list || !nameEl) return;
+            function currentText() { var o = select.options[select.selectedIndex]; return (o && o.value) ? o.textContent.trim() : 'اختر السورة'; }
+            function syncLabel() { nameEl.textContent = currentText(); }
+            function norm(t) { return (t || '').replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u06DF-\u06E4]/g, '').replace(/\s+/g, ' ').trim(); }
+            function buildList(filter) {
+                var f = norm(filter);
+                list.innerHTML = '';
+                var shown = 0;
+                for (var i = 0; i < select.options.length; i++) {
+                    var o = select.options[i];
+                    if (!o.value) continue;
+                    var text = o.textContent.trim();
+                    if (f && norm(text).indexOf(f) === -1) continue;
+                    var dot = text.indexOf('. ');
+                    var num = dot > 0 ? text.slice(0, dot) : '';
+                    var name = dot > 0 ? text.slice(dot + 2) : text;
+                    var item = document.createElement('button');
+                    item.type = 'button';
+                    item.className = 'qp-surah-item' + (o.value === select.value ? ' active' : '');
+                    item.setAttribute('role', 'option');
+                    item.innerHTML = '<span class="num"></span><span class="nm"></span>';
+                    item.querySelector('.num').textContent = num;
+                    item.querySelector('.nm').textContent = name;
+                    (function (val) { item.addEventListener('click', function () { choose(val); }); })(o.value);
+                    list.appendChild(item);
+                    shown++;
+                }
+                if (!shown) {
+                    var empty = document.createElement('div');
+                    empty.className = 'qp-surah-empty';
+                    empty.textContent = 'لا توجد سورة مطابقة — جرّب بالاسم بدون تشكيل';
+                    list.appendChild(empty);
+                }
+            }
+            function openPanel() {
+                buildList('');
+                if (search) search.value = '';
+                panel.hidden = false;
+                btn.setAttribute('aria-expanded', 'true');
+                var active = list.querySelector('.qp-surah-item.active');
+                if (active) { try { active.scrollIntoView({ block: 'center' }); } catch (e) {} }
+                if (search) setTimeout(function () { search.focus(); }, 50);
+            }
+            function closePanel() {
+                panel.hidden = true;
+                btn.setAttribute('aria-expanded', 'false');
+            }
+            function choose(value) {
+                select.value = value;
+                syncLabel();
+                closePanel();
+                try { select.dispatchEvent(new Event('change', { bubbles: true })); } catch (e) {}
+            }
+            btn.addEventListener('click', function () { if (panel.hidden) openPanel(); else closePanel(); });
+            if (search) search.addEventListener('input', function () { buildList(search.value); });
+            document.addEventListener('click', function (e) { if (!panel.hidden && !(e.target && e.target.closest && e.target.closest('#qp-surah-picker'))) closePanel(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) closePanel(); });
+            select.addEventListener('change', syncLabel);
+            syncLabel();
+            window._qpSyncSurahLabel = syncLabel;
+        })();
 
         // ==================================================
         // MOSQUES FINDER (SOLUTION FINALE: GEOAPIFY + OVERPASS FALLBACK)
