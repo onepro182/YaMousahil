@@ -2439,6 +2439,22 @@
         body.is-mobile #quran-read-screen .qrc-surah-list{flex:none;width:100%;max-height:215px;}
         body.is-mobile #quran-read-screen .qrc-surah-items{max-height:150px;}
         body.is-mobile #quran-read-screen .qrc-reader-col{overflow-y:visible;}
+        /* === Android : قائمة السور في صفحة كاملة أولاً، والانتقال إلى القارئ عند الاختيار === */
+        #qrc-back-list{display:none;align-items:center;gap:6px;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);border-radius:12px;padding:0 14px;height:46px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+        body.is-mobile #quran-read-screen{gap:12px;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-toolbar{display:none;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-mimic-header{display:none;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-mimic-strip{display:none;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-reader-col{display:none;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-bodyrow{flex-direction:column;gap:0;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-surah-list{flex:1 1 auto;width:100%;max-height:none;height:auto;min-height:0;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-surah-items{max-height:none;flex:1;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-surah-list{display:none;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-back-list{display:inline-flex;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-toolbar{flex-direction:row;flex-wrap:wrap;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-select{order:3;flex-basis:100%;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-back-list{order:0;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-nav{order:1;}
         /* قائمة السور — محدد مخصّص يعرض اسم السورة بخط قرآني ذهبي */
         #quran-player-screen .qp-surah-picker{position:relative;flex-shrink:0;}
         #quran-player-screen .qp-surah-btn{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;text-align:right;font-family:var(--font-quran);background:linear-gradient(160deg,rgba(17,64,46,0.95),rgba(11,40,28,0.96));border:1px solid rgba(212,175,55,0.5);border-radius:14px;padding:11px 16px;color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 6px 18px rgba(0,0,0,0.35);transition:border-color .2s,box-shadow .2s,transform .15s;}
@@ -5468,6 +5484,7 @@
                     <div style="width:80px;"></div>
                 </header>
                 <div class="qrc-toolbar">
+                    <button type="button" class="qrc-back-list glass-btn" id="qrc-back-list" aria-label="العودة إلى قائمة السور">‹ قائمة السور</button>
                     <button type="button" class="qrc-nav glass-btn" id="qrc-prev" aria-label="السورة السابقة">‹</button>
                     <select id="qrc-surah" class="setting-select qrc-select" aria-label="اختيار السورة"></select>
                     <button type="button" class="qrc-nav glass-btn" id="qrc-next" aria-label="السورة التالية">›</button>
@@ -8131,9 +8148,20 @@ var gender = 'male';
                 panelEl.style.fontSize = fontEl.value + 'rem';
                 try { localStorage.setItem('YaMousahil_qrc_font', String(fontEl.value)); } catch (e) {}
             });
+            var backListBtn = document.getElementById('qrc-back-list');
+            function isMobileQrc() { try { return document.body.classList.contains('is-mobile'); } catch (e) { return false; } }
+            function setQrcMode(mode) {
+                if (!isMobileQrc()) { quranReadScreen.classList.remove('qrc-mobile-list', 'qrc-mobile-reader'); return; }
+                quranReadScreen.classList.toggle('qrc-mobile-list', mode === 'list');
+                quranReadScreen.classList.toggle('qrc-mobile-reader', mode === 'reader');
+            }
+            if (backListBtn) backListBtn.addEventListener('click', function () { setQrcMode('list'); });
             window._qrcGoTo = function (s, a) {
                 try { if (typeof showScreen === 'function') showScreen(quranReadScreen); } catch (e) {}
                 window.scrollTo(0, 0);
+                // على الهاتف : الفتح من القائمة الرئيسية (بدون وسيط) يعرض قائمة السور فقط؛ أي نقرة داخل القائمة تفتح القارئ
+                if (isMobileQrc() && s == null && a == null) { setQrcMode('list'); return; }
+                if (isMobileQrc()) setQrcMode('reader');
                 load((s == null ? state.n : clamp(s)), a || null);
             };
             renderSurahList('');
