@@ -2463,6 +2463,31 @@
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-select-wrap{order:3;flex-basis:100%;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-back-list{order:0;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-nav{order:1;}
+        /* === العلامات المرجعية + الاستئناف + تحديد الآيات (على نمط المصدر) === */
+        #quran-read-screen .qrc-tools-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;border:1px solid rgba(184,155,94,.55);background:#F5EFE0;color:#8E7440;font-family:var(--font);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;margin-inline-start:auto;}
+        #quran-read-screen .qrc-tools-btn:hover{border-color:#B89B5E;color:#6b571f;box-shadow:0 2px 10px rgba(184,155,94,.25);}
+        #quran-read-screen .qrc-tools-btn[aria-pressed="true"]{background:#8E7440;border-color:#8E7440;color:#FFF8E1;}
+        #quran-read-screen .qrc-v{cursor:pointer;border-radius:8px;padding:1px 3px;transition:background .18s,outline .18s;}
+        #quran-read-screen .qrc-v:hover{background:#DDEADF;}
+        #quran-read-screen .qrc-v.selected{background:#F5EFE0;outline:2px solid #B89B5E;outline-offset:1px;}
+        #quran-read-screen .qrc-v.playing{background:#E8F1EA;outline:2px solid #0E4F2C;outline-offset:1px;}
+        #quran-read-screen .qrc-v.bookmarked .qrc-mimic-num{background:radial-gradient(circle at 30% 30%,#8E7440,#5e4a1c);border-color:#3d300f;color:#FFE9A8;}
+        #quran-read-screen .qrc-v.bookmarked::after{content:"★";color:#B89B5E;font-size:.5em;vertical-align:super;padding:0 1px;}
+        #quran-read-screen .qrc-mimic-panel.bk-only .qrc-v:not(.bookmarked){display:none;}
+        #quran-read-screen .qrc-mimic-panel.bk-only .qrc-mimic-bism{display:none;}
+        #quran-read-screen .qrc-vpop{position:fixed;z-index:80;display:flex;gap:6px;background:#042815;border:1px solid #B89B5E;border-radius:12px;padding:6px 8px;box-shadow:0 12px 32px rgba(0,0,0,.45);direction:rtl;}
+        #quran-read-screen .qrc-vpop[hidden]{display:none;}
+        #quran-read-screen .qrc-vpop button{width:38px;height:38px;border:none;border-radius:8px;background:rgba(255,255,255,.06);color:#FFE9A8;font-size:1.05rem;cursor:pointer;line-height:1;transition:all .15s;}
+        #quran-read-screen .qrc-vpop button:hover{background:rgba(212,175,55,.18);color:#fff;}
+        #quran-read-screen .qrc-resume{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#042815;border:1px solid #B89B5E;color:#FFE9A8;border-radius:12px;padding:9px 14px;font-size:.88rem;margin-bottom:8px;flex-shrink:0;}
+        #quran-read-screen .qrc-resume[hidden]{display:none;}
+        #quran-read-screen .qrc-resume-actions{display:flex;gap:8px;flex-shrink:0;}
+        #quran-read-screen #qrc-resume-go{background:#B89B5E;border:none;color:#2a2110;font-weight:800;border-radius:8px;padding:6px 14px;cursor:pointer;font-family:var(--font);}
+        #quran-read-screen #qrc-resume-dismiss{background:transparent;border:1px solid rgba(255,255,255,.25);color:#FFE9A8;border-radius:8px;width:32px;cursor:pointer;font-size:1rem;line-height:1;}
+        #quran-read-screen .qrc-bk-empty{background:#FDF1EA;border:1px solid #E8A082;color:#6E2A12;border-radius:10px;padding:12px 14px;font-size:.88rem;text-align:center;margin-bottom:8px;flex-shrink:0;}
+        #quran-read-screen .qrc-bk-empty[hidden]{display:none;}
+        body.is-mobile #quran-read-screen .qrc-tools-btn{padding:6px 10px;font-size:.7rem;}
+        body.is-mobile #quran-read-screen .qrc-resume{font-size:.78rem;padding:8px 10px;}
         /* قائمة السور — محدد مخصّص يعرض اسم السورة بخط قرآني ذهبي */
         #quran-player-screen .qp-surah-picker{position:relative;flex-shrink:0;}
         #quran-player-screen .qp-surah-btn{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;text-align:right;font-family:var(--font-quran);background:linear-gradient(160deg,rgba(17,64,46,0.95),rgba(11,40,28,0.96));border:1px solid rgba(212,175,55,0.5);border-radius:14px;padding:11px 16px;color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 6px 18px rgba(0,0,0,0.35);transition:border-color .2s,box-shadow .2s,transform .15s;}
@@ -5508,6 +5533,7 @@
                     <div class="qrc-mimic-strip">
                         <span class="qrc-mimic-label">حجم الخط</span>
                         <input type="range" id="qrc-m-font" min="1.4" max="3.5" step="0.1" value="2" aria-label="حجم الخط">
+                        <button type="button" class="qrc-tools-btn" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل">★ العلامات <span id="qrc-bk-count">0</span></button>
                     </div>
                     <div class="qrc-bodyrow">
                         <aside class="qrc-surah-list" id="qrc-surah-list" aria-label="قائمة السور">
@@ -5524,10 +5550,25 @@
                             <div class="qrc-surah-items" id="qrc-surah-items"></div>
                         </aside>
                         <div class="qrc-reader-col">
+                            <div class="qrc-resume" id="qrc-resume" role="status" hidden>
+                                <span>متابعة القراءة من الآية <b id="qrc-resume-ayah"></b>؟</span>
+                                <span class="qrc-resume-actions">
+                                    <button type="button" id="qrc-resume-go">متابعة</button>
+                                    <button type="button" id="qrc-resume-dismiss" aria-label="إخفاء">×</button>
+                                </span>
+                            </div>
+                            <div class="qrc-bk-empty" id="qrc-bk-empty" hidden>لا توجد علامات مرجعية في هذه السورة — اضغط ★ على أي آية لإضافتها.</div>
                             <div class="qrc-mimic-panel" id="qrc-m-panel" aria-live="polite"><div class="qrc-mimic-loading">جاري تحميل السورة...</div></div>
                         </div>
                     </div>
                 </div>
+                <div class="qrc-vpop" id="qrc-vpop" role="toolbar" aria-label="إجراءات الآية" hidden>
+                    <button type="button" data-act="play" title="تشغيل الآية (العفاسي)" aria-label="تشغيل الآية">▶</button>
+                    <button type="button" data-act="bookmark" title="علامة مرجعية" aria-label="علامة مرجعية">☆</button>
+                    <button type="button" data-act="copy" title="نسخ الآية" aria-label="نسخ الآية">⧉</button>
+                    <button type="button" data-act="close" title="إغلاق" aria-label="إغلاق">✕</button>
+                </div>
+                <audio id="qrc-audio" preload="none" style="display:none"></audio>
             </div>
 
         </div>
@@ -7889,6 +7930,181 @@ var gender = 'male';
                 }).join(' ');
             }
 
+            // ===== العلامات المرجعية + متابعة القراءة + تحديد الآيات (على نمط qurancentral.net) =====
+            var qrcBkKey = 'YaMousahil_qrc_bookmarks';
+            var qrcLastKey = 'YaMousahil_qrc_last';
+            var qrcVpop = document.getElementById('qrc-vpop');
+            var qrcAudio = document.getElementById('qrc-audio');
+            var qrcResume = document.getElementById('qrc-resume');
+            var qrcResumeAyahEl = document.getElementById('qrc-resume-ayah');
+            var qrcBkCount = document.getElementById('qrc-bk-count');
+            var qrcBkToggle = document.getElementById('qrc-bk-toggle');
+            var qrcBkEmpty = document.getElementById('qrc-bk-empty');
+            var qrcPopSelected = null;
+
+            function qrcLoadBookmarks() { try { return JSON.parse(localStorage.getItem(qrcBkKey) || '[]'); } catch (e) { return []; } }
+            function qrcSaveBookmarks(arr) { try { localStorage.setItem(qrcBkKey, JSON.stringify(arr)); } catch (e) {} }
+            function qrcIsBookmarked(s, a) { return qrcLoadBookmarks().some(function (b) { return b.s === s && b.a === a; }); }
+            function qrcUpdateBkCount() { if (qrcBkCount) qrcBkCount.textContent = String(qrcLoadBookmarks().length); }
+            function qrcUpdateMarks() {
+                if (!panelEl) return;
+                panelEl.querySelectorAll('.qrc-v').forEach(function (v) {
+                    v.classList.toggle('bookmarked', qrcIsBookmarked(state.n, parseInt(v.getAttribute('data-a'), 10) || 0));
+                });
+                if (panelEl.classList.contains('bk-only') && qrcBkEmpty) {
+                    qrcBkEmpty.hidden = panelEl.querySelectorAll('.qrc-v.bookmarked').length > 0;
+                }
+            }
+            function qrcToggleBookmark(a) {
+                var arr = qrcLoadBookmarks();
+                var i = arr.findIndex(function (b) { return b.s === state.n && b.a === a; });
+                var text = '';
+                var span = panelEl.querySelector('.qrc-v[data-a="' + a + '"]');
+                if (span) text = (span.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 90);
+                if (i >= 0) arr.splice(i, 1); else arr.push({ s: state.n, a: a, ts: Date.now(), t: text });
+                qrcSaveBookmarks(arr);
+                qrcUpdateMarks();
+                qrcUpdateBkCount();
+                return i < 0;
+            }
+            function qrcHidePop() {
+                if (qrcVpop) qrcVpop.hidden = true;
+                qrcPopSelected = null;
+                panelEl.querySelectorAll('.qrc-v.selected').forEach(function (e) { e.classList.remove('selected'); });
+            }
+            function qrcShowPop(el, ev) {
+                if (!qrcVpop) return;
+                var a = parseInt(el.getAttribute('data-a'), 10) || 0;
+                qrcPopSelected = a;
+                panelEl.querySelectorAll('.qrc-v.selected').forEach(function (e) { e.classList.remove('selected'); });
+                el.classList.add('selected');
+                qrcVpop.hidden = false;
+                var bm = qrcVpop.querySelector('[data-act="bookmark"]');
+                if (bm) bm.textContent = qrcIsBookmarked(state.n, a) ? '\u2605' : '\u2606';
+                var w = qrcVpop.offsetWidth, h = qrcVpop.offsetHeight;
+                var x = (ev && typeof ev.clientX === 'number') ? ev.clientX : window.innerWidth / 2;
+                var y = (ev && typeof ev.clientY === 'number') ? ev.clientY : window.innerHeight / 2;
+                var left = Math.max(8, Math.min(window.innerWidth - w - 8, x - w / 2));
+                var top = y - h - 12;
+                if (top < 8) top = y + 14;
+                qrcVpop.style.left = left + 'px';
+                qrcVpop.style.top = top + 'px';
+            }
+            function qrcPlayAyah(a) {
+                if (!qrcAudio) return;
+                var pad = function (n) { return String(n).padStart(3, '0'); };
+                var url = 'https://everyayah.com/data/Alafasy_128kbps/' + pad(state.n) + pad(a) + '.mp3';
+                panelEl.querySelectorAll('.qrc-v.playing').forEach(function (e) { e.classList.remove('playing'); });
+                try { qrcAudio.pause(); } catch (e) {}
+                qrcAudio.onended = function () { panelEl.querySelectorAll('.qrc-v.playing').forEach(function (e) { e.classList.remove('playing'); }); };
+                qrcAudio.src = url;
+                var p = qrcAudio.play(); if (p && p.catch) p.catch(function () {});
+                var v = panelEl.querySelector('.qrc-v[data-a="' + a + '"]');
+                if (v) v.classList.add('playing');
+            }
+            function qrcCopyAyah(a) {
+                var span = panelEl.querySelector('.qrc-v[data-a="' + a + '"]');
+                var txt = span ? (span.textContent || '').replace(/\s+/g, ' ').trim() : '';
+                var done = function () {
+                    if (span) { span.classList.add('qrc-v-flash'); setTimeout(function () { span.classList.remove('qrc-v-flash'); }, 900); }
+                };
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(done).catch(done); return; }
+                } catch (e) {}
+                try {
+                    var ta = document.createElement('textarea');
+                    ta.value = txt;
+                    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                    document.body.appendChild(ta); ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                } catch (e2) {}
+                done();
+            }
+            function qrcTrackReading() {
+                var sc = quranReadScreen.querySelector('.qrc-reader-col');
+                if (!sc) return;
+                if (sc._qrcScrollHandler) sc.removeEventListener('scroll', sc._qrcScrollHandler);
+                var timer = null;
+                sc._qrcScrollHandler = function () {
+                    clearTimeout(timer);
+                    timer = setTimeout(function () {
+                        var scTop = sc.scrollTop;
+                        var scRectTop = sc.getBoundingClientRect().top;
+                        var ayahs = panelEl.querySelectorAll('.qrc-v');
+                        for (var i = 0; i < ayahs.length; i++) {
+                            var el = ayahs[i];
+                            var top = el.getBoundingClientRect().top - scRectTop + scTop;
+                            if (top + el.offsetHeight / 2 >= scTop - 4) {
+                                try { localStorage.setItem(qrcLastKey, JSON.stringify({ s: state.n, a: i + 1, ts: Date.now() })); } catch (e) {}
+                                return;
+                            }
+                        }
+                        try { localStorage.setItem(qrcLastKey, JSON.stringify({ s: state.n, a: ayahs.length, ts: Date.now() })); } catch (e) {}
+                    }, 250);
+                };
+                sc.addEventListener('scroll', sc._qrcScrollHandler, { passive: true });
+            }
+            function qrcMaybeShowResume() {
+                if (!qrcResume || !qrcResumeAyahEl) return;
+                var last = null;
+                try { last = JSON.parse(localStorage.getItem(qrcLastKey) || 'null'); } catch (e) {}
+                if (last && last.s === state.n && last.a > 1) {
+                    qrcResumeAyahEl.textContent = String(last.a);
+                    qrcResume.hidden = false;
+                } else {
+                    qrcResume.hidden = true;
+                }
+            }
+            if (panelEl) panelEl.addEventListener('click', function (e) {
+                var v = e.target && e.target.closest ? e.target.closest('.qrc-v') : null;
+                if (!v) { if (!e.target.closest('.qrc-vpop')) qrcHidePop(); return; }
+                e.preventDefault();
+                qrcShowPop(v, e);
+            });
+            if (qrcVpop) qrcVpop.addEventListener('click', function (e) {
+                var b = e.target && e.target.closest ? e.target.closest('button[data-act]') : null;
+                if (!b || qrcPopSelected == null) return;
+                var act = b.getAttribute('data-act');
+                if (act === 'play') qrcPlayAyah(qrcPopSelected);
+                else if (act === 'bookmark') {
+                    var added = qrcToggleBookmark(qrcPopSelected);
+                    b.textContent = added ? '\u2605' : '\u2606';
+                } else if (act === 'copy') qrcCopyAyah(qrcPopSelected);
+                else if (act === 'close') qrcHidePop();
+            });
+            document.addEventListener('click', function (e) {
+                if (!qrcVpop || qrcVpop.hidden) return;
+                if (e.target && e.target.closest && (e.target.closest('.qrc-vpop') || e.target.closest('.qrc-v'))) return;
+                qrcHidePop();
+            });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') qrcHidePop(); });
+            var qrcScroller = quranReadScreen.querySelector('.qrc-reader-col');
+            if (qrcScroller) qrcScroller.addEventListener('scroll', qrcHidePop, { passive: true });
+            if (qrcBkToggle) qrcBkToggle.addEventListener('click', function () {
+                var on = panelEl.classList.toggle('bk-only');
+                qrcBkToggle.setAttribute('aria-pressed', String(on));
+                if (on) {
+                    if (qrcBkEmpty) qrcBkEmpty.hidden = panelEl.querySelectorAll('.qrc-v.bookmarked').length > 0;
+                } else if (qrcBkEmpty) qrcBkEmpty.hidden = true;
+            });
+            var qrcResumeGo = document.getElementById('qrc-resume-go');
+            var qrcResumeDismiss = document.getElementById('qrc-resume-dismiss');
+            if (qrcResumeGo) qrcResumeGo.addEventListener('click', function () {
+                var last = null;
+                try { last = JSON.parse(localStorage.getItem(qrcLastKey) || 'null'); } catch (e) {}
+                if (qrcResume) qrcResume.hidden = true;
+                if (last && last.s === state.n) {
+                    var target = panelEl.querySelector('.qrc-v[data-a="' + last.a + '"]');
+                    if (target) {
+                        try { target.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {}
+                        target.classList.add('qrc-v-flash');
+                        setTimeout(function () { target.classList.remove('qrc-v-flash'); }, 2200);
+                    }
+                }
+            });
+            if (qrcResumeDismiss) qrcResumeDismiss.addEventListener('click', function () { if (qrcResume) qrcResume.hidden = true; });
+
             function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
             async function fetchMetaSurah(n) {
                 for (var attempt = 0; attempt < 6; attempt++) {
@@ -8110,7 +8326,11 @@ var gender = 'male';
                 state.jump = jumpAyah || null;
                 if (select.value !== String(state.n)) select.value = String(state.n);
                 saveLast(state.n);
+                qrcHidePop();
                 panelEl.innerHTML = '<div class="qrc-mimic-loading">جاري تحميل السورة...</div>';
+                if (qrcResume) qrcResume.hidden = true;
+                if (qrcBkEmpty) qrcBkEmpty.hidden = true;
+                panelEl.classList.remove('bk-only');
                 var ar = null;
                 try {
                     if (!cache[state.n]) {
@@ -8138,6 +8358,10 @@ var gender = 'male';
                 var qrcScroll = quranReadScreen.querySelector('.qrc-reader-col');
                 if (qrcScroll) qrcScroll.scrollTop = 0;
                 markActiveInList();
+                qrcUpdateMarks();
+                qrcUpdateBkCount();
+                qrcTrackReading();
+                qrcMaybeShowResume();
                 if (state.jump) {
                     var aN = state.jump;
                     state.jump = null;
