@@ -423,7 +423,7 @@
         .main-layout{display:flex;flex:1;gap:25px;min-height:0;}
         .apps-column{flex:1;display:flex;flex-direction:column;min-height:0;}
         .prayer-row{display:flex;gap:8px;margin-bottom:20px;justify-content:flex-start;flex-direction:row-reverse;flex-shrink:0;background:rgba(255,255,255,.055);border:1px solid var(--glass-border);border-radius:16px;padding:10px;box-shadow:0 10px 28px rgba(0,0,0,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
-        .prayer-row .time-box{border:0;box-shadow:none;backdrop-filter:none;background:transparent;}
+        .prayer-row .time-box{box-shadow:0 6px 16px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05);}
         
         .time-box { border-radius:10px; padding:10px 15px; text-align:center; min-width:75px; flex:1; }
         .time-box .name{font-size:.8rem;margin-bottom:4px;color:var(--text-dim);font-weight:600;}
@@ -747,9 +747,6 @@
             padding:8px 6px;gap:6px;margin-bottom:16px;
             box-shadow:0 10px 28px rgba(0,0,0,.25);
             backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-        }
-        body.is-mobile #home-prayer-times .time-box{
-            border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;background:transparent;
         }
         body.is-mobile #home-prayer-times .time-box.is-now{background:var(--cream);}
         body.is-mobile #home-prayer-times .time-box.is-next{background:rgba(212,175,55,.15);}
@@ -2445,7 +2442,7 @@
         body.is-mobile #quran-read-screen .qrc-bodyrow{flex-direction:column;gap:10px;}
         body.is-mobile #quran-read-screen .qrc-surah-list{flex:none;width:100%;max-height:215px;}
         body.is-mobile #quran-read-screen .qrc-surah-items{max-height:150px;}
-        body.is-mobile #quran-read-screen .qrc-reader-col{overflow-y:visible;}
+        body.is-mobile #quran-read-screen .qrc-reader-col{flex:1;min-width:0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
         /* === Android : قائمة السور في صفحة كاملة أولاً، والانتقال إلى القارئ عند الاختيار === */
         #qrc-back-list{display:none;align-items:center;gap:6px;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);border-radius:12px;padding:0 14px;height:46px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;}
         body.is-mobile #quran-read-screen{height:100dvh;min-height:0;overflow:hidden;gap:10px;}
