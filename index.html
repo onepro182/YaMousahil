@@ -10305,10 +10305,8 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             window._qmFromMenu = true;
             if (typeof window._qmSyncLabels === 'function') window._qmSyncLabels();
             if (k === 'play') {
-                // «أهم إذاعات القرآن الكريم في العالم »
-                try { if (typeof initQuranStationsPage === 'function') initQuranStationsPage(); } catch (e) {}
-                var rs = document.getElementById('quranradio-screen');
-                if (rs && typeof showScreen === 'function') showScreen(rs);
+                // «استماع إلى القرآن الكريم» — ouvre le lecteur (grille des récitateurs + اختيار السورة)
+                try { var _qp = document.getElementById('card-quran-player'); if (_qp) { _qp.click(); } } catch (e) {}
                 return;
             }
             if (k === 'dua') {
