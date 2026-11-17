@@ -2400,6 +2400,45 @@
         body.is-mobile #quran-read-screen .qrc-mimic-bism{font-size:1.25rem;}
         body.is-mobile #quran-read-screen .qrc-toolbar{gap:8px;}
         body.is-mobile #quran-read-screen .qrc-select{min-width:140px;flex-basis:100%;order:-1;}
+        /* === الشريط الجانبي لقائمة السور — نفس بنية المصدر === */
+        #quran-read-screen .qrc-bodyrow{flex:1;min-height:0;display:flex;gap:14px;align-items:stretch;}
+        #quran-read-screen .qrc-reader-col{flex:1;min-width:0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+        #quran-read-screen .qrc-surah-list{flex:0 0 250px;width:250px;background:#FFFFFF;border:1px solid #E5E7DE;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 2px 4px rgba(14,79,44,.07);min-height:0;}
+        #quran-read-screen .qrc-surah-search{padding:12px;border-bottom:1px solid #E5E7DE;background:#F4F5F0;}
+        #quran-read-screen .qrc-input{width:100%;padding:10px 12px;border:1px solid #CDD3C5;border-radius:8px;background:#fff;color:#1A1F1B;font-size:.88rem;font-family:inherit;box-sizing:border-box;outline:none;}
+        #quran-read-screen .qrc-input:focus{border-color:#0E4F2C;box-shadow:0 0 0 3px #E8F1EA;}
+        #quran-read-screen .qrc-nav-modes{display:flex;gap:4px;padding:8px;border-bottom:1px solid #E5E7DE;background:#fff;}
+        #quran-read-screen .qrc-nav-modes button{flex:1;min-width:0;padding:6px 4px;font-family:inherit;font-size:.8rem;font-weight:600;border:1px solid transparent;background:transparent;color:#4A5750;border-radius:6px;cursor:pointer;transition:all .15s;}
+        #quran-read-screen .qrc-nav-modes button:hover{background:#F1F6F2;}
+        #quran-read-screen .qrc-nav-modes button[aria-selected="true"]{background:#0E4F2C;color:#fff;border-color:#0E4F2C;}
+        #quran-read-screen .qrc-surah-items{flex:1;overflow-y:auto;min-height:0;overscroll-behavior:contain;}
+        #quran-read-screen .qrc-s-item{display:flex;align-items:center;gap:8px;padding:5px 12px;border-bottom:1px solid #EDEFE7;cursor:pointer;position:relative;transition:background .15s;background:#fff;text-align:right;width:100%;border-top:none;border-left:none;border-right:none;font-family:inherit;}
+        #quran-read-screen .qrc-s-item:hover{background:#F1F6F2;}
+        #quran-read-screen .qrc-s-item.active{background:#E8F1EA;}
+        #quran-read-screen .qrc-s-item.active::before{content:"";position:absolute;right:0;top:4px;bottom:4px;width:3px;background:#B89B5E;border-radius:3px 0 0 3px;}
+        #quran-read-screen .qrc-s-num{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#0E4F2C,#1B7A47);color:#fff;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(14,79,44,.3);}
+        #quran-read-screen .qrc-s-item.active .qrc-s-num{background:linear-gradient(135deg,#B89B5E,#8E7440);}
+        #quran-read-screen .qrc-s-meta{flex:1;min-width:0;}
+        #quran-read-screen .qrc-s-title{font-weight:600;font-size:.84rem;color:#1A1F1B;letter-spacing:-.01em;line-height:1.2;}
+        #quran-read-screen .qrc-s-sub{font-size:.7rem;color:#7A8479;margin-top:2px;line-height:1.1;}
+        #quran-read-screen .qrc-s-ar{font-family:'Amiri Quran','Amiri',serif;font-size:1.4rem;font-weight:700;color:#0E4F2C;flex-shrink:0;line-height:1;}
+        #quran-read-screen .qrc-empty{padding:28px 14px;text-align:center;color:#7A8479;font-size:.86rem;font-style:italic;}
+        #quran-read-screen .qrc-page-go{padding:16px 14px;display:flex;flex-direction:column;gap:12px;}
+        #quran-read-screen .qrc-page-go label{font-size:.82rem;color:#4A5750;text-align:center;font-weight:600;}
+        #quran-read-screen .qrc-page-row{display:flex;gap:8px;align-items:center;justify-content:center;}
+        #quran-read-screen .qrc-page-input{width:90px;text-align:center;padding:8px 6px;border:1px solid #CDD3C5;border-radius:8px;font-size:1.05rem;font-family:inherit;outline:none;}
+        #quran-read-screen .qrc-page-input:focus{border-color:#0E4F2C;box-shadow:0 0 0 3px #E8F1EA;}
+        #quran-read-screen .qrc-page-btn{width:38px;height:38px;border-radius:8px;border:1px solid #0E4F2C;background:transparent;color:#0E4F2C;font-size:1.1rem;cursor:pointer;font-family:inherit;}
+        #quran-read-screen .qrc-page-btn:hover{background:#0E4F2C;color:#fff;}
+        #quran-read-screen .qrc-page-info{text-align:center;color:#7A8479;font-size:.82rem;min-height:1.2em;}
+        #quran-read-screen .qrc-page-gobtn{padding:9px 18px;border-radius:8px;border:1.5px solid #0E4F2C;background:#0E4F2C;color:#fff;font-weight:700;cursor:pointer;font-family:inherit;align-self:center;}
+        #quran-read-screen .qrc-page-gobtn:hover{background:#073A1F;}
+        #quran-read-screen .qrc-v-flash{background:#F5EFE0;outline:2px solid #B89B5E;border-radius:8px;}
+        @media (max-width:1100px){#quran-read-screen .qrc-surah-list{flex-basis:214px;width:214px;}}
+        body.is-mobile #quran-read-screen .qrc-bodyrow{flex-direction:column;gap:10px;}
+        body.is-mobile #quran-read-screen .qrc-surah-list{flex:none;width:100%;max-height:215px;}
+        body.is-mobile #quran-read-screen .qrc-surah-items{max-height:150px;}
+        body.is-mobile #quran-read-screen .qrc-reader-col{overflow-y:visible;}
         /* قائمة السور — محدد مخصّص يعرض اسم السورة بخط قرآني ذهبي */
         #quran-player-screen .qp-surah-picker{position:relative;flex-shrink:0;}
         #quran-player-screen .qp-surah-btn{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;text-align:right;font-family:var(--font-quran);background:linear-gradient(160deg,rgba(17,64,46,0.95),rgba(11,40,28,0.96));border:1px solid rgba(212,175,55,0.5);border-radius:14px;padding:11px 16px;color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 6px 18px rgba(0,0,0,0.35);transition:border-color .2s,box-shadow .2s,transform .15s;}
@@ -5443,9 +5482,25 @@
                         <span class="qrc-mimic-label">حجم الخط</span>
                         <input type="range" id="qrc-m-font" min="1.4" max="3.5" step="0.1" value="2" aria-label="حجم الخط">
                     </div>
-                    <div class="qrc-mimic-panel" id="qrc-m-panel" aria-live="polite"><div class="qrc-mimic-loading">جاري تحميل السورة...</div></div>
+                    <div class="qrc-bodyrow">
+                        <aside class="qrc-surah-list" id="qrc-surah-list" aria-label="قائمة السور">
+                            <div class="qrc-surah-search">
+                                <input type="search" id="qrc-ss-input" class="qrc-input" placeholder="🔍 ابحث عن سورة أو جزء أو ٢:٢٥٥" aria-label="ابحث عن سورة أو جزء أو ٢:٢٥٥">
+                            </div>
+                            <div class="qrc-nav-modes" id="qrc-nav-modes" role="tablist">
+                                <button type="button" role="tab" data-m="surah" aria-selected="true">سورة</button>
+                                <button type="button" role="tab" data-m="juz" aria-selected="false">جزء</button>
+                                <button type="button" role="tab" data-m="hizb" aria-selected="false">حزب</button>
+                                <button type="button" role="tab" data-m="manzil" aria-selected="false">منزل</button>
+                                <button type="button" role="tab" data-m="page" aria-selected="false">صفحة</button>
+                            </div>
+                            <div class="qrc-surah-items" id="qrc-surah-items"></div>
+                        </aside>
+                        <div class="qrc-reader-col">
+                            <div class="qrc-mimic-panel" id="qrc-m-panel" aria-live="polite"><div class="qrc-mimic-loading">جاري تحميل السورة...</div></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="qrc-source">المصدر : <a href="https://qurancentral.net/ar/read-quran.html" target="_blank" rel="noopener">qurancentral.net</a> · النص العثماني عبر api.alquran.cloud</div>
             </div>
 
         </div>
@@ -7756,7 +7811,10 @@ var gender = 'male';
         }
         // Le sélecteur de سورة pilote le lecteur natif
         document.getElementById('qp-surah').addEventListener('change', () => { qpLoadAndPlay(true); });
-        // ===== اقرأ القرآن الكريم — clone natif de qurancentral.net (نفس البيانات والنمط والخط : popup) =====
+        // ===== اقرأ القرآن الكريم — صفحة القراءة (النص العثماني من نفس مصدر qurancentral.net) + الشريط الجانبي للسور =====
+        const QRC_SURAHS = [
+            [1,"Al-Fatihah","The Opening","الفاتحة"],[2,"Al-Baqarah","The Cow","البقرة"],[3,"Aali Imran","Family of Imran","آل عمران"],[4,"An-Nisa'","The Women","النساء"],[5,"Al-Ma'idah","The Table Spread","المائدة"],[6,"Al-An'am","The Cattle","الأنعام"],[7,"Al-A'raf","The Heights","الأعراف"],[8,"Al-Anfal","The Spoils of War","الأنفال"],[9,"At-Tawbah","The Repentance","التوبة"],[10,"Yunus","Jonah","يونس"],[11,"Hud","Hud","هود"],[12,"Yusuf","Joseph","يوسف"],[13,"Ar-Ra'd","The Thunder","الرعد"],[14,"Ibrahim","Abraham","إبراهيم"],[15,"Al-Hijr","The Rocky Tract","الحجر"],[16,"An-Nahl","The Bee","النحل"],[17,"Al-Isra'","The Night Journey","الإسراء"],[18,"Al-Kahf","The Cave","الكهف"],[19,"Maryam","Mary","مريم"],[20,"Ta-Ha","Ta-Ha","طه"],[21,"Al-Anbiya'","The Prophets","الأنبياء"],[22,"Al-Hajj","The Pilgrimage","الحج"],[23,"Al-Mu'minun","The Believers","المؤمنون"],[24,"An-Nur","The Light","النور"],[25,"Al-Furqan","The Criterion","الفرقان"],[26,"Ash-Shu'ara'","The Poets","الشعراء"],[27,"An-Naml","The Ant","النمل"],[28,"Al-Qasas","The Stories","القصص"],[29,"Al-Ankabut","The Spider","العنكبوت"],[30,"Ar-Rum","The Romans","الروم"],[31,"Luqman","Luqman","لقمان"],[32,"As-Sajdah","The Prostration","السجدة"],[33,"Al-Ahzab","The Confederates","الأحزاب"],[34,"Saba'","Sheba","سبأ"],[35,"Fatir","The Originator","فاطر"],[36,"Ya-Sin","Ya-Sin","يس"],[37,"As-Saffat","Those Ranged in Ranks","الصافات"],[38,"Sad","Sad","ص"],[39,"Az-Zumar","The Groups","الزمر"],[40,"Ghafir","The Forgiver","غافر"],[41,"Fussilat","Explained in Detail","فصلت"],[42,"Ash-Shura","Consultation","الشورى"],[43,"Az-Zukhruf","Gold Adornments","الزخرف"],[44,"Ad-Dukhan","The Smoke","الدخان"],[45,"Al-Jathiyah","The Kneeling","الجاثية"],[46,"Al-Ahqaf","The Sand Dunes","الأحقاف"],[47,"Muhammad","Muhammad","محمد"],[48,"Al-Fath","The Victory","الفتح"],[49,"Al-Hujurat","The Chambers","الحجرات"],[50,"Qaf","Qaf","ق"],[51,"Adh-Dhariyat","The Scatterers","الذاريات"],[52,"At-Tur","The Mount","الطور"],[53,"An-Najm","The Star","النجم"],[54,"Al-Qamar","The Moon","القمر"],[55,"Ar-Rahman","The Beneficent","الرحمن"],[56,"Al-Waqi'ah","The Inevitable","الواقعة"],[57,"Al-Hadid","Iron","الحديد"],[58,"Al-Mujadilah","She Who Disputes","المجادلة"],[59,"Al-Hashr","The Gathering","الحشر"],[60,"Al-Mumtahanah","The Examined One","الممتحنة"],[61,"As-Saff","The Ranks","الصف"],[62,"Al-Jumu'ah","Friday","الجمعة"],[63,"Al-Munafiqun","The Hypocrites","المنافقون"],[64,"At-Taghabun","Loss and Gain","التغابن"],[65,"At-Talaq","Divorce","الطلاق"],[66,"At-Tahrim","The Prohibition","التحريم"],[67,"Al-Mulk","Dominion","الملك"],[68,"Al-Qalam","The Pen","القلم"],[69,"Al-Haqqah","The Inevitable Reality","الحاقة"],[70,"Al-Ma'arij","Ways of Ascent","المعارج"],[71,"Nuh","Noah","نوح"],[72,"Al-Jinn","The Jinn","الجن"],[73,"Al-Muzzammil","The Wrapped","المزمل"],[74,"Al-Muddaththir","The Cloaked","المدثر"],[75,"Al-Qiyamah","The Resurrection","القيامة"],[76,"Al-Insan","Man","الإنسان"],[77,"Al-Mursalat","Those Sent Forth","المرسلات"],[78,"An-Naba'","The Great News","النبأ"],[79,"An-Nazi'at","Those Who Pull Out","النازعات"],[80,"Abasa","He Frowned","عبس"],[81,"At-Takwir","Wound Round","التكوير"],[82,"Al-Infitar","The Cleaving","الانفطار"],[83,"Al-Mutaffifin","Defrauders","المطففين"],[84,"Al-Inshiqaq","The Splitting Asunder","الانشقاق"],[85,"Al-Buruj","The Constellations","البروج"],[86,"At-Tariq","The Night-Comer","الطارق"],[87,"Al-A'la","The Most High","الأعلى"],[88,"Al-Ghashiyah","The Overwhelming","الغاشية"],[89,"Al-Fajr","The Dawn","الفجر"],[90,"Al-Balad","The City","البلد"],[91,"Ash-Shams","The Sun","الشمس"],[92,"Al-Layl","The Night","الليل"],[93,"Ad-Duha","The Forenoon","الضحى"],[94,"Ash-Sharh","The Opening Forth","الشرح"],[95,"At-Tin","The Fig","التين"],[96,"Al-Alaq","The Clot","العلق"],[97,"Al-Qadr","The Night of Decree","القدر"],[98,"Al-Bayyinah","The Clear Evidence","البينة"],[99,"Az-Zalzalah","The Earthquake","الزلزلة"],[100,"Al-Adiyat","The Runners","العاديات"],[101,"Al-Qari'ah","The Striking Hour","القارعة"],[102,"At-Takathur","Piling Up","التكاثر"],[103,"Al-Asr","The Time","العصر"],[104,"Al-Humazah","The Slanderer","الهمزة"],[105,"Al-Fil","The Elephant","الفيل"],[106,"Quraish","Quraish","قريش"],[107,"Al-Ma'un","Small Kindnesses","الماعون"],[108,"Al-Kawthar","Abundance","الكوثر"],[109,"Al-Kafirun","The Disbelievers","الكافرون"],[110,"An-Nasr","Divine Support","النصر"],[111,"Al-Masad","Palm Fiber","المسد"],[112,"Al-Ikhlas","Sincerity","الإخلاص"],[113,"Al-Falaq","The Daybreak","الفلق"],[114,"An-Nas","Mankind","الناس"]
+        ];
         var quranReadScreen = document.getElementById('quran-read-screen');
         (function () {
             var select = document.getElementById('qrc-surah');
@@ -7769,20 +7827,261 @@ var gender = 'male';
             var metaEl = document.getElementById('qrc-m-meta');
             var panelEl = document.getElementById('qrc-m-panel');
             var fontEl = document.getElementById('qrc-m-font');
+            var itemsEl = document.getElementById('qrc-surah-items');
+            var inputEl = document.getElementById('qrc-ss-input');
+            var navEl = document.getElementById('qrc-nav-modes');
             try { select.innerHTML = document.getElementById('qp-surah').innerHTML; } catch (e) { console.error('qrc clone options', e); }
             if (fontEl) { try { var fv = localStorage.getItem('YaMousahil_qrc_font'); if (fv) fontEl.value = fv; } catch (e) {} }
+
             function clamp(v) { return Math.min(114, Math.max(1, v)); }
             function readLast() { try { return parseInt(localStorage.getItem('YaMousahil_qrc_surah') || '1', 10) || 1; } catch (e) { return 1; } }
             function saveLast(n) { try { localStorage.setItem('YaMousahil_qrc_surah', String(n)); } catch (e) {} }
-            var state = { n: clamp(readLast()) };
+            var state = { n: clamp(readLast()), mode: 'surah', jump: null };
             var cache = {};
+            var metaCache = null;
+
+            var AR_D = {'٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'};
+            function toWestern(t) { return String(t || '').replace(/[٠-٩]/g, function (d) { return AR_D[d] || d; }); }
+            function norm(t) {
+                return toWestern(t).toLowerCase()
+                    .replace(/[\u0610-\u061A\u0640\u064B-\u065F\u0670\u06D6-\u06ED]/g, '')
+                    .replace(/ٱ/g, 'ا').replace(/[إأآا]/g, 'ا')
+                    .replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+                    .replace(/[^a-z0-9\u0600-\u06FF ]/g, ' ')
+                    .replace(/\s+/g, ' ').trim();
+            }
+            function surahByNum(n) { for (var i = 0; i < QRC_SURAHS.length; i++) if (QRC_SURAHS[i][0] === n) return QRC_SURAHS[i]; return null; }
+            function surahLabel(n) { var x = surahByNum(n); return x ? x[3] : String(n); }
+            function surahEn(n) { var x = surahByNum(n); return x ? x[1] : ''; }
+            function ref(s, a) { return s + ':' + a; }
+
             function ayahSpans(ar) {
                 return ar.ayahs.map(function (a) {
-                    return a.text + '<span class="qrc-mimic-num">' + a.numberInSurah + '</span>';
+                    return '<span class="qrc-v" data-a="' + a.numberInSurah + '">' + a.text + '<span class="qrc-mimic-num">' + a.numberInSurah + '</span></span>';
                 }).join(' ');
             }
-            async function load(n) {
+
+            function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+            async function fetchMetaSurah(n) {
+                for (var attempt = 0; attempt < 6; attempt++) {
+                    try {
+                        var res = await fetch('https://api.alquran.cloud/v1/surah/' + n + '/quran-simple');
+                        if (res.status === 429) { await sleep(800 * (attempt + 1)); continue; }
+                        if (!res.ok) { await sleep(400 * (attempt + 1)); continue; }
+                        var json = await res.json();
+                        var ayahs = json && json.data && json.data.ayahs;
+                        if (Array.isArray(ayahs)) return ayahs;
+                        await sleep(300 * (attempt + 1));
+                    } catch (e) { await sleep(400 * (attempt + 1)); }
+                }
+                return null;
+            }
+            async function ensureMeta() {
+                if (metaCache) return metaCache;
+                try {
+                    var raw = localStorage.getItem('YaMousahil_qrc_meta_v2');
+                    if (raw) { var p = JSON.parse(raw); if (Array.isArray(p) && p.length > 6000) { metaCache = p; return p; } }
+                } catch (e) {}
+                var out = [];
+                var cursor = 1;
+                async function worker() {
+                    while (cursor <= 114) {
+                        var n = cursor++;
+                        var ayahs = await fetchMetaSurah(n);
+                        if (ayahs) for (var i = 0; i < ayahs.length; i++) {
+                            var a = ayahs[i];
+                            out.push([n, a.numberInSurah, a.juz || 0, a.manzil || 0, a.page || 0, a.hizbQuarter || 0]);
+                        }
+                    }
+                }
+                await Promise.all(Array.from({ length: 3 }, worker));
+                if (out.length < 6000) { metaCache = null; return null; } // نتایج ناتمام را کش نکن — المحاولة اللاحقة ستعيد البناء
+                out.sort(function (x, y) { return x[0] - y[0] || x[1] - y[1]; });
+                metaCache = out;
+                try { localStorage.setItem('YaMousahil_qrc_meta_v2', JSON.stringify(out)); } catch (e) {}
+                return out;
+            }
+
+            function markActiveInList() {
+                if (!itemsEl) return;
+                var act = String(state.n);
+                itemsEl.querySelectorAll('.qrc-s-item').forEach(function (el) {
+                    el.classList.toggle('active', el.getAttribute('data-n') === act);
+                });
+            }
+            function attachItemHandlers() {
+                itemsEl.querySelectorAll('.qrc-s-item').forEach(function (el) {
+                    el.addEventListener('click', function () {
+                        var s = parseInt(el.getAttribute('data-s') || el.getAttribute('data-n'), 10);
+                        var a = parseInt(el.getAttribute('data-a') || '0', 10);
+                        window._qrcGoTo(s, a > 1 ? a : null);
+                    });
+                });
+            }
+            function itemHtml(num, title, sub, arName) {
+                return '<div class="qrc-s-item" data-n="' + (state.mode === 'surah' ? num : '') + '" data-s="' + num + '">'
+                    + '<div class="qrc-s-num">' + num + '</div>'
+                    + '<div class="qrc-s-meta"><div class="qrc-s-title"></div><div class="qrc-s-sub"></div></div>'
+                    + '<div class="qrc-s-ar"></div>'
+                    + '</div>';
+            }
+            function fillItem(el, num, title, sub, arName, a) {
+                el.setAttribute('data-s', String(num));
+                if (a) el.setAttribute('data-a', String(a)); else el.removeAttribute('data-a');
+                el.querySelector('.qrc-s-num').textContent = num;
+                el.querySelector('.qrc-s-title').textContent = title;
+                el.querySelector('.qrc-s-sub').textContent = sub;
+                el.querySelector('.qrc-s-ar').textContent = arName;
+            }
+            function renderSurahList(filter) {
+                if (!itemsEl) return;
+                var f = norm(filter);
+                itemsEl.innerHTML = '';
+                var shown = 0;
+                QRC_SURAHS.forEach(function (row) {
+                    var n = row[0], en = row[1], tr = row[2], ar = row[3];
+                    var hay = norm(en + ' ' + tr + ' ' + ar + ' ' + n);
+                    if (f && hay.indexOf(f) === -1) return;
+                    var el = document.createElement('button');
+                    el.type = 'button';
+                    el.className = 'qrc-s-item' + (state.n === n ? ' active' : '');
+                    el.setAttribute('data-n', String(n));
+                    el.setAttribute('data-s', String(n));
+                    el.innerHTML = '<div class="qrc-s-num">' + n + '</div><div class="qrc-s-meta"><div class="qrc-s-title"></div><div class="qrc-s-sub"></div></div><div class="qrc-s-ar"></div>';
+                    el.querySelector('.qrc-s-title').textContent = en;
+                    el.querySelector('.qrc-s-sub').textContent = tr;
+                    el.querySelector('.qrc-s-ar').textContent = ar;
+                    itemsEl.appendChild(el);
+                    shown++;
+                });
+                if (!shown) {
+                    var d = document.createElement('div');
+                    d.className = 'qrc-empty';
+                    d.textContent = 'لا توجد سورة مطابقة';
+                    itemsEl.appendChild(d);
+                } else {
+                    attachItemHandlers();
+                }
+            }
+            function renderIndexList(mode) {
+                if (!itemsEl) return;
+                if (!metaCache) {
+                    itemsEl.innerHTML = '<div class="qrc-empty">جاري تجهيز الفهارس… قد تستغرق أول مرة نحو 20 ثانية</div>';
+                    ensureMeta().then(function (m) {
+                        if (state.mode !== mode) return;
+                        if (m) renderIndexList(mode);
+                        else itemsEl.innerHTML = '<div class="qrc-empty">تعذّر تجهيز الفهارس — تحقق من الاتصال ثم أعد المحاولة.</div>';
+                    });
+                    return;
+                }
+                var rows = [];
+                if (mode === 'juz') {
+                    var starts = {};
+                    metaCache.forEach(function (m) { if (m[2] && !starts[m[2]]) starts[m[2]] = m; });
+                    for (var j = 1; j <= 30; j++) {
+                        var st = starts[j]; if (!st) continue;
+                        rows.push({ num: j, title: 'الجزء ' + j, sub: surahLabel(st[0]) + ' ' + ref(st[0], st[1]), ar: surahLabel(st[0]), s: st[0], a: st[1] });
+                    }
+                } else if (mode === 'manzil') {
+                    var mstarts = {};
+                    metaCache.forEach(function (m) { if (m[3] && !mstarts[m[3]]) mstarts[m[3]] = m; });
+                    for (var m = 1; m <= 7; m++) {
+                        var st2 = mstarts[m]; if (!st2) continue;
+                        rows.push({ num: m, title: 'المنزل ' + m, sub: surahLabel(st2[0]) + ' ' + ref(st2[0], st2[1]), ar: surahLabel(st2[0]), s: st2[0], a: st2[1] });
+                    }
+                } else if (mode === 'hizb') {
+                    var hstarts = {};
+                    metaCache.forEach(function (m) { if (m[5] && !hstarts[m[5]]) hstarts[m[5]] = m; });
+                    for (var h = 1; h <= 240; h += 4) {
+                        var st3 = hstarts[h]; if (!st3) continue;
+                        var hizbNo = Math.ceil(h / 4);
+                        rows.push({ num: hizbNo, title: 'الحزب ' + hizbNo, sub: surahLabel(st3[0]) + ' ' + ref(st3[0], st3[1]), ar: surahLabel(st3[0]), s: st3[0], a: st3[1] });
+                    }
+                } else if (mode === 'page') {
+                    itemsEl.innerHTML = '<div class="qrc-page-go">'
+                        + '<label for="qrc-page-input">صفحة المصحف (1–604)</label>'
+                        + '<div class="qrc-page-row"><button type="button" class="qrc-page-btn" id="qrc-page-prev" aria-label="الصفحة السابقة">‹</button>'
+                        + '<input type="number" class="qrc-page-input" id="qrc-page-input" min="1" max="604" value="1" inputmode="numeric">'
+                        + '<button type="button" class="qrc-page-btn" id="qrc-page-next" aria-label="الصفحة التالية">›</button></div>'
+                        + '<div class="qrc-page-info" id="qrc-page-info"></div>'
+                        + '<button type="button" class="qrc-page-gobtn" id="qrc-page-go">اذهب إلى الصفحة</button>'
+                        + '</div>';
+                    var input = document.getElementById('qrc-page-input');
+                    var info = document.getElementById('qrc-page-info');
+                    function pageFirstAyah(p) { p = Math.min(604, Math.max(1, p | 0)); for (var i = 0; i < metaCache.length; i++) { if (metaCache[i][4] === p) return metaCache[i]; } return metaCache[0]; }
+                    function clampP(v) { return Math.min(604, Math.max(1, parseInt(v, 10) || 1)); }
+                    function showInfo() { var p = clampP(input.value); var m = pageFirstAyah(p); info.textContent = 'تبدأ من ' + surahLabel(m[0]) + ' (' + ref(m[0], m[1]) + ')'; }
+                    function go() { var p = clampP(input.value); input.value = p; var m = pageFirstAyah(p); window._qrcGoTo(m[0], m[1] > 1 ? m[1] : null); }
+                    input.addEventListener('input', showInfo);
+                    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(); });
+                    document.getElementById('qrc-page-go').addEventListener('click', go);
+                    document.getElementById('qrc-page-prev').addEventListener('click', function () { input.value = Math.max(1, clampP(input.value) - 1); go(); });
+                    document.getElementById('qrc-page-next').addEventListener('click', function () { input.value = Math.min(604, clampP(input.value) + 1); go(); });
+                    showInfo();
+                    return;
+                }
+                itemsEl.innerHTML = '';
+                rows.forEach(function (r) {
+                    var el = document.createElement('button');
+                    el.type = 'button';
+                    el.className = 'qrc-s-item';
+                    el.setAttribute('data-s', String(r.s));
+                    if (r.a) el.setAttribute('data-a', String(r.a));
+                    el.innerHTML = '<div class="qrc-s-num">' + r.num + '</div><div class="qrc-s-meta"><div class="qrc-s-title"></div><div class="qrc-s-sub"></div></div><div class="qrc-s-ar"></div>';
+                    el.querySelector('.qrc-s-title').textContent = r.title;
+                    el.querySelector('.qrc-s-sub').textContent = r.sub;
+                    el.querySelector('.qrc-s-ar').textContent = r.ar;
+                    itemsEl.appendChild(el);
+                });
+                attachItemHandlers();
+            }
+            function setNavMode(m) {
+                state.mode = m;
+                navEl.querySelectorAll('button[data-m]').forEach(function (b) {
+                    b.setAttribute('aria-selected', String(b.getAttribute('data-m') === m));
+                });
+                if (m === 'surah') renderSurahList(inputEl ? inputEl.value : '');
+                else renderIndexList(m);
+            }
+            if (navEl) navEl.addEventListener('click', function (e) {
+                var b = e.target && e.target.closest ? e.target.closest('button[data-m]') : null;
+                if (b) setNavMode(b.getAttribute('data-m'));
+            });
+
+            // البحث : سورة/جزء/منزل/حزب/رقم الصفحة/آية مثل « 2:255 » أو « جزء 5 »
+            function handleSearch(v) {
+                var raw = String(v || '').trim();
+                var t = norm(raw);
+                if (/^(juz|para|جزء|جز)\s*(\d{1,2})$/.test(t)) {
+                    var jm = t.match(/^(juz|para|جزء|جز)\s*(\d{1,2})$/);
+                    var jN = Math.min(30, Math.max(1, parseInt(jm[2], 10)));
+                    setNavMode('juz');
+                    if (inputEl) inputEl.value = '';
+                    ensureMeta().then(function () {
+                        var st = metaCache.find(function (m) { return m[2] === jN; });
+                        if (st) window._qrcGoTo(st[0], st[1] > 1 ? st[1] : null);
+                    });
+                    return;
+                }
+                var refm = t.match(/^(\d{1,3})\s*[:.]?\s*(\d{1,3})$/);
+                if (refm) {
+                    var sN = Math.min(114, Math.max(1, parseInt(refm[1], 10)));
+                    var aN = Math.max(1, parseInt(refm[2], 10));
+                    if (inputEl) inputEl.value = '';
+                    window._qrcGoTo(sN, aN);
+                    return;
+                }
+                if (state.mode !== 'surah') setNavMode('surah');
+                renderSurahList(raw);
+            }
+            if (inputEl) {
+                inputEl.addEventListener('input', function () { handleSearch(inputEl.value); });
+                inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') e.preventDefault(); });
+            }
+
+            async function load(n, jumpAyah) {
                 state.n = clamp(n);
+                state.jump = jumpAyah || null;
                 if (select.value !== String(state.n)) select.value = String(state.n);
                 saveLast(state.n);
                 panelEl.innerHTML = '<div class="qrc-mimic-loading">جاري تحميل السورة...</div>';
@@ -7797,9 +8096,9 @@ var gender = 'male';
                 } catch (e) { console.error('qrc fetch', e); }
                 if (!ar) {
                     panelEl.innerHTML = '<div class="qrc-mimic-error">تعذّر تحميل السورة — تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</div>';
+                    markActiveInList();
                     return;
                 }
-                // même traitement que le site source : bismillah masquée de la 1ère آية (sauf الفاتحة والتوبة) وتحوّل لسطر مستقل
                 if (ar.number !== 1 && ar.number !== 9 && ar.ayahs && ar.ayahs[0]) {
                     var t = (ar.ayahs[0].text || '').replace(/^﻿/, '');
                     if (t.indexOf('بِسْمِ') === 0) ar.ayahs[0].text = t.split(' ').slice(4).join(' ');
@@ -7811,8 +8110,21 @@ var gender = 'male';
                 var bism = (ar.number !== 1 && ar.number !== 9) ? '<div class="qrc-mimic-bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>' : '';
                 panelEl.innerHTML = bism + '<div class="qrc-mimic-ayahs">' + ayahSpans(ar) + '</div>';
                 panelEl.style.fontSize = fontEl.value + 'rem';
-                var qrcScroll = quranReadScreen.querySelector('.qrc-mimic');
+                var qrcScroll = quranReadScreen.querySelector('.qrc-reader-col');
                 if (qrcScroll) qrcScroll.scrollTop = 0;
+                markActiveInList();
+                if (state.jump) {
+                    var aN = state.jump;
+                    state.jump = null;
+                    setTimeout(function () {
+                        var target = panelEl.querySelector('.qrc-v[data-a="' + aN + '"]');
+                        if (target) {
+                            try { target.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {}
+                            target.classList.add('qrc-v-flash');
+                            setTimeout(function () { target.classList.remove('qrc-v-flash'); }, 2200);
+                        }
+                    }, 250);
+                }
             }
             select.addEventListener('change', function () { if (select.value) load(parseInt(select.value, 10) || 1); });
             prevBtn.addEventListener('click', function () { load(state.n - 1); });
@@ -7821,11 +8133,12 @@ var gender = 'male';
                 panelEl.style.fontSize = fontEl.value + 'rem';
                 try { localStorage.setItem('YaMousahil_qrc_font', String(fontEl.value)); } catch (e) {}
             });
-            window._qrcOpen = function (n) {
+            window._qrcGoTo = function (s, a) {
                 try { if (typeof showScreen === 'function') showScreen(quranReadScreen); } catch (e) {}
                 window.scrollTo(0, 0);
-                load(n != null ? n : state.n);
+                load((s == null ? state.n : clamp(s)), a || null);
             };
+            renderSurahList('');
         })();
         document.getElementById('btn-back-from-qrc').onclick = () => { if (typeof quranMenuScreen !== 'undefined' && quranMenuScreen) showScreen(quranMenuScreen); else showScreen(homeScreen); window.scrollTo(0, 0); };
         // ===== قائمة السور — محدد مخصّص (Amiri Quran) : زر « 1. سُورَةُ ٱلْفَاتِحَةِ » + لوحة بحث ومنسدلة أنيقة =====
@@ -10558,7 +10871,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             window._qmFromMenu = true;
             if (typeof window._qmSyncLabels === 'function') window._qmSyncLabels();
             if (k === 'readCentral') {
-                try { if (typeof window._qrcOpen === 'function') window._qrcOpen(); } catch (e) { console.error(e); }
+                try { if (typeof window._qrcGoTo === 'function') window._qrcGoTo(); } catch (e) { console.error(e); }
                 return;
             }
             if (k === 'play') {
