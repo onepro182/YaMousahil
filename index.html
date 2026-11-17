@@ -2382,7 +2382,6 @@
         #quran-read-screen .qrc-mimic-meta{flex:0 0 auto;color:#7A8479;font-size:.92rem;display:flex;flex-direction:column;align-items:center;gap:8px;}
         #quran-read-screen .qrc-select-wrap{display:flex;align-items:stretch;flex:1 1 260px;max-width:430px;min-width:200px;}
         #quran-read-screen .qrc-select-wrap .qrc-select{flex:1 1 auto;min-width:0;border-inline-end:none;border-inline-end-radius:0;}
-        #quran-read-screen .qrc-type-pill{display:inline-flex;align-items:center;white-space:nowrap;padding:0 16px;background:linear-gradient(160deg,#B89B5E,#8E7440);color:#fff;font-weight:700;font-size:.82rem;border:1px solid #8E7440;border-inline-start:none;border-radius:12px 0 0 12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.28);flex-shrink:0;}
         body.is-mobile #quran-read-screen .qrc-mimic-en{display:none;}
         #quran-read-screen .qrc-mimic-strip{display:flex;align-items:center;justify-content:center;gap:14px;font-size:.85rem;color:#4A5750;padding:0 4px;}
         #quran-read-screen .qrc-mimic-strip input[type="range"]{width:150px;accent-color:#0E4F2C;cursor:pointer;}
@@ -5518,7 +5517,6 @@
                     <button type="button" class="qrc-nav glass-btn" id="qrc-prev" aria-label="السورة السابقة">‹</button>
                     <div class="qrc-select-wrap">
                         <select id="qrc-surah" class="setting-select qrc-select" aria-label="اختيار السورة"></select>
-                        <span class="qrc-type-pill" id="qrc-m-type">مكية</span>
                     </div>
                     <button type="button" class="qrc-nav glass-btn" id="qrc-next" aria-label="السورة التالية">›</button>
                 </div>
@@ -7889,7 +7887,6 @@ var gender = 'male';
             var prevBtn = document.getElementById('qrc-prev');
             var nextBtn = document.getElementById('qrc-next');
             var arEl = document.getElementById('qrc-m-ar');
-            var typeEl = document.getElementById('qrc-m-type');
             var metaEl = document.getElementById('qrc-m-meta');
             var panelEl = document.getElementById('qrc-m-panel');
             var fontEl = document.getElementById('qrc-m-font');
@@ -8347,7 +8344,6 @@ var gender = 'male';
                     if (t.indexOf('بِسْمِ') === 0) ar.ayahs[0].text = t.split(' ').slice(4).join(' ');
                 }
                 arEl.textContent = ar.name;
-                typeEl.textContent = /^Mec/i.test(ar.revelationType || '') ? 'مكية' : 'مدنية';
                 metaEl.textContent = 'سورة ' + ar.number + ' · ' + ar.numberOfAyahs + ' آية' + ((ar.ayahs[0] && ar.ayahs[0].juz) ? ' · الجزء ' + ar.ayahs[0].juz : '');
                 var bism = (ar.number !== 1 && ar.number !== 9) ? '<div class="qrc-mimic-bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>' : '';
                 panelEl.innerHTML = bism + '<div class="qrc-mimic-ayahs">' + ayahSpans(ar) + '</div>';
