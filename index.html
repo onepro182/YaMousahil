@@ -2389,6 +2389,7 @@
         #quran-read-screen .qrc-font-group{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;}
         #quran-read-screen .qrc-strip-left{order:1;}
         #quran-read-screen .qrc-strip-right{order:0;}
+        #quran-read-screen #qrc-reciter-select{width:150px;}
         #quran-read-screen .qrc-reciter-select-wrap{display:inline-flex;align-items:center;gap:7px;padding:0 12px;height:36px;border-radius:999px;border:1px solid rgba(212,175,55,.4);background:rgba(184,155,94,.1);color:#cdbf8a;flex:1 1 auto;min-width:0;max-width:230px;}
         #quran-read-screen .qrc-reciter-select{flex:1;min-width:0;background:transparent;border:none;color:#ffee9e;font-family:var(--font);font-size:.78rem;font-weight:700;outline:none;appearance:auto;}
         #quran-read-screen .qrc-reciter-select option{color:#0b132b;background:#fff;}
@@ -2454,7 +2455,9 @@
         /* === Android : قائمة السور في صفحة كاملة أولاً، والانتقال إلى القارئ عند الاختيار === */
         #qrc-back-list{display:none;align-items:center;gap:8px;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);border-radius:12px;padding:0 16px;height:46px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;}
         /* === شريط أدوات القارئ (مستمع ذكي + علامات) === */
-        body.is-mobile #quran-read-screen .qrc-mimic-strip{flex-wrap:wrap;row-gap:8px;padding:0 4px;}
+        body.is-mobile #quran-read-screen .qrc-mimic-strip{justify-content:space-between;gap:6px;padding:0 2px;}
+        body.is-mobile #quran-read-screen #qrc-reciter-select{width:132px;}
+        body.is-mobile #quran-read-screen .qrc-reciter-select-wrap{max-width:none;height:30px;padding:0 8px;gap:4px;}
         body.is-mobile #quran-read-screen .qrc-reciter-select-wrap{max-width:150px;height:32px;padding:0 8px;gap:4px;}
         body.is-mobile #quran-read-screen .qrc-reciter-select{font-size:.7rem;}
         body.is-mobile #quran-read-screen .qrc-listen-btn{padding:6px 12px;font-size:.7rem;}
@@ -5555,7 +5558,7 @@
                                 <span class="qrc-mimic-label">حجم الخط</span>
                                 <input type="range" id="qrc-m-font" min="1.4" max="3.5" step="0.1" value="2" aria-label="حجم الخط">
                             </span>
-                            <button type="button" class="qrc-tools-btn" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل">★ <span id="qrc-bk-count">0</span></button>
+                            <button type="button" class="qrc-tools-btn" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل">★ العلامات <span id="qrc-bk-count">0</span></button>
                         </span>
                         <span class="qrc-strip-group qrc-strip-right">
                             <label class="qrc-reciter-select-wrap" for="qrc-reciter-select">
@@ -8028,18 +8031,31 @@ var gender = 'male';
                 qrcVpop.style.left = left + 'px';
                 qrcVpop.style.top = top + 'px';
             }
-            function qrcPlayAyah(a) {
+            async function qrcPlayAyah(a) {
                 if (!qrcAudio) return;
-                var pad = function (n) { return String(n).padStart(3, '0'); };
                 var rec = qrcCurrentReciter();
-                // ياسين الجزائري متاح فقط كسورة كاملة على mp3quran — للآية الواحدة نستخدم العفاسي
-                var url = qrcIsMp3Quran()
-                    ? 'https://everyayah.com/data/Alafasy_128kbps/' + pad(state.n) + pad(a) + '.mp3'
-                    : 'https://everyayah.com/data/' + rec.folder + '/' + pad(state.n) + pad(a) + '.mp3';
+                var isMq = rec.folder && rec.folder.indexOf('mp3quran:') === 0;
+                // ياسين الجزائري لا تتوفر آية-آية — للآية الواحدة نشغل العفاسي
+                var useFolder = isMq ? 'Alafasy_128kbps' : rec.folder;
+                var useCode = isMq ? 'ar.alafasy' : rec.code;
+                var urls = null;
+                if (useCode) {
+                    try {
+                        var res = await fetch('https://api.alquran.cloud/v1/surah/' + state.n + '/' + useCode);
+                        var j = await res.json();
+                        urls = (j.data && j.data.ayahs ? j.data.ayahs.map(function (x) { return x.audio; }) : []);
+                    } catch (e) { console.error('qrcPlayAyah', e); }
+                } else if (useFolder) {
+                    var total = qrcAyahCount();
+                    var pad = function (n) { var s = String(n); return '000'.slice(0, 3 - s.length) + s; };
+                    urls = [];
+                    for (var i = 1; i <= total; i++) urls.push('https://everyayah.com/data/' + useFolder + '/' + pad(state.n) + pad(i) + '.mp3');
+                }
+                if (!urls || !urls[a - 1]) return;
                 panelEl.querySelectorAll('.qrc-v.playing').forEach(function (e) { e.classList.remove('playing'); });
                 try { qrcAudio.pause(); } catch (e) {}
                 qrcAudio.onended = function () { panelEl.querySelectorAll('.qrc-v.playing').forEach(function (e) { e.classList.remove('playing'); }); };
-                qrcAudio.src = url;
+                qrcAudio.src = urls[a - 1];
                 var p = qrcAudio.play(); if (p && p.catch) p.catch(function () {});
                 var v = panelEl.querySelector('.qrc-v[data-a="' + a + '"]');
                 if (v) v.classList.add('playing');
@@ -8426,18 +8442,18 @@ var gender = 'male';
                 try { localStorage.setItem('YaMousahil_qrc_font', String(fontEl.value)); } catch (e) {}
             });
             var backListBtn = document.getElementById('qrc-back-list');
-            // ===== مشغّل « استماع » — عدة قرّاء + متابعة الآية الحالية (everyayah تعطي ملف لكل آية) =====
+            // ===== مشغّل « استماع » — 13 قارئاً (12 بمزامنة آية-آية + ياسين الجزائري سورة كاملة من mp3quran) =====
             var QRC_RECITERS = [
-                { name: 'ياسين الجزائري', folder: 'mp3quran:yassen-jazairi/r1' },
-                { name: 'مشاري العفاسي', folder: 'Alafasy_128kbps' },
-                { name: 'عبد الباسط عبد الصمد (مرتل)', folder: 'Abdul_Basit_Murattal_192kbps' },
-                { name: 'محمود خليل الحصري', folder: 'Husary_128kbps' },
-                { name: 'المنشاوي (مرتل)', folder: 'Minshawy_Murattal_128kbps' },
+                { name: 'ياسين الجزائري', folder: 'mp3quran:yassen-jazairi/r1', note: '(سورة كاملة)' },
+                { name: 'مشاري العفاسي', code: 'ar.alafasy' },
+                { name: 'عبد الباسط عبد الصمد (مرتل)', code: 'ar.abdulbasitmurattal' },
+                { name: 'محمود خليل الحصري', code: 'ar.husary' },
+                { name: 'محمد صديق المنشاوي', code: 'ar.minshawi' },
                 { name: 'عبد الرحمن السديس', folder: 'Abdurrahmaan_As-Sudais_192kbps' },
-                { name: 'سعود الشريم', folder: 'Saood_ash-Shuraym_128kbps' },
-                { name: 'ماهر المعيقلي', folder: 'MaherAlMuaiqly128kbps' },
-                { name: 'علي الحذيفي', folder: 'Hudhaify_128kbps' },
-                { name: 'أبو بكر الشاطري', folder: 'Abu_Bakr_Ash-Shaatree_128kbps' },
+                { name: 'سعود الشريم', code: 'ar.saoodshuraym' },
+                { name: 'ماهر المعيقلي', code: 'ar.mahermuaiqly' },
+                { name: 'علي الحذيفي', code: 'ar.hudhaify' },
+                { name: 'أبو بكر الشاطري', code: 'ar.shaatree' },
                 { name: 'سعد الغامدي', folder: 'Ghamadi_40kbps' },
                 { name: 'ياسر الدوسري', folder: 'Yasser_Ad-Dussary_128kbps' },
                 { name: 'ناصر القطامي', folder: 'Nasser_Alqatami_128kbps' }
@@ -8445,7 +8461,10 @@ var gender = 'male';
             var qrcReciterSel = document.getElementById('qrc-reciter-select');
             try {
                 if (qrcReciterSel) {
-                    qrcReciterSel.innerHTML = QRC_RECITERS.map(function (r, i) { return '<option value="' + i + '">القارئ : ' + r.name + '</option>'; }).join('');
+                    qrcReciterSel.innerHTML = QRC_RECITERS.map(function (r, i) {
+                        var label = (r.note ? r.name + ' ' + r.note : r.name);
+                        return '<option value="' + i + '">' + label + '</option>';
+                    }).join('');
                     var saved = localStorage.getItem('YaMousahil_qrc_reciter_v1');
                     if (saved && QRC_RECITERS[+saved]) qrcReciterSel.value = String(saved); else qrcReciterSel.value = '0';
                 }
@@ -8455,13 +8474,7 @@ var gender = 'male';
 
             var qrcListenBtn = document.getElementById('qrc-listen-btn');
             var qrcPlayer = { idx: 0, playing: false };
-            function qrcPad3(n) { n = String(n || 0); return '000'.slice(0, Math.max(0, 3 - n.length)) + n; }
-            function qrcIsMp3Quran() { return qrcCurrentReciter().folder.indexOf('mp3quran:') === 0; }
-            function qrcAyahUrl(surah, ayah) {
-                var rec = qrcCurrentReciter();
-                if (qrcIsMp3Quran()) return 'https://cdn.mp3quran.net/audio/' + rec.folder.slice(9) + '/' + qrcPad3(surah) + '.mp3';
-                return 'https://everyayah.com/data/' + rec.folder + '/' + qrcPad3(surah) + qrcPad3(ayah) + '.mp3';
-            }
+            var qrcAyahUrlsCache = {};
             function qrcAyahCount() { var s = 0; try { s = (cache[state.n] && cache[state.n].numberOfAyahs) || 0; } catch (e) {} return s || 600; }
             function qrcClearPlayingMarks() { panelEl.querySelectorAll('.qrc-v.playing').forEach(function (e) { e.classList.remove('playing'); }); }
             function qrcHighlightAyah(a) { qrcClearPlayingMarks(); if (a > 0) { var v = panelEl.querySelector('.qrc-v[data-a="' + a + '"]'); if (v) v.classList.add('playing'); } }
@@ -8472,38 +8485,75 @@ var gender = 'male';
                 qrcClearPlayingMarks();
                 qrcUpdateListenBtn();
             }
-            function qrcPlayIndex(idx) {
+            function qrcHighlightAllPlaying() {
+                panelEl.querySelectorAll('.qrc-v').forEach(function (v) { v.classList.add('playing'); });
+            }
+            async function qrcAyahUrls(surah) {
+                var rec = qrcCurrentReciter();
+                var key = surah + '|' + (rec.code || rec.folder || 'none');
+                if (qrcAyahUrlsCache[key]) return qrcAyahUrlsCache[key];
+                var urls = [];
+                if (rec.code) {
+                    try {
+                        var res = await fetch('https://api.alquran.cloud/v1/surah/' + surah + '/' + rec.code);
+                        var j = await res.json();
+                        var ayahs = (j && j.data && j.data.ayahs) || [];
+                        urls = ayahs.map(function (a) { return a.audio; }).filter(Boolean);
+                    } catch (e) { console.error('qrc reciter alquran', e); urls = []; }
+                } else if (rec.folder && rec.folder.indexOf('mp3quran:') === 0) {
+                    // ياسين الجزائري : ملف واحد للسورة كاملة (لا توجد آيات منفصلة)
+                    var pad = function (n) { var s = String(n); return '000'.slice(0, 3 - s.length) + s; };
+                    urls = ['https://cdn.mp3quran.net/audio/' + rec.folder.slice(9) + '/' + pad(surah) + '.mp3'];
+                } else if (rec.folder) {
+                    var total = 0;
+                    try { total = (cache[surah] && cache[surah].numberOfAyahs) || 0; } catch (e) {}
+                    total = total || 286;
+                    var pad2 = function (n) { var s = String(n); return '000'.slice(0, 3 - s.length) + s; };
+                    for (var i = 1; i <= total; i++) urls.push('https://everyayah.com/data/' + rec.folder + '/' + pad2(surah) + pad2(i) + '.mp3');
+                }
+                if (urls && urls.length) qrcAyahUrlsCache[key] = urls;
+                return urls;
+            }
+            async function qrcPlayIndex(idx) {
                 var surah = state.n;
-                if (qrcIsMp3Quran()) {
+                var rec = qrcCurrentReciter();
+                var isMq = rec.folder && rec.folder.indexOf('mp3quran:') === 0;
+                if (!isMq) {
+                    var total = qrcAyahCount();
+                    if (idx >= total) { qrcStopListen(); return; }
+                }
+                var urls = await qrcAyahUrls(surah);
+                if (!urls || !urls.length) { qrcStopListen(); return; }
+                if (isMq) {
                     qrcPlayer.idx = 0;
-                    qrcAudio.src = qrcAyahUrl(surah, 0);
-                    var p = qrcAudio.play(); if (p && p.catch) p.catch(function () {});
+                    qrcAudio.src = urls[0];
+                    var p0 = qrcAudio.play(); if (p0 && p0.catch) p0.catch(function () {});
+                    qrcHighlightAllPlaying();
                     qrcPlayer.playing = true;
-                    qrcClearPlayingMarks();
                     qrcUpdateListenBtn();
                     return;
                 }
-                var total = qrcAyahCount();
-                if (idx >= total) { qrcStopListen(); return; }
+                if (idx >= urls.length) { qrcStopListen(); return; }
                 qrcPlayer.idx = idx;
-                qrcAudio.src = qrcAyahUrl(surah, idx + 1);
-                var p2 = qrcAudio.play(); if (p2 && p2.catch) p2.catch(function () {});
+                qrcAudio.src = urls[idx];
+                var p = qrcAudio.play(); if (p && p.catch) p.catch(function () {});
                 qrcHighlightAyah(idx + 1);
                 qrcPlayer.playing = true;
                 qrcUpdateListenBtn();
             }
-            if (qrcListenBtn) qrcListenBtn.addEventListener('click', function () {
+            if (qrcListenBtn) qrcListenBtn.addEventListener('click', async function () {
                 if (!qrcAudio) return;
                 if (qrcPlayer.playing) { qrcStopListen(); return; }
-                var startIdx = Math.max(0, parseInt(qrcPlayer.idx || 0, 10) || 0);
-                if (qrcIsMp3Quran()) startIdx = 0;
+                var rec = qrcCurrentReciter();
+                var isMq = rec.folder && rec.folder.indexOf('mp3quran:') === 0;
+                var startIdx = isMq ? 0 : Math.max(0, Math.min(qrcAyahCount() - 1, parseInt(qrcPlayer.idx || 0, 10) || 0));
                 qrcAudio.onended = function () {
-                    if (qrcIsMp3Quran()) { qrcPlayer.playing = false; qrcClearPlayingMarks(); qrcUpdateListenBtn(); return; }
+                    if (isMq) { qrcStopListen(); return; }
                     if (qrcPlayer.idx + 1 >= qrcAyahCount()) { qrcStopListen(); return; }
                     qrcPlayIndex(qrcPlayer.idx + 1);
                 };
                 qrcAudio.onerror = qrcAudio.onended;
-                qrcPlayIndex(startIdx);
+                await qrcPlayIndex(startIdx);
             });
             function isMobileQrc() { try { return document.body.classList.contains('is-mobile'); } catch (e) { return false; } }
             function setQrcMode(mode) {
