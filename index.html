@@ -2484,6 +2484,26 @@
         #quran-read-screen .qrc-bk-empty[hidden]{display:none;}
         body.is-mobile #quran-read-screen .qrc-tools-btn{padding:6px 10px;font-size:.7rem;}
         body.is-mobile #quran-read-screen .qrc-resume{font-size:.78rem;padding:8px 10px;}
+        /* === تيجان الأذكار (بداية حِصْنُ الْمُسْلِم) === */
+        .tijan-section{flex-shrink:0;display:flex;flex-direction:column;gap:10px;padding:10px 12px;margin:0 0 8px;background:radial-gradient(120% 90% at 50% 0%,rgba(46,131,90,.38) 0%,rgba(4,26,16,.92) 100%);border:1px solid rgba(212,175,55,.35);border-radius:16px;box-shadow:0 10px 28px rgba(0,0,0,.3);}
+        .tijan-title-wrap{display:flex;align-items:center;justify-content:center;gap:12px;text-align:center;flex-wrap:wrap;}
+        .tijan-ornament{color:var(--gold);font-size:1.05rem;opacity:.9;line-height:1;}
+        .tijan-title{margin:0;color:var(--gold);font-family:var(--font-quran);font-size:1.45rem;font-weight:700;}
+        .tijan-sub{margin:0;color:var(--text-dim);font-size:.78rem;}
+        .tijan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;}
+        .tijan-card{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;text-align:center;border:1px solid rgba(212,175,55,.32);background:linear-gradient(170deg,rgba(17,66,39,.62),rgba(5,22,14,.92));border-radius:14px;padding:10px 10px;transition:transform .2s,border-color .2s,box-shadow .2s;font-family:inherit;}
+        .tijan-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 10px 24px rgba(212,175,55,.18);}
+        .tijan-card:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+        .tijan-crown{width:36px;height:36px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));}
+        .tijan-name{color:#f4d03f;font-family:var(--font-quran);font-size:.92rem;font-weight:700;line-height:1.5;}
+        .tijan-name small{color:#cdbf8a;font-size:.72rem;font-weight:400;}
+        .tijan-text{color:#f5f0dc;font-family:'Amiri Quran','Amiri',serif;font-size:.93rem;line-height:1.85;margin:0;direction:rtl;text-align:center;}
+        body.is-mobile .tijan-grid{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x mandatory;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
+        body.is-mobile .tijan-card{flex:0 0 235px;scroll-snap-align:start;}
+        body.is-mobile .tijan-section{padding:8px 10px;gap:8px;}
+        body.is-mobile .tijan-title{font-size:1.2rem;}
+        body.is-mobile .tijan-text{font-size:.82rem;}
+        body.is-mobile .tijan-crown{width:30px;height:30px;}
         /* قائمة السور — محدد مخصّص يعرض اسم السورة بخط قرآني ذهبي */
         #quran-player-screen .qp-surah-picker{position:relative;flex-shrink:0;}
         #quran-player-screen .qp-surah-btn{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer;text-align:right;font-family:var(--font-quran);background:linear-gradient(160deg,rgba(17,64,46,0.95),rgba(11,40,28,0.96));border:1px solid rgba(212,175,55,0.5);border-radius:14px;padding:11px 16px;color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 6px 18px rgba(0,0,0,0.35);transition:border-color .2s,box-shadow .2s,transform .15s;}
@@ -3614,6 +3634,52 @@
 
                     <!-- ADHKAR PANE (SIDEBAR RIGHT) -->
                     <div id="isl-pane-adhkar" class="islamiyat-pane">
+                        <div class="tijan-section" id="tijan-section" aria-label="تيجان الأذكار">
+                            <div class="tijan-title-wrap">
+                                <div class="tijan-ornament" aria-hidden="true">✦</div>
+                                <h2 class="tijan-title">تيجان الأذكار</h2>
+                                <p class="tijan-sub">السُّنَّة في الأذكار والأدعية</p>
+                            </div>
+                            <div class="tijan-grid" id="tijan-grid">
+                                <button type="button" class="tijan-card" data-text="لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ" aria-label="تاج الذكر">
+                                    <svg class="tijan-crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 16.8l2.1-8.4 5 4.2 1.7-7.6 1.7 7.6 5-4.2 2.1 8.4z" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".6" stroke-linejoin="round"/><rect x="4" y="18.6" width="16" height="1.7" rx=".85" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".5"/></svg>
+                                    <span class="tijan-name">تاج الذكر</span>
+                                    <span class="tijan-text">لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ</span>
+                                </button>
+                                <button type="button" class="tijan-card" data-text="سُبْحَانَ اللهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ" aria-label="تاج التسبيح">
+                                    <svg class="tijan-crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 16.8l2.1-8.4 5 4.2 1.7-7.6 1.7 7.6 5-4.2 2.1 8.4z" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".6" stroke-linejoin="round"/><rect x="4" y="18.6" width="16" height="1.7" rx=".85" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".5"/></svg>
+                                    <span class="tijan-name">تاج التسبيح</span>
+                                    <span class="tijan-text">سُبْحَانَ اللهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ</span>
+                                </button>
+                                <button type="button" class="tijan-card" data-text="اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ" aria-label="تاج الاستغفار">
+                                    <svg class="tijan-crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 16.8l2.1-8.4 5 4.2 1.7-7.6 1.7 7.6 5-4.2 2.1 8.4z" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".6" stroke-linejoin="round"/><rect x="4" y="18.6" width="16" height="1.7" rx=".85" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".5"/></svg>
+                                    <span class="tijan-name">تاج الاستغفار <small>(سيد الاستغفار)</small></span>
+                                    <span class="tijan-text">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</span>
+                                </button>
+                                <button type="button" class="tijan-card" data-text="بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ" aria-label="تاج التحصين">
+                                    <svg class="tijan-crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 16.8l2.1-8.4 5 4.2 1.7-7.6 1.7 7.6 5-4.2 2.1 8.4z" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".6" stroke-linejoin="round"/><rect x="4" y="18.6" width="16" height="1.7" rx=".85" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".5"/></svg>
+                                    <span class="tijan-name">تاج التحصين</span>
+                                    <span class="tijan-text">بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ</span>
+                                </button>
+                                <button type="button" class="tijan-card" data-text="لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ" aria-label="تاج تفريج الكرب">
+                                    <svg class="tijan-crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 16.8l2.1-8.4 5 4.2 1.7-7.6 1.7 7.6 5-4.2 2.1 8.4z" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".6" stroke-linejoin="round"/><rect x="4" y="18.6" width="16" height="1.7" rx=".85" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".5"/></svg>
+                                    <span class="tijan-name">تاج تفريج الكرب</span>
+                                    <span class="tijan-text">لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ</span>
+                                </button>
+                                <button type="button" class="tijan-card" data-text="رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ" aria-label="تاج الدعاء">
+                                    <svg class="tijan-crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.2 16.8l2.1-8.4 5 4.2 1.7-7.6 1.7 7.6 5-4.2 2.1 8.4z" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".6" stroke-linejoin="round"/><rect x="4" y="18.6" width="16" height="1.7" rx=".85" fill="url(#tijanGold)" stroke="#6b571f" stroke-width=".5"/></svg>
+                                    <span class="tijan-name">تاج الدعاء</span>
+                                    <span class="tijan-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</span>
+                                </button>
+                            </div>
+                        </div>
+                        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+                            <defs>
+                                <radialGradient id="tijanGold" cx="0.35" cy="0.35" r="0.95">
+                                    <stop offset="0" stop-color="#ffeeb0"/><stop offset="0.45" stop-color="#e6c765"/><stop offset="0.8" stop-color="#b8862f"/><stop offset="1" stop-color="#7a5a12"/>
+                                </radialGradient>
+                            </defs>
+                        </svg>
                         <div class="adhkar-split-view">
                             <div class="adhkar-sidebar">
                                 <div class="adhkar-search-box">
@@ -5806,7 +5872,16 @@
                     document.getElementById(`adj-val-${key}`).textContent = sign + newVal;
                     const newTimes = calculateForLocation(settings.cityId, new Date(), settings.method, settings.asr);
                     document.getElementById(`adj-time-${key}`).textContent = formatTime(newTimes[key]);
-                    refreshPrayerData(); renderUI(); updateClocks();
+                    // ===== تيجان الأذكار : النقر على أي تاج يقرأه صوتياً =====
+        (function () {
+            document.querySelectorAll('.tijan-card').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var t = btn.getAttribute('data-text');
+                    if (t && typeof speakArabic === 'function') { try { speakArabic(t); } catch (e) {} }
+                });
+            });
+        })();
+        refreshPrayerData(); renderUI(); updateClocks();
                 };
             });
         }
@@ -11270,7 +11345,16 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             if ((settings.reminderEnabled || settings.adhanEnabled) && 'Notification' in window && Notification.permission === 'default') { Notification.requestPermission().catch(() => {}); }
             document.getElementById('settings-modal').classList.remove('active');
             try { renderLiveMenu(); } catch (e) {}
-            refreshPrayerData(); renderUI(); updateClocks();
+            // ===== تيجان الأذكار : النقر على أي تاج يقرأه صوتياً =====
+        (function () {
+            document.querySelectorAll('.tijan-card').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var t = btn.getAttribute('data-text');
+                    if (t && typeof speakArabic === 'function') { try { speakArabic(t); } catch (e) {} }
+                });
+            });
+        })();
+        refreshPrayerData(); renderUI(); updateClocks();
             document.getElementById('adhan-status').textContent = settings.adhanEnabled ? 'تم حفظ إعداد الأذان. استخدم اختبار الصوت للسماح بالتشغيل.' : 'الأذان التلقائي متوقف.';
         };
 
@@ -12434,6 +12518,15 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
                 setTimeout(window.checkFridayKahf, 2 * 60 * 60 * 1000);
             };
             setTimeout(window.checkFridayKahf, 600);
+        })();
+        // ===== تيجان الأذكار : النقر على أي تاج يقرأه صوتياً =====
+        (function () {
+            document.querySelectorAll('.tijan-card').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var t = btn.getAttribute('data-text');
+                    if (t && typeof speakArabic === 'function') { try { speakArabic(t); } catch (e) {} }
+                });
+            });
         })();
         refreshPrayerData(); renderUI(); updateClocks();
         let prayerDateStamp = locationDate().toDateString();
