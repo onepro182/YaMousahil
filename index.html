@@ -2365,30 +2365,39 @@
             body:not(.is-mobile) #quran-player-screen .qp-transport .qp-surah-picker{flex:0 1 400px;min-width:300px;}
             body:not(.is-mobile) #quran-player-screen .qp-transport audio{flex:1 1 auto;width:auto;height:36px;}
         }
-        /* === اقرأ القرآن الكريم — صفحة القراءة (بصمة app : خضري/ذهبي) === */
-        #quran-read-screen{padding:12px 14px;box-sizing:border-box;}
+        /* === اقرأ القرآن الكريم — clone natif fidèle à qurancentral.net (popup) : نفس الخطوط والألوان والأنماط === */
+        #quran-read-screen{padding:12px 14px;box-sizing:border-box;background:transparent;}
         #quran-read-screen .title-prayers h1{margin:0;color:var(--gold);font-family:var(--font-quran);display:flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 2px 8px rgba(0,0,0,.7);}
         #quran-read-screen .qrc-toolbar{display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;justify-content:center;}
         #quran-read-screen .qrc-select{flex:1 1 260px;max-width:430px;min-width:200px;text-align:center;text-align-last:center;}
         #quran-read-screen .qrc-nav{width:46px;height:46px;border-radius:12px;font-size:1.6rem;line-height:1;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);cursor:pointer;flex-shrink:0;transition:border-color .15s,background .15s;}
         #quran-read-screen .qrc-nav:hover{border-color:var(--gold);background:rgba(212,175,55,0.16);}
-        #quran-read-screen .qrc-font{display:flex;gap:6px;}
-        #quran-read-screen .qrc-fbtn{width:46px;height:46px;border-radius:12px;font-size:1.1rem;font-weight:700;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);cursor:pointer;}
-        #quran-read-screen .qrc-fbtn:hover{border-color:var(--gold);background:rgba(212,175,55,0.16);}
-        #quran-read-screen .qrc-meta{flex-shrink:0;text-align:center;color:var(--text-dim);font-size:.95rem;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;min-height:1.4em;}
-        #quran-read-screen .qrc-meta .pill{color:var(--gold);border:1px solid rgba(212,175,55,0.45);border-radius:999px;padding:1px 14px;font-size:.85rem;}
-        #quran-read-screen .qrc-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-        #quran-read-screen .qrc-text{font-family:'Amiri Quran',Amiri,serif;font-size:2rem;line-height:2.4;color:#f5f0dc;text-align:justify;direction:rtl;background:rgba(6,28,19,0.5);border:1px solid rgba(212,175,55,0.3);border-radius:16px;padding:22px 26px;}
-        #quran-read-screen .qrc-ayahs{white-space:normal;}
-        #quran-read-screen .qrc-bism{text-align:center;color:#f4d03f;font-size:1.65rem;line-height:2;margin:0 0 16px;font-family:'Amiri Quran',Amiri,serif;}
-        #quran-read-screen .qrc-num{color:var(--gold);font-size:.7em;white-space:nowrap;padding:0 3px;}
         #quran-read-screen .qrc-source{flex-shrink:0;text-align:center;color:var(--text-dim);font-size:.78rem;}
         #quran-read-screen .qrc-source a{color:var(--gold);text-decoration:none;}
         #quran-read-screen .qrc-source a:hover{text-decoration:underline;}
-        #quran-read-screen .qrc-loading{text-align:center;color:var(--text-dim);padding:40px 0;font-family:var(--font);font-size:1rem;}
-        #quran-read-screen .qrc-error{text-align:center;color:#e6b8b8;padding:40px 0;font-family:var(--font);font-size:1rem;}
-        body.is-mobile #quran-read-screen .qrc-text{font-size:1.28rem;line-height:2.15;padding:16px 14px;}
-        body.is-mobile #quran-read-screen .qrc-bism{font-size:1.3rem;}
+        /* le volet MiMushaf — style qurancentral.net popup (light « paper ») */
+        #quran-read-screen .qrc-mimic{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#FAFAF7;border-radius:16px;border:1px solid rgba(184,155,94,.55);box-shadow:0 12px 36px rgba(0,0,0,.35);padding:18px 22px 26px;display:flex;flex-direction:column;gap:14px;color-scheme:light;}
+        #quran-read-screen .qrc-mimic-header{position:relative;text-align:center;padding:2px 8px 18px;border-bottom:1px solid #E5E7DE;display:flex;align-items:center;gap:16px;}
+        #quran-read-screen .qrc-mimic-header::after{content:"✦";position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);background:#FAFAF7;color:#B89B5E;padding:0 14px;font-size:.85rem;}
+        #quran-read-screen .qrc-mimic-ar{flex:1.1;text-align:right;font-family:'Amiri Quran','Amiri',serif;font-size:2.35rem;line-height:1.35;color:#0E4F2C;margin:0;}
+        #quran-read-screen .qrc-mimic-meta{flex:0 0 auto;color:#7A8479;font-size:.92rem;display:flex;flex-direction:column;align-items:center;gap:8px;}
+        #quran-read-screen .qrc-mimic-pill{display:inline-block;padding:4px 16px;border-radius:999px;font-size:.72rem;font-weight:600;background:#E8F1EA;color:#0E4F2C;text-transform:uppercase;letter-spacing:.08em;}
+        #quran-read-screen .qrc-mimic-en{flex:1.1;text-align:left;font-family:Georgia,'Times New Roman',serif;font-size:1.55rem;font-weight:700;color:#1A1F1B;letter-spacing:-.02em;}
+        #quran-read-screen .qrc-mimic-strip{display:flex;align-items:center;justify-content:center;gap:14px;font-size:.85rem;color:#4A5750;padding:0 4px;}
+        #quran-read-screen .qrc-mimic-strip input[type="range"]{width:150px;accent-color:#0E4F2C;cursor:pointer;}
+        #quran-read-screen .qrc-mimic-panel{background:#E8F1EA;border:2px solid #0E4F2C;border-radius:10px;padding:22px 18px 28px;}
+        #quran-read-screen .qrc-mimic-bism{text-align:center;font-family:'Amiri Quran','Amiri',serif;font-size:1.7rem;color:#0E4F2C;margin:0 0 18px;line-height:2;}
+        #quran-read-screen .qrc-mimic-ayahs{direction:rtl;text-align:right;font-family:'Amiri Quran','Amiri',serif;font-size:1em;line-height:2.35;color:#1A1F1B;}
+        #quran-read-screen .qrc-mimic-num{display:inline-flex;align-items:center;justify-content:center;min-width:1.55em;height:1.55em;border-radius:50%;background:radial-gradient(circle at 30% 30%,#D9C896,#B89B5E);color:#fff;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:.5em;line-height:1;margin:0 .22em;vertical-align:middle;box-shadow:0 2px 4px rgba(184,155,94,.45);border:1px solid #8E7440;}
+        #quran-read-screen .qrc-mimic-loading,#quran-read-screen .qrc-mimic-error{text-align:center;padding:44px 10px;color:#7A8479;font-size:.95rem;}
+        #quran-read-screen .qrc-mimic-error{color:#6E2A12;background:#FDF1EA;border:1px solid #E8A082;border-radius:10px;}
+        body.is-mobile #quran-read-screen .qrc-mimic{padding:14px 12px 18px;gap:10px;}
+        body.is-mobile #quran-read-screen .qrc-mimic-header{flex-direction:column;gap:4px;padding-bottom:14px;}
+        body.is-mobile #quran-read-screen .qrc-mimic-ar{text-align:center;font-size:1.65rem;flex:0 0 auto;}
+        body.is-mobile #quran-read-screen .qrc-mimic-en{text-align:center;font-size:1.15rem;flex:0 0 auto;}
+        body.is-mobile #quran-read-screen .qrc-mimic-meta{order:-1;}
+        body.is-mobile #quran-read-screen .qrc-mimic-ayahs{line-height:2.1;}
+        body.is-mobile #quran-read-screen .qrc-mimic-bism{font-size:1.25rem;}
         body.is-mobile #quran-read-screen .qrc-toolbar{gap:8px;}
         body.is-mobile #quran-read-screen .qrc-select{min-width:140px;flex-basis:100%;order:-1;}
         /* قائمة السور — محدد مخصّص يعرض اسم السورة بخط قرآني ذهبي */
@@ -5423,14 +5432,18 @@
                     <button type="button" class="qrc-nav glass-btn" id="qrc-prev" aria-label="السورة السابقة">‹</button>
                     <select id="qrc-surah" class="setting-select qrc-select" aria-label="اختيار السورة"></select>
                     <button type="button" class="qrc-nav glass-btn" id="qrc-next" aria-label="السورة التالية">›</button>
-                    <div class="qrc-font">
-                        <button type="button" class="qrc-fbtn glass-btn" id="qrc-font-minus" aria-label="تصغير الخط">أ−</button>
-                        <button type="button" class="qrc-fbtn glass-btn" id="qrc-font-plus" aria-label="تكبير الخط">أ+</button>
-                    </div>
                 </div>
-                <div class="qrc-meta" id="qrc-meta"></div>
-                <div class="qrc-scroll">
-                    <div class="qrc-text" id="qrc-text"><div class="qrc-loading">جاري تحميل السورة...</div></div>
+                <div class="qrc-mimic" id="qrc-mimic" dir="rtl">
+                    <div class="qrc-mimic-header">
+                        <div class="qrc-mimic-ar" id="qrc-m-ar">سُورَةُ ٱلْفَاتِحَةِ</div>
+                        <div class="qrc-mimic-meta"><span class="qrc-mimic-pill" id="qrc-m-type">مكية</span><span id="qrc-m-meta">سورة 1 · 7 آية</span></div>
+                        <div class="qrc-mimic-en" id="qrc-m-en">Al-Faatiha</div>
+                    </div>
+                    <div class="qrc-mimic-strip">
+                        <span class="qrc-mimic-label">حجم الخط</span>
+                        <input type="range" id="qrc-m-font" min="1.4" max="3.5" step="0.1" value="2" aria-label="حجم الخط">
+                    </div>
+                    <div class="qrc-mimic-panel" id="qrc-m-panel" aria-live="polite"><div class="qrc-mimic-loading">جاري تحميل السورة...</div></div>
                 </div>
                 <div class="qrc-source">المصدر : <a href="https://qurancentral.net/ar/read-quran.html" target="_blank" rel="noopener">qurancentral.net</a> · النص العثماني عبر api.alquran.cloud</div>
             </div>
@@ -7743,33 +7756,36 @@ var gender = 'male';
         }
         // Le sélecteur de سورة pilote le lecteur natif
         document.getElementById('qp-surah').addEventListener('change', () => { qpLoadAndPlay(true); });
-        // ===== اقرأ القرآن الكريم — النص العثماني (نفس مصدر qurancentral.net : api.alquran.cloud/quran-uthmani) =====
+        // ===== اقرأ القرآن الكريم — clone natif de qurancentral.net (نفس البيانات والنمط والخط : popup) =====
         var quranReadScreen = document.getElementById('quran-read-screen');
         (function () {
             var select = document.getElementById('qrc-surah');
             if (!quranReadScreen || !select) return;
             var prevBtn = document.getElementById('qrc-prev');
             var nextBtn = document.getElementById('qrc-next');
-            var fontMinus = document.getElementById('qrc-font-minus');
-            var fontPlus = document.getElementById('qrc-font-plus');
-            var metaEl = document.getElementById('qrc-meta');
-            var textEl = document.getElementById('qrc-text');
-            var scrollEl = quranReadScreen.querySelector('.qrc-scroll');
-            // cloner les options de la liste السور (نفس التشكيل العثماني كما في مشغّل الاستماع)
+            var arEl = document.getElementById('qrc-m-ar');
+            var enEl = document.getElementById('qrc-m-en');
+            var typeEl = document.getElementById('qrc-m-type');
+            var metaEl = document.getElementById('qrc-m-meta');
+            var panelEl = document.getElementById('qrc-m-panel');
+            var fontEl = document.getElementById('qrc-m-font');
             try { select.innerHTML = document.getElementById('qp-surah').innerHTML; } catch (e) { console.error('qrc clone options', e); }
-            var AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
-            function arNum(n) { return String(n).replace(/\d/g, function (d) { return AR_DIGITS[+d]; }); }
+            if (fontEl) { try { var fv = localStorage.getItem('YaMousahil_qrc_font'); if (fv) fontEl.value = fv; } catch (e) {} }
             function clamp(v) { return Math.min(114, Math.max(1, v)); }
             function readLast() { try { return parseInt(localStorage.getItem('YaMousahil_qrc_surah') || '1', 10) || 1; } catch (e) { return 1; } }
             function saveLast(n) { try { localStorage.setItem('YaMousahil_qrc_surah', String(n)); } catch (e) {} }
-            var state = { n: clamp(readLast()), font: 2.0 };
+            var state = { n: clamp(readLast()) };
             var cache = {};
+            function ayahSpans(ar) {
+                return ar.ayahs.map(function (a) {
+                    return a.text + '<span class="qrc-mimic-num">' + a.numberInSurah + '</span>';
+                }).join(' ');
+            }
             async function load(n) {
                 state.n = clamp(n);
                 if (select.value !== String(state.n)) select.value = String(state.n);
                 saveLast(state.n);
-                metaEl.innerHTML = '<span class="pill">…</span><span>جاري التحميل…</span>';
-                textEl.innerHTML = '<div class="qrc-loading">جاري تحميل السورة...</div>';
+                panelEl.innerHTML = '<div class="qrc-mimic-loading">جاري تحميل السورة...</div>';
                 var ar = null;
                 try {
                     if (!cache[state.n]) {
@@ -7780,29 +7796,31 @@ var gender = 'male';
                     ar = cache[state.n];
                 } catch (e) { console.error('qrc fetch', e); }
                 if (!ar) {
-                    metaEl.innerHTML = '';
-                    textEl.innerHTML = '<div class="qrc-error">تعذّر تحميل السورة — تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</div>';
+                    panelEl.innerHTML = '<div class="qrc-mimic-error">تعذّر تحميل السورة — تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</div>';
                     return;
                 }
-                // استبعاد البسملة من وسط الآية الأولى (سور غير الفاتحة والتوبة) — تظهر في سطر مستقل
+                // même traitement que le site source : bismillah masquée de la 1ère آية (sauf الفاتحة والتوبة) وتحوّل لسطر مستقل
                 if (ar.number !== 1 && ar.number !== 9 && ar.ayahs && ar.ayahs[0]) {
                     var t = (ar.ayahs[0].text || '').replace(/^﻿/, '');
                     if (t.indexOf('بِسْمِ') === 0) ar.ayahs[0].text = t.split(' ').slice(4).join(' ');
                 }
-                var revel = /^Mec/i.test(ar.revelationType || '') ? 'مكية' : 'مدنية';
-                metaEl.innerHTML = '<span class="pill">' + revel + '</span><span>السورة ' + arNum(ar.number) + '</span><span>' + arNum(ar.numberOfAyahs) + ' آية</span><span>الجزء ' + arNum((ar.ayahs[0] && ar.ayahs[0].juz) || 1) + '</span>';
-                var bism = (ar.number !== 1 && ar.number !== 9) ? '<div class="qrc-bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>' : '';
-                textEl.innerHTML = bism + '<div class="qrc-ayahs">' + ar.ayahs.map(function (a) {
-                    return a.text + '<span class="qrc-num">﴿' + arNum(a.numberInSurah) + '﴾</span>';
-                }).join(' ') + '</div>';
-                textEl.style.fontSize = state.font + 'rem';
-                if (scrollEl) scrollEl.scrollTop = 0;
+                arEl.textContent = ar.name;
+                enEl.textContent = ar.englishName;
+                typeEl.textContent = /^Mec/i.test(ar.revelationType || '') ? 'مكية' : 'مدنية';
+                metaEl.textContent = 'سورة ' + ar.number + ' · ' + ar.numberOfAyahs + ' آية' + ((ar.ayahs[0] && ar.ayahs[0].juz) ? ' · الجزء ' + ar.ayahs[0].juz : '');
+                var bism = (ar.number !== 1 && ar.number !== 9) ? '<div class="qrc-mimic-bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>' : '';
+                panelEl.innerHTML = bism + '<div class="qrc-mimic-ayahs">' + ayahSpans(ar) + '</div>';
+                panelEl.style.fontSize = fontEl.value + 'rem';
+                var qrcScroll = quranReadScreen.querySelector('.qrc-mimic');
+                if (qrcScroll) qrcScroll.scrollTop = 0;
             }
             select.addEventListener('change', function () { if (select.value) load(parseInt(select.value, 10) || 1); });
             prevBtn.addEventListener('click', function () { load(state.n - 1); });
             nextBtn.addEventListener('click', function () { load(state.n + 1); });
-            fontMinus.addEventListener('click', function () { state.font = Math.max(1.2, +(state.font - 0.25).toFixed(2)); textEl.style.fontSize = state.font + 'rem'; });
-            fontPlus.addEventListener('click', function () { state.font = Math.min(3.5, +(state.font + 0.25).toFixed(2)); textEl.style.fontSize = state.font + 'rem'; });
+            if (fontEl) fontEl.addEventListener('input', function () {
+                panelEl.style.fontSize = fontEl.value + 'rem';
+                try { localStorage.setItem('YaMousahil_qrc_font', String(fontEl.value)); } catch (e) {}
+            });
             window._qrcOpen = function (n) {
                 try { if (typeof showScreen === 'function') showScreen(quranReadScreen); } catch (e) {}
                 window.scrollTo(0, 0);
