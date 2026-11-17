@@ -2391,11 +2391,22 @@
         #quran-read-screen .qrc-font-group{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;}
         #quran-read-screen .qrc-strip-left{flex:1 1 100%;order:1;display:flex;justify-content:space-between;align-items:center;gap:6px;}
         #quran-read-screen .qrc-strip-right{flex:1 1 100%;order:2;display:flex;justify-content:space-between;align-items:center;gap:6px;}
-        #quran-read-screen .qrc-reciter-select-wrap{flex:1 1 auto;max-width:none;height:32px;padding:0 8px;gap:5px;}
-        #quran-read-screen .qrc-reciter-select{font-size:.68rem;}
-        #quran-read-screen .qrc-tools-btn{padding:6px 8px;font-size:.68rem;white-space:nowrap;}
-        #quran-read-screen .qrc-listen-btn{padding:6px 12px;font-size:.72rem;white-space:nowrap;}
-        #quran-read-screen .qrc-strip-left > .qrc-tools-btn{margin-inline-start:auto;}
+        /* === أزرار المصحف على نمط أزرار « المسبحة / إعادة ضبط » (gold control-btn) === */
+        #quran-read-screen .qrc-tools-btn,
+        #quran-read-screen .qrc-listen-btn,
+        #quran-read-screen .qrc-reciter-select-wrap{min-height:46px;width:auto;display:inline-flex;flex-direction:row;justify-content:center;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--gold) !important;border-radius:12px;background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%) !important;color:#ffee9e !important;font-size:.82rem;cursor:pointer;font-family:var(--font-quran);font-weight:700;white-space:nowrap;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.32),inset 0 -4px 7px rgba(0,0,0,.42),0 5px 14px rgba(212,175,55,.32) !important;text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6) !important;transition:all .2s ease;}
+        #quran-read-screen .qrc-tools-btn:hover,
+        #quran-read-screen .qrc-listen-btn:hover,
+        #quran-read-screen .qrc-reciter-select-wrap:hover{color:#fff6c0;transform:translateY(-1px);}
+        #quran-read-screen .qrc-tools-btn:active,
+        #quran-read-screen .qrc-listen-btn:active,
+        #quran-read-screen .qrc-reciter-select-wrap:active{transform:scale(.97);}
+        #quran-read-screen .qrc-tools-btn[aria-pressed="true"],
+        #quran-read-screen .qrc-listen-btn[aria-pressed="true"]{background:radial-gradient(150% 160% at 50% -40%,#3d644a 0%,#1d4730 46%,#10261a 100%);color:#fff6c0;}
+        #quran-read-screen .qrc-reciter-select-wrap{gap:6px;}
+        #quran-read-screen .qrc-reciter-select{flex:1 1 auto;min-width:0;background:transparent !important;border:none !important;outline:none !important;color:#ffee9e !important;font-family:var(--font-quran);font-size:.82rem;font-weight:700;text-shadow:0 -1px 0 #5a430c,0 1px 2px rgba(0,0,0,.6);appearance:auto;}
+        #quran-read-screen .qrc-reciter-select:focus{border:none;outline:none;}
+        #quran-read-screen .qrc-reciter-select option{color:#0b132b;background:#fff;}
         #quran-read-screen .qrc-reciter-select{flex:1;min-width:0;background:transparent;border:none;color:#ffee9e;font-family:var(--font);font-size:.78rem;font-weight:700;outline:none;appearance:auto;}
         #quran-read-screen .qrc-reciter-select option{color:#0b132b;background:#fff;}
         #quran-read-screen .qrc-reciter-select optgroup{color:#0b132b;}
@@ -2466,11 +2477,6 @@
         body.is-mobile #quran-read-screen .qrc-mimic-strip input[type="range"]{width:78px;}
         body.is-mobile #quran-read-screen .qrc-reciter-select-wrap{height:30px;padding:0 6px;gap:4px;}
         body.is-mobile #quran-read-screen .qrc-reciter-select{font-size:.66rem;}
-        body.is-mobile #quran-read-screen .qrc-listen-btn{padding:6px 10px;font-size:.68rem;}
-        body.is-mobile #quran-read-screen .qrc-tools-btn{padding:6px 8px;font-size:.66rem;}
-        #quran-read-screen .qrc-listen-btn{background:linear-gradient(135deg,#d9c896,#B89B5E);color:#3b2b07;border-color:#8E7440;font-weight:800;}
-        #quran-read-screen .qrc-listen-btn:hover{background:linear-gradient(135deg,#f0e3b1,#c9a94e);}
-        #quran-read-screen .qrc-listen-btn[aria-pressed="true"]{background:linear-gradient(135deg,#B89B5E,#8E7440);color:#fff;}
         body.is-mobile #quran-read-screen{height:100dvh;min-height:0;overflow:hidden;gap:10px;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .header-prayers{display:none;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-toolbar{display:flex;order:0;}
@@ -2493,9 +2499,6 @@
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-toolbar{flex-direction:row;flex-wrap:wrap;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-back-list{order:0;}
         /* === العلامات المرجعية + الاستئناف + تحديد الآيات (على نمط المصدر) === */
-        #quran-read-screen .qrc-tools-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;border:1px solid rgba(184,155,94,.55);background:#F5EFE0;color:#8E7440;font-family:var(--font);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;margin-inline-start:auto;}
-        #quran-read-screen .qrc-tools-btn:hover{border-color:#B89B5E;color:#6b571f;box-shadow:0 2px 10px rgba(184,155,94,.25);}
-        #quran-read-screen .qrc-tools-btn[aria-pressed="true"]{background:#8E7440;border-color:#8E7440;color:#FFF8E1;}
         #quran-read-screen .qrc-v{cursor:pointer;border-radius:8px;padding:1px 3px;transition:background .18s,outline .18s;}
         #quran-read-screen .qrc-v:hover{background:#DDEADF;}
         #quran-read-screen .qrc-v.selected{background:#F5EFE0;outline:2px solid #B89B5E;outline-offset:1px;}
@@ -2515,7 +2518,6 @@
         #quran-read-screen #qrc-resume-dismiss{background:transparent;border:1px solid rgba(255,255,255,.25);color:#FFE9A8;border-radius:8px;width:32px;cursor:pointer;font-size:1rem;line-height:1;}
         #quran-read-screen .qrc-bk-empty{background:#FDF1EA;border:1px solid #E8A082;color:#6E2A12;border-radius:10px;padding:12px 14px;font-size:.88rem;text-align:center;margin-bottom:8px;flex-shrink:0;}
         #quran-read-screen .qrc-bk-empty[hidden]{display:none;}
-        body.is-mobile #quran-read-screen .qrc-tools-btn{padding:6px 10px;font-size:.7rem;}
         body.is-mobile #quran-read-screen .qrc-resume{font-size:.78rem;padding:8px 10px;}
         /* قائمة السور — محدد مخصّص يعرض اسم السورة بخط قرآني ذهبي */
         #quran-player-screen .qp-surah-picker{position:relative;flex-shrink:0;}
