@@ -2443,7 +2443,24 @@
         body.is-mobile #quran-read-screen .qrc-surah-items{max-height:150px;}
         body.is-mobile #quran-read-screen .qrc-reader-col{flex:1;min-width:0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
         /* === Android : قائمة السور في صفحة كاملة أولاً، والانتقال إلى القارئ عند الاختيار === */
-        #qrc-back-list{display:none;align-items:center;gap:6px;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);border-radius:12px;padding:0 14px;height:46px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+        #qrc-back-list{display:none;align-items:center;gap:8px;color:var(--gold);border:1px solid rgba(212,175,55,0.45);background:rgba(212,175,55,0.08);border-radius:12px;padding:0 16px;height:46px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+        /* === شريط أدوات القارئ (مستمع ذكي + علامات) === */
+        body.is-mobile #quran-read-screen .qrc-mimic-strip{flex-wrap:wrap;row-gap:8px;padding:0 4px;}
+        body.is-mobile #quran-read-screen .qrc-reciter-pill{font-size:.66rem;padding:0 10px;gap:5px;height:32px;}
+        body.is-mobile #quran-read-screen .qrc-listen-btn{padding:6px 10px;font-size:.7rem;}
+        body.is-mobile #quran-read-screen .qrc-tools-btn{padding:6px 10px;font-size:.7rem;}
+        body.is-mobile #quran-read-screen .qrc-listen-group{gap:5px;}
+        #quran-read-screen .qrc-reciter-pill{display:inline-flex;align-items:center;gap:7px;padding:0 14px;height:38px;border-radius:999px;border:1px solid rgba(212,175,55,.4);background:rgba(184,155,94,.1);color:#cdbf8a;font-family:var(--font);font-size:.78rem;white-space:nowrap;}
+        #quran-read-screen .qrc-reciter-pill b{color:#ffee9e;font-weight:700;}
+        #quran-read-screen .qrc-listen-btn{background:linear-gradient(135deg,#d9c896,#B89B5E);color:#3b2b07;border-color:#8E7440;font-weight:800;}
+        #quran-read-screen .qrc-listen-btn:hover{background:linear-gradient(135deg,#f0e3b1,#c9a94e);}
+        #quran-read-screen .qrc-listen-btn[aria-pressed="true"]{background:linear-gradient(135deg,#B89B5E,#8E7440);color:#fff;}
+        body.is-mobile #quran-read-screen{height:100dvh;min-height:0;overflow:hidden;gap:10px;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .header-prayers{display:none;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-toolbar{display:flex;order:0;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-nav#qrc-prev{order:2;margin-inline-start:auto;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-nav#qrc-next{order:2;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-toolbar{flex-direction:row;flex-wrap:wrap;}
         body.is-mobile #quran-read-screen{height:100dvh;min-height:0;overflow:hidden;gap:10px;}
         body.is-mobile #quran-read-screen .qrc-mimic{flex:1 1 auto;min-height:0;height:auto;overflow:hidden;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-toolbar{display:none;}
@@ -5513,7 +5530,7 @@
                     <div style="width:80px;"></div>
                 </header>
                 <div class="qrc-toolbar">
-                    <button type="button" class="qrc-back-list glass-btn" id="qrc-back-list" aria-label="العودة إلى قائمة السور">‹ قائمة السور</button>
+                    <button type="button" class="qrc-back-list glass-btn" id="qrc-back-list" aria-label="الفهرس"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h12M4 18h7"/><circle cx="19" cy="18" r="2.4" fill="currentColor" stroke="none"/></svg>الفهرس</button>
                     <button type="button" class="qrc-nav glass-btn" id="qrc-prev" aria-label="السورة السابقة">‹</button>
                     <div class="qrc-select-wrap">
                         <select id="qrc-surah" class="setting-select qrc-select" aria-label="اختيار السورة"></select>
@@ -5529,6 +5546,10 @@
                         <span class="qrc-mimic-label">حجم الخط</span>
                         <input type="range" id="qrc-m-font" min="1.4" max="3.5" step="0.1" value="2" aria-label="حجم الخط">
                         <button type="button" class="qrc-tools-btn" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل">★ العلامات <span id="qrc-bk-count">0</span></button>
+                        <span class="qrc-listen-group">
+                            <span class="qrc-reciter-pill" id="qrc-reciter-pill" title="القارئ : ياسين الجزائري"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3.5 3.5 0 0 1 3.5 3.5v5a3.5 3.5 0 0 1-7 0v-5A3.5 3.5 0 0 1 12 2z"/><path d="M6 10a6 6 0 0 0 12 0"/><path d="M12 16v4M9 21h6"/></svg>القارئ : <b>ياسين الجزائري</b></span>
+                            <button type="button" class="qrc-tools-btn qrc-listen-btn" id="qrc-listen-btn" aria-pressed="false" aria-label="استماع للسورة كاملة">▶ استماع</button>
+                        </span>
                     </div>
                     <div class="qrc-bodyrow">
                         <aside class="qrc-surah-list" id="qrc-surah-list" aria-label="قائمة السور">
@@ -8327,6 +8348,7 @@ var gender = 'male';
             async function load(n, jumpAyah) {
                 state.n = clamp(n);
                 state.jump = jumpAyah || null;
+                qrcStopListen();
                 if (select.value !== String(state.n)) select.value = String(state.n);
                 saveLast(state.n);
                 qrcHidePop();
@@ -8385,6 +8407,22 @@ var gender = 'male';
                 try { localStorage.setItem('YaMousahil_qrc_font', String(fontEl.value)); } catch (e) {}
             });
             var backListBtn = document.getElementById('qrc-back-list');
+            var qrcListenBtn = document.getElementById('qrc-listen-btn');
+            var qrcListenState = { playing: false, loadedFor: null };
+            function qrcYassenUrl(n) { return 'https://cdn.mp3quran.net/audio/yassen-jazairi/r1/' + String(n).padStart(3, '0') + '.mp3'; }
+            function qrcUpdateListenBtn() { if (qrcListenBtn) qrcListenBtn.textContent = qrcListenState.playing ? '⏸ استماع' : '▶ استماع'; }
+            function qrcStopListen() { if (qrcAudio && qrcListenState.playing) { try { qrcAudio.pause(); } catch (e) {} } qrcListenState.playing = false; qrcUpdateListenBtn(); }
+            if (qrcListenBtn) qrcListenBtn.addEventListener('click', function () {
+                if (!qrcAudio) return;
+                if (qrcListenState.playing && qrcListenState.loadedFor === state.n) { qrcStopListen(); return; }
+                qrcListenState.loadedFor = state.n;
+                try { qrcAudio.pause(); } catch (e) {}
+                qrcAudio.onended = function () { qrcListenState.playing = false; qrcUpdateListenBtn(); };
+                qrcAudio.src = qrcYassenUrl(state.n);
+                var p = qrcAudio.play(); if (p && p.catch) p.catch(function () {});
+                qrcListenState.playing = true;
+                qrcUpdateListenBtn();
+            });
             function isMobileQrc() { try { return document.body.classList.contains('is-mobile'); } catch (e) { return false; } }
             function setQrcMode(mode) {
                 if (!isMobileQrc()) { quranReadScreen.classList.remove('qrc-mobile-list', 'qrc-mobile-reader'); return; }
