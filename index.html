@@ -158,6 +158,13 @@
         #home-screen .section-title::before{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 22%,var(--gold) 50%,rgba(212,175,55,.35) 78%,transparent);}
         #home-screen .section-title::after{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 22%,var(--gold) 50%,rgba(212,175,55,.35) 78%,transparent);}
         #home-screen .fav-header-row .section-title{flex:1;}
+        /* زر طي/فتح كل قسم (سهم ذهبي) */
+        #home-screen .section-title{gap:10px;}
+        #home-screen .sec-toggle{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:0 0 28px;border:1px solid rgba(212,175,55,.5);border-radius:10px;background:rgba(212,175,55,.15);color:var(--gold);cursor:pointer;padding:0;transition:transform .25s,background .2s,border-color .2s;}
+        #home-screen .sec-toggle:hover{background:rgba(212,175,55,.3);border-color:var(--gold);}
+        #home-screen .sec-toggle:active{transform:scale(.92);}
+        #home-screen .section-title.collapsed .sec-toggle{transform:rotate(-90deg);}
+        #home-screen .sec-hidden{display:none !important;}
 
         /* ===== إسلاميات : 3D للعودة وزخرفة حول العنوان الرئيسي ===== */
         #islamiyat-screen .back-btn{
@@ -3093,10 +3100,10 @@
                         <div class="prayer-row" id="home-prayer-times"></div>
                         <div class="apps-scroll-area">
                             <div class="fav-header-row">
-                                <div class="section-title" style="margin-bottom:0;" data-i18n="sec_islamiyat">إسلاميات</div>
+                                <div class="section-title" style="margin-bottom:0;" data-section="islamiyat"><span data-i18n="sec_islamiyat">إسلاميات</span><button type="button" class="sec-toggle" aria-label="طي/فتح الإسلاميات" aria-expanded="true" aria-controls="home-islamiyat-grid"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
                                 <div class="fav-next-prayer" id="fav-next-prayer"><span class="fav-next-label">الصلاة القادمة</span> <span class="fav-next-name" id="fav-next-prayer-name">--</span> <span class="fav-next-time" id="fav-next-countdown">--:--:--</span></div>
                             </div>
-                            <div class="apps-grid fav-grid">
+                            <div class="apps-grid fav-grid" id="home-islamiyat-grid" data-section-grid="islamiyat">
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran-menu" title="القرآن الكريم">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="القرآن الكريم">
                                         <defs>
@@ -3275,7 +3282,8 @@
                                     <path d="M32 42.5 L50.5 33 L50.5 37.5 L32 47 Z" fill="url(#q3dHuStripe)" opacity=".95"/>
                                     <path d="M40.5 39.5 L45 37.2 L45 48.2 L40.5 50.5 Z" fill="url(#q3dHuGold)" stroke="#7a5a12" stroke-width=".7"/>
                                 </svg><span class="app-name">الحج و العمرة</span></div>
-                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-i18n="sec_radios">إذاعات وبث مباشر</div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-section="radios"><span data-i18n="sec_radios">إذاعات وبث مباشر</span><button type="button" class="sec-toggle" aria-label="طي/فتح إذاعات وبث مباشر" aria-expanded="true" aria-controls="home-radios-grid"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
+                                <div class="apps-grid-span" id="home-radios-grid" style="display:contents;">
                                 <div class="app-card glass-btn" tabindex="0" id="btn-radio-maroc">
                                     <img class="app-icon" src="https://play-lh.googleusercontent.com/PxevXvQZW-vA9fLdl66yAuDra-MA_sKGbiGwowDszSVMSg3M4QpBV9VJFMJvPf7tYzPJF9ywLVUstndsg8Dt_cc=w240-h480-rw" alt="Radio Maroc">
                                     <span class="app-name" data-i18n="card_radioMaroc">إذاعات مغربية</span>
@@ -3287,6 +3295,7 @@
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran-radio">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/3427/3427602.png" alt="إذاعات القرآن">
                                     <span class="app-name" data-i18n="card_quranRadio">📻 إذاعات القرآن</span>
+                                </div>
                                 </div>
                                 <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-i18n="sec_services">خدمات</div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
@@ -10832,6 +10841,39 @@ var memorizationScreen = document.getElementById('memorization-screen');
 var khatmaScreen = document.getElementById('khatma-screen');
 var tajweedRulesScreen = document.getElementById('tajweed-rules-screen');
 var adabScreen = document.getElementById('tilawah-adab-screen');
+// ===== طي/فتح مقاطع إسلاميات وإذاعات وبث مباشر (إخفاء البطاقات) =====
+(function () {
+    var headers = document.querySelectorAll('#home-screen .section-title[data-section]');
+    var persist = {};
+    try { persist = JSON.parse(localStorage.getItem('YaMousahil_sec_collapsed') || '{}') || {}; } catch (e) { persist = {}; }
+    headers.forEach(function (h) {
+        var btn = h.querySelector('.sec-toggle');
+        if (!btn) return;
+        var key = h.getAttribute('data-section');
+        var controlledId = btn.getAttribute('aria-controls');
+        function setCollapsed(c) {
+            h.classList.toggle('collapsed', !!c);
+            btn.setAttribute('aria-expanded', String(!c));
+            if (controlledId) {
+                var grid = document.getElementById(controlledId);
+                if (grid) grid.classList.toggle('sec-hidden', !!c);
+            } else {
+                var el = h.nextElementSibling;
+                while (el && !el.classList.contains('section-title') && !el.classList.contains('mihrab-column')) {
+                    el.classList.toggle('sec-hidden', !!c);
+                    el = el.nextElementSibling;
+                }
+            }
+            try { persist[key] = !!c || undefined; if (!c) delete persist[key]; localStorage.setItem('YaMousahil_sec_collapsed', JSON.stringify(persist)); } catch (e) {}
+        }
+        if (persist[key]) setCollapsed(true);
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            setCollapsed(!h.classList.contains('collapsed'));
+        });
+    });
+})();
 (function () {
     var card = document.getElementById('card-quran-menu');
     if (card && quranMenuScreen) {
