@@ -2477,8 +2477,19 @@
         /* === Android : الزر العائم داخل رأس المصحف يبدل حسب الوضع === */
         #quran-read-screen .qrc-surah-menu-btn{display:none;position:absolute;top:10px;inset-inline-start:10px;z-index:5;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;color:#0E4F2C;background:rgba(14,79,44,.08);border:1px solid rgba(14,79,44,.35);cursor:pointer;}
         #quran-read-screen .qrc-star-btn{inset-inline-start:auto;inset-inline-end:10px;display:none;}
-        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-surah-menu-btn{display:inline-flex;}
+        #quran-read-screen .qrc-fullscreen-btn{inset-inline-start:auto;inset-inline-end:60px;font-size:1.15rem;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-surah-menu-btn,
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-fullscreen-btn{display:inline-flex;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-fullscreen-btn{background:#0E4F2C;color:#fff;border-color:#0E4F2C;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-star-btn{display:inline-flex;}
+        /* === 3ع حقيقي : كل عناصر Chrome cache app chrome / Android nav bar / status bar تختفي === */
+        #quran-read-screen.fullscreen .header-prayers,
+        #quran-read-screen.fullscreen .qrc-mimic-strip,
+        #quran-read-screen.fullscreen .qrc-audio-panel{display:none !important;}
+        #quran-read-screen.fullscreen .qrc-mimic{border:none !important;border-radius:0 !important;height:100vh !important;height:100dvh !important;padding:0 !important;background:#FAFAF7;}
+        #quran-read-screen.fullscreen .qrc-mimic-header{display:flex;border-bottom:none;padding-bottom:2px;}
+        #quran-read-screen.fullscreen .qrc-bodyrow{flex:1;height:100%;}
+        #quran-read-screen.fullscreen .qrc-mimic-panel{height:100%;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-bk-toggle{display:none !important;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-back-list{display:none !important;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .hdr-reader-spacer{display:block;}
@@ -5579,6 +5590,7 @@
                         <button type="button" class="qrc-surah-menu-btn glass-btn qrc-star-btn" id="qrc-star-toggle" aria-pressed="false" aria-label="العلامات المرجعية" title="عرض الآيات المُشار إليها / إظهار الكل">
                             <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l2.82 5.71 6.3.92-4.56 4.44 1.08 6.28L12 17.79l-5.64 2.97 1.08-6.28L2.88 9.43l6.3-.92L12 2.8z"/></svg>
                         </button>
+                        <button type="button" class="qrc-surah-menu-btn glass-btn qrc-fullscreen-btn" id="qrc-fullscreen-btn" aria-pressed="false" aria-label="ملء الشاشة" title="ملء الشاشة">⛶</button>
                         <button type="button" class="qrc-surah-menu-btn glass-btn" id="qrc-surah-menu-btn" aria-label="الفهرس — قائمة السور">
                             <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
                         </button>
@@ -8627,6 +8639,38 @@ var gender = 'male';
             var toMenuBtn = document.getElementById('qrc-back-to-menu');
             if (toMenuBtn) toMenuBtn.addEventListener('click', function () {
                 try { if (typeof showScreen === 'function' && typeof quranMenuScreen !== 'undefined' && quranMenuScreen) showScreen(quranMenuScreen); window.scrollTo(0, 0); } catch (e) {}
+            });
+            var qrcFsBtn = document.getElementById('qrc-fullscreen-btn');
+            var qrcFsAttacked = false;
+            function qrcApplyFullscreen(on) {
+                var scr = document.getElementById('quran-read-screen');
+                if (!scr) return;
+                qrcFsAttacked = !!on;
+                scr.classList.toggle('fullscreen', !!on);
+                if (typeof AndroidFullscreen !== 'undefined' && AndroidFullscreen && typeof AndroidFullscreen.immersive === 'function') {
+                    try { AndroidFullscreen.immersive(!!on); } catch (e) {}
+                } else {
+                    // WebView fallback : HTML5 Fullscreen API
+                    try {
+                        if (on) {
+                            if (scr.requestFullscreen) scr.requestFullscreen().catch(function () {});
+                            else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {});
+                        } else if (document.exitFullscreen) {
+                            document.exitFullscreen().catch(function () {});
+                        }
+                    } catch (e) {}
+                }
+                try { window.dispatchEvent(new Event('resize')); } catch (e) {}
+            }
+            if (qrcFsBtn) qrcFsBtn.addEventListener('click', function () {
+                qrcApplyFullscreen(!qrcFsBtn.getAttribute('aria-pressed') || qrcFsBtn.getAttribute('aria-pressed') === 'false');
+                qrcFsBtn.setAttribute('aria-pressed', String(qrcFsAttacked));
+            });
+            document.addEventListener('fullscreenchange', function () {
+                if (typeof AndroidFullscreen === 'undefined') {
+                    var scr = document.getElementById('quran-read-screen');
+                    if (scr) scr.classList.toggle('fullscreen', !!document.fullscreenElement);
+                }
             });
             var surahMenuBtn = document.getElementById('qrc-surah-menu-btn');
             if (surahMenuBtn) surahMenuBtn.addEventListener('click', function () {
