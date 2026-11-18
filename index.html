@@ -758,6 +758,7 @@
         body.is-mobile #home-prayer-times .time-box.is-now{background:var(--cream);}
         body.is-mobile #home-prayer-times .time-box.is-next{background:rgba(212,175,55,.15);}
         .fav-header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+        .fav-next-prayer-row{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin:0 0 4px;}
         .fav-next-prayer{display:none;align-items:center;gap:6px;font-family:var(--font);font-size:.82rem;color:var(--text-dim);white-space:nowrap;}
         .fav-next-prayer .fav-next-name{color:var(--gold);font-weight:700;}
         .fav-next-prayer .fav-next-time{color:var(--gold-light);font-weight:700;font-variant-numeric:tabular-nums;direction:ltr;display:inline-block;}
@@ -3098,11 +3099,11 @@
                 <main class="main-layout">
                     <div class="apps-column">
                         <div class="prayer-row" id="home-prayer-times"></div>
-                        <div class="apps-scroll-area">
-                            <div class="fav-header-row">
+                            <div class="apps-scroll-area">
+                            <div class="fav-next-prayer-row">
                                 <div class="fav-next-prayer" id="fav-next-prayer"><span class="fav-next-label">الصلاة القادمة</span> <span class="fav-next-name" id="fav-next-prayer-name">--</span> <span class="fav-next-time" id="fav-next-countdown">--:--:--</span></div>
-                                <div class="section-title" style="margin-bottom:0;" data-section="islamiyat"><button type="button" class="sec-toggle" aria-label="طي/فتح الإسلاميات" aria-expanded="true" aria-controls="home-islamiyat-grid"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button><span data-i18n="sec_islamiyat">إسلاميات</span></div>
                             </div>
+                            <div class="section-title" style="margin-bottom:0;" data-section="islamiyat"><button type="button" class="sec-toggle" aria-label="طي/فتح الإسلاميات" aria-expanded="true" aria-controls="home-islamiyat-grid"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button><span data-i18n="sec_islamiyat">إسلاميات</span></div>
                             <div class="apps-grid fav-grid" id="home-islamiyat-grid" data-section-grid="islamiyat">
                                 <div class="app-card glass-btn" tabindex="0" id="card-quran-menu" title="القرآن الكريم">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="القرآن الكريم">
