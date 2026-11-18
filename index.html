@@ -2474,7 +2474,12 @@
         #quran-read-screen .qrc-reciter-select-wrap{flex:1 1 auto;max-width:none;}
         #quran-read-screen .qrc-audio-toggle[aria-pressed="true"],#quran-read-screen .qrc-audio-toggle.qrc-audio-active{background:radial-gradient(150% 160% at 50% -40%,#d9c896 0%,#B89B5E 46%,#8E7440 100%) !important;color:#3b2b07 !important;border-color:#8E7440 !important;text-shadow:none !important;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -4px 7px rgba(0,0,0,.32),0 5px 14px rgba(212,175,55,.4) !important;}
         #quran-read-screen .header-prayers{border-bottom:none;padding-bottom:0;}
-        /* === Android : le bouton d'en-tête s'adapte au mode (list / reader) === */
+        /* === Android : الزر العائم داخل رأس المصحف يبدل حسب الوضع === */
+        #quran-read-screen .qrc-surah-menu-btn{display:none;position:absolute;top:10px;inset-inline-start:10px;z-index:5;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;color:#0E4F2C;background:rgba(14,79,44,.08);border:1px solid rgba(14,79,44,.35);cursor:pointer;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-surah-menu-btn{display:inline-flex;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-back-list{display:none !important;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .hdr-reader-spacer{display:block;}
+        body:not(.is-mobile) #quran-read-screen .hdr-reader-spacer{display:none !important;}
         #quran-read-screen #qrc-back-to-menu{width:80px;padding:0;justify-content:center;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .hdr-reader-only{display:none !important;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .hdr-list-only{display:none !important;}
@@ -5556,6 +5561,7 @@
                             <path d="M8 9h8M8 13h5"/>
                         </svg>
                     </button>
+                    <div class="hdr-reader-spacer hdr-reader-only" style="width:46px;flex:0 0 46px;"></div>
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);"><span>اقرأ القرآن الكريم</span></h1>
                     </div>
@@ -5567,6 +5573,9 @@
                 </header>
                 <div class="qrc-mimic" id="qrc-mimic" dir="rtl">
                     <div class="qrc-mimic-header">
+                        <button type="button" class="qrc-surah-menu-btn glass-btn" id="qrc-surah-menu-btn" aria-label="الفهرس — قائمة السور">
+                            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
+                        </button>
                         <div class="qrc-mimic-ar" id="qrc-m-ar">سُورَةُ ٱلْفَاتِحَةِ</div>
                         <div class="qrc-mimic-meta">
                             <button type="button" class="qrc-meta-nav" id="qrc-prev" aria-label="السورة السابقة">‹</button>
@@ -8609,6 +8618,10 @@ var gender = 'male';
             var toMenuBtn = document.getElementById('qrc-back-to-menu');
             if (toMenuBtn) toMenuBtn.addEventListener('click', function () {
                 try { if (typeof showScreen === 'function' && typeof quranMenuScreen !== 'undefined' && quranMenuScreen) showScreen(quranMenuScreen); window.scrollTo(0, 0); } catch (e) {}
+            });
+            var surahMenuBtn = document.getElementById('qrc-surah-menu-btn');
+            if (surahMenuBtn) surahMenuBtn.addEventListener('click', function () {
+                if (typeof setQrcMode === 'function') setQrcMode('list');
             });
             if (backListBtn) backListBtn.addEventListener('click', function () {
                 if (typeof isMobileQrc === 'function' && isMobileQrc()) { setQrcMode('list'); return; }
