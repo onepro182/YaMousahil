@@ -2474,6 +2474,11 @@
         #quran-read-screen .qrc-reciter-select-wrap{flex:1 1 auto;max-width:none;}
         #quran-read-screen .qrc-audio-toggle[aria-pressed="true"],#quran-read-screen .qrc-audio-toggle.qrc-audio-active{background:radial-gradient(150% 160% at 50% -40%,#d9c896 0%,#B89B5E 46%,#8E7440 100%) !important;color:#3b2b07 !important;border-color:#8E7440 !important;text-shadow:none !important;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -4px 7px rgba(0,0,0,.32),0 5px 14px rgba(212,175,55,.4) !important;}
         #quran-read-screen .header-prayers{border-bottom:none;padding-bottom:0;}
+        #quran-read-screen aside.qrc-flash{outline:2px solid var(--gold);border-radius:12px;box-shadow:0 0 0 4px rgba(212,175,55,.3),0 6px 30px rgba(212,175,55,.25);transition:box-shadow .3s ease;}
+        #quran-read-screen .header-prayers .back-btn{width:46px;padding:0;justify-content:center;}
+        #quran-read-screen .header-prayers #qrc-back-list{color:var(--gold);border-color:rgba(212,175,55,.4);background:rgba(184,155,94,.08);}
+        #quran-read-screen .header-prayers #qrc-bk-toggle{color:var(--gold);border-color:rgba(212,175,55,.4);background:rgba(184,155,94,.08);}
+        #quran-read-screen .header-prayers #qrc-bk-toggle[aria-pressed="true"]{background:linear-gradient(135deg,#d9c896,#B89B5E);color:#3b2b07;border-color:#8E7440;}
         /* === شريط أدوات القارئ (مستمع ذكي + علامات) === */
         body.is-mobile #quran-read-screen .qrc-mimic-strip{justify-content:space-between;gap:6px;padding:0 2px;}
         body.is-mobile #quran-read-screen .qrc-mimic-strip{gap:4px;padding:0;}
@@ -2494,7 +2499,6 @@
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-surah-list{flex:1 1 auto;width:100%;max-height:none;height:auto;min-height:0;}
         body.is-mobile #quran-read-screen.qrc-mobile-list .qrc-surah-items{max-height:none;flex:1;min-height:0;overflow-y:auto;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-surah-list{display:none;}
-        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-back-list{order:0;}
         /* === العلامات المرجعية + الاستئناف + تحديد الآيات (على نمط المصدر) === */
         #quran-read-screen .qrc-v{cursor:pointer;border-radius:8px;padding:1px 3px;transition:background .18s,outline .18s;}
         #quran-read-screen .qrc-v:hover{background:#DDEADF;}
@@ -5538,7 +5542,7 @@
             <!-- QURAN READ SCREEN — اقرأ القرآن الكريم (النص العثماني — نحو المصدر qurancentral.net) -->
             <div id="quran-read-screen">
                 <header class="header-prayers">
-                    <button type="button" class="back-btn glass-btn" id="qrc-back-list" data-qm-back aria-label="الفهرس — العودة إلى قائمة السور">
+                    <button type="button" class="back-btn glass-btn" id="qrc-back-list" aria-label="الفهرس — قائمة السور">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <rect x="3" y="4" width="18" height="16" rx="2"/>
                             <path d="M8 9h8M8 13h5"/>
@@ -5547,7 +5551,9 @@
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);"><span>اقرأ القرآن الكريم</span></h1>
                     </div>
-                    <div style="width:80px;"></div>
+                    <button type="button" class="back-btn glass-btn" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل" aria-label="العلامات المرجعية">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l2.82 5.71 6.3.92-4.56 4.44 1.08 6.28L12 17.79l-5.64 2.97 1.08-6.28L2.88 9.43l6.3-.92L12 2.8z"/></svg>
+                    </button>
                     <select id="qrc-surah" class="setting-select qrc-select" aria-label="اختيار السورة" style="display:none;"></select>
                 </header>
                 <div class="qrc-mimic" id="qrc-mimic" dir="rtl">
@@ -5565,7 +5571,6 @@
                                 <span class="qrc-mimic-label">حجم الخط</span>
                                 <input type="range" id="qrc-m-font" min="1.4" max="3.5" step="0.1" value="2" aria-label="حجم الخط">
                             </span>
-                            <button type="button" class="qrc-tools-btn" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل">★ العلامات <span id="qrc-bk-count">0</span></button>
                         </span>
                         <span class="qrc-strip-group qrc-strip-right">
                             <button type="button" class="qrc-tools-btn qrc-audio-toggle" id="qrc-audio-toggle" aria-pressed="false" title="استماع للسورة — آية آية" aria-label="صوت/استماع">
@@ -8592,7 +8597,16 @@ var gender = 'male';
                 quranReadScreen.classList.toggle('qrc-mobile-list', mode === 'list');
                 quranReadScreen.classList.toggle('qrc-mobile-reader', mode === 'reader');
             }
-            if (backListBtn) backListBtn.addEventListener('click', function () { setQrcMode('list'); });
+            if (backListBtn) backListBtn.addEventListener('click', function () {
+                if (typeof isMobileQrc === 'function' && isMobileQrc()) { setQrcMode('list'); return; }
+                // على الحاسوب : العودة إلى « الفهرس » (إبراز قائمة السور) — وليس خروج
+                var aside = document.getElementById('qrc-surah-list');
+                if (aside) {
+                    aside.scrollTop = 0;
+                    aside.classList.add('qrc-flash');
+                    setTimeout(function () { aside.classList.remove('qrc-flash'); }, 1200);
+                }
+            });
             window._qrcGoTo = function (s, a) {
                 try { if (typeof showScreen === 'function') showScreen(quranReadScreen); } catch (e) {}
                 window.scrollTo(0, 0);
