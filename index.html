@@ -2487,7 +2487,10 @@
         #quran-read-screen.fullscreen .qrc-mimic-strip,
         #quran-read-screen.fullscreen .qrc-audio-panel{display:none !important;}
         #quran-read-screen.fullscreen .qrc-mimic{border:none !important;border-radius:0 !important;height:100vh !important;height:100dvh !important;padding:0 !important;background:#FAFAF7;}
-        #quran-read-screen.fullscreen .qrc-mimic-header{display:flex;border-bottom:none;padding-bottom:2px;}
+        #quran-read-screen.fullscreen .qrc-mimic-header{display:flex;border-bottom:none;padding:2px 0 0;height:44px;min-height:44px;}
+        #quran-read-screen.fullscreen .qrc-mimic-ar,
+        #quran-read-screen.fullscreen .qrc-mimic-meta,
+        #quran-read-screen.fullscreen .qrc-mimic-header::after{display:none !important;}
         #quran-read-screen.fullscreen .qrc-bodyrow{flex:1;height:100%;}
         #quran-read-screen.fullscreen .qrc-mimic-panel{height:100%;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-bk-toggle{display:none !important;}
