@@ -2474,6 +2474,11 @@
         #quran-read-screen .qrc-reciter-select-wrap{flex:1 1 auto;max-width:none;}
         #quran-read-screen .qrc-audio-toggle[aria-pressed="true"],#quran-read-screen .qrc-audio-toggle.qrc-audio-active{background:radial-gradient(150% 160% at 50% -40%,#d9c896 0%,#B89B5E 46%,#8E7440 100%) !important;color:#3b2b07 !important;border-color:#8E7440 !important;text-shadow:none !important;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -4px 7px rgba(0,0,0,.32),0 5px 14px rgba(212,175,55,.4) !important;}
         #quran-read-screen .header-prayers{border-bottom:none;padding-bottom:0;}
+        /* === Android : le bouton d'en-tête s'adapte au mode (list / reader) === */
+        #quran-read-screen #qrc-back-to-menu{width:80px;padding:0;justify-content:center;}
+        body.is-mobile #quran-read-screen.qrc-mobile-list .hdr-reader-only{display:none !important;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .hdr-list-only{display:none !important;}
+        body:not(.is-mobile) #quran-read-screen .hdr-list-only{display:none !important;}
         #quran-read-screen aside.qrc-flash{outline:2px solid var(--gold);border-radius:12px;box-shadow:0 0 0 4px rgba(212,175,55,.3),0 6px 30px rgba(212,175,55,.25);transition:box-shadow .3s ease;}
         #quran-read-screen .header-prayers .back-btn{width:46px;padding:0;justify-content:center;}
         #quran-read-screen .header-prayers #qrc-back-list{color:var(--gold);border-color:rgba(212,175,55,.4);background:rgba(184,155,94,.08);}
@@ -5542,7 +5547,10 @@
             <!-- QURAN READ SCREEN — اقرأ القرآن الكريم (النص العثماني — نحو المصدر qurancentral.net) -->
             <div id="quran-read-screen">
                 <header class="header-prayers">
-                    <button type="button" class="back-btn glass-btn" id="qrc-back-list" aria-label="الفهرس — قائمة السور">
+                    <!-- LIST : ‹ العودة vers القرآن الكريم -->
+                    <button type="button" class="back-btn glass-btn hdr-list-only" id="qrc-back-to-menu">‹ العودة</button>
+                    <!-- READER / desktop : أيقونة الفهرس فقط -->
+                    <button type="button" class="back-btn glass-btn hdr-reader-only" id="qrc-back-list" aria-label="الفهرس — قائمة السور">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <rect x="3" y="4" width="18" height="16" rx="2"/>
                             <path d="M8 9h8M8 13h5"/>
@@ -5551,7 +5559,8 @@
                     <div class="title-prayers">
                         <h1 style="font-family:var(--font-quran);"><span>اقرأ القرآن الكريم</span></h1>
                     </div>
-                    <button type="button" class="back-btn glass-btn" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل" aria-label="العلامات المرجعية">
+                    <div class="hdr-list-only header-spacer" style="width:80px;flex:0 0 80px;"></div>
+                    <button type="button" class="back-btn glass-btn hdr-reader-only" id="qrc-bk-toggle" aria-pressed="false" title="عرض الآيات المُشار إليها فقط / إظهار الكل" aria-label="العلامات المرجعية">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l2.82 5.71 6.3.92-4.56 4.44 1.08 6.28L12 17.79l-5.64 2.97 1.08-6.28L2.88 9.43l6.3-.92L12 2.8z"/></svg>
                     </button>
                     <select id="qrc-surah" class="setting-select qrc-select" aria-label="اختيار السورة" style="display:none;"></select>
@@ -8597,6 +8606,10 @@ var gender = 'male';
                 quranReadScreen.classList.toggle('qrc-mobile-list', mode === 'list');
                 quranReadScreen.classList.toggle('qrc-mobile-reader', mode === 'reader');
             }
+            var toMenuBtn = document.getElementById('qrc-back-to-menu');
+            if (toMenuBtn) toMenuBtn.addEventListener('click', function () {
+                try { if (typeof showScreen === 'function' && typeof quranMenuScreen !== 'undefined' && quranMenuScreen) showScreen(quranMenuScreen); window.scrollTo(0, 0); } catch (e) {}
+            });
             if (backListBtn) backListBtn.addEventListener('click', function () {
                 if (typeof isMobileQrc === 'function' && isMobileQrc()) { setQrcMode('list'); return; }
                 // على الحاسوب : العودة إلى « الفهرس » (إبراز قائمة السور) — وليس خروج
