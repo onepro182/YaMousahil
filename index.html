@@ -2476,7 +2476,10 @@
         #quran-read-screen .header-prayers{border-bottom:none;padding-bottom:0;}
         /* === Android : الزر العائم داخل رأس المصحف يبدل حسب الوضع === */
         #quran-read-screen .qrc-surah-menu-btn{display:none;position:absolute;top:10px;inset-inline-start:10px;z-index:5;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;color:#0E4F2C;background:rgba(14,79,44,.08);border:1px solid rgba(14,79,44,.35);cursor:pointer;}
+        #quran-read-screen .qrc-star-btn{inset-inline-start:auto;inset-inline-end:10px;display:none;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-surah-menu-btn{display:inline-flex;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader .qrc-star-btn{display:inline-flex;}
+        body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-bk-toggle{display:none !important;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader #qrc-back-list{display:none !important;}
         body.is-mobile #quran-read-screen.qrc-mobile-reader .hdr-reader-spacer{display:block;}
         body:not(.is-mobile) #quran-read-screen .hdr-reader-spacer{display:none !important;}
@@ -5573,6 +5576,9 @@
                 </header>
                 <div class="qrc-mimic" id="qrc-mimic" dir="rtl">
                     <div class="qrc-mimic-header">
+                        <button type="button" class="qrc-surah-menu-btn glass-btn qrc-star-btn" id="qrc-star-toggle" aria-pressed="false" aria-label="العلامات المرجعية" title="عرض الآيات المُشار إليها / إظهار الكل">
+                            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l2.82 5.71 6.3.92-4.56 4.44 1.08 6.28L12 17.79l-5.64 2.97 1.08-6.28L2.88 9.43l6.3-.92L12 2.8z"/></svg>
+                        </button>
                         <button type="button" class="qrc-surah-menu-btn glass-btn" id="qrc-surah-menu-btn" aria-label="الفهرس — قائمة السور">
                             <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
                         </button>
@@ -8174,13 +8180,16 @@ var gender = 'male';
             document.addEventListener('keydown', function (e) { if (e.key === 'Escape') qrcHidePop(); });
             var qrcScroller = quranReadScreen.querySelector('.qrc-reader-col');
             if (qrcScroller) qrcScroller.addEventListener('scroll', qrcHidePop, { passive: true });
-            if (qrcBkToggle) qrcBkToggle.addEventListener('click', function () {
+            var starToggleBtn = document.getElementById('qrc-star-toggle');
+            var bookmarkToggleHandler = function () {
                 var on = panelEl.classList.toggle('bk-only');
-                qrcBkToggle.setAttribute('aria-pressed', String(on));
-                if (on) {
-                    if (qrcBkEmpty) qrcBkEmpty.hidden = panelEl.querySelectorAll('.qrc-v.bookmarked').length > 0;
-                } else if (qrcBkEmpty) qrcBkEmpty.hidden = true;
-            });
+                if (qrcBkToggle) qrcBkToggle.setAttribute('aria-pressed', String(on));
+                if (starToggleBtn) starToggleBtn.setAttribute('aria-pressed', String(on));
+                if (on) { if (qrcBkEmpty) qrcBkEmpty.hidden = panelEl.querySelectorAll('.qrc-v.bookmarked').length > 0; }
+                else if (qrcBkEmpty) qrcBkEmpty.hidden = true;
+            };
+            if (qrcBkToggle) qrcBkToggle.addEventListener('click', bookmarkToggleHandler);
+            if (starToggleBtn) starToggleBtn.addEventListener('click', bookmarkToggleHandler);
             var qrcResumeGo = document.getElementById('qrc-resume-go');
             var qrcResumeDismiss = document.getElementById('qrc-resume-dismiss');
             if (qrcResumeGo) qrcResumeGo.addEventListener('click', function () {
