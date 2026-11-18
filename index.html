@@ -3297,7 +3297,8 @@
                                     <span class="app-name" data-i18n="card_quranRadio">📻 إذاعات القرآن</span>
                                 </div>
                                 </div>
-                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-i18n="sec_services">خدمات</div>
+                                <div class="section-title" style="grid-column:1/-1;margin:2px 0 0;" data-section="services"><span data-i18n="sec_services">خدمات</span><button type="button" class="sec-toggle" aria-label="طي/فتح خدمات" aria-expanded="true" aria-controls="home-services-grid"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button></div>
+                                <div class="apps-grid-span" id="home-services-grid" style="display:contents;">
                                 <div class="app-card glass-btn" tabindex="0" id="card-prayer-fm6oa" title="حسب التوقيت الرسمي للمملكة المغربية (GMT)">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="مواقيت الصلاة">
                                         <defs>
@@ -3420,6 +3421,7 @@
                                 <div class="app-card glass-btn" tabindex="0" id="card-weather">
                                     <img class="app-icon" src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" alt="Météo" style="border-radius:8px;">
                                     <span class="app-name">Météo</span>
+                                </div>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-surah-kahf" style="display:none;">
                                     <img class="app-icon" src="https://s.cafebazaar.ir/images/icons/com.alquransharifmp3-38c31d1d-cc94-4b82-af78-1941aa9abed3_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize" alt="المصحف المصور">
@@ -10846,6 +10848,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
     var headers = document.querySelectorAll('#home-screen .section-title[data-section]');
     var persist = {};
     try { persist = JSON.parse(localStorage.getItem('YaMousahil_sec_collapsed') || '{}') || {}; } catch (e) { persist = {}; }
+    var defaultsCollapsed = { radios: true, services: true };
     headers.forEach(function (h) {
         var btn = h.querySelector('.sec-toggle');
         if (!btn) return;
@@ -10864,9 +10867,11 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
                     el = el.nextElementSibling;
                 }
             }
-            try { persist[key] = !!c || undefined; if (!c) delete persist[key]; localStorage.setItem('YaMousahil_sec_collapsed', JSON.stringify(persist)); } catch (e) {}
+            try { persist[key] = !!c; localStorage.setItem('YaMousahil_sec_collapsed', JSON.stringify(persist)); } catch (e) {}
         }
-        if (persist[key]) setCollapsed(true);
+        var hasSaved = Object.prototype.hasOwnProperty.call(persist, key);
+        var shouldCollapse = hasSaved ? !!persist[key] : !!defaultsCollapsed[key];
+        if (shouldCollapse) setCollapsed(true);
         btn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
