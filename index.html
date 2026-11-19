@@ -229,6 +229,26 @@
         .kid-done-btn.done{background:linear-gradient(180deg,#ffe9a8,#d4af37);border-color:var(--gold);color:#1d2610;}
         .kids-load-error{text-align:center;color:#ffb3b3;padding:24px 12px;font-size:.85rem;}
         .kids-retry-btn{margin-top:8px;background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:10px;padding:8px 18px;cursor:pointer;}
+        /* ===== نافذة الصلاة على النبي ﷺ — تظهر عند تحديث الصفحة ===== */
+        #salawat-modal{position:fixed;inset:0;z-index:9990;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(2,13,8,.78);backdrop-filter:blur(6px);}
+        #salawat-modal.open{display:flex;animation:salawatFade .28s ease;}
+        @keyframes salawatFade{from{opacity:0}to{opacity:1}}
+        .salawat-card{position:relative;max-width:430px;width:100%;background:radial-gradient(ellipse at 50% 0%,rgba(18,84,62,.95),rgba(3,20,12,.98) 72%);border:1.5px solid rgba(212,175,55,.55);border-radius:22px;padding:26px 20px 18px;text-align:center;color:#f4ecd8;font-family:var(--font);box-shadow:0 22px 60px rgba(0,0,0,.6),inset 0 1px 1px rgba(255,255,255,.22);animation:salawatPop .38s cubic-bezier(.34,1.56,.64,1);}
+        @keyframes salawatPop{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
+        .salawat-close{position:absolute;top:10px;right:12px;border:none;background:transparent;color:rgba(244,236,216,.72);font-size:1.05rem;cursor:pointer;width:34px;height:34px;border-radius:10px;line-height:1;}
+        .salawat-close:hover{color:#ffe9a8;background:rgba(255,255,255,.08);}
+        .salawat-title{color:#ffe9a8;font-family:var(--font-quran);font-size:1.42rem;margin:4px 0 2px;}
+        .salawat-sub{color:rgba(163,199,181,.92);font-size:.8rem;margin:0 0 2px;line-height:1.7;}
+        .salawat-big-btn{display:flex;align-items:center;justify-content:center;width:106px;height:106px;border-radius:50%;margin:14px auto 10px;border:2px solid rgba(212,175,55,.68);cursor:pointer;background:radial-gradient(circle at 36% 30%,#fff3c4,#e3c05c 55%,#9a7a1e);box-shadow:0 8px 26px rgba(212,175,55,.35),inset 0 -4px 8px rgba(0,0,0,.3),inset 0 2px 3px rgba(255,255,255,.5);position:relative;transition:transform .12s;overflow:visible;}
+        .salawat-big-btn:active{transform:scale(.92);}
+        .salawat-big-btn span{font-family:var(--font-quran);font-size:2.7rem;color:#22180a;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.4);}
+        .salawat-big-btn.pop{animation:salawatBtnPop .45s ease;}
+        @keyframes salawatBtnPop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+        .salawat-count{font-family:var(--font-quran);font-size:.95rem;color:var(--gold);margin:2px 0 12px;}
+        .salawat-later{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--cream);border-radius:12px;padding:9px 22px;cursor:pointer;font-family:var(--font);font-size:.82rem;}
+        .salawat-later:hover{background:rgba(255,255,255,.12);}
+        .salawat-spark{position:absolute;left:50%;top:18%;transform:translate(-50%,0);color:#ffe9a8;font-family:var(--font-quran);font-size:1.25rem;pointer-events:none;animation:sparkUp 1.15s ease forwards;}
+        @keyframes sparkUp{from{opacity:0;transform:translate(-50%,10px) scale(.6)}30%{opacity:1}to{opacity:0;transform:translate(-50%,-95px) scale(1.5)}}
 
         /* ===== إسلاميات : 3D للعودة وزخرفة حول العنوان الرئيسي ===== */
         #islamiyat-screen .back-btn{
@@ -10845,6 +10865,38 @@ var kidsHifzScreen = document.getElementById('kids-hifz-screen');
     renderGrid();
 })();
 
+// ===== نافذة الصلاة على النبي ﷺ : تظهر عند تحديث الصفحة الرئيسية =====
+(function () {
+    var modal = document.getElementById('salawat-modal'); if (!modal) return;
+    var btn = document.getElementById('salawat-btn');
+    var closeBtn = document.getElementById('salawat-close');
+    var laterBtn = document.getElementById('salawat-later');
+    var countEl = document.getElementById('salawat-count');
+    var KEY = 'YaMousahil_salawat_v1';
+    function todayKey() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+    var state = { count: 0 };
+    try { var s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && s.date === todayKey()) state.count = s.count || 0; } catch (e) {}
+    function persist() { try { localStorage.setItem(KEY, JSON.stringify({ date: todayKey(), count: state.count })); } catch (e) {} }
+    function renderCount() { if (countEl) countEl.textContent = 'صليت عليه اليوم : ' + state.count; }
+    function show() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); renderCount(); }
+    function hide() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+    if (btn) btn.addEventListener('click', function () {
+        state.count++; persist();
+        btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
+        if (navigator.vibrate) try { navigator.vibrate(25); } catch (e) {}
+        var spark = document.createElement('span');
+        spark.className = 'salawat-spark'; spark.textContent = 'ﷺ';
+        btn.appendChild(spark);
+        setTimeout(function () { if (spark.parentNode) spark.parentNode.removeChild(spark); }, 1250);
+        renderCount();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', hide);
+    if (laterBtn) laterBtn.addEventListener('click', hide);
+    modal.addEventListener('click', function (e) { if (e.target === modal) hide(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) hide(); });
+    setTimeout(show, 900);
+})();
+
         function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; if (screenToShow === homeScreen && typeof window.checkFridayKahf === 'function') setTimeout(window.checkFridayKahf, 400); prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (typeof kidsHifzScreen!=='undefined' && kidsHifzScreen) { kidsHifzScreen.style.display = 'none'; } try { if (typeof window._kidsStop === 'function' && screenToShow !== (typeof kidsHifzScreen!=='undefined' && kidsHifzScreen)) window._kidsStop(); } catch (e) {} if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof muallimScreen!=='undefined' && muallimScreen) muallimScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); if (screenToShow !== muallimScreen && typeof window._muallimStop === 'function') { try { window._muallimStop(); } catch (e) {} }
         if (screenToShow !== quranradioScreen && typeof stopQuranPlayer === 'function') { try { stopQuranPlayer(); } catch (e) {} }
         if (typeof quranPlayerScreen !== 'undefined' && quranPlayerScreen && screenToShow !== quranPlayerScreen) { try { const _qpa = document.getElementById('qp-audio'); if (_qpa) _qpa.pause(); } catch (e) {} if (quranPlayerScreen.style.display !== 'none') quranPlayerScreen.style.display = 'none'; }
@@ -14352,5 +14404,17 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
         </div>
      </div>
  </div>
+
+    <!-- نافذة الصلاة على النبي ﷺ : تظهر عند تحديث صفحة الرئيسية -->
+    <div id="salawat-modal" role="dialog" aria-modal="true" aria-labelledby="salawat-title" aria-hidden="true">
+        <div class="salawat-card">
+            <button type="button" class="salawat-close" id="salawat-close" aria-label="إغلاق">✕</button>
+            <h2 class="salawat-title" id="salawat-title">هل صلّيت على النبي اليوم؟!</h2>
+            <p class="salawat-sub">ﷺ «من صلّى عليّ صلاةً صلّى الله عليه بها عشراً»</p>
+            <button type="button" class="salawat-big-btn" id="salawat-btn" aria-label="اللهم صل وسلم على نبينا محمد"><span>ﷺ</span></button>
+            <div class="salawat-count" id="salawat-count">صليت عليه اليوم : 0</div>
+            <button type="button" class="salawat-later" id="salawat-later">لاحقاً</button>
+        </div>
+    </div>
 </body>
 </html>
