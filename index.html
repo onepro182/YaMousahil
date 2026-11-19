@@ -166,6 +166,72 @@
         #home-screen .section-title.collapsed .sec-toggle{transform:rotate(-90deg);}
         #home-screen .sec-hidden{display:none !important;}
 
+        /* ===== تحفيظ الأطفال (قصار السور) — كروت + لوحة سورة + مشغل صوتي ===== */
+        #kids-hifz-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;padding:0 14px 20px;overflow-y:auto;}
+        .kids-wrap{width:100%;max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:14px;}
+        .kids-hero{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:18px;border:1.5px solid rgba(212,175,55,.4);background:radial-gradient(140% 120% at 18% 0%,#2a6b4f 0%,#123b2c 55%,#081f16 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 10px 26px rgba(0,0,0,.35);}
+        .kids-hero-icon{flex:0 0 auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5));}
+        .kids-hero-body{flex:1;min-width:0;}
+        .kids-hero-body b{color:var(--gold);font-family:var(--font-quran);font-size:1.05rem;}
+        .kids-hero-body p{color:var(--cream);opacity:.92;font-size:.8rem;line-height:1.65;margin:6px 0 0;}
+        .kids-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
+        .kids-chips span{font-size:.68rem;font-weight:800;color:#1d1f0c;background:linear-gradient(180deg,#ffe9a8,#d4af37);border-radius:999px;padding:4px 11px;box-shadow:0 2px 5px rgba(0,0,0,.45);}
+        .kids-progress{background:rgba(7,32,24,.6);border:1px solid rgba(212,175,55,.3);border-radius:14px;padding:11px 14px;}
+        .kids-progress-head{display:flex;justify-content:space-between;align-items:center;color:var(--cream);font-size:.78rem;font-weight:700;}
+        .kids-progress-head #kids-pct{color:var(--gold);}
+        .kids-progress-bar{height:10px;border-radius:999px;background:rgba(0,0,0,.45);overflow:hidden;margin-top:7px;box-shadow:inset 0 2px 3px rgba(0,0,0,.6);}
+        .kids-progress-fill{height:100%;background:linear-gradient(90deg,#7fe0b2,#d4af37 70%,#c9a227);border-radius:999px;transition:width .4s;}
+        .kids-progress-tip{margin-top:7px;font-size:.7rem;color:rgba(232,226,200,.72);text-align:center;}
+        .kids-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+        @media(min-width:700px){.kids-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+        @media(min-width:1100px){.kids-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
+        .kids-card{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 10px 12px;border-radius:16px;border:1.5px solid rgba(212,175,55,.28);background:radial-gradient(150% 145% at 50% -12%,#2a6b4f 0%,#123b2c 55%,#081f16 100%);cursor:pointer;box-shadow:inset 0 1.5px 1px rgba(255,255,255,.22),0 6px 14px rgba(0,0,0,.4);transition:transform .15s,border-color .2s;color:var(--cream);font:inherit;}
+        .kids-card:hover{transform:translateY(-3px);border-color:var(--gold);}
+        .kids-card:active{transform:scale(.97);}
+        .kids-card.done{border-color:rgba(46,204,113,.65);box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 6px 14px rgba(0,0,0,.4),0 0 0 2px rgba(46,204,113,.25);}
+        .kids-rank{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#1d2610;background:radial-gradient(circle at 35% 35%,#fff0b8,#d4af37 55%,#8a6a1b);box-shadow:inset 0 -2px 3px rgba(0,0,0,.35),0 2px 5px rgba(0,0,0,.5);}
+        .kids-surah{font-family:var(--font-quran);font-size:1.5rem;color:#ffe9a8;line-height:1.25;text-shadow:0 1px 3px rgba(0,0,0,.6);}
+        .kids-ayat{font-size:.7rem;color:rgba(232,226,200,.85);}
+        .kids-status{margin-top:3px;font-size:.66rem;font-weight:800;border-radius:999px;border:1px solid rgba(255,255,255,.22);padding:4px 12px;background:rgba(0,0,0,.3);color:var(--cream);transition:all .2s;}
+        .kids-status.doing{color:#ffdf8e;border-color:rgba(212,175,55,.6);background:rgba(212,175,55,.18);}
+        .kids-status.done{color:#7fe0b2;border-color:rgba(46,204,113,.6);background:rgba(46,204,113,.16);}
+        .kids-tips{background:rgba(7,32,24,.6);border:1px solid rgba(212,175,55,.28);border-radius:16px;padding:14px 16px;}
+        .kids-tips h3{color:var(--gold);font-family:var(--font-quran);font-size:1rem;margin-bottom:8px;}
+        .kids-tips ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+        .kids-tips li{position:relative;padding-right:22px;color:var(--cream);opacity:.92;font-size:.78rem;line-height:1.7;}
+        .kids-tips li::before{content:"✦";position:absolute;right:0;top:0;color:var(--gold);}
+        .kids-print-btn{display:inline-flex;align-items:center;gap:8px;margin-top:10px;text-decoration:none;font-weight:800;font-size:.78rem;color:#1d1f0c;background:linear-gradient(180deg,#ffe9a8,#d4af37);padding:9px 16px;border-radius:12px;box-shadow:0 3px 8px rgba(0,0,0,.5);}
+        .mem-source{font-size:.64rem;color:rgba(232,226,200,.5);margin-top:9px;text-align:center;}
+        .kids-detail{display:none;flex-direction:column;gap:14px;width:100%;max-width:860px;margin:0 auto;}
+        .kids-detail.open{display:flex;}
+        .kids-detail-card{position:relative;border-radius:18px;border:1.5px solid rgba(212,175,55,.4);background:radial-gradient(150% 130% at 50% -20%,#205c44 0%,#0f3325 55%,#071e15 100%);padding:16px;display:flex;flex-direction:column;gap:13px;box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 12px 30px rgba(0,0,0,.4);}
+        .kids-detail-head{text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;}
+        .kids-detail-rank{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;color:#1d2610;background:radial-gradient(circle at 35% 35%,#fff0b8,#d4af37 55%,#8a6a1b);box-shadow:inset 0 -2px 3px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.5);}
+        .kids-detail-name{font-family:var(--font-quran);font-size:1.9rem;color:#ffe9a8;line-height:1.2;}
+        .kids-detail-meta{font-size:.75rem;color:rgba(232,226,200,.82);}
+        .kids-player{display:flex;gap:14px;align-items:center;background:rgba(0,0,0,.35);border:1px solid rgba(212,175,55,.25);border-radius:16px;padding:12px;}
+        .kids-play-btn{flex:0 0 62px;width:62px;height:62px;border-radius:50%;border:2px solid rgba(212,175,55,.6);background:radial-gradient(circle at 35% 30%,#fff0b8,#d4af37 55%,#8a6a1b);color:#1d2610;font-size:1.35rem;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.5);}
+        .kids-play-btn:active{transform:scale(.93);}
+        .kids-player-right{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px;}
+        .kids-player-bar{height:8px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;}
+        .kids-player-fill{height:100%;background:linear-gradient(90deg,#7fe0b2,#d4af37);width:0%;transition:width .15s linear;}
+        .kids-player-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.72rem;color:rgba(232,226,200,.88);}
+        .kids-select{background:#081f16;color:var(--cream);border:1px solid rgba(212,175,55,.4);border-radius:8px;padding:5px 8px;font-size:.72rem;}
+        .kids-repeat{display:flex;align-items:center;gap:10px;font-size:.72rem;color:rgba(232,226,200,.88);flex-wrap:wrap;}
+        .kids-repeat-chips{display:flex;gap:4px;}
+        .kids-chip{border:1px solid rgba(212,175,55,.35);color:var(--cream);background:transparent;border-radius:8px;padding:3px 10px;font-size:.72rem;cursor:pointer;font:inherit;}
+        .kids-chip-active{background:var(--gold);color:#1d2610;border-color:var(--gold);font-weight:800;}
+        .kids-ayahs{display:flex;flex-direction:column;gap:10px;}
+        .kids-ayah{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.28);border:1px solid transparent;}
+        .kids-ayah.playing{background:rgba(212,175,55,.16);border-color:var(--gold);box-shadow:0 0 0 1px var(--gold);}
+        .kids-ayah-num{flex:0 0 30px;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;}
+        .kids-ayah-text{font-family:var(--font-quran);font-size:1.12rem;line-height:2.1;color:var(--cream);}
+        .kids-basmala{text-align:center;font-family:var(--font-quran);font-size:1.25rem;color:var(--gold);padding:2px 0 4px;}
+        .kid-done-btn{align-self:center;border:2px solid rgba(46,204,113,.6);color:#0b2b20;background:linear-gradient(180deg,#8bf0b8,#2ecc71);font-weight:800;font-size:.9rem;padding:12px 26px;border-radius:14px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.5);font-family:inherit;}
+        .kid-done-btn.done{background:linear-gradient(180deg,#ffe9a8,#d4af37);border-color:var(--gold);color:#1d2610;}
+        .kids-load-error{text-align:center;color:#ffb3b3;padding:24px 12px;font-size:.85rem;}
+        .kids-retry-btn{margin-top:8px;background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:10px;padding:8px 18px;cursor:pointer;}
+
         /* ===== إسلاميات : 3D للعودة وزخرفة حول العنوان الرئيسي ===== */
         #islamiyat-screen .back-btn{
             border:1px solid rgba(255,255,255,.16);
@@ -532,7 +598,7 @@
         .nav-pill { border-radius:16px; padding:5px 12px; font-family:var(--font); font-size:.78rem; cursor:pointer; max-width:180px; color:#ffffff; }
         .nav-pill.active{border-color:var(--gold);font-weight:600;background:rgba(212,175,55,0.25);}
         
-        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#khatma-read-screen,#hajj-umrah-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#memorization-screen,#khatma-screen,#tajweed-rules-screen,#tilawah-adab-screen,#quran-player-screen,#quran-read-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
+        #prayers-screen,#radiomaroc-screen,#quranradio-screen,#islamiyat-screen,#mosques-screen,#pharmacy-screen,#sihatar-screen,#quran-menu-screen,#muhammadi-screen,#dua-khatm-screen,#asma-screen,#wird-screen,#khatma-read-screen,#hajj-umrah-screen,#inheritance-screen,#live-screen,#weather-screen,#mushaf-screen,#fm6oa-screen,#muallim-screen,#kids-hifz-screen,#memorization-screen,#khatma-screen,#tajweed-rules-screen,#tilawah-adab-screen,#quran-player-screen,#quran-read-screen{display:none;flex-direction:column;height:100%;width:100%;gap:15px;}
         .weather-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-shrink:0;flex-wrap:wrap;}
         .weather-hero{display:flex;align-items:center;gap:18px;padding:18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,46,34,0.96),rgba(15,58,42,0.98));border:1px solid rgba(212,175,55,0.35);flex-wrap:wrap;}
         .weather-emoji{font-size:4rem;line-height:1;}
@@ -3125,6 +3191,25 @@
                                     </svg>
                                     <span class="app-name" data-i18n="card_quran">القرآن الكريم</span>
                                 </div>
+                                <div class="app-card glass-btn" tabindex="0" id="card-kids-hifz" title="تحفيظ الأطفال — قصار السور بصوت مرتل" aria-label="تحفيظ الأطفال">
+                                    <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="تحفيظ الأطفال">
+                                        <defs>
+                                            <linearGradient id="kdBg" x1="0" y1="0" x2="0.32" y2="1"><stop offset="0" stop-color="#2fa37c"/><stop offset="0.5" stop-color="#0e5f45"/><stop offset="1" stop-color="#04291e"/></linearGradient>
+                                            <linearGradient id="kdGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffeeb0"/><stop offset="1" stop-color="#c9a227"/></linearGradient>
+                                            <linearGradient id="kdPage" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe6f2"/></linearGradient>
+                                        </defs>
+                                        <rect x="1" y="1" width="62" height="62" rx="16" fill="url(#kdBg)"/>
+                                        <rect x="2.5" y="2.5" width="59" height="59" rx="14.5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+                                        <path d="M32 25 C27 21.4 20.8 20.3 12 21 v22.6c8.8-.7 15 .4 20 4.2c5-3.8 11.2-4.9 20-4.2V21c-8.8-.7-15 .4-20 4z" fill="url(#kdPage)" stroke="#a8862c" stroke-width="1"/>
+                                        <path d="M32 25v22.6" stroke="#a8862c" stroke-width="1.2"/>
+                                        <g stroke-linecap="round" stroke-width="1.6" opacity=".9">
+                                            <path d="M16 29.5 h10" stroke="#2e8b57"/><path d="M16 34.8 h10" stroke="#c0392b"/><path d="M16 40.1 h7" stroke="#1f6fb2"/>
+                                            <path d="M38 29.5 h10" stroke="#c0392b"/><path d="M38 34.8 h10" stroke="#2e8b57"/><path d="M38 40.1 h7" stroke="#1f6fb2"/>
+                                        </g>
+                                        <path d="M32 5.4l1.9 4 4.5.3-3.4 2.7 1.1 4.5-4-2.6-4 2.6 1.1-4.5-3.4-2.7 4.5-.3z" fill="url(#kdGold)"/>
+                                    </svg>
+                                    <span class="app-name">تحفيظ الأطفال</span>
+                                </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-Adhkar">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="حصن المسلم">
                                         <defs>
@@ -4263,6 +4348,81 @@
                         <h3>ثواب التالي</h3>
                         <p>قال النبي ﷺ: «مَن قرأ حرفًا من كتاب الله فله به حسنة، والحسنة بعشر أمثالها، لا أقول الم حرف، ولكن ألف حرف ولام حرف وميم حرف» <span>(الترمذي 2910)</span>.</p>
                         <p>وقال: «الماهر بالقرآن مع السفرة الكرام البررة، والذي يقرأ القرآن ويتتعتع فيه وهو عليه شاقّ له أجران» <span>(البخاري 4937)</span>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= KIDS HIFZ (تحفيظ الأطفال — قصار السور) SCREEN ================= -->
+            <div id="kids-hifz-screen">
+                <header class="header-prayers">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-from-kids">‹ الرئيسية</button>
+                    <div class="title-prayers">
+                        <h1 style="font-family:var(--font-quran);">تحفيظ الأطفال</h1>
+                        <p>قصار السور بصوت مرتل — السمع أولاً ثم الآية الآية</p>
+                    </div>
+                    <div style="width:80px;"></div>
+                </header>
+
+                <!-- ===== قائمة السور ===== -->
+                <div class="kids-wrap" id="kids-list-view">
+                    <div class="kids-hero">
+                        <div class="kids-hero-icon">
+                            <svg width="74" height="74" viewBox="0 0 64 64" role="img" aria-label="تحفيظ الأطفال">
+                                <rect x="2" y="2" width="60" height="60" rx="15" fill="#0e5f45" stroke="#d4af37" stroke-width="1.6"/>
+                                <circle cx="32" cy="23" r="10" fill="#f4c86f"/>
+                                <circle cx="32" cy="23" r="10" fill="none" stroke="#8a6a1b" stroke-width="1.1"/>
+                                <path d="M16 56c2-9 8-13 16-13s14 4 16 13z" fill="#f4c86f"/>
+                                <circle cx="28.5" cy="22" r="1.6" fill="#123b2c"/><circle cx="35.5" cy="22" r="1.6" fill="#123b2c"/>
+                                <path d="M29 28.5c1.3 1.6 4.7 1.6 6 0" fill="none" stroke="#123b2c" stroke-width="1.4" stroke-linecap="round"/>
+                                <path d="M32 6.6l1.6 3.4 3.7.3-2.9 2.3.8 3.8-3.2-2.1-3.2 2.1.8-3.8-2.9-2.3 3.7-.3z" fill="#d4af37"/>
+                            </svg>
+                        </div>
+                        <div class="kids-hero-body">
+                            <b>مقصد الحفظ على بركة الله</b>
+                            <p>يبدأ كثير من معلمي القرآن بالفاتحة ثم من آخر المصحف صعوداً لسهولتها، فاسمع السورة مع طفلك يومياً حتى يُتقنها.</p>
+                            <div class="kids-chips"><span>١٤ سورة قصيرة</span><span>بصوت مرتل مجوّد</span><span>تقدّم محفوظ محلياً</span></div>
+                        </div>
+                    </div>
+
+                    <div class="kids-progress">
+                        <div class="kids-progress-head"><span id="kids-done-count">0 من 14 سورة</span><span id="kids-pct">0%</span></div>
+                        <div class="kids-progress-bar"><div class="kids-progress-fill" id="kids-progress-fill" style="width:0%"></div></div>
+                        <div class="kids-progress-tip">كل سورة يُتقنها طفلك تقرّبه خطوة من قلب القرآن 🌟</div>
+                    </div>
+
+                    <div class="kids-grid" id="kids-grid"></div>
+
+                    <div class="kids-tips">
+                        <h3>نصائح لتحفيظ الأطفال</h3>
+                        <ul>
+                            <li>اختر التلاوة الهادئة المرتلة لتسهيل المتابعة (يبدأ المشغل بصوت الشيخ الحصري).</li>
+                            <li>احفظ آيةً أو آيتين يومياً، وراجع السور السابقة قبل البدء بسورة جديدة.</li>
+                            <li>اقرأ السورة الجديدة معه في الصلوات اليومية.</li>
+                        </ul>
+                        <a class="kids-print-btn" href="https://qurancentral.net/assets/pdf/kids-surah-chart-ar.pdf" target="_blank" rel="noopener noreferrer">⬇ جدول الحفظ للطباعة (PDF) — قرآن Central</a>
+                        <p class="mem-source">البيانات والنصائح : qurancentral.net — «قصار السور لتحفيظ الأطفال»</p>
+                    </div>
+                </div>
+
+                <!-- ===== تفاصيل السورة ===== -->
+                <div class="kids-detail" id="kids-detail-view">
+                    <button type="button" class="back-btn glass-btn" id="btn-back-kids-list" style="align-self:flex-start;">‹ كل السور القصار</button>
+                    <div class="kids-detail-card">
+                        <div class="kids-detail-head">
+                            <div class="kids-detail-rank" id="kids-detail-rank">1</div>
+                            <div class="kids-detail-name" id="kids-detail-name">سورة الفاتحة</div>
+                            <div class="kids-detail-meta" id="kids-detail-meta">— آية · السورة — · الجزء 30</div>
+                        </div>
+                        <div class="kids-player">
+                            <button type="button" class="kids-play-btn" id="kids-play-btn" aria-label="تشغيل / إيقاف">▶</button>
+                            <div class="kids-player-right">
+                                <div class="kids-player-bar"><div class="kids-player-fill" id="kids-player-fill" style="width:0%"></div></div>
+                                <div class="kids-player-row"><span id="kids-player-state">اضغط ▶ للاستماع للسورة</span><select id="kids-reciter" class="kids-select" aria-label="اختر القارئ"><option value="ar.husary">محمود الحصري</option><option value="ar.alafasy">مشاري العفاسي</option><option value="ar.abdurrahmaansudais">عبد الرحمن السديس</option></select></div>
+                                <div class="kids-repeat"><span>كرّر كل آية:</span><div class="kids-repeat-chips" id="kids-repeat-chips"><button type="button" class="kids-chip" data-rep="1">×1</button><button type="button" class="kids-chip kids-chip-active" data-rep="3">×3</button><button type="button" class="kids-chip" data-rep="5">×5</button><button type="button" class="kids-chip" data-rep="10">×10</button></div></div>
+                            </div>
+                        </div>
+                        <div class="kids-ayahs" id="kids-ayahs"><div class="kids-load-error">جارٍ تحضير السورة…</div></div>
+                        <button type="button" class="kid-done-btn" id="kids-done-btn">✓ أتممتُ حفظ هذه السورة</button>
                     </div>
                 </div>
             </div>
@@ -10457,7 +10617,239 @@ var gender = 'male';
         }
 
         const homeScreen = document.getElementById('home-screen'); const prayersScreen = document.getElementById('prayers-screen'); const radiomarocScreen = document.getElementById('radiomaroc-screen'); const islamiyatScreen = document.getElementById('islamiyat-screen'); const mosquesScreen = document.getElementById('mosques-screen'); const asmaScreen = document.getElementById('asma-screen'); const liveScreen = document.getElementById('live-screen'); const weatherScreen = document.getElementById('weather-screen'); const mushafScreen = document.getElementById('mushaf-screen'); const fm6oaScreen = document.getElementById('fm6oa-screen'); const quranPlayerScreen = document.getElementById('quran-player-screen'); const quranradioScreen = document.getElementById('quranradio-screen'); const wirdScreen = document.getElementById('wird-screen'); const inheritanceScreen = document.getElementById('inheritance-screen'); const pharmacyScreen = document.getElementById('pharmacy-screen'); const sihatarScreen = document.getElementById('sihatar-screen'); const navHome = document.getElementById('nav-btn-home'); const navPrayers = document.getElementById('nav-btn-prayers');
-        function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; if (screenToShow === homeScreen && typeof window.checkFridayKahf === 'function') setTimeout(window.checkFridayKahf, 400); prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof muallimScreen!=='undefined' && muallimScreen) muallimScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); if (screenToShow !== muallimScreen && typeof window._muallimStop === 'function') { try { window._muallimStop(); } catch (e) {} }
+// ===== تحفيظ الأطفال — قصار السور (البيانات والنصائح : qurancentral.net) =====
+var kidsHifzScreen = document.getElementById('kids-hifz-screen');
+(function () {
+    if (!kidsHifzScreen) return;
+    var KIDS = [
+        { n: 1,   name: 'سورة الفاتحة', ayat: 7, juz: '1' },
+        { n: 114, name: 'سورة الناس',   ayat: 6, juz: '30' },
+        { n: 113, name: 'سورة الفلق',   ayat: 5, juz: '30' },
+        { n: 112, name: 'سورة الإخلاص', ayat: 4, juz: '30' },
+        { n: 111, name: 'سورة المسد',   ayat: 5, juz: '30' },
+        { n: 110, name: 'سورة النصر',   ayat: 3, juz: '30' },
+        { n: 109, name: 'سورة الكافرون', ayat: 6, juz: '30' },
+        { n: 108, name: 'سورة الكوثر',  ayat: 3, juz: '30' },
+        { n: 107, name: 'سورة الماعون', ayat: 7, juz: '30' },
+        { n: 106, name: 'سورة قريش',    ayat: 4, juz: '30' },
+        { n: 105, name: 'سورة الفيل',   ayat: 5, juz: '30' },
+        { n: 104, name: 'سورة الهمزة',  ayat: 9, juz: '30' },
+        { n: 103, name: 'سورة العصر',   ayat: 3, juz: '30' },
+        { n: 102, name: 'سورة التكاثر', ayat: 8, juz: '30' }
+    ];
+    var STORE = 'YaMousahil_kids_hifz';
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch (e) { saved = {}; }
+    function persistSave() { try { localStorage.setItem(STORE, JSON.stringify(saved)); } catch (e) {} }
+
+    var listView = document.getElementById('kids-list-view');
+    var detailView = document.getElementById('kids-detail-view');
+    var grid = document.getElementById('kids-grid');
+    var doneCountEl = document.getElementById('kids-done-count');
+    var pctEl = document.getElementById('kids-pct');
+    var fillEl = document.getElementById('kids-progress-fill');
+
+    function statusOf(n) { return saved[n] || 0; }
+    function setStatus(n, v) { saved[n] = v; persistSave(); renderGrid(); }
+    function totalDone() { return KIDS.filter(function (k) { return statusOf(k.n) === 2; }).length; }
+
+    var STATUS_LABEL = { 0: 'بانتظار البدء', 1: 'قيد الحفظ ✦', 2: 'أتمّها ✓' };
+    var STATUS_CLASS = { 0: '', 1: 'doing', 2: 'done' };
+
+    function renderGrid() {
+        if (!grid) return;
+        var html = '';
+        KIDS.forEach(function (k, i) {
+            var st = statusOf(k.n);
+            html += '<button type="button" class="kids-card' + (st === 2 ? ' done' : '') + '" data-n="' + k.n + '" aria-label="' + k.name + '">'
+                + '<span class="kids-rank">' + (i + 1) + '</span>'
+                + '<span class="kids-surah">' + k.name + '</span>'
+                + '<span class="kids-ayat">' + k.ayat + ' آيات · الجزء ' + k.juz + '</span>'
+                + '<span class="kids-status ' + STATUS_CLASS[st] + '" data-cycle="' + k.n + '" aria-label="تغيير حالة ' + k.name + '">' + STATUS_LABEL[st] + '</span>'
+                + '</button>';
+        });
+        grid.innerHTML = html;
+        var done = totalDone();
+        var pct = Math.round(done / KIDS.length * 100);
+        if (doneCountEl) doneCountEl.textContent = done + ' من ' + KIDS.length + ' سورة';
+        if (pctEl) pctEl.textContent = pct + '%';
+        if (fillEl) fillEl.style.width = pct + '%';
+    }
+
+    var detail = { n: 1, ayahs: [], audioUrls: [], idx: 0, rep: 3, repCount: 0, audio: null, playing: false, cache: {} };
+    var nameEl = document.getElementById('kids-detail-name');
+    var metaEl = document.getElementById('kids-detail-meta');
+    var rankEl = document.getElementById('kids-detail-rank');
+    var ayahsEl = document.getElementById('kids-ayahs');
+    var playBtn = document.getElementById('kids-play-btn');
+    var stateEl = document.getElementById('kids-player-state');
+    var fillP = document.getElementById('kids-player-fill');
+    var doneBtn = document.getElementById('kids-done-btn');
+    var reciterSel = document.getElementById('kids-reciter');
+
+    function surahRank(n) { for (var i = 0; i < KIDS.length; i++) if (KIDS[i].n === n) return i + 1; return 1; }
+    function kidMeta(n) { for (var i = 0; i < KIDS.length; i++) if (KIDS[i].n === n) return KIDS[i]; return KIDS[0]; }
+    function stripBasmala(t) { return (t || '').replace(/^بِسْمِ\s*ٱللَّهِ\s*ٱلرَّحْمَـٰنِ\s*ٱلرَّحِيمِ\s*/, ''); }
+
+    function renderDetailText(j) {
+        var ayahs = (j && j.data && j.data.ayahs) || [];
+        detail.ayahs = ayahs;
+        detail.audioUrls = ayahs.map(function (a) { return a.audio || ''; });
+        var html = '';
+        ayahs.forEach(function (a) {
+            var t = a.text || '';
+            if (detail.n !== 1 && /^بِسْمِ/.test(t)) {
+                t = stripBasmala(t);
+                if (a.numberInSurah === 1) html += '<div class="kids-basmala">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>';
+            }
+            html += '<div class="kids-ayah" id="kids-ayah-' + a.numberInSurah + '"><span class="kids-ayah-num">' + a.numberInSurah + '</span><span class="kids-ayah-text">' + t + '</span></div>';
+        });
+        ayahsEl.innerHTML = html || '<div class="kids-load-error">تعذّر عرض السورة.</div>';
+    }
+
+    function loadSurah(n) {
+        var ed = reciterSel ? reciterSel.value : 'ar.husary';
+        var key = n + '|' + ed;
+        if (detail.cache[key]) { renderDetailText(detail.cache[key]); return Promise.resolve(); }
+        ayahsEl.innerHTML = '<div class="kids-load-error">جارٍ تحضير السورة…</div>';
+        return fetch('https://api.alquran.cloud/v1/surah/' + n + '/' + ed)
+            .then(function (r) { return r.json(); })
+            .then(function (j) {
+                if (!j || !j.data) throw new Error('bad response');
+                detail.cache[key] = j;
+                renderDetailText(j);
+            })
+            .catch(function (e) {
+                console.error('kids hifz fetch', e);
+                ayahsEl.innerHTML = '<div class="kids-load-error">تعذّر جلب السورة — تحقق من الاتصال ثم أعد المحاولة<br><button type="button" class="kids-retry-btn" id="kids-retry">إعادة المحاولة</button></div>';
+                var b = document.getElementById('kids-retry'); if (b) b.onclick = function () { loadSurah(n); };
+            });
+    }
+
+    function highlightAyah(i) {
+        document.querySelectorAll('.kids-ayah.playing').forEach(function (el) { el.classList.remove('playing'); });
+        var el = document.getElementById('kids-ayah-' + (i + 1)); if (el) el.classList.add('playing');
+    }
+
+    function setPlayBtn(playing) {
+        if (playBtn) playBtn.innerHTML = playing ? '❚❚' : '▶';
+        detail.playing = playing;
+        if (stateEl) stateEl.textContent = playing
+            ? ('الاستماع — الآية ' + (detail.idx + 1) + ' من ' + detail.ayahs.length)
+            : 'متوقف مؤقتاً';
+    }
+
+    function stopKids() {
+        if (detail.audio) { try { detail.audio.pause(); detail.audio.currentTime = 0; } catch (e) {} }
+        detail.audio = null; detail.idx = 0; detail.repCount = 0;
+        setPlayBtn(false);
+        if (fillP) fillP.style.width = '0%';
+        document.querySelectorAll('.kids-ayah.playing').forEach(function (el) { el.classList.remove('playing'); });
+        if (stateEl) stateEl.textContent = 'اضغط ▶ للاستماع للسورة';
+    }
+    window._kidsStop = stopKids;
+
+    function onAyahEnded() {
+        detail.repCount++;
+        if (detail.repCount < detail.rep && detail.audio) {
+            detail.audio.currentTime = 0;
+            detail.audio.play().catch(function () {});
+            return;
+        }
+        detail.idx++; detail.repCount = 0;
+        if (detail.idx >= detail.ayahs.length) { stopKids(); if (stateEl) stateEl.textContent = 'أتممتم الاستماع ✓ بارك الله فيكم'; return; }
+        playAt(detail.idx);
+    }
+
+    function playAt(i) {
+        var url = detail.audioUrls[i];
+        if (!url) { detail.idx++; detail.repCount = 0; if (detail.idx < detail.ayahs.length) playAt(detail.idx); else stopKids(); return; }
+        if (detail.audio) { try { detail.audio.pause(); } catch (e) {} }
+        detail.audio = new Audio(url);
+        highlightAyah(i);
+        setPlayBtn(true);
+        detail.audio.addEventListener('timeupdate', function () { if (fillP && detail.audio && detail.audio.duration) fillP.style.width = Math.round((detail.audio.currentTime / detail.audio.duration) * 100) + '%'; });
+        detail.audio.addEventListener('ended', onAyahEnded);
+        detail.audio.addEventListener('error', function () { detail.idx++; detail.repCount = 0; if (detail.idx < detail.ayahs.length) playAt(detail.idx); else stopKids(); });
+        detail.audio.play().catch(function () {});
+    }
+
+    function openDetail(n) {
+        detail.n = n; detail.idx = 0; detail.repCount = 0; detail.rep = 3;
+        var k = kidMeta(n);
+        if (nameEl) nameEl.textContent = k.name;
+        if (metaEl) metaEl.textContent = k.ayat + ' آيات · السورة ' + n + ' · الجزء ' + k.juz;
+        if (rankEl) rankEl.textContent = surahRank(n);
+        if (listView) listView.style.display = 'none';
+        if (detailView) detailView.classList.add('open');
+        var st = statusOf(n);
+        if (doneBtn) { doneBtn.classList.toggle('done', st === 2); doneBtn.textContent = st === 2 ? '✓ مكتمل — اضغط لإلغاء الحفظ' : '✓ أتممتُ حفظ هذه السورة'; }
+        stopKids();
+        loadSurah(n);
+        try { window.scrollTo(0, 0); } catch (e) {}
+    }
+    function closeDetail() {
+        stopKids();
+        if (detailView) detailView.classList.remove('open');
+        if (listView) listView.style.display = '';
+    }
+
+    if (grid) grid.addEventListener('click', function (e) {
+        var cycle = e.target.closest('[data-cycle]');
+        if (cycle) {
+            e.stopPropagation();
+            var n2 = parseInt(cycle.getAttribute('data-cycle'), 10);
+            setStatus(n2, (statusOf(n2) + 1) % 3);
+            return;
+        }
+        var card = e.target.closest('.kids-card');
+        if (card) openDetail(parseInt(card.getAttribute('data-n'), 10));
+    });
+
+    if (playBtn) playBtn.addEventListener('click', function () {
+        if (detail.playing) { if (detail.audio) detail.audio.pause(); setPlayBtn(false); return; }
+        if (detail.audio) { detail.audio.play().catch(function () {}); setPlayBtn(true); return; }
+        if (!detail.ayahs.length) { loadSurah(detail.n).then(function () { detail.ayahs = detail.ayahs; detail.idx = 0; detail.repCount = 0; playAt(0); }); return; }
+        detail.idx = 0; detail.repCount = 0; playAt(0);
+    });
+
+    if (reciterSel) reciterSel.addEventListener('change', function () { stopKids(); loadSurah(detail.n); });
+
+    var chips = document.getElementById('kids-repeat-chips');
+    if (chips) chips.addEventListener('click', function (e) {
+        var b = e.target.closest('.kids-chip'); if (!b) return;
+        detail.rep = parseInt(b.getAttribute('data-rep'), 10) || 3;
+        chips.querySelectorAll('.kids-chip').forEach(function (c) { c.classList.toggle('kids-chip-active', c === b); });
+    });
+
+    if (doneBtn) doneBtn.addEventListener('click', function () {
+        var cur = statusOf(detail.n);
+        var next = cur === 2 ? 0 : 2;
+        setStatus(detail.n, next);
+        doneBtn.classList.toggle('done', next === 2);
+        doneBtn.textContent = next === 2 ? '✓ مكتمل — اضغط لإلغاء الحفظ' : '✓ أتممتُ حفظ هذه السورة';
+    });
+
+    var backList = document.getElementById('btn-back-kids-list');
+    if (backList) backList.addEventListener('click', closeDetail);
+
+    var backMain = document.getElementById('btn-back-from-kids');
+    if (backMain) backMain.addEventListener('click', function () {
+        closeDetail();
+        try { if (typeof showScreen === 'function') { showScreen(document.getElementById('home-screen')); window.scrollTo(0, 0); } } catch (e) { console.error(e); }
+    });
+
+    var homeCard = document.getElementById('card-kids-hifz');
+    if (homeCard) homeCard.addEventListener('click', function () {
+        try { if (typeof radioPlaying !== 'undefined' && radioPlaying) stopRadio(); } catch (e) {}
+        try { if (typeof marocPlaying !== 'undefined' && marocPlaying) stopMarocPlayer(); } catch (e) {}
+        try { if (typeof showScreen === 'function') { showScreen(kidsHifzScreen); window.scrollTo(0, 0); } } catch (e) { console.error(e); }
+    });
+
+    renderGrid();
+})();
+
+        function showScreen(screenToShow) { if (typeof tajweedScreen !== 'undefined' && tajweedScreen && tajweedScreen.style.display !== 'none' && screenToShow !== tajweedScreen) { try { if (window.twAudioStopTajweed) window.twAudioStopTajweed(); } catch (e) {} } homeScreen.style.display = 'none'; if (screenToShow === homeScreen && typeof window.checkFridayKahf === 'function') setTimeout(window.checkFridayKahf, 400); prayersScreen.style.display = 'none'; radiomarocScreen.style.display = 'none'; quranradioScreen.style.display = 'none'; islamiyatScreen.style.display = 'none'; mosquesScreen.style.display = 'none'; asmaScreen.style.display = 'none'; liveScreen.style.display = 'none'; weatherScreen.style.display = 'none'; if (typeof mushafScreen!=='undefined' && mushafScreen) mushafScreen.style.display = 'none'; if (typeof fm6oaScreen!=='undefined' && fm6oaScreen) fm6oaScreen.style.display = 'none'; if (typeof kidsHifzScreen!=='undefined' && kidsHifzScreen) { kidsHifzScreen.style.display = 'none'; } try { if (typeof window._kidsStop === 'function' && screenToShow !== (typeof kidsHifzScreen!=='undefined' && kidsHifzScreen)) window._kidsStop(); } catch (e) {} if (wirdScreen) wirdScreen.style.display = 'none'; if (inheritanceScreen) inheritanceScreen.style.display = 'none'; if (pharmacyScreen) pharmacyScreen.style.display = 'none'; if (sihatarScreen) sihatarScreen.style.display = 'none'; if (typeof quranMenuScreen!=='undefined' && quranMenuScreen) quranMenuScreen.style.display = 'none'; if (typeof muhammadiScreen!=='undefined' && muhammadiScreen) muhammadiScreen.style.display = 'none'; if (typeof muallimScreen!=='undefined' && muallimScreen) muallimScreen.style.display = 'none'; if (typeof tajweedScreen!=='undefined' && tajweedScreen) tajweedScreen.style.display = 'none'; if (typeof duaKhatmScreen!=='undefined' && duaKhatmScreen) duaKhatmScreen.style.display = 'none'; navHome.classList.remove('active'); navPrayers.classList.remove('active'); if (screenToShow !== muallimScreen && typeof window._muallimStop === 'function') { try { window._muallimStop(); } catch (e) {} }
         if (screenToShow !== quranradioScreen && typeof stopQuranPlayer === 'function') { try { stopQuranPlayer(); } catch (e) {} }
         if (typeof quranPlayerScreen !== 'undefined' && quranPlayerScreen && screenToShow !== quranPlayerScreen) { try { const _qpa = document.getElementById('qp-audio'); if (_qpa) _qpa.pause(); } catch (e) {} if (quranPlayerScreen.style.display !== 'none') quranPlayerScreen.style.display = 'none'; }
         screenToShow.style.display = 'flex'; // securite : on masque tous les autres ecrans (evite un ecranfant qui reste en bas de page)
