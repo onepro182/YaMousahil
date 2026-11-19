@@ -133,7 +133,10 @@
             box-shadow:inset 0 1.5px 1px rgba(255,255,255,.28),inset 0 -3px 6px rgba(0,0,0,.45),0 4px 10px rgba(0,0,0,.45);
             transition:all .2s ease;border-radius:12px;
         }
-        #home-screen .app-card-star{position:absolute;top:-9px;inset-inline-start:-9px;width:32px;height:32px;pointer-events:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.55));z-index:2;}
+        /* ===== حِصْنُ الْمُسْلِم : النجمة الزخرفية بجانب عنوان الصفحة (تظهر فقط في صفحة أذكار المسلم) ===== */
+        #isl-header-title::before,#isl-header-title::after{content:none;}
+        .isl-line{flex:0 0 60px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 20%,var(--gold) 50%,rgba(212,175,55,.45) 80%,transparent);}
+        .isl-star{width:30px;height:30px;flex:0 0 30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));display:none;}
         #home-screen .app-card:hover{border-color:var(--gold);transform:translateY(-2px);}
         #home-screen .app-card:active{transform:scale(.97);}
         #home-screen .app-name{color:var(--cream);}
@@ -261,8 +264,7 @@
         #islamiyat-screen .back-btn:active{transform:scale(.97);}
         #islamiyat-screen .header-prayers{border-bottom:1.5px solid rgba(212,175,55,.35) !important;}
         #isl-header-title{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--gold) !important;text-shadow:0 2px 6px rgba(0,0,0,.7);}
-        #isl-header-title::before,#isl-header-title::after{content:"";flex:0 0 auto;width:60px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 20%,var(--gold) 50%,rgba(212,175,55,.45) 80%,transparent);}
-        #isl-header-title::after{transform:scaleX(-1);}
+
 
         /* ===== تطبيق « العد التلقائي » (زمرد + ذهبي 3D) على: الإعدادات والمواقيت والمساجد وصحتي والمواريث ===== */
 
@@ -3234,7 +3236,6 @@
                                     <span class="app-name">تحفيظ الأطفال</span>
                                 </div>
                                 <div class="app-card glass-btn" tabindex="0" id="card-Adhkar">
-                                    <img class="app-card-star" src="pattern-star.svg" alt="" aria-hidden="true">
                                     <svg class="app-icon app-icon-3d" viewBox="0 0 64 64" role="img" aria-label="حصن المسلم">
                                         <defs>
                                             <radialGradient id="hisnBg" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#2b6f4c"/><stop offset="0.55" stop-color="#15492c"/><stop offset="1" stop-color="#051f11"/></radialGradient>
@@ -3726,7 +3727,7 @@
                 <header class="header-prayers" style="padding-bottom:10px;margin-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat" data-qm-back>‹ العودة</button>
                     <div style="text-align:center;flex:1;">
-                        <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
+                        <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;display:flex;align-items:center;justify-content:center;gap:14px;"><span class="isl-line"></span><span id="isl-title-text">✦ إسلاميات</span><img class="isl-star" id="isl-star" src="pattern-star.svg" alt="" aria-hidden="true"><span class="isl-line"></span></h1>
                         <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · حصن المسلم · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
                     </div>
                     <div class="isl-header-spacer" style="width:80px;"></div>
@@ -3810,7 +3811,7 @@
                                 <div class="adhkar-text-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
                                     <button type="button" id="adhkar-back-to-cats">‹ العودة</button>
                                     <h1 id="adhkar-title" style="flex:1;text-align:center;margin:0;">أدعية القرآن</h1>
-</div>
+                                </div>
                                 <div class="adhkar-text-body" id="adhkar-content-body"></div>
                             </div>
                         </div>
@@ -12366,7 +12367,7 @@ function notifyPrayer(prayerKey, isTest, mode) {
                         if (typeof initIslamiyat === 'function') initIslamiyat();
                         showScreen(islamiyat);
                         if (typeof activatePane === 'function') activatePane('quran');
-                        var islHeader = document.getElementById('isl-header-title');
+                        var islHeader = document.getElementById('isl-title-text');
                         if (islHeader) islHeader.textContent = 'قراءة القرآن الكريم';
                         if (typeof islSetTab === 'function') islSetTab('juz');
                         // ميّز الصفوف المعنية
@@ -13172,8 +13173,10 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.querySelectorAll('.islamiyat-pane').forEach(p=>p.classList.remove('active'));
             const el=document.getElementById('isl-pane-'+name);
             if(el) el.classList.add('active');
-            const t = document.getElementById('isl-header-title');
+            const t = document.getElementById('isl-title-text');
             const s = document.getElementById('isl-header-sub');
+            const star = document.getElementById('isl-star');
+            if (star) star.style.display = (name === 'adhkar') ? 'inline-block' : 'none';
             if (t && s) {
                 if (name === 'quran') { t.textContent = window._quranWirdOnly ? 'ورد القرآن اليومي' : 'قراءة القرآن الكريم'; s.textContent = window._quranWirdOnly ? 'سور ورد القرآن اليومي' : (window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'); }
                 else if (name === 'adhkar') { t.textContent = 'حِصْنُ الْمُسْلِم'; s.textContent = 'أذكار المسلم اليومية من الكتاب والسنة'; }
