@@ -244,9 +244,7 @@
         .salawat-big-btn span{font-family:var(--font-quran);font-size:2.7rem;color:#22180a;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.4);}
         .salawat-big-btn.pop{animation:salawatBtnPop .45s ease;}
         @keyframes salawatBtnPop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
-        .salawat-later{display:block;margin:2px auto 0;}
-        .salawat-later{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--cream);border-radius:12px;padding:9px 22px;cursor:pointer;font-family:var(--font);font-size:.82rem;}
-        .salawat-later:hover{background:rgba(255,255,255,.12);}
+        .salawat-card{padding-bottom:22px;}
         .salawat-spark{position:absolute;left:50%;top:18%;transform:translate(-50%,0);color:#ffe9a8;font-family:var(--font-quran);font-size:1.25rem;pointer-events:none;animation:sparkUp 1.15s ease forwards;}
         @keyframes sparkUp{from{opacity:0;transform:translate(-50%,10px) scale(.6)}30%{opacity:1}to{opacity:0;transform:translate(-50%,-95px) scale(1.5)}}
 
@@ -1837,6 +1835,11 @@
         .tj-h2{font-family:var(--font-quran);color:var(--gold);font-size:1.15rem;margin:0;}
         .tj-key{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;}
         .tj-rule{border:1px solid var(--tj,#d4af37);border-radius:12px;background:rgba(12,46,34,.4);padding:8px 10px;}
+        .tj-example{margin-top:8px;padding:8px 10px 4px;border-top:1px dashed rgba(255,255,255,.18);}
+        .tj-ex-label{font-size:.66rem;color:var(--gold);letter-spacing:.03em;font-weight:800;margin-bottom:4px;}
+        .tj-ex-line{font-family:var(--font-quran);font-size:.92rem;line-height:1.95;color:#f7f1df;display:block;}
+        .tj-ex-line mark{background:none;color:var(--tj);font-weight:800;}
+        .tj-ex-ref{display:block;font-size:.64rem;color:var(--text-dim);margin-top:1px;}
         .tj-rule-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
         .tj-dot{width:14px;height:14px;border-radius:50%;background:var(--tj,#d4af37);flex:none;}
         .tj-rule b{color:#f4ecd8;font-size:.9rem;}
@@ -4314,12 +4317,45 @@
                 <div class="sihatar-wrap tj-wrap">
                     <h2 class="tj-h2">المفتاح</h2>
                     <div class="tj-key">
-                        <div class="tj-rule" style="--tj:#e74c3c;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإخفاء</b></div><p>إخفاء النون الساكنة أو التنوين بغُنّة قبل حروف معيّنة.</p><div class="tj-letters">ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك</div></div>
-                        <div class="tj-rule" style="--tj:#e67e22;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإدغام</b></div><p>إدغام النون الساكنة أو التنوين في حروف</p><div class="tj-letters">ي ر م ل و ن</div></div>
-                        <div class="tj-rule" style="--tj:#f1c40f;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإقلاب</b></div><p>قلب النون الساكنة أو التنوين ميمًا قبل الباء.</p><div class="tj-letters">ب</div></div>
-                        <div class="tj-rule" style="--tj:#2ecc71;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإظهار</b></div><p>إظهار النون الساكنة أو التنوين قبل حروف الحلق.</p><div class="tj-letters">ء هـ ع ح غ خ</div></div>
-                        <div class="tj-rule" style="--tj:#3498db;"><div class="tj-rule-head"><span class="tj-dot"></span><b>القلقلة</b></div><p>اضطراب في حروف (قطب جد) عند سكونها.</p><div class="tj-letters">ق ط ب ج د</div></div>
-                        <div class="tj-rule" style="--tj:#9b59b6;"><div class="tj-rule-head"><span class="tj-dot"></span><b>المدّ</b></div><p>إطالة الحركة حركتين فأكثر.</p><div class="tj-letters">ا و ي</div></div>
+                        <div class="tj-rule" style="--tj:#e74c3c;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإخفاء</b></div><p>إخفاء النون الساكنة أو التنوين بغُنّة قبل حروف معيّنة.</p><div class="tj-letters">ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك</div>
+                            <div class="tj-example"><div class="tj-ex-label">أمثلة من القرآن:</div>
+                                <span class="tj-ex-line">﴿وَمِمَّا رَزَقْنَـٰهُمْ <mark>يُنفِقُونَ</mark>﴾</span><span class="tj-ex-ref">البقرة 2:3 — النون الساكنة قبل الفاء</span>
+                                <span class="tj-ex-line">﴿أُنزِلَ <mark>مِن قَبْلِكَ</mark>﴾</span><span class="tj-ex-ref">البقرة 2:4 — النون الساكنة قبل القاف</span>
+                            </div>
+                        </div>
+                        <div class="tj-rule" style="--tj:#e67e22;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإدغام</b></div><p>إدغام النون الساكنة أو التنوين في حروف (يرملون).</p><div class="tj-letters">ي ر م ل و ن</div>
+                            <div class="tj-example"><div class="tj-ex-label">أمثلة من القرآن:</div>
+                                <span class="tj-ex-line">﴿عَلَىٰ هُدًۭى <mark>مِّن رَّبِّهِمْ</mark>﴾</span><span class="tj-ex-ref">البقرة 2:5 — النون الساكنة قبل الراء (يرملون)</span>
+                                <span class="tj-ex-line">﴿هُدًۭى <mark>لِّلْمُتَّقِينَ</mark>﴾</span><span class="tj-ex-ref">البقرة 2:2 — التنوين قبل اللام (يرملون)</span>
+                            </div>
+                        </div>
+                        <div class="tj-rule" style="--tj:#f1c40f;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإقلاب</b></div><p>قلب النون الساكنة أو التنوين ميمًا قبل الباء.</p><div class="tj-letters">ب</div>
+                            <div class="tj-example"><div class="tj-ex-label">أمثلة من القرآن:</div>
+                                <span class="tj-ex-line">﴿فَقَالَ <mark>أَنۢبِـُٔونِى بِأَسْمَآءِ</mark>﴾</span><span class="tj-ex-ref">البقرة 2:31 — نون ساكنة قبل الباء تعوّض ميمًا مخفاة</span>
+                                <span class="tj-ex-line">﴿ٱللَّهِ <mark>مِنۢ بَعْدِ</mark> مِيثَـٰقِهِۦ﴾</span><span class="tj-ex-ref">البقرة 2:27 — ميم صغيرة فوق النون الساكنة (علامة الإقلاب)</span>
+                            </div>
+                        </div>
+                        <div class="tj-rule" style="--tj:#2ecc71;"><div class="tj-rule-head"><span class="tj-dot"></span><b>الإظهار</b></div><p>إظهار النون الساكنة أو التنوين قبل حروف الحلق.</p><div class="tj-letters">ء هـ ع ح غ خ</div>
+                            <div class="tj-example"><div class="tj-ex-label">أمثلة من القرآن:</div>
+                                <span class="tj-ex-line">﴿ٱلَّذِينَ <mark>أَنْعَمْتَ</mark> عَلَيْهِمْ﴾</span><span class="tj-ex-ref">الفاتحة 7 — النون الساكنة قبل العين (حروف الحلق)</span>
+                                <span class="tj-ex-line">﴿<mark>مِنْ خَشْيَةِ</mark> ٱللَّهِ﴾</span><span class="tj-ex-ref">البقرة 2:74 — النون الساكنة قبل الخاء (حروف الحلق)</span>
+                            </div>
+                        </div>
+                        <div class="tj-rule" style="--tj:#3498db;"><div class="tj-rule-head"><span class="tj-dot"></span><b>القلقلة</b></div><p>اضطراب في حروف (قطب جد) عند سكونها.</p><div class="tj-letters">ق ط ب ج د</div>
+                            <div class="tj-example"><div class="tj-ex-label">أمثلة من القرآن:</div>
+                                <span class="tj-ex-line">﴿<mark>قُلْ</mark> هُوَ ٱللَّهُ <mark>أَحَدٌ</mark>﴾</span><span class="tj-ex-ref">الإخلاص 112:1 — القاف الساكنة والدال الموقوف عليها (قلقلة كبرى)</span>
+                                <span class="tj-ex-line">﴿قُلْ أَعُوذُ بِرَبِّ <mark>ٱلْفَلَقِ</mark>﴾</span><span class="tj-ex-ref">الفلق 113:1 — القاف الساكنة (قطبج)</span>
+                            </div>
+                        </div>
+                        <div class="tj-rule" style="--tj:#9b59b6;"><div class="tj-rule-head"><span class="tj-dot"></span><b>المدّ</b></div><p>إطالة الحركة حركتين فأكثر.</p><div class="tj-letters">ا و ي</div>
+                            <div class="tj-example"><div class="tj-ex-label">أمثلة من القرآن حسب النوع:</div>
+                                <span class="tj-ex-line"><mark>المد الطبيعي</mark> ﴿ٱلصِّرَٰطَ﴾</span><span class="tj-ex-ref">الفاتحة 6 — مدتان حركيتان (الألف الطبيعية)</span>
+                                <span class="tj-ex-line"><mark>المد اللازم</mark> ﴿الٓمٓ﴾</span><span class="tj-ex-ref">البقرة 2:1 — ستّ حركات في الحروف المقطعة</span>
+                                <span class="tj-ex-line"><mark>المد المتصل</mark> ﴿أُو۟لَٰٓئِكَ﴾</span><span class="tj-ex-ref">البقرة 2:5 — واو مد تليها همزة في نفس الكلمة</span>
+                                <span class="tj-ex-line"><mark>المد المنفصل</mark> ﴿بِمَآ <mark>أُنزِلَ</mark>﴾</span><span class="tj-ex-ref">البقرة 2:4 — مد في آخر كلمة وهمزة أول التالية</span>
+                                <span class="tj-ex-line"><mark>المد العارض للسكون</mark> ﴿وَلَا ٱلضَّآلِّينَ﴾</span><span class="tj-ex-ref">الفاتحة 7 — عند الوقف على آخر السورة</span>
+                            </div>
+                        </div>
                     </div>
                     <h2 class="tj-h2">سورة الفاتحة</h2>
                     <div class="tj-ayahs">
@@ -4333,9 +4369,13 @@
                     </div>
                     <h2 class="tj-h2">أول سورة البقرة</h2>
                     <div class="tj-ayahs">
-                        <p class="tj-verse"><span class="tj-num">1</span> الٓمٓ <span class="tj-madd">ذَٰلِكَ</span> <span class="tj-madd">ٱلْكِتَـٰبُ</span> لَا <span class="tj-madd">رَيْبَ</span> ۛ فِيهِ ۛ <span class="tj-madd">هُدَىٰ</span> لِّلْ<span class="tj-qalqala">مُتَّقِينَ</span></p>
+                        <p class="tj-verse"><span class="tj-num">1</span> الٓمٓ</p>
+                        <p class="tj-verse"><span class="tj-num">2</span> ذَٰلِكَ <span class="tj-madd">ٱلْكِتَـٰبُ</span> لَا <span class="tj-madd">رَيْبَ</span> ۛ فِيهِ ۛ <span class="tj-madd">هُدَىٰ</span> لِّلْ<span class="tj-qalqala">مُتَّقِينَ</span></p>
+                        <p class="tj-verse"><span class="tj-num">3</span> <span class="tj-qalqala">ٱلَّذِينَ</span> يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَـٰهُمْ يُنفِقُونَ</p>
+                        <p class="tj-verse"><span class="tj-num">4</span> <span class="tj-qalqala">ٱلَّذِينَ</span> يُؤْمِنُونَ بِمَآ أُنزِلَ إِلَيْكَ وَمَآ أُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ</p>
+                        <p class="tj-verse"><span class="tj-num">5</span> أُو۟لَـٰٓئِكَ عَلَىٰ <span class="tj-madd">هُدَىٰ</span> مِّن <span class="tj-qalqala">رَّبِّهِمْ</span> ۖ وَأُو۟لَـٰٓئِكَ هُمُ <span class="tj-madd">ٱلْمُفْلِحُونَ</span></p>
                     </div>
-                    <p class="mem-source">تلوين تجريبي. تشير الألوان إلى أمثلة تمثيلية لكل حكم.</p>
+                    <p class="mem-source">تلوين تجريبي. تشير الألوان إلى أمثلة تمثيلية لكل حكم، وفي مصاحف التجويد الكاملة يُلوّن كل موضع.</p>
                 </div>
             </div>
 
@@ -10871,7 +10911,6 @@ var kidsHifzScreen = document.getElementById('kids-hifz-screen');
     try { localStorage.removeItem('YaMousahil_salawat_v1'); } catch (e) {}
     var btn = document.getElementById('salawat-btn');
     var closeBtn = document.getElementById('salawat-close');
-    var laterBtn = document.getElementById('salawat-later');
     function show() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
     function hide() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
     if (btn) btn.addEventListener('click', function () {
@@ -10884,7 +10923,6 @@ var kidsHifzScreen = document.getElementById('kids-hifz-screen');
         setTimeout(hide, 420);
     });
     if (closeBtn) closeBtn.addEventListener('click', hide);
-    if (laterBtn) laterBtn.addEventListener('click', hide);
     modal.addEventListener('click', function (e) { if (e.target === modal) hide(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) hide(); });
     setTimeout(show, 900);
@@ -14405,7 +14443,6 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             <h2 class="salawat-title" id="salawat-title">هل صلّيت على النبي اليوم؟!</h2>
             <p class="salawat-sub">ﷺ «من صلّى عليّ صلاةً صلّى الله عليه بها عشراً»</p>
             <button type="button" class="salawat-big-btn" id="salawat-btn" aria-label="اللهم صل وسلم على نبينا محمد"><span>ﷺ</span></button>
-            <button type="button" class="salawat-later" id="salawat-later">لاحقاً</button>
         </div>
     </div>
 </body>
