@@ -134,9 +134,6 @@
             transition:all .2s ease;border-radius:12px;
         }
         /* ===== حِصْنُ الْمُسْلِم : النجمة الزخرفية بجانب عنوان الصفحة (تظهر فقط في صفحة أذكار المسلم) ===== */
-        #isl-header-title::before,#isl-header-title::after{content:none;}
-        .isl-line{flex:0 0 60px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 20%,var(--gold) 50%,rgba(212,175,55,.45) 80%,transparent);}
-        .isl-star{width:30px;height:30px;flex:0 0 30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));display:none;}
         #home-screen .app-card:hover{border-color:var(--gold);transform:translateY(-2px);}
         #home-screen .app-card:active{transform:scale(.97);}
         #home-screen .app-name{color:var(--cream);}
@@ -278,80 +275,27 @@
         .back-btn.glass-btn:hover{border-color:var(--gold);color:#ffe9a8;}
         .back-btn.glass-btn:active{transform:scale(.97);}
 
-        /* أزرار عنوان + خطوط زخرفية بزويري العنوان (موحّد) */
-        #prayers-screen .title-prayers h1,
-        #mosques-screen .title-prayers h1,
-        #sihatar-screen .title-prayers h1,
-        #inheritance-screen h1,
+        /* ===== عناوين الشاشات الموحدة : نجمة زخرفية ذهبية على الجانبين ===== */
+        .title-prayers h1,
+        #isl-header-title,
+        .asma-title,
         #settings-modal .settings-header h2,
-        #radiomaroc-screen .title-prayers h1,
         #quranradio-screen .world-radio-title,
-        #pharmacy-screen .title-prayers h1,
-        #mushaf-screen .title-prayers h1,
-        #wird-screen .title-prayers h1,
-        #muhammadi-screen .title-prayers h1,
-        #muallim-screen .title-prayers h1,
-        #memorization-screen .title-prayers h1,
-        #khatma-screen .title-prayers h1,
         #khatma-read-screen h1,
-        #hajj-umrah-screen .title-prayers h1,
-        #tajweed-rules-screen .title-prayers h1,
-        #tilawah-adab-screen .title-prayers h1,
-        #live-screen .title-prayers h1,
-        #weather-screen .title-prayers h1,
-        #fm6oa-screen .title-prayers h1,
-        #zakat-screen .title-prayers h1,
-        #currency-screen .title-prayers h1,
-        #quran-player-screen .title-prayers h1,
-        #quran-read-screen .title-prayers h1,
-        #dua-khatm-screen .title-prayers h1,
-        #inheritance-screen h1,
-        #asma-screen .asma-title{
+        #inheritance-screen h1 {
             font-family:var(--font-quran); color:var(--gold); margin:0;
-            display:flex; align-items:center; justify-content:center; gap:12px;
+            display:flex; align-items:center; justify-content:center; gap:14px;
             text-shadow:0 2px 8px rgba(0,0,0,.7);
         }
-        #prayers-screen .title-prayers h1::before, #prayers-screen .title-prayers h1::after,
-        #mosques-screen .title-prayers h1::before, #mosques-screen .title-prayers h1::after,
-        #sihatar-screen .title-prayers h1::before, #sihatar-screen .title-prayers h1::after,
-        #inheritance-screen h1::before, #inheritance-screen h1::after,
+        .title-prayers h1::before, .title-prayers h1::after,
+        #isl-header-title::before, #isl-header-title::after,
+        .asma-title::before, .asma-title::after,
         #settings-modal .settings-header h2::before, #settings-modal .settings-header h2::after,
-        #radiomaroc-screen .title-prayers h1::before, #radiomaroc-screen .title-prayers h1::after,
-        #pharmacy-screen .title-prayers h1::before, #pharmacy-screen .title-prayers h1::after,
-        #wird-screen .title-prayers h1::before, #wird-screen .title-prayers h1::after,
-        #muhammadi-screen .title-prayers h1::before, #muhammadi-screen .title-prayers h1::after,
-        #muallim-screen .title-prayers h1::before, #muallim-screen .title-prayers h1::after,
-        #memorization-screen .title-prayers h1::before, #memorization-screen .title-prayers h1::after,
-        #khatma-screen .title-prayers h1::before, #khatma-screen .title-prayers h1::after,
+        #quranradio-screen .world-radio-title::before, #quranradio-screen .world-radio-title::after,
         #khatma-read-screen h1::before, #khatma-read-screen h1::after,
-        #hajj-umrah-screen .title-prayers h1::before, #hajj-umrah-screen .title-prayers h1::after,
-        #tajweed-rules-screen .title-prayers h1::before, #tajweed-rules-screen .title-prayers h1::after,
-        #tilawah-adab-screen .title-prayers h1::before, #tilawah-adab-screen .title-prayers h1::after,
-        #live-screen .title-prayers h1::before, #live-screen .title-prayers h1::after,
-        #weather-screen .title-prayers h1::before, #weather-screen .title-prayers h1::after,
-        #fm6oa-screen .title-prayers h1::before, #fm6oa-screen .title-prayers h1::after,
-        #zakat-screen .title-prayers h1::before, #zakat-screen .title-prayers h1::after,
-        #currency-screen .title-prayers h1::before, #currency-screen .title-prayers h1::after,
-        #quran-player-screen .title-prayers h1::before, #quran-player-screen .title-prayers h1::after,
-        #quran-read-screen .title-prayers h1::before, #quran-read-screen .title-prayers h1::after,
-        #dua-khatm-screen .title-prayers h1::before, #dua-khatm-screen .title-prayers h1::after{
-            content:""; flex:0 0 auto; width:55px; height:2px; border-radius:2px;
-            background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 18%,var(--gold) 50%,rgba(212,175,55,.45) 82%,transparent);
-        }
-        #prayers-screen .title-prayers h1::after, #mosques-screen .title-prayers h1::after,
-        #sihatar-screen .title-prayers h1::after, #inheritance-screen h1::after,
-        #settings-modal .settings-header h2::after, #radiomaroc-screen .title-prayers h1::after,
-        #pharmacy-screen .title-prayers h1::after, #wird-screen .title-prayers h1::after,
-        #muhammadi-screen .title-prayers h1::after, #muallim-screen .title-prayers h1::after,
-        #memorization-screen .title-prayers h1::after, #khatma-screen .title-prayers h1::after,
-        #khatma-read-screen h1::after, #hajj-umrah-screen .title-prayers h1::after,
-        #tajweed-rules-screen .title-prayers h1::after, #tilawah-adab-screen .title-prayers h1::after,
-        #live-screen .title-prayers h1::after, #weather-screen .title-prayers h1::after,
-        #fm6oa-screen .title-prayers h1::after, #quran-player-screen .title-prayers h1::after, #quran-read-screen .title-prayers h1::after,
-        #zakat-screen .title-prayers h1::after,
-        #currency-screen .title-prayers h1::after,
-        #dua-khatm-screen .title-prayers h1::after{
-            transform:scaleX(-1);
+        #inheritance-screen h1::before, #inheritance-screen h1::after {
+            content:""; flex:0 0 26px; width:26px; height:26px;
+            background:url("pattern-star.svg") no-repeat center/contain;
         }
         #inheritance-screen > div > div:first-child,
         #prayers-screen .header-prayers,
@@ -766,7 +710,7 @@
         }
         /* تصغير عنوان حساب المواريث على الهاتف + تحرير min-width (الخانق النصفي) */
         body.is-mobile #inheritance-screen h1 { font-size: 1.9rem !important; gap: 6px !important; margin: 0 !important; text-shadow: 0 1px 4px rgba(0,0,0,.8) !important; }
-        body.is-mobile #inheritance-screen h1::before, body.is-mobile #inheritance-screen h1::after{ width: 16px !important; height: 1px !important; opacity: .7; }
+        body.is-mobile #inheritance-screen h1::before, body.is-mobile #inheritance-screen h1::after{ width: 16px !important; height: 16px !important; opacity: .7; background-size:contain !important; }
         body.is-mobile #inheritance-screen .inheritance-spacer{ width: 0 !important; }
         body.is-mobile #inheritance-screen > div > div:first-child{ padding: 5px 6px !important; gap: 4px !important; }
         body.is-mobile #inheritance-screen > div > div:first-child > div[style*="min-width:180px"]{ min-width: 0 !important; }
@@ -1488,15 +1432,8 @@
             margin:0;display:flex;align-items:center;justify-content:center;gap:14px;
             text-shadow:0 2px 10px rgba(0,0,0,.75);
         }
-        #quran-menu-screen .title-prayers h1::before,
-        #quran-menu-screen .title-prayers h1::after{
-            content:"";flex:0 0 auto;width:55px;height:2px;border-radius:2px;
-            background:linear-gradient(90deg,transparent,rgba(212,175,55,.4) 18%,var(--gold) 50%,rgba(212,175,55,.4) 82%,transparent);
-        }
-        #quran-menu-screen .title-prayers h1::after{ transform:scaleX(-1); }
         #quran-menu-screen .title-prayers p{ color:#cdbf8a !important; font-size:.9rem !important; letter-spacing:.01em; }
-        body.is-mobile #quran-menu-screen .title-prayers h1{ font-size:1.9rem !important; gap:10px !important; white-space:nowrap !important; overflow:hidden !important; line-height:1.3 !important; }
-        body.is-mobile #quran-menu-screen .title-prayers h1::before, body.is-mobile #quran-menu-screen .title-prayers h1::after{ display:none !important; }
+        body.is-mobile #quran-menu-screen .title-prayers h1{ font-size:1.9rem !important; gap:14px !important; white-space:nowrap !important; overflow:hidden !important; line-height:1.3 !important; }
         body.is-mobile #quran-menu-screen .title-prayers p{ font-size:.86rem !important; }
         /* فانوسا العنوان الذهبي — يتأرجحان برفق على جانبي « القرآن الكريم » */
         .huj-lantern{width:84px;height:136px;flex:none;transform-origin:50% 0;animation:hujLanternSway 3.6s ease-in-out infinite alternate;filter:drop-shadow(0 4px 6px rgba(0,0,0,.6));}
@@ -2294,11 +2231,6 @@
             flex:1; margin:0; display:flex; align-items:center; justify-content:center; gap:14px;
             font-family:var(--font-quran); font-size:2rem; color:var(--gold); text-shadow:0 2px 6px rgba(0,0,0,.7);
         }
-        #asma-screen .asma-title::before,#asma-screen .asma-title::after{
-            content:""; flex:0 0 auto; width:55px; height:2px; border-radius:2px;
-            background:linear-gradient(90deg,transparent,rgba(212,175,55,.45) 20%,var(--gold) 50%,rgba(212,175,55,.45) 80%,transparent);
-        }
-        #asma-screen .asma-title::after{ transform:scaleX(-1); }
         #asma-screen .asma-sep{
             height:1.5px; flex-shrink:0; border-radius:2px;
             background:linear-gradient(90deg,transparent,rgba(212,175,55,.35) 18%,var(--gold) 50%,rgba(212,175,55,.35) 82%,transparent);
@@ -3727,7 +3659,7 @@
                 <header class="header-prayers" style="padding-bottom:10px;margin-bottom:10px;border-bottom:2px solid rgba(212,175,55,0.2);">
                     <button type="button" class="back-btn glass-btn" id="btn-back-from-islamiyat" data-qm-back>‹ العودة</button>
                     <div style="text-align:center;flex:1;">
-                        <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;display:flex;align-items:center;justify-content:center;gap:14px;"><span class="isl-line"></span><span id="isl-title-text">✦ إسلاميات</span><img class="isl-star" id="isl-star" src="pattern-star.svg" alt="" aria-hidden="true"><span class="isl-line"></span></h1>
+                        <h1 id="isl-header-title" style="font-family:var(--font-quran);font-size:2rem;color:#f4d03f;margin:0;">✦ إسلاميات</h1>
                         <p id="isl-header-sub" style="font-size:1rem;color:#fff;margin-top:4px;">القرآن · حصن المسلم · المسبحة <img class="logo3d logo3d-xs" src="Logo.png" alt="logo" style="height:1.2rem;width:auto;vertical-align:middle;margin-left:5px;"></p>
                     </div>
                     <div class="isl-header-spacer" style="width:80px;"></div>
@@ -12367,7 +12299,7 @@ function notifyPrayer(prayerKey, isTest, mode) {
                         if (typeof initIslamiyat === 'function') initIslamiyat();
                         showScreen(islamiyat);
                         if (typeof activatePane === 'function') activatePane('quran');
-                        var islHeader = document.getElementById('isl-title-text');
+                        var islHeader = document.getElementById('isl-header-title');
                         if (islHeader) islHeader.textContent = 'قراءة القرآن الكريم';
                         if (typeof islSetTab === 'function') islSetTab('juz');
                         // ميّز الصفوف المعنية
@@ -13173,10 +13105,8 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             document.querySelectorAll('.islamiyat-pane').forEach(p=>p.classList.remove('active'));
             const el=document.getElementById('isl-pane-'+name);
             if(el) el.classList.add('active');
-            const t = document.getElementById('isl-title-text');
+            const t = document.getElementById('isl-header-title');
             const s = document.getElementById('isl-header-sub');
-            const star = document.getElementById('isl-star');
-            if (star) star.style.display = (name === 'adhkar') ? 'inline-block' : 'none';
             if (t && s) {
                 if (name === 'quran') { t.textContent = window._quranWirdOnly ? 'ورد القرآن اليومي' : 'قراءة القرآن الكريم'; s.textContent = window._quranWirdOnly ? 'سور ورد القرآن اليومي' : (window._quranWarshMode ? 'المصحف الكريم برواية ورش عن نافع بالخط العثماني' : 'تصفح سور القرآن الكريم مكتوبة، أو انتقل إلى فهرس القرآن كاملاً.'); }
                 else if (name === 'adhkar') { t.textContent = 'حِصْنُ الْمُسْلِم'; s.textContent = 'أذكار المسلم اليومية من الكتاب والسنة'; }
