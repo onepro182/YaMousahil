@@ -10847,8 +10847,9 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
 // ===== طي/فتح مقاطع إسلاميات وإذاعات وبث مباشر (إخفاء البطاقات) =====
 (function () {
     var headers = document.querySelectorAll('#home-screen .section-title[data-section]');
+    // v2 : reinitialise les etats enregistres (certains appareils avaient tout masque)
     var persist = {};
-    try { persist = JSON.parse(localStorage.getItem('YaMousahil_sec_collapsed') || '{}') || {}; } catch (e) { persist = {}; }
+    try { persist = JSON.parse(localStorage.getItem('YaMousahil_sec_collapsed_v2') || '{}') || {}; } catch (e) { persist = {}; }
     var defaultsCollapsed = { radios: true, services: true };
     headers.forEach(function (h) {
         var btn = h.querySelector('.sec-toggle');
@@ -10868,7 +10869,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
                     el = el.nextElementSibling;
                 }
             }
-            try { persist[key] = !!c; localStorage.setItem('YaMousahil_sec_collapsed', JSON.stringify(persist)); } catch (e) {}
+            try { persist[key] = !!c; localStorage.setItem('YaMousahil_sec_collapsed_v2', JSON.stringify(persist)); } catch (e) {}
         }
         var hasSaved = Object.prototype.hasOwnProperty.call(persist, key);
         var shouldCollapse = hasSaved ? !!persist[key] : !!defaultsCollapsed[key];
