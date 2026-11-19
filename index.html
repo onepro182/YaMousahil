@@ -3078,7 +3078,7 @@
                             <span class="clock-large" id="clock">02:23</span>
                             <span class="clock-gmt" id="clock-gmt">GMT+1</span>
                         </div>
-                        <div class="date-sub" id="hijri-date">16 جمادى الأولى 1448 هـ</div>
+                        <div class="date-sub" id="hijri-date">9 جمادى الآخرة 1448 هـ</div>
                         <div class="date-sub dim" id="gregorian-date">الثلاثاء 27 أكتوبر 2026</div>
                     </div>
                     <div class="top-right-icons">
@@ -6104,7 +6104,7 @@
             document.getElementById('home-next-prayer-name').textContent = PRAYER_NAMES[nextPrayerKey];
             const _fnp = document.getElementById('fav-next-prayer-name'); if (_fnp) _fnp.textContent = PRAYER_NAMES[nextPrayerKey];
             const now = new Date(); const city = CITIES_DB[settings.cityId];
-            const hijri = moroccoNow(now).toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { timeZone:'UTC', day:'numeric', month:'long', year:'numeric' });
+            const hijri = moroccoNow(now).toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-umalqura', { timeZone:'UTC', day:'numeric', month:'long', year:'numeric' });
             document.getElementById('prayers-date').textContent = `${hijri}`; document.getElementById('hijri-date').textContent = `${hijri}`;
             const listContainer = document.getElementById('detailed-prayer-list'); listContainer.innerHTML = '';
             PRAYER_ORDER.forEach(key => {
@@ -7514,7 +7514,7 @@ var gender = 'male';
         var ZAKAT_HIJRI_MONTHS = ['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
         var zakatHawlPartsFmt = null;
         function zakatIslamicParts(d) {
-            if (!zakatHawlPartsFmt) zakatHawlPartsFmt = new Intl.DateTimeFormat('ar-MA-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' });
+            if (!zakatHawlPartsFmt) zakatHawlPartsFmt = new Intl.DateTimeFormat('ar-MA-u-ca-islamic-umalqura', { day: 'numeric', month: 'numeric', year: 'numeric' });
             var parts = zakatHawlPartsFmt.formatToParts(d), out = {};
             for (var i = 0; i < parts.length; i++) {
                 var p = parts[i];
@@ -11704,7 +11704,7 @@ var adabScreen = document.getElementById('tilawah-adab-screen');
             try {
                 var tz = (typeof locationTimeZone === 'function') ? locationTimeZone((typeof settings!=='undefined'?settings.cityId:null)) : undefined;
                 var now = new Date();
-                var hijri = now.toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
+                var hijri = now.toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-umalqura', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
                 var greg = now.toLocaleDateString('ar-u-nu-latn', { day:'numeric', month:'long', year:'numeric', timeZone: tz });
                 dateTxt = hijri + ' • ' + greg;
             } catch(e){ try { dateTxt = new Date().toLocaleDateString('ar-u-nu-latn'); } catch(e2){} }
@@ -12463,7 +12463,7 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             var hijriEl = document.getElementById("fm6oa-hijri");
             if (hijriEl) {
                 if (data.month && data.month.hijri) hijriEl.textContent = data.month.hijri;
-                else try { hijriEl.textContent = new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-civil', { month:'long' }); } catch (e) { hijriEl.textContent = ''; }
+                else try { hijriEl.textContent = new Date().toLocaleDateString('ar-MA-u-nu-latn-ca-islamic-umalqura', { month:'long' }); } catch (e) { hijriEl.textContent = ''; }
             }
             var next = fm6oaComputeNext(data.times);
             _fm6oaLastIdx = -1;
