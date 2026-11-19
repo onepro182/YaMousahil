@@ -244,7 +244,7 @@
         .salawat-big-btn span{font-family:var(--font-quran);font-size:2.7rem;color:#22180a;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.4);}
         .salawat-big-btn.pop{animation:salawatBtnPop .45s ease;}
         @keyframes salawatBtnPop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
-        .salawat-count{font-family:var(--font-quran);font-size:.95rem;color:var(--gold);margin:2px 0 12px;}
+        .salawat-later{display:block;margin:2px auto 0;}
         .salawat-later{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--cream);border-radius:12px;padding:9px 22px;cursor:pointer;font-family:var(--font);font-size:.82rem;}
         .salawat-later:hover{background:rgba(255,255,255,.12);}
         .salawat-spark{position:absolute;left:50%;top:18%;transform:translate(-50%,0);color:#ffe9a8;font-family:var(--font-quran);font-size:1.25rem;pointer-events:none;animation:sparkUp 1.15s ease forwards;}
@@ -10868,27 +10868,20 @@ var kidsHifzScreen = document.getElementById('kids-hifz-screen');
 // ===== نافذة الصلاة على النبي ﷺ : تظهر عند تحديث الصفحة الرئيسية =====
 (function () {
     var modal = document.getElementById('salawat-modal'); if (!modal) return;
+    try { localStorage.removeItem('YaMousahil_salawat_v1'); } catch (e) {}
     var btn = document.getElementById('salawat-btn');
     var closeBtn = document.getElementById('salawat-close');
     var laterBtn = document.getElementById('salawat-later');
-    var countEl = document.getElementById('salawat-count');
-    var KEY = 'YaMousahil_salawat_v1';
-    function todayKey() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
-    var state = { count: 0 };
-    try { var s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && s.date === todayKey()) state.count = s.count || 0; } catch (e) {}
-    function persist() { try { localStorage.setItem(KEY, JSON.stringify({ date: todayKey(), count: state.count })); } catch (e) {} }
-    function renderCount() { if (countEl) countEl.textContent = 'صليت عليه اليوم : ' + state.count; }
-    function show() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); renderCount(); }
+    function show() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
     function hide() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
     if (btn) btn.addEventListener('click', function () {
-        state.count++; persist();
         btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
         if (navigator.vibrate) try { navigator.vibrate(25); } catch (e) {}
         var spark = document.createElement('span');
         spark.className = 'salawat-spark'; spark.textContent = 'ﷺ';
         btn.appendChild(spark);
-        setTimeout(function () { if (spark.parentNode) spark.parentNode.removeChild(spark); }, 1250);
-        renderCount();
+        setTimeout(function () { if (spark.parentNode) spark.parentNode.removeChild(spark); }, 1150);
+        setTimeout(hide, 420);
     });
     if (closeBtn) closeBtn.addEventListener('click', hide);
     if (laterBtn) laterBtn.addEventListener('click', hide);
@@ -14412,7 +14405,6 @@ const FM6OA_ALL_CITIES = {}; FM6OA_REGIONS.forEach(g => g.items.forEach(it => FM
             <h2 class="salawat-title" id="salawat-title">هل صلّيت على النبي اليوم؟!</h2>
             <p class="salawat-sub">ﷺ «من صلّى عليّ صلاةً صلّى الله عليه بها عشراً»</p>
             <button type="button" class="salawat-big-btn" id="salawat-btn" aria-label="اللهم صل وسلم على نبينا محمد"><span>ﷺ</span></button>
-            <div class="salawat-count" id="salawat-count">صليت عليه اليوم : 0</div>
             <button type="button" class="salawat-later" id="salawat-later">لاحقاً</button>
         </div>
     </div>
