@@ -1,13 +1,13 @@
 {
- "updated": "2026-11-25T13:21:27Z",
- "day": "2026-11-25",
+ "updated": "2026-11-26T13:00:15Z",
+ "day": "2026-11-26",
  "cities": {
   "casablanca": {
    "code": 15,
    "name": "الدار البيضاء",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
-    "fajr": "05:39",
+    "fajr": "05:40",
     "dhuhr": "12:23",
     "asr": "15:04",
     "maghrib": "17:28",
@@ -195,7 +195,7 @@
       "asr": "15:04",
       "maghrib": "17:28",
       "isha": "18:46",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -207,7 +207,7 @@
       "asr": "15:04",
       "maghrib": "17:28",
       "isha": "18:46",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
@@ -383,10 +383,10 @@
   "rabat": {
    "code": 1,
    "name": "الرباط وسلا",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
-    "fajr": "05:36",
-    "dhuhr": "12:19",
+    "fajr": "05:37",
+    "dhuhr": "12:20",
     "asr": "15:00",
     "maghrib": "17:23",
     "isha": "18:42"
@@ -573,7 +573,7 @@
       "asr": "15:00",
       "maghrib": "17:23",
       "isha": "18:42",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -585,7 +585,7 @@
       "asr": "15:00",
       "maghrib": "17:23",
       "isha": "18:42",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
@@ -761,12 +761,12 @@
   "fes": {
    "code": 106,
    "name": "فاس",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
     "fajr": "05:29",
     "dhuhr": "12:12",
-    "asr": "14:53",
-    "maghrib": "17:18",
+    "asr": "14:52",
+    "maghrib": "17:17",
     "isha": "18:35"
    },
    "month": {
@@ -951,7 +951,7 @@
       "asr": "14:53",
       "maghrib": "17:18",
       "isha": "18:35",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -963,7 +963,7 @@
       "asr": "14:52",
       "maghrib": "17:17",
       "isha": "18:35",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
@@ -1139,9 +1139,9 @@
   "marrakech": {
    "code": 40,
    "name": "مراكش",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
-    "fajr": "05:38",
+    "fajr": "05:39",
     "dhuhr": "12:24",
     "asr": "15:10",
     "maghrib": "17:35",
@@ -1329,7 +1329,7 @@
       "asr": "15:10",
       "maghrib": "17:35",
       "isha": "18:50",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -1341,7 +1341,7 @@
       "asr": "15:10",
       "maghrib": "17:35",
       "isha": "18:50",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
@@ -1517,13 +1517,13 @@
   "oujda": {
    "code": 78,
    "name": "وجدة",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
-    "fajr": "05:17",
+    "fajr": "05:18",
     "dhuhr": "12:00",
     "asr": "14:39",
-    "maghrib": "17:05",
-    "isha": "18:22"
+    "maghrib": "17:04",
+    "isha": "18:21"
    },
    "month": {
     "hijri": "جمادى الثانية",
@@ -1707,7 +1707,7 @@
       "asr": "14:39",
       "maghrib": "17:05",
       "isha": "18:22",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -1719,7 +1719,7 @@
       "asr": "14:39",
       "maghrib": "17:04",
       "isha": "18:21",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
@@ -1895,10 +1895,10 @@
   "tangier": {
    "code": 60,
    "name": "طنجة",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
-    "fajr": "05:34",
-    "dhuhr": "12:15",
+    "fajr": "05:35",
+    "dhuhr": "12:16",
     "asr": "14:52",
     "maghrib": "17:16",
     "isha": "18:36"
@@ -2085,7 +2085,7 @@
       "asr": "14:52",
       "maghrib": "17:16",
       "isha": "18:36",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -2097,7 +2097,7 @@
       "asr": "14:52",
       "maghrib": "17:16",
       "isha": "18:36",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
@@ -2273,10 +2273,10 @@
   "agadir": {
    "code": 151,
    "name": "أكادير",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
-    "fajr": "05:43",
-    "dhuhr": "12:30",
+    "fajr": "05:44",
+    "dhuhr": "12:31",
     "asr": "15:18",
     "maghrib": "17:43",
     "isha": "18:57"
@@ -2463,7 +2463,7 @@
       "asr": "15:18",
       "maghrib": "17:43",
       "isha": "18:57",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -2475,7 +2475,7 @@
       "asr": "15:18",
       "maghrib": "17:43",
       "isha": "18:57",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
@@ -2651,12 +2651,12 @@
   "meknes": {
    "code": 124,
    "name": "مكناس",
-   "greg": "الأربعاء 25 نونبر 2026",
+   "greg": "الخميس 26 نونبر 2026",
    "times": {
-    "fajr": "05:31",
-    "dhuhr": "12:14",
+    "fajr": "05:32",
+    "dhuhr": "12:15",
     "asr": "14:55",
-    "maghrib": "17:21",
+    "maghrib": "17:20",
     "isha": "18:37"
    },
    "month": {
@@ -2841,7 +2841,7 @@
       "asr": "14:55",
       "maghrib": "17:21",
       "isha": "18:37",
-      "today": true
+      "today": false
      },
      {
       "weekday": "الخميس",
@@ -2853,7 +2853,7 @@
       "asr": "14:55",
       "maghrib": "17:20",
       "isha": "18:37",
-      "today": false
+      "today": true
      },
      {
       "weekday": "الجمعة",
